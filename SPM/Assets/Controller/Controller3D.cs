@@ -94,7 +94,7 @@ public class Controller3D : MonoBehaviour
     /// <returns></returns>
     private IEnumerator Dash() {
 
-        StartCoroutine(Dissolve());
+        StartCoroutine(MaterialManipulator.Dissolve(GetComponent<MeshRenderer>().material, timeWithoutGravity, dissolveSpeed));
         
         //Spara gravitationen innan man sätter den till 0
         float gravity = playerPhys.gravity;
@@ -118,27 +118,8 @@ public class Controller3D : MonoBehaviour
         playerPhys.velocity = transform.forward * 2;
         playerPhys.gravity = gravity;
 
-        
     }
-
-
-    private IEnumerator Dissolve() {
-
-        Material material = GetComponent<MeshRenderer>().material;
-        
-        while (material.GetFloat("Vector1_514c1d1c3a2c490d9cb8e4c3ce390208") < 2) {
-            material.SetFloat("Vector1_514c1d1c3a2c490d9cb8e4c3ce390208", material.GetFloat("Vector1_514c1d1c3a2c490d9cb8e4c3ce390208") + dissolveSpeed * Time.deltaTime);
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(timeWithoutGravity / 2);
-        
-        while (material.GetFloat("Vector1_514c1d1c3a2c490d9cb8e4c3ce390208") > -2) {
-            material.SetFloat("Vector1_514c1d1c3a2c490d9cb8e4c3ce390208", material.GetFloat("Vector1_514c1d1c3a2c490d9cb8e4c3ce390208") - dissolveSpeed * Time.deltaTime);
-            yield return null;
-        }
-        
-    }
+    
 
 }
 

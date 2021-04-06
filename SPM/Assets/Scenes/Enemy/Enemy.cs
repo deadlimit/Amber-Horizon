@@ -6,34 +6,47 @@ public class Enemy : MonoBehaviour {
 
     [SerializeField] private State[] states;
 
-    private LayerMask playerMask;
-    private StateMachine stateMachine;
+    public float outerRing, innerRing;
+    
+    public LayerMask playerMask;
+    public StateMachine stateMachine { get; private set; }
     private bool hasPath;
-    private Transform target;
+    public Transform target { get; private set; }
     
     
     [HideInInspector] public NavMeshAgent MeshAgent { get; private set; }
     
     private void Awake() {
+        target = GameObject.FindGameObjectWithTag("Player").transform;
         MeshAgent = GetComponent<NavMeshAgent>();
         stateMachine = new StateMachine(this, states);
     }
-
-    
     
 
     private void Update() {
-
-        Physics.SphereCast(transform.position, 10, transform.forward.normalized, out var hit, 10, playerMask);
         
-        if(hit.collider)
-            Debug.Log("Player found");
-
+        ProximityCast();
+        
         stateMachine?.RunUpdate();
     }
 
+    public void ProximityCast() {
+
+        if (Physics.OverlapSphere(transform.position, outerRing, playerMask).Length > 0) 
+            if (Physics.OverlapSphere(transform.position, innerRing, playerMask).Length > 0) 
+                stateMachine.ChangeState<EnemyBailState>();
+            else 
+                stateMachine.ChangeState<EnemyProximityState>();
+        else 
+            stateMachine.ChangeState<EnemyDistanceState>();
+        
+    }
+    
     private void OnDrawGizmos() {
-        Physics.SphereCast(transform.position, 20, transform.forward.normalized, out var hit, 10, playerMask);
-        Gizmos.DrawSphere(hit.point, 20);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position, outerRing);
+        
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(transform.position, innerRing);
     }
 }
