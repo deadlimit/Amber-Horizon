@@ -6,22 +6,23 @@ public class PlayerPhysics : MonoBehaviour
 {
     public LayerMask collisionMask;
     public Camera cam;
+    public float fallSpeed = 1f;
+    public RaycastHit groundHitInfo;
 
     [SerializeField] Vector3 velocity = Vector3.zero;
     [SerializeField] float gravity = 10f;
     [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
     [Range(0f, 1f)] [SerializeField] float kineticFrictionCoefficient = 0.35f;
     [Range(0f, 1f)] [SerializeField] float airResistance = 0.35f;
-
     [SerializeField] float skinWidth = 0.05f;
+
     float smallNumber = 0.05f;
     float groundCheckDistance = 0.05f;
+
+
     Vector3 point1 = Vector3.zero;
     Vector3 point2 = Vector3.zero;
     Vector3 fallVec = Vector3.zero;
-    public float fallSpeed = 1f;
-    public RaycastHit groundHitInfo;
-
     CapsuleCollider capColl;
 
     void Start()
@@ -94,6 +95,7 @@ public class PlayerPhysics : MonoBehaviour
         ResolveCollisions();
         transform.position += velocity * Time.deltaTime;
         OverlapCapsule();
+
     }
     public bool isGrounded() {
         return Physics.CapsuleCast(point1, point2, capColl.radius, Vector3.down, out groundHitInfo, groundCheckDistance + skinWidth, collisionMask); }
@@ -115,5 +117,10 @@ public class PlayerPhysics : MonoBehaviour
         }
         velocity *= Mathf.Pow(airResistance, Time.deltaTime);
     }
-    public void AddFallSpeed() {  }
+    public void AddFallSpeed() {}
+
+    public void BlackHoleGravity(GameObject bh) 
+    {
+
+    }
 }
