@@ -18,7 +18,8 @@ public class PlayerPhysics : MonoBehaviour
 
     float smallNumber = 0.05f;
     float groundCheckDistance = 0.05f;
-
+    float gravityMod = 1f;
+    Vector3 bhGrav = Vector3.zero;
 
     Vector3 point1 = Vector3.zero;
     Vector3 point2 = Vector3.zero;
@@ -29,10 +30,7 @@ public class PlayerPhysics : MonoBehaviour
     {
         capColl = GetComponent<CapsuleCollider>();
     }
-    private void ResolveCollisions()
-    {
-        CapsuleCollision();
-    }
+
     private void CapsuleCollision() 
     {
         point1 = (transform.position + capColl.center) + Vector3.up * capColl.radius;
@@ -84,15 +82,15 @@ public class PlayerPhysics : MonoBehaviour
     
 
     public void HandleInput(Vector3 inp) {
+        bhGrav = Vector3.zero;
         //isGrounded är med för att uppdatera groundHitInfo
         Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
    
         velocity += inp;
         //isGrounded();
         AddGravity();
-        //currSpeed bara till f�r debugging
-        //currSpeed = velocity.magnitude;
-        ResolveCollisions();
+
+        CapsuleCollision();
         transform.position += velocity * Time.deltaTime;
         OverlapCapsule();
 
@@ -103,12 +101,20 @@ public class PlayerPhysics : MonoBehaviour
     public Vector3 GetVelocity() { return velocity; }
     private void AddGravity()
     {    
-        Vector3 gravityMovement = gravity * Vector3.down * Time.deltaTime;
+        Vector3 gravityMovement = gravity * Vector3.down * Time.deltaTime * gravityMod;
+
+        if (bhGrav != Vector3.zero)
+        {
+            gravityMovement = bhGrav;
+            velocity *= 0.05f;
+            
+        }
+
         velocity += gravityMovement;
+        gravityMod = 1f;
     }
     private void ApplyFriction(Vector3 normalForce)
     {
-
         if (velocity.magnitude < normalForce.magnitude * staticFrictionCoefficient)
             velocity = Vector2.zero;
         else
@@ -119,8 +125,21 @@ public class PlayerPhysics : MonoBehaviour
     }
     public void AddFallSpeed() {}
 
-    public void BlackHoleGravity(GameObject bh) 
+    public void BlackHoleGravity(BlackHole bh) 
     {
-
+        bhGrav = bh.gravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
+        velocity += bhGrav;
+        ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
+        bhGrav = Vector3.zero;
     }
+    public void StopVelocity() 
+    {
+        //vill man bara att detta kallas en gång? 
+        //detta hindrar inte att gravitation appliceras
+        velocity -= velocity *0.02f;
+        
+        //gravityMod assignment måste just nu appliceras kontinuerligt, oavsett hur man vill göra med velocity
+        gravityMod = 0.1f;
+    }
+
 }

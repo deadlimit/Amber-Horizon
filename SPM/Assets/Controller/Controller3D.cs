@@ -9,6 +9,7 @@ public class Controller3D : MonoBehaviour
     [SerializeField] float acceleration = 4f;
     [SerializeField]float maxSpeed;
 
+    public float launchSpeed = 5f;
     public float jumpHeight = 4f;
     Vector3 input = Vector3.zero;
     PlayerPhysics playerPhys;
@@ -17,18 +18,13 @@ public class Controller3D : MonoBehaviour
     private StateMachine stateMachine;
     private bool jump;
 
+    public BlackHole blackHole;
+
     void Awake()
     {
         playerPhys = GetComponent<PlayerPhysics>();
         stateMachine = new StateMachine(this, states);
     }
-    /*Vector3 GetInput()
-        {
-            Vector3 input =
-            Vector3.right * Input.GetAxisRaw("Horizontal") +
-            Vector3.forward * Input.GetAxisRaw("Vertical");
-            return input;
-        }*/
 
     public void SetInput(Vector3 inp)
     {
@@ -44,7 +40,6 @@ public class Controller3D : MonoBehaviour
     private void Accelerate()
     {
         //tror det är clamp som hindrar gravitationen att appliceras när man hoppar intill en vägg och sedan rör sig därifrån..? 
-
         velocity = input * acceleration * Time.deltaTime;
         velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
        
@@ -54,7 +49,6 @@ public class Controller3D : MonoBehaviour
             velocity.y += jumpHeight;
             jump = false;
         }
-
     }
 
     void Update()
@@ -64,6 +58,9 @@ public class Controller3D : MonoBehaviour
         PlayerDirection();
         playerPhys.HandleInput(velocity);
 
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+            LaunchBH();
+
     }
     public void SetJump()
     {
@@ -72,6 +69,14 @@ public class Controller3D : MonoBehaviour
 
 
     public PlayerPhysics GetPhysics() { return playerPhys; }
+
+    private void LaunchBH() 
+    {
+        BlackHole bh;
+        bh = Instantiate(blackHole, transform.position, cam.transform.rotation);
+        bh.velocity = transform.TransformDirection(Vector3.forward * launchSpeed);
+
+    }
 
 
 }
