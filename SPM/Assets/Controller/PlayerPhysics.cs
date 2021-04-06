@@ -7,8 +7,8 @@ public class PlayerPhysics : MonoBehaviour
     public LayerMask collisionMask;
     public Camera cam;
 
-    [SerializeField] Vector3 velocity = Vector3.zero;
-    [SerializeField] float gravity = 10f;
+    [SerializeField] public Vector3 velocity { get; set; }
+    [SerializeField] public float gravity =  10f;
     [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
     [Range(0f, 1f)] [SerializeField] float kineticFrictionCoefficient = 0.35f;
     [Range(0f, 1f)] [SerializeField] float airResistance = 0.35f;

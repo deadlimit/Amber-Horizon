@@ -1,6 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using System.ComponentModel;
 using UnityEngine;
 
 public class Controller3D : MonoBehaviour
@@ -9,11 +8,21 @@ public class Controller3D : MonoBehaviour
     [SerializeField] Vector3 velocity = Vector3.zero;
     [SerializeField] float acceleration = 4f;
     [SerializeField] float maxSpeed;
-    [SerializeField] float dashForce;
     public float jumpHeight = 4f;
     Vector3 input = Vector3.zero;
     PlayerPhysics playerPhys;
+    
+    [Header("Dash")]
+    [SerializeField] private float dashCooldown;
+    [SerializeField] private float dashLength;
+    [Tooltip("Hur länge spelarens gravitation är avstängd innan den sätts på igen (sekunder)")]
+    [SerializeField] private float timeWithoutGravity;
+    [SerializeField] private float dissolveSpeed;
+    
+    private float nextDash;
 
+    
+    [Header("StateMachine")]
     public State[] states;
     private StateMachine stateMachine;
     private bool jump;
@@ -27,6 +36,7 @@ public class Controller3D : MonoBehaviour
     public void SetInput(Vector3 inp)
     {
         input = inp;
+        
     }
     void PlayerDirection() {
         
@@ -52,17 +62,23 @@ public class Controller3D : MonoBehaviour
     }
 
     void Update() {
-        
+
+        if (Input.GetKeyDown(KeyCode.F)) {
+            Time.timeScale = Time.timeScale == .3f ? Time.timeScale = 1 : Time.timeScale = .3f;
+        }
         
         stateMachine.RunUpdate();
         Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
         PlayerDirection();
-
-        if (Input.GetKeyDown(KeyCode.E)) {
-            velocity = velocity.normalized * dashForce;
-        }
         
         playerPhys.HandleInput(velocity);
+        
+        
+        if (Input.GetKeyDown(KeyCode.E) && nextDash < Time.time) {
+            nextDash = Time.time + dashCooldown;
+            StartCoroutine(Dash());
+        }
+
     }
     public void SetJump()
     {
@@ -71,8 +87,59 @@ public class Controller3D : MonoBehaviour
 
     
     public PlayerPhysics GetPhysics() { return playerPhys; }
-
     
+    /// <summary>
+    /// Dash. Ska kunna dasha åt input-hållet? Dashar endast rakt fram just nu. 
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator Dash() {
+
+        StartCoroutine(Dissolve());
+        
+        //Spara gravitationen innan man sätter den till 0
+        float gravity = playerPhys.gravity;
+
+        Vector3 cameraForwardDirection = cam.transform.forward;
+
+        //Nollar y-axeln för att bara dasha framåt.
+        cameraForwardDirection.y = 0;
+        
+        //Stänger av gravitationen och nollställer hastigheten för att endast dash-velociteten ska gälla. 
+        playerPhys.velocity = Vector3.zero;
+        playerPhys.gravity = 0;
+        
+        
+        velocity = cameraForwardDirection * dashLength;
+        playerPhys.HandleInput(velocity);
+
+        //Vänta .4 sekunder innan man sätter på gravitationen igen. 
+        yield return new WaitForSeconds(timeWithoutGravity);
+
+        playerPhys.velocity = transform.forward * 2;
+        playerPhys.gravity = gravity;
+
+        
+    }
+
+
+    private IEnumerator Dissolve() {
+
+        Material material = GetComponent<MeshRenderer>().material;
+        
+        while (material.GetFloat("Vector1_514c1d1c3a2c490d9cb8e4c3ce390208") < 2) {
+            material.SetFloat("Vector1_514c1d1c3a2c490d9cb8e4c3ce390208", material.GetFloat("Vector1_514c1d1c3a2c490d9cb8e4c3ce390208") + dissolveSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(timeWithoutGravity / 2);
+        
+        while (material.GetFloat("Vector1_514c1d1c3a2c490d9cb8e4c3ce390208") > -2) {
+            material.SetFloat("Vector1_514c1d1c3a2c490d9cb8e4c3ce390208", material.GetFloat("Vector1_514c1d1c3a2c490d9cb8e4c3ce390208") - dissolveSpeed * Time.deltaTime);
+            yield return null;
+        }
+        
+    }
+
 }
 
 
