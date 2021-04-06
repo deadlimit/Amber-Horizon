@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu()]
@@ -24,8 +22,8 @@ public class JumpingState : State
 
         /*  if (player.GetPhysics().isGrounded())
           {
-              //jag tror att det som händer är att den hinner utvärdera isGrounded() innan vi helt lämnat marken, därför 
-              //går den direkt tillbaka till GroundedState, men INTE om man gör dubbelhoppet som blir möjligt av den här buggen
+              //jag tror att det som hï¿½nder ï¿½r att den hinner utvï¿½rdera isGrounded() innan vi helt lï¿½mnat marken, dï¿½rfï¿½r 
+              //gï¿½r den direkt tillbaka till GroundedState, men INTE om man gï¿½r dubbelhoppet som blir mï¿½jligt av den hï¿½r buggen
               stateMachine.ChangeState<GroundedState>();
           }*/
 
@@ -35,7 +33,7 @@ public class JumpingState : State
 
             stateMachine.ChangeState<FallingState>();
         }
-        //om vi är på väg ned -> falling state
+        //om vi ï¿½r pï¿½ vï¿½g ned -> falling state
 
     }
 

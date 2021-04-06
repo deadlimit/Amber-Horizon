@@ -31,8 +31,7 @@ public class FallingState : State
             //går den direkt tillbaka till GroundedState, men INTE om man gör dubbelhoppet som blir möjligt av den här buggen
             stateMachine.ChangeState<GroundedState>();
         }
-
-
+        
         //om vi är på väg ned -> falling state
 
     }
