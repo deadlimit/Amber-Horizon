@@ -9,9 +9,23 @@ public class PhysicsComponent : MonoBehaviour
 {
     public LayerMask collisionMask;
     public RaycastHit groundHitInfo;
+    protected Vector3 bhGrav = Vector3.zero;
+    protected float gravityMod = 1f;
 
-    private Collider attachedCollider;
+    protected Collider attachedCollider;
     private CollisionCaster collisionCaster;
+
+    [SerializeField] public Vector3 velocity;
+    [SerializeField] public float gravity = 10f;
+    [SerializeField]protected float skinWidth = 0.05f;
+    
+    [Header ("Friktion")]
+    [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
+    [Range(0f, 1f)] [SerializeField] float kineticFrictionCoefficient = 0.35f;
+    [Range(0f, 1f)] [SerializeField] float airResistance = 0.35f;
+
+    
+    
     private void OnEnable()
     {
         attachedCollider = GetComponent<Collider>();
@@ -26,36 +40,16 @@ public class PhysicsComponent : MonoBehaviour
             collisionCaster = new CapsuleCaster(attachedCollider, collisionMask);
     }
 
-    public Vector3 velocity { get; set; }
-    [SerializeField] public float gravity = 10f;
-    [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
-    [Range(0f, 1f)] [SerializeField] float kineticFrictionCoefficient = 0.35f;
-    [Range(0f, 1f)] [SerializeField] float airResistance = 0.35f;
-    [SerializeField] float skinWidth = 0.05f;
-
-    float smallNumber = 0.05f;
-    float gravityMod = 1f;
-
-    public bool AffectedByBlackHoleGravity;
-    
-    Vector3 bhGrav = Vector3.zero;
-    
-    public void Update() {
-        
+    public void Update()
+    {
         bhGrav = Vector3.zero;
-      //  Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
         AddGravity();
-
-        CheckForCollisions(0);
-        //CapsuleCollision();
-
+        CheckForCollisions(0);;
         transform.position += velocity * Time.deltaTime;
-
-        //OverlapCapsule();
         MoveOutOfGeometry();
         
     }
-    private void CheckForCollisions(int i)
+    protected void CheckForCollisions(int i)
     {
 
         RaycastHit hitInfo = collisionCaster.CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);
@@ -70,10 +64,11 @@ public class PhysicsComponent : MonoBehaviour
         velocity += normalForce;
 
         ApplyFriction(normalForce);
+
         if(i < 10)
             CheckForCollisions(i+1);
     }
-    private void MoveOutOfGeometry()
+    protected void MoveOutOfGeometry()
     {
         Collider[] colliders = collisionCaster.OverlapCast(transform.position);
 
@@ -98,13 +93,17 @@ public class PhysicsComponent : MonoBehaviour
         }
 
     }
-    public void BlackHoleGravity(BlackHole bh) {
-        AffectedByBlackHoleGravity = true;
-        bhGrav = bh.gravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
-        velocity += bhGrav;
-        
-        ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
-        bhGrav = Vector3.zero;
+    public void BlackHoleGravity(BlackHole bh, IBlackHoleBehaviour blackHoleBehaviour)
+    {
+        if(blackHoleBehaviour != null)
+            blackHoleBehaviour.BlackHoleBehaviour(bh);
+        else {
+            bhGrav = bh.gravitationalPull * (bh.transform.position - transform.position) /
+                Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
+            velocity += bhGrav;
+            ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
+            bhGrav = Vector3.zero;
+        }
     }
     public void StopVelocity()
     {
@@ -115,7 +114,7 @@ public class PhysicsComponent : MonoBehaviour
         //gravityMod assignment måste just nu appliceras kontinuerligt, oavsett hur man vill göra med velocity
         gravityMod = 0.1f;
     }
-    private void AddGravity()
+    protected virtual void AddGravity()
     {
         Vector3 gravityMovement = gravity * Vector3.down * Time.deltaTime * gravityMod;
 
@@ -174,7 +173,7 @@ public class PhysicsComponent : MonoBehaviour
             }
         }
     }*/
-    private void ApplyFriction(Vector3 normalForce)
+    protected void ApplyFriction(Vector3 normalForce)
     {
         if (velocity.magnitude < normalForce.magnitude * staticFrictionCoefficient)
             velocity = Vector2.zero;
