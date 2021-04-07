@@ -44,15 +44,18 @@ public class BlackHole : MonoBehaviour
                 if (Vector3.Distance(transform.position, c.bounds.center) < terminalDistance)
                     c.GetComponent<PhysicsComponent>().StopVelocity();
 
-                else
-                    c.GetComponent<PhysicsComponent>().BlackHoleGravity(this);
+                else {
+                    IBlackHoleBehaviour behaviour = c.GetComponent<IBlackHoleBehaviour>();
+                    c.GetComponent<PhysicsComponent>().BlackHoleGravity(this, behaviour);
+                }
+                    
             }
         }
     }
     private void CheckCenterCollision() {
         if (useGravity)
         {
-            //verkar som att overlapbox är mycket mindre benägen att gå igenom väggar.
+            //verkar som att overlapbox ï¿½r mycket mindre benï¿½gen att gï¿½ igenom vï¿½ggar.
             Collider[] boxHitColl =
             Physics.OverlapBox(transform.position, centerColl.size / 2, Quaternion.identity, collisionMask);
             if (boxHitColl.Length > 0)

@@ -32,15 +32,10 @@ public class MovingPlatform : PhysicsComponent
         right.transform.position = rightMax;
     }
 
-    public void Update()
-    {
-        vel = velocity;
-        bhGrav = Vector3.zero;
-        Debug.DrawLine(transform.position, transform.position + transform.forward, Color.red);
-        AddGravity();
-
-        CheckForCollisions(0);
-
+    public void Update() {
+        
+        base.Update();
+        
         MovePlatform();
        /* if (Vector3.Distance(transform.position, startPos) + skinWidth - coll.size.z / 2 >= possibleMoveLength)
         {
@@ -79,7 +74,7 @@ public class MovingPlatform : PhysicsComponent
         
         //movement = 0f;
     }
-    public override void BlackHoleGravity(BlackHole bh)
+    public void BlackHoleGravity(BlackHole bh)
     {
         Vector3 direction = bh.transform.position - transform.position;
         dotProduct = Vector3.Dot(transform.forward.normalized, bh.transform.position.normalized - transform.position.normalized);

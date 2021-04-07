@@ -90,12 +90,17 @@ public class PhysicsComponent : MonoBehaviour
         }
 
     }
-    public virtual void BlackHoleGravity(BlackHole bh)
+    public void BlackHoleGravity(BlackHole bh, IBlackHoleBehaviour blackHoleBehaviour)
     {
-        bhGrav = bh.gravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
-        velocity += bhGrav;
-        ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
-        bhGrav = Vector3.zero;
+        if(blackHoleBehaviour != null)
+            blackHoleBehaviour.BlackHoleBehaviour(bh);
+        else {
+            bhGrav = bh.gravitationalPull * (bh.transform.position - transform.position) /
+                Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
+            velocity += bhGrav;
+            ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
+            bhGrav = Vector3.zero;
+        }
     }
     public void StopVelocity()
     {
