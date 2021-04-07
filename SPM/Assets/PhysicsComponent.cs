@@ -24,6 +24,9 @@ public class PhysicsComponent : MonoBehaviour
 
         if (attachedCollider is CapsuleCollider)
             collisionCaster = new CapsuleCaster(attachedCollider, collisionMask);
+
+        if (attachedCollider is MeshCollider)
+            collisionCaster = new MeshCaster(attachedCollider, collisionMask);
     }
 
     public Vector3 velocity { get; set; }
