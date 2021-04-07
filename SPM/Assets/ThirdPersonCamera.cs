@@ -19,10 +19,8 @@ public class ThirdPersonCamera : MonoBehaviour
     Vector3 offset = Vector3.zero;
     SphereCollider coll;
     // Start is called before the first frame update
-    void Start() {
-
-        Cursor.lockState = CursorLockMode.Locked;
-        
+    void Start()
+    {
         coll = GetComponent<SphereCollider>();
         cameraOffset = new Vector3(0, cameraHeight, cameraDistance);
     }
@@ -48,7 +46,7 @@ public class ThirdPersonCamera : MonoBehaviour
         playerPos = player.transform.position;
         offset = transform.rotation * cameraOffset;
      
-        //kollision.. p√• n√•got s√§tt.
+        //kollision.. pÂ nÂgot s‰tt.
         if (Physics.SphereCast(playerPos, coll.radius, (playerPos + offset) - playerPos, out hitInfo, cameraOffset.magnitude, collisionMask))
         {
 
