@@ -10,9 +10,7 @@ public class Enemy : MonoBehaviour {
     
     public LayerMask playerMask;
     public StateMachine stateMachine { get; private set; }
-    private bool hasPath;
     public Transform target { get; private set; }
-    
     
     [HideInInspector] public NavMeshAgent MeshAgent { get; private set; }
     
@@ -24,7 +22,6 @@ public class Enemy : MonoBehaviour {
     
 
     private void Update() {
-        
         ProximityCast();
         
         stateMachine?.RunUpdate();

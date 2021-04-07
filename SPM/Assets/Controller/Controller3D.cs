@@ -75,7 +75,6 @@ public class Controller3D : MonoBehaviour
         
         playerPhys.HandleInput(velocity);
         
-        
         if (Input.GetKeyDown(KeyCode.E) && nextDash < Time.time) {
             nextDash = Time.time + dashCooldown;
             StartCoroutine(Dash());
@@ -99,7 +98,7 @@ public class Controller3D : MonoBehaviour
     /// <returns></returns>
     private IEnumerator Dash() {
 
-        StartCoroutine(MaterialManipulator.Dissolve(GetComponent<MeshRenderer>().material, timeWithoutGravity, dissolveSpeed));
+        MaterialManipulator.Dissolve(this, GetComponent<MeshRenderer>().material, timeWithoutGravity, dissolveSpeed);
         
         //Spara gravitationen innan man sätter den till 0
         float gravity = playerPhys.gravity;
