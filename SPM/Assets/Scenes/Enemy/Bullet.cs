@@ -24,7 +24,7 @@ public class Bullet : MonoBehaviour {
         timeBeforeDissapear.Tick(Time.deltaTime);
         physics.AddForce(direction.normalized * BulletSpeed);
 
-        Physics.Raycast(transform.position, transform.forward.normalized, out var hit, .5f,playerLayer);
+        Physics.Raycast(transform.position, transform.forward.normalized, out var hit, 1,playerLayer);
         
         
         if(hit.collider)
