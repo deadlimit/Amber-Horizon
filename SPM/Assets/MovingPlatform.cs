@@ -13,6 +13,8 @@ public class MovingPlatform : PhysicsComponent
     [SerializeField] float minDistanceForMovement = 0.02f;
     float movement = 0f;
     float dotProduct;
+
+    public GameObject left, right;
     
 
     // Start is called before the first frame update
@@ -23,8 +25,11 @@ public class MovingPlatform : PhysicsComponent
         startPos = transform.position;
         gravity = 0f;
 
-        leftMax = -transform.forward.normalized * possibleMoveLength;
-        rightMax = transform.forward.normalized * possibleMoveLength;
+        Vector3 forw = new Vector3(transform.forward.x, 0, transform.forward.y);
+        leftMax = -forw.normalized * possibleMoveLength;
+        rightMax = forw.normalized * possibleMoveLength;
+        left.transform.position = leftMax;
+        right.transform.position = rightMax;
     }
 
     public void Update()
@@ -36,32 +41,39 @@ public class MovingPlatform : PhysicsComponent
 
         CheckForCollisions(0);
 
-        /*if (Vector3.Distance(transform.position, startPos) + skinWidth - coll.size.z / 2 >= possibleMoveLength)
+        MovePlatform();
+       /* if (Vector3.Distance(transform.position, startPos) + skinWidth - coll.size.z / 2 >= possibleMoveLength)
         {
             Vector3 temp = velocity;
             velocity = Vector3.zero;
-            Vector3 normalForce = General.NormalForce3D(temp, -temp);
+            Vector3 normalForce = General.NormalForce3D(temp * 2, -temp);
             velocity += normalForce;
-            Debug.Log("normalForce" +normalForce);
-        }
-        */
-        Vector3 newVel = Vector3.zero;
+            Debug.Log("normalForce" + normalForce);
+        }*/
+
+        /*Vector3 newVel = Vector3.zero;
         newVel.x = Mathf.Clamp(velocity.x, leftMax.x, rightMax.x);
-        newVel.z = Mathf.Clamp(velocity.z, leftMax.z, rightMax.z);
+        newVel.z = Mathf.Clamp(velocity.z, leftMax.z, rightMax.z);*/
 
-        transform.position += newVel * Time.deltaTime;
 
+        transform.position += velocity * Time.deltaTime;
         MoveOutOfGeometry();
-        MovePlatform();
-        //OverlapCapsule();
-    }
 
+    }
+    private bool MoveBackAllowed() 
+    {
+        return transform.position.x < leftMax.x && transform.position.z < leftMax.z;
+    }
+    private bool MoveForwardAllowed()
+    {
+        return transform.position.x < rightMax.x && transform.position.z < rightMax.z;
+    }
     private void MovePlatform() 
     {
         if (dotProduct < minDistanceForMovement)
-            velocity += 0.5f *(movement * -transform.forward * Time.deltaTime);
+            velocity += 0.5f * (movement * -transform.forward * Time.deltaTime);
         else if (dotProduct > minDistanceForMovement)
-            velocity += 0.5f *(movement * transform.forward * Time.deltaTime);
+            velocity += 2f *(movement * transform.forward * Time.deltaTime);
         
         velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
         
@@ -79,7 +91,14 @@ public class MovingPlatform : PhysicsComponent
         ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
         bhGrav = Vector3.zero;
     }
+    public void StopVelocity()
+    {
+        //vill man bara att detta kallas en gång? 
+        //detta hindrar inte att gravitation appliceras
 
+
+        //gravityMod assignment måste just nu appliceras kontinuerligt, oavsett hur man vill göra med velocity
+    }
     //bara kunna röra sig fram och bakåt
     /* Vectror3
      

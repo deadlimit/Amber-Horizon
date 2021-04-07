@@ -41,7 +41,7 @@ public class BlackHole : MonoBehaviour
         {
             if (c.GetComponent<PhysicsComponent>())
             {
-                if (Vector3.Distance(transform.position, c.transform.position) < terminalDistance)
+                if (Vector3.Distance(transform.position, c.bounds.center) < terminalDistance)
                     c.GetComponent<PhysicsComponent>().StopVelocity();
 
                 else

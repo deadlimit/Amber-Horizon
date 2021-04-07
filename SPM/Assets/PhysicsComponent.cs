@@ -13,7 +13,7 @@ public class PhysicsComponent : MonoBehaviour
     protected Collider attachedCollider;
     private CollisionCaster collisionCaster;
 
-    [SerializeField] public Vector3 velocity { get; set; }
+    [SerializeField] public Vector3 velocity;
     [SerializeField] public float gravity = 10f;
     [SerializeField]protected float skinWidth = 0.05f;
     
