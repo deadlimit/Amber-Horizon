@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -175,7 +175,6 @@ MonoBehaviour:
     m_Bits: 128
   cam: {fileID: 0}
   fallSpeed: 1
-  velocity: {x: 0, y: 0, z: 0}
   gravity: 10
   staticFrictionCoefficient: 0.386
   kineticFrictionCoefficient: 0.197
@@ -213,7 +212,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 59fdba65193793d4c9af2fc796915ed7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -414,7 +413,6 @@ MonoBehaviour:
     m_Bits: 64
   cam: {fileID: 1650759757}
   fallSpeed: 1
-  velocity: {x: 0, y: 0, z: 0}
   gravity: 10
   staticFrictionCoefficient: 0.5
   kineticFrictionCoefficient: 0.35
@@ -438,6 +436,10 @@ MonoBehaviour:
   maxSpeed: 12
   launchSpeed: 18
   jumpHeight: 4
+  dashCooldown: 0
+  dashLength: 0
+  timeWithoutGravity: 0
+  dissolveSpeed: 0
   states:
   - {fileID: 11400000, guid: 99f6e8efeefa92c4cb723076c183aa48, type: 2}
   - {fileID: 11400000, guid: 1024dbb672cf3f94fa7a51b3ad8e6983, type: 2}
@@ -476,7 +478,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a7f6f0dd2e7c88d4eae100222cdf4c1c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -679,7 +681,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 59fdba65193793d4c9af2fc796915ed7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -775,7 +777,6 @@ MonoBehaviour:
     m_Bits: 128
   cam: {fileID: 0}
   fallSpeed: 1
-  velocity: {x: 0, y: 0, z: 0}
   gravity: 0
   staticFrictionCoefficient: 0.386
   kineticFrictionCoefficient: 0.197
@@ -813,7 +814,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 59fdba65193793d4c9af2fc796915ed7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1242,7 +1243,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 59fdba65193793d4c9af2fc796915ed7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1337,7 +1338,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 59fdba65193793d4c9af2fc796915ed7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1419,7 +1420,6 @@ MonoBehaviour:
     m_Bits: 128
   cam: {fileID: 0}
   fallSpeed: 1
-  velocity: {x: 0, y: 0, z: 0}
   gravity: 10
   staticFrictionCoefficient: 0.386
   kineticFrictionCoefficient: 0.197
@@ -1457,7 +1457,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 59fdba65193793d4c9af2fc796915ed7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1567,7 +1567,6 @@ MonoBehaviour:
     m_Bits: 128
   cam: {fileID: 0}
   fallSpeed: 1
-  velocity: {x: 0, y: 0, z: 0}
   gravity: 10
   staticFrictionCoefficient: 0.386
   kineticFrictionCoefficient: 0.197
@@ -1605,7 +1604,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 59fdba65193793d4c9af2fc796915ed7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
