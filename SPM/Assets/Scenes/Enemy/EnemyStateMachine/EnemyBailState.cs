@@ -35,6 +35,7 @@ public class EnemyBailState : State {
         
         enemy.transform.position = newLocation;
         enemy.notMoving = true;
+        enemy.physics.velocity = Vector3.zero;
         enemy.ProximityCast();
         
     }

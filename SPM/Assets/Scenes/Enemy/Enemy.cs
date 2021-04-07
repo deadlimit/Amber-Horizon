@@ -35,6 +35,9 @@ public class Enemy : MonoBehaviour {
         if (notMoving)
             ProximityCast();
 
+        if(!physics.isGrounded() && notMoving)
+            stateMachine.ChangeState<EnemyBailState>();
+        
         stateMachine?.RunUpdate();
     }
 
