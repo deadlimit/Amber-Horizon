@@ -12,6 +12,16 @@ public class PhysicsComponent : MonoBehaviour
 
     private Collider attachedCollider;
     private CollisionCaster collisionCaster;
+
+    [SerializeField] public Vector3 velocity;
+    [SerializeField] public float gravity = 10f;
+    [SerializeField]protected float skinWidth = 0.05f;
+    
+    [Header ("Friktion")]
+    [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
+    [Range(0f, 1f)] [SerializeField] float kineticFrictionCoefficient = 0.35f;
+    [Range(0f, 1f)] [SerializeField] float airResistance = 0.35f;
+    
     private void OnEnable()
     {
         attachedCollider = GetComponent<Collider>();
@@ -48,10 +58,7 @@ public class PhysicsComponent : MonoBehaviour
         bhGrav = Vector3.zero;
       //  Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
         AddGravity();
-
         CheckForCollisions(0);
-        //CapsuleCollision();
-
         transform.position += velocity * Time.deltaTime;
 
         //OverlapCapsule();
@@ -101,24 +108,29 @@ public class PhysicsComponent : MonoBehaviour
         }
 
     }
-    public void BlackHoleGravity(BlackHole bh) {
-        AffectedByBlackHoleGravity = true;
-        bhGrav = bh.gravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
-        velocity += bhGrav;
-        
-        ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
-        bhGrav = Vector3.zero;
+    public void BlackHoleGravity(BlackHole bh, IBlackHoleBehaviour blackHoleBehaviour)
+    {
+        if (blackHoleBehaviour != null) {
+            blackHoleBehaviour.BlackHoleBehaviour(bh);
+        }
+        else {
+            bhGrav = bh.gravitationalPull * (bh.transform.position - transform.position) /
+                Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
+            velocity += bhGrav;
+            ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
+            bhGrav = Vector3.zero;
+        }
     }
     public void StopVelocity()
     {
-        //vill man bara att detta kallas en gång? 
+        //vill man bara att detta kallas en g�ng? 
         //detta hindrar inte att gravitation appliceras
         velocity -= velocity * 0.02f;
 
-        //gravityMod assignment måste just nu appliceras kontinuerligt, oavsett hur man vill göra med velocity
+        //gravityMod assignment m�ste just nu appliceras kontinuerligt, oavsett hur man vill g�ra med velocity
         gravityMod = 0.1f;
     }
-    private void AddGravity()
+    protected void AddGravity()
     {
         Vector3 gravityMovement = gravity * Vector3.down * Time.deltaTime * gravityMod;
 

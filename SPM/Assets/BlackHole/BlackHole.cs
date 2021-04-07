@@ -30,11 +30,19 @@ public class BlackHole : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Collider [] hitcoll = Physics.OverlapSphere(transform.position, coll.radius, physicsLayerMask);
-        foreach(Collider c in hitcoll)
+        GravitationDrag();
+        CheckCenterCollision();
+        
+        velocity *= Mathf.Pow(airResistance, Time.deltaTime);
+        transform.Translate(velocity * Time.deltaTime);
+    }
+    private void GravitationDrag()
+    {
+        Collider[] hitcoll = Physics.OverlapSphere(transform.position, coll.radius, physicsLayerMask);
+        foreach (Collider c in hitcoll)
         {
 
-            //fysikpåverkan
+            //fysikpï¿½verkan
             if (c.GetComponent<PhysicsComponent>()) {
                 c.GetComponent<PhysicsComponent>().AffectedByBlackHoleGravity = true;
                 if (Vector3.Distance(transform.position, c.transform.position) < terminalDistance)
@@ -47,7 +55,7 @@ public class BlackHole : MonoBehaviour
         }
         //---------------------------------------------------------
 
-        //om man sätter if(useGravity) här ute kan vi nog slippa göra boxcasten när hålet ändå står still? 
+        //om man sï¿½tter if(useGravity) hï¿½r ute kan vi nog slippa gï¿½ra boxcasten nï¿½r hï¿½let ï¿½ndï¿½ stï¿½r still? 
 
         /*
         RaycastHit hitInfo;
@@ -55,13 +63,13 @@ public class BlackHole : MonoBehaviour
         if (Physics.BoxCast(transform.position, centerColl.size / 2, velocity.normalized, out hitInfo, Quaternion.identity, (velocity.magnitude * Time.deltaTime + skinWidth), collisionMask))
             {
                 Debug.Log("collision layer");
-            //kanske vill ha liiiite fysik i träffen
+            //kanske vill ha liiiite fysik i trï¿½ffen
                 velocity = Vector3.zero;
                 useGravity = false;
             }*/
         if (useGravity)
         {
-            //verkar som att overlapbox är mycket mindre benägen att gå igenom väggar.
+            //verkar som att overlapbox ï¿½r mycket mindre benï¿½gen att gï¿½ igenom vï¿½ggar.
             Collider[] boxHitColl =
             Physics.OverlapBox(transform.position, centerColl.size / 2, Quaternion.identity, collisionMask);
             if (boxHitColl.Length > 0)
