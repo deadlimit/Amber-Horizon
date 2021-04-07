@@ -10,6 +10,14 @@ public class PhysicsComponent : MonoBehaviour
 
     private Collider attachedCollider;
     private CollisionCaster collisionCaster;
+
+    [SerializeField] public Vector3 velocity { get; set; }
+    [SerializeField] public float gravity = 10f;
+    [SerializeField] float skinWidth = 0.05f;
+    [Header ("Friktion")]
+    [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
+    [Range(0f, 1f)] [SerializeField] float kineticFrictionCoefficient = 0.35f;
+    [Range(0f, 1f)] [SerializeField] float airResistance = 0.35f;
     private void OnEnable()
     {
         attachedCollider = GetComponent<Collider>();
@@ -24,19 +32,8 @@ public class PhysicsComponent : MonoBehaviour
             collisionCaster = new CapsuleCaster(attachedCollider, collisionMask);
     }
 
-    [SerializeField] public Vector3 velocity { get; set; }
-    [SerializeField] public float gravity = 10f;
-    [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
-    [Range(0f, 1f)] [SerializeField] float kineticFrictionCoefficient = 0.35f;
-    [Range(0f, 1f)] [SerializeField] float airResistance = 0.35f;
-    [SerializeField] float skinWidth = 0.05f;
-
-    float smallNumber = 0.05f;
     float gravityMod = 1f;
-
     Vector3 bhGrav = Vector3.zero;
-    Vector3 point1 = Vector3.zero;
-    Vector3 point2 = Vector3.zero;
 
     public void Update()
     {
@@ -66,6 +63,7 @@ public class PhysicsComponent : MonoBehaviour
         velocity += normalForce;
 
         ApplyFriction(normalForce);
+
         if(i < 10)
             CheckForCollisions(i+1);
     }

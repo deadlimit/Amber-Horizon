@@ -26,11 +26,19 @@ public class BlackHole : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Collider [] hitcoll = Physics.OverlapSphere(transform.position, coll.radius, physicsLayerMask);
-        foreach(Collider c in hitcoll)
+        GravitationDrag();
+        CheckCenterCollision();
+
+        
+
+        velocity *= Mathf.Pow(airResistance, Time.deltaTime);
+        transform.Translate(velocity * Time.deltaTime);
+    }
+    private void GravitationDrag()
+    {
+        Collider[] hitcoll = Physics.OverlapSphere(transform.position, coll.radius, physicsLayerMask);
+        foreach (Collider c in hitcoll)
         {
-      //-----------------------------------------------------
-      //fysikpåverkan
             if (c.GetComponent<PhysicsComponent>())
             {
                 if (Vector3.Distance(transform.position, c.transform.position) < terminalDistance)
@@ -39,22 +47,9 @@ public class BlackHole : MonoBehaviour
                 else
                     c.GetComponent<PhysicsComponent>().BlackHoleGravity(this);
             }
-
         }
-        //---------------------------------------------------------
-
-        //om man sätter if(useGravity) här ute kan vi nog slippa göra boxcasten när hålet ändå står still? 
-
-        /*
-        RaycastHit hitInfo;
-
-        if (Physics.BoxCast(transform.position, centerColl.size / 2, velocity.normalized, out hitInfo, Quaternion.identity, (velocity.magnitude * Time.deltaTime + skinWidth), collisionMask))
-            {
-                Debug.Log("collision layer");
-            //kanske vill ha liiiite fysik i träffen
-                velocity = Vector3.zero;
-                useGravity = false;
-            }*/
+    }
+    private void CheckCenterCollision() {
         if (useGravity)
         {
             //verkar som att overlapbox är mycket mindre benägen att gå igenom väggar.
@@ -68,8 +63,5 @@ public class BlackHole : MonoBehaviour
 
             velocity += Vector3.down * Time.deltaTime * gravity;
         }
-
-        velocity *= Mathf.Pow(airResistance, Time.deltaTime);
-        transform.Translate(velocity * Time.deltaTime);
     }
 }
