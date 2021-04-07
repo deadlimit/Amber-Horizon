@@ -28,9 +28,7 @@ public class BlackHole : MonoBehaviour
     {
         GravitationDrag();
         CheckCenterCollision();
-
         
-
         velocity *= Mathf.Pow(airResistance, Time.deltaTime);
         transform.Translate(velocity * Time.deltaTime);
     }

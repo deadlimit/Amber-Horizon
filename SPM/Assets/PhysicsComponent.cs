@@ -21,8 +21,6 @@ public class PhysicsComponent : MonoBehaviour
     [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
     [Range(0f, 1f)] [SerializeField] float kineticFrictionCoefficient = 0.35f;
     [Range(0f, 1f)] [SerializeField] float airResistance = 0.35f;
-
-    
     
     private void OnEnable()
     {
@@ -42,7 +40,7 @@ public class PhysicsComponent : MonoBehaviour
     {
         bhGrav = Vector3.zero;
         AddGravity();
-        CheckForCollisions(0);;
+        CheckForCollisions(0);
         transform.position += velocity * Time.deltaTime;
         MoveOutOfGeometry();
     }
@@ -92,8 +90,9 @@ public class PhysicsComponent : MonoBehaviour
     }
     public void BlackHoleGravity(BlackHole bh, IBlackHoleBehaviour blackHoleBehaviour)
     {
-        if(blackHoleBehaviour != null)
+        if (blackHoleBehaviour != null) {
             blackHoleBehaviour.BlackHoleBehaviour(bh);
+        }
         else {
             bhGrav = bh.gravitationalPull * (bh.transform.position - transform.position) /
                 Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
@@ -104,14 +103,14 @@ public class PhysicsComponent : MonoBehaviour
     }
     public void StopVelocity()
     {
-        //vill man bara att detta kallas en gång? 
+        //vill man bara att detta kallas en gï¿½ng? 
         //detta hindrar inte att gravitation appliceras
         velocity -= velocity * 0.02f;
 
-        //gravityMod assignment måste just nu appliceras kontinuerligt, oavsett hur man vill göra med velocity
+        //gravityMod assignment mï¿½ste just nu appliceras kontinuerligt, oavsett hur man vill gï¿½ra med velocity
         gravityMod = 0.1f;
     }
-    protected virtual void AddGravity()
+    protected void AddGravity()
     {
         Vector3 gravityMovement = gravity * Vector3.down * Time.deltaTime * gravityMod;
 
@@ -142,7 +141,7 @@ public class PhysicsComponent : MonoBehaviour
 
             velocity += -normalHit.normal * (normalHit.distance - skinWidth);
 
-            //hör applicerar vi "stopp"-kraften från ytan vi kolliderar med
+            //hï¿½r applicerar vi "stopp"-kraften frï¿½n ytan vi kolliderar med
             Vector3 normalForce = General.NormalForce3D(velocity, normalHit.normal);
             velocity += normalForce;
             ApplyFriction(normalForce);
@@ -187,7 +186,7 @@ public class PhysicsComponent : MonoBehaviour
 
 
 
-    //dessa kanske borde flyttas iom att endast spelaren behöver dem.. för states----------------
+    //dessa kanske borde flyttas iom att endast spelaren behï¿½ver dem.. fï¿½r states----------------
     public float groundCheckDistance = 0.05f;
     public bool isGrounded()
     {
