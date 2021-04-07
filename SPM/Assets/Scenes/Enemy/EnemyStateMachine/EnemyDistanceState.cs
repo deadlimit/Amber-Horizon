@@ -10,6 +10,10 @@ public class EnemyDistanceState : State {
 
     public override void RunUpdate() {
         Debug.Log("distance state");
+        enemy.physics.HandleInput(Vector3.zero);
+        
+        if(!enemy.physics.isGrounded())
+            enemy.stateMachine.ChangeState<EnemyBailState>();
         
     }
     

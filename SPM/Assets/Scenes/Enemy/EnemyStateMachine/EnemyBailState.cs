@@ -11,26 +11,36 @@ public class EnemyBailState : State {
     protected override void Initialize() {
 
         enemy = (Enemy) owner;
-        dissolveTimer = new Timer(1);
-        moveTimer = new Timer(1.1f);
+        dissolveTimer = new Timer(.3f);
         dissolveTimer.OnTimerReachesZero += TeleportAway;
+
+        moveTimer = new Timer(.8f);
         moveTimer.OnTimerReachesZero += Move;
+        enemy.notMoving = false;
     }
-
-    public override void Enter() {
+    
+    public override void RunUpdate() {
         dissolveTimer.Tick(Time.deltaTime);
+        moveTimer.Tick(Time.deltaTime);
     }
-
-    public override void RunUpdate() { }
 
     private void TeleportAway() {
-        MaterialManipulator.Dissolve(enemy, enemy.GetComponent<MeshRenderer>().material, .4f, 20);
+        Debug.Log("teleport!");
+        MaterialManipulator.Dissolve(enemy, enemy.GetComponent<MeshRenderer>().material, .4f, 10);
     }
 
     private void Move() {
-        int randomLocation = Random.Range(0, fleeLocations.Count);
-        enemy.transform.position = fleeLocations[randomLocation];
+        Debug.Log("move!");
+
+        Vector3 newLocation = fleeLocations[Random.Range(0, fleeLocations.Count)];
+        
+        while(Vector3.Distance(enemy.transform.position, newLocation) < 2)
+            newLocation = fleeLocations[Random.Range(0, fleeLocations.Count)];
+        
+        enemy.transform.position = newLocation;
+        enemy.notMoving = true;
         enemy.ProximityCast();
+        
     }
     
 }

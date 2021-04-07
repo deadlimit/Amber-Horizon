@@ -11,6 +11,10 @@ public class Enemy : MonoBehaviour {
     public LayerMask playerMask;
     public StateMachine stateMachine { get; private set; }
     public Transform target { get; private set; }
+
+    public bool notMoving;
+    
+    public PlayerPhysics physics { get; private set; }
     
     [HideInInspector] public NavMeshAgent MeshAgent { get; private set; }
     
@@ -18,19 +22,22 @@ public class Enemy : MonoBehaviour {
         target = GameObject.FindGameObjectWithTag("Player").transform;
         MeshAgent = GetComponent<NavMeshAgent>();
         stateMachine = new StateMachine(this, states);
+        notMoving = true;
+        physics = GetComponent<PlayerPhysics>();
     }
     
-
     private void Update() {
-        ProximityCast();
-        
+
+        if (notMoving)
+            ProximityCast();
+
         stateMachine?.RunUpdate();
     }
 
     public void ProximityCast() {
 
-        if (Physics.OverlapSphere(transform.position, outerRing, playerMask).Length > 0) 
-            if (Physics.OverlapSphere(transform.position, innerRing, playerMask).Length > 0) 
+        if (Physics.OverlapSphere(transform.position, outerRing, playerMask).Length > 0)
+            if (Physics.OverlapSphere(transform.position, innerRing, playerMask).Length > 0 || !physics.isGrounded()) 
                 stateMachine.ChangeState<EnemyBailState>();
             else 
                 stateMachine.ChangeState<EnemyProximityState>();
