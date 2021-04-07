@@ -28,7 +28,7 @@ public class JumpingState : State
           }*/
 
 
-        if (player.GetPhysics().GetVelocity().y < 0)
+        if (player.playerPhys.velocity.y < 0)
         {
 
             stateMachine.ChangeState<FallingState>();

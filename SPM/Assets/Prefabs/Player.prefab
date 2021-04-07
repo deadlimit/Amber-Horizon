@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2982967213069284490}
   - component: {fileID: 2982967213069284491}
   - component: {fileID: 2982967213069284488}
-  - component: {fileID: 2982967213069284489}
   - component: {fileID: 2982967213069284492}
+  - component: {fileID: 4281966077296195352}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -98,28 +98,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2982967213069284489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2982967213069284598}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fa89a6b4f6cfc848867816d06324f32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collisionMask:
-    serializedVersion: 2
-    m_Bits: 64
-  cam: {fileID: 0}
-  gravity: 10
-  staticFrictionCoefficient: 0.5
-  kineticFrictionCoefficient: 0.35
-  airResistance: 0.35
-  skinWidth: 0.01
-  fallSpeed: 1
 --- !u!114 &2982967213069284492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,7 +114,9 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   acceleration: 10
   maxSpeed: 1
+  launchSpeed: 5
   jumpHeight: 10
+  playerPhys: {fileID: 0}
   dashCooldown: 2
   dashLength: 30
   timeWithoutGravity: 0.4
@@ -145,3 +125,25 @@ MonoBehaviour:
   - {fileID: 11400000, guid: eb050f581a2120f4aacea0b20dd0ab74, type: 2}
   - {fileID: 11400000, guid: 7ef2ef659fd70e94089613119db7671a, type: 2}
   - {fileID: 11400000, guid: 260658f9bea97144d9bdd78b881f4e67, type: 2}
+  blackHole: {fileID: 0}
+--- !u!114 &4281966077296195352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2982967213069284598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27331ede0545e9642a169425d7d8ba50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 832
+  gravity: 10
+  staticFrictionCoefficient: 0.5
+  kineticFrictionCoefficient: 0.35
+  airResistance: 0.35
+  skinWidth: 0.05
+  groundCheckDistance: 0.05

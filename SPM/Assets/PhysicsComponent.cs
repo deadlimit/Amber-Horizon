@@ -5,7 +5,6 @@ using UnityEngine;
 public class PhysicsComponent : MonoBehaviour
 {
     public LayerMask collisionMask;
-    public Camera cam;
     public RaycastHit groundHitInfo;
 
     private Collider attachedCollider;
@@ -24,7 +23,7 @@ public class PhysicsComponent : MonoBehaviour
             collisionCaster = new CapsuleCaster(attachedCollider, collisionMask);
     }
 
-    [SerializeField] public Vector3 velocity { get; set; }
+    public Vector3 velocity { get; set; }
     [SerializeField] public float gravity = 10f;
     [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
     [Range(0f, 1f)] [SerializeField] float kineticFrictionCoefficient = 0.35f;
@@ -35,9 +34,7 @@ public class PhysicsComponent : MonoBehaviour
     float gravityMod = 1f;
 
     Vector3 bhGrav = Vector3.zero;
-    Vector3 point1 = Vector3.zero;
-    Vector3 point2 = Vector3.zero;
-
+    
     public void Update()
     {
         bhGrav = Vector3.zero;
@@ -103,11 +100,11 @@ public class PhysicsComponent : MonoBehaviour
     }
     public void StopVelocity()
     {
-        //vill man bara att detta kallas en gång? 
+        //vill man bara att detta kallas en gÃ¥ng? 
         //detta hindrar inte att gravitation appliceras
         velocity -= velocity * 0.02f;
 
-        //gravityMod assignment måste just nu appliceras kontinuerligt, oavsett hur man vill göra med velocity
+        //gravityMod assignment mÃ¥ste just nu appliceras kontinuerligt, oavsett hur man vill gÃ¶ra med velocity
         gravityMod = 0.1f;
     }
     private void AddGravity()
@@ -141,7 +138,7 @@ public class PhysicsComponent : MonoBehaviour
 
             velocity += -normalHit.normal * (normalHit.distance - skinWidth);
 
-            //hör applicerar vi "stopp"-kraften från ytan vi kolliderar med
+            //hÃ¶r applicerar vi "stopp"-kraften frÃ¥n ytan vi kolliderar med
             Vector3 normalForce = General.NormalForce3D(velocity, normalHit.normal);
             velocity += normalForce;
             ApplyFriction(normalForce);
@@ -186,14 +183,11 @@ public class PhysicsComponent : MonoBehaviour
 
 
 
-    //dessa kanske borde flyttas iom att endast spelaren behöver dem.. för states----------------
+    //dessa kanske borde flyttas iom att endast spelaren behÃ¶ver dem.. fÃ¶r states----------------
     public float groundCheckDistance = 0.05f;
     public bool isGrounded()
     {
         return collisionCaster.CastCollision(transform.position, Vector3.down, groundCheckDistance + skinWidth).collider != null;
     }
-
-    public Vector3 GetVelocity() { return velocity; }
-    //------------------------------------------------------------------------------------------
-
+    
 }

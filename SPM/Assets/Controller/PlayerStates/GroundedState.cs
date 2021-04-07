@@ -1,16 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu()]
 public class GroundedState : State
 {
     Controller3D player;
-    PhysicsComponent pp;
     protected override void Initialize()
     {
         player = (Controller3D)owner;
-        pp = player.GetPhysics();
         Debug.Assert(player);
     }
 
@@ -32,7 +28,7 @@ public class GroundedState : State
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && pp.isGrounded())
+        if (Input.GetKeyDown(KeyCode.Space) && player.playerPhys.isGrounded())
         {
             stateMachine.ChangeState<JumpingState>();
             player.SetJump();
@@ -41,7 +37,7 @@ public class GroundedState : State
     private void Fall() 
     {
         
-        if (pp.GetVelocity().y < 0 && !pp.isGrounded())
+        if (player.playerPhys.velocity.y < 0 && !player.playerPhys.isGrounded())
             stateMachine.ChangeState<FallingState>();          
     }
 }

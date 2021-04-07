@@ -12,7 +12,7 @@ public class Controller3D : MonoBehaviour
     public float launchSpeed = 5f;
     public float jumpHeight = 4f;
     Vector3 input = Vector3.zero;
-    PhysicsComponent playerPhys;
+    public PhysicsComponent playerPhys;
     
     [Header("Dash")]
     [SerializeField] private float dashCooldown;
