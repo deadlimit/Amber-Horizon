@@ -8,13 +8,15 @@ public class BlackHole : MonoBehaviour
     public LayerMask collisionMask;
     public float gravitationalPull;
     public float gravity = 10f;
-    public float skinWidth;
     public Vector3 velocity;
+    public float airResistance = 0f;
+    public float skinWidth;
+
     SphereCollider coll;
     BoxCollider centerColl;
 
     private bool useGravity = true;
-    float terminalDistance = 0.5f;
+    private float terminalDistance = 0.5f;
 
     private void Awake()
     {
@@ -40,19 +42,34 @@ public class BlackHole : MonoBehaviour
 
         }
         //---------------------------------------------------------
+
         //om man sätter if(useGravity) här ute kan vi nog slippa göra boxcasten när hålet ändå står still? 
+
+        /*
         RaycastHit hitInfo;
+
         if (Physics.BoxCast(transform.position, centerColl.size / 2, velocity.normalized, out hitInfo, Quaternion.identity, (velocity.magnitude * Time.deltaTime + skinWidth), collisionMask))
             {
                 Debug.Log("collision layer");
             //kanske vill ha liiiite fysik i träffen
                 velocity = Vector3.zero;
                 useGravity = false;
+            }*/
+        if (useGravity)
+        {
+            //verkar som att overlapbox är mycket mindre benägen att gå igenom väggar.
+            Collider[] boxHitColl =
+            Physics.OverlapBox(transform.position, centerColl.size / 2, Quaternion.identity, collisionMask);
+            if (boxHitColl.Length > 0)
+            {
+                velocity = Vector3.zero;
+                useGravity = false;
             }
-       
-        if(useGravity)
-            velocity += Vector3.down * Time.deltaTime * gravity;
 
+            velocity += Vector3.down * Time.deltaTime * gravity;
+        }
+
+        velocity *= Mathf.Pow(airResistance, Time.deltaTime);
         transform.Translate(velocity * Time.deltaTime);
     }
 }
