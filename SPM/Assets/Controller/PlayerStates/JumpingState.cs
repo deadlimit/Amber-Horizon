@@ -10,7 +10,7 @@ public class JumpingState : State
     }
 
     public override void Enter() {
-        //Debug.Log("Jumping State!"); 
+        Debug.Log("Jumping State!"); 
     }
     public override void RunUpdate() 
     {

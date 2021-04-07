@@ -6,7 +6,7 @@ using UnityEngine;
 public class GroundedState : State
 {
     Controller3D player;
-    PlayerPhysics pp;
+    PhysicsComponent pp;
     protected override void Initialize()
     {
         player = (Controller3D)owner;

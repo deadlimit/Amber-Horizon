@@ -12,7 +12,7 @@ public class Controller3D : MonoBehaviour
     public float launchSpeed = 5f;
     public float jumpHeight = 4f;
     Vector3 input = Vector3.zero;
-    PlayerPhysics playerPhys;
+    PhysicsComponent playerPhys;
     
     [Header("Dash")]
     [SerializeField] private float dashCooldown;
@@ -33,7 +33,7 @@ public class Controller3D : MonoBehaviour
 
     void Awake()
     {
-        playerPhys = GetComponent<PlayerPhysics>();
+        playerPhys = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);
     }
 
@@ -73,7 +73,7 @@ public class Controller3D : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
         PlayerDirection();
         
-        playerPhys.HandleInput(velocity);
+        playerPhys.AddForce(velocity);
         
         
         if (Input.GetKeyDown(KeyCode.E) && nextDash < Time.time) {
@@ -91,7 +91,7 @@ public class Controller3D : MonoBehaviour
     }
 
     
-    public PlayerPhysics GetPhysics() { return playerPhys; }
+    public PhysicsComponent GetPhysics() { return playerPhys; }
     
     /// <summary>
     /// Dash. Ska kunna dasha åt input-hållet? Dashar endast rakt fram just nu. 
@@ -115,7 +115,7 @@ public class Controller3D : MonoBehaviour
         
         
         velocity = cameraForwardDirection * dashLength;
-        playerPhys.HandleInput(velocity);
+        playerPhys.AddForce(velocity);
 
         //Vänta .4 sekunder innan man sätter på gravitationen igen. 
         yield return new WaitForSeconds(timeWithoutGravity);

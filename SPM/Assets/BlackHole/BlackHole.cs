@@ -31,13 +31,13 @@ public class BlackHole : MonoBehaviour
         {
       //-----------------------------------------------------
       //fysikpåverkan
-            if (c.GetComponent<PlayerPhysics>())
+            if (c.GetComponent<PhysicsComponent>())
             {
                 if (Vector3.Distance(transform.position, c.transform.position) < terminalDistance)
-                    c.GetComponent<PlayerPhysics>().StopVelocity();
+                    c.GetComponent<PhysicsComponent>().StopVelocity();
 
                 else
-                    c.GetComponent<PlayerPhysics>().BlackHoleGravity(this);
+                    c.GetComponent<PhysicsComponent>().BlackHoleGravity(this);
             }
 
         }
