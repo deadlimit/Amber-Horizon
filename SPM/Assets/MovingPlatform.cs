@@ -23,8 +23,8 @@ public class MovingPlatform : PhysicsComponent
         startPos = transform.position;
         gravity = 0f;
 
-        leftMax = -transform.forward * possibleMoveLength;
-        rightMax = transform.forward * possibleMoveLength;
+        leftMax = -transform.forward.normalized * possibleMoveLength;
+        rightMax = transform.forward.normalized * possibleMoveLength;
     }
 
     public void Update()
@@ -36,23 +36,20 @@ public class MovingPlatform : PhysicsComponent
 
         CheckForCollisions(0);
 
-        if (Vector3.Distance(transform.position, startPos) + skinWidth - coll.size.z / 2 >= possibleMoveLength)
+        /*if (Vector3.Distance(transform.position, startPos) + skinWidth - coll.size.z / 2 >= possibleMoveLength)
         {
             Vector3 temp = velocity;
             velocity = Vector3.zero;
-            Vector3 normalForce = General.NormalForce3D(temp, -temp.normalized);
+            Vector3 normalForce = General.NormalForce3D(temp, -temp);
             velocity += normalForce;
-            Debug.Log(normalForce);
+            Debug.Log("normalForce" +normalForce);
         }
+        */
+        Vector3 newVel = Vector3.zero;
+        newVel.x = Mathf.Clamp(velocity.x, leftMax.x, rightMax.x);
+        newVel.z = Mathf.Clamp(velocity.z, leftMax.z, rightMax.z);
 
-        else
-        {
-            transform.position += velocity * Time.deltaTime;
-        }
-
-
-
-
+        transform.position += newVel * Time.deltaTime;
 
         MoveOutOfGeometry();
         MovePlatform();
@@ -64,7 +61,7 @@ public class MovingPlatform : PhysicsComponent
         if (dotProduct < minDistanceForMovement)
             velocity += 0.5f *(movement * -transform.forward * Time.deltaTime);
         else if (dotProduct > minDistanceForMovement)
-            velocity += 1f *(movement * transform.forward * Time.deltaTime);
+            velocity += 0.5f *(movement * transform.forward * Time.deltaTime);
         
         velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
         
@@ -74,7 +71,7 @@ public class MovingPlatform : PhysicsComponent
     {
         Vector3 direction = bh.transform.position - transform.position;
         dotProduct = Vector3.Dot(transform.forward.normalized, bh.transform.position.normalized - transform.position.normalized);
-        Debug.Log(dotProduct);
+       // Debug.Log(dotProduct);
         Debug.DrawLine(transform.position,transform.position + direction, Color.green);
         bhGrav = bh.gravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
         movement += new Vector3(bhGrav.x, 0, bhGrav.z).magnitude;
