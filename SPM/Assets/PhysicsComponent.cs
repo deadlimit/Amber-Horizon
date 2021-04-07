@@ -8,6 +8,22 @@ public class PhysicsComponent : MonoBehaviour
     public Camera cam;
     public RaycastHit groundHitInfo;
 
+    private Collider attachedCollider;
+    private CollisionCaster collisionCaster;
+    private void OnEnable()
+    {
+        attachedCollider = GetComponent<Collider>();
+
+        if (attachedCollider is BoxCollider)
+            collisionCaster = new BoxCaster(attachedCollider, collisionMask);
+
+        if (attachedCollider is SphereCollider)
+            collisionCaster = new SphereCaster(attachedCollider, collisionMask);
+
+        if (attachedCollider is CapsuleCollider)
+            collisionCaster = new CapsuleCaster(attachedCollider, collisionMask);
+    }
+
     [SerializeField] public Vector3 velocity { get; set; }
     [SerializeField] public float gravity = 10f;
     [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
@@ -21,20 +37,62 @@ public class PhysicsComponent : MonoBehaviour
     Vector3 bhGrav = Vector3.zero;
     Vector3 point1 = Vector3.zero;
     Vector3 point2 = Vector3.zero;
-    CapsuleCollider capColl;
 
-    void Start()
-    {
-        capColl = GetComponent<CapsuleCollider>();
-    }
     public void Update()
     {
         bhGrav = Vector3.zero;
         Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
         AddGravity();
-        CapsuleCollision();
+
+        CheckForCollisions(0);
+        //CapsuleCollision();
+
         transform.position += velocity * Time.deltaTime;
-        OverlapCapsule();
+        //OverlapCapsule();
+        MoveOutOfGeometry();
+    }
+    private void CheckForCollisions(int i)
+    {
+
+        RaycastHit hitInfo = collisionCaster.CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);
+
+        if (!hitInfo.collider) return;
+
+        RaycastHit normalHitInfo = collisionCaster.CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
+
+        velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
+
+        Vector3 normalForce = General.NormalForce3D(velocity, normalHitInfo.normal);
+        velocity += normalForce;
+
+        ApplyFriction(normalForce);
+        if(i < 10)
+            CheckForCollisions(i+1);
+    }
+    private void MoveOutOfGeometry()
+    {
+        Collider[] colliders = collisionCaster.OverlapCast(transform.position);
+
+        if (colliders.Length < 1) return;
+
+        foreach (Collider currentCollider in colliders)
+        {
+            if (currentCollider == attachedCollider)
+                continue;
+            Physics.ComputePenetration(attachedCollider,
+                                        transform.position,
+                                        transform.rotation,
+                                        currentCollider,
+                                        currentCollider.transform.position,
+                                        currentCollider.transform.rotation,
+                                        out Vector3 seperationVector,
+                                               out float distance);
+
+            Vector3 seperationVec = seperationVector * distance;
+            transform.position += seperationVec + seperationVec.normalized * skinWidth;
+            velocity += General.NormalForce3D(velocity, seperationVector);
+        }
+
     }
     public void BlackHoleGravity(BlackHole bh)
     {
@@ -64,7 +122,7 @@ public class PhysicsComponent : MonoBehaviour
         velocity += gravityMovement;
         gravityMod = 1f;
     }
-    private void CapsuleCollision()
+    /*private void CapsuleCollision()
     {
         point1 = (transform.position + capColl.center) + Vector3.up * capColl.radius;
         point2 = (transform.position + capColl.center) + Vector3.down * capColl.radius;
@@ -109,7 +167,7 @@ public class PhysicsComponent : MonoBehaviour
                 ApplyFriction(General.NormalForce3D(velocity, separationVector.normalized));
             }
         }
-    }
+    }*/
     private void ApplyFriction(Vector3 normalForce)
     {
         if (velocity.magnitude < normalForce.magnitude * staticFrictionCoefficient)
@@ -132,7 +190,7 @@ public class PhysicsComponent : MonoBehaviour
     public float groundCheckDistance = 0.05f;
     public bool isGrounded()
     {
-        return Physics.CapsuleCast(point1, point2, capColl.radius, Vector3.down, out groundHitInfo, groundCheckDistance + skinWidth, collisionMask);
+        return collisionCaster.CastCollision(transform.position, Vector3.down, groundCheckDistance + skinWidth).collider != null;
     }
 
     public Vector3 GetVelocity() { return velocity; }
