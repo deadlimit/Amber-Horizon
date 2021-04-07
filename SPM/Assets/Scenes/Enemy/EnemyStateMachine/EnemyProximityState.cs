@@ -3,15 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 [CreateAssetMenu(fileName = "Enemy Proximity State", menuName = "New Enemy Proximity State")]
 public class EnemyProximityState : State {
-    public float radius;
     private Enemy enemy;
 
+    private Timer timeBeforeMove;
+    
     protected override void Initialize() {
         enemy = (Enemy) owner;
     }
-
     public override void RunUpdate() {
-        Debug.Log("proximity state");
 
+        if (timeBeforeMove != null)
+            timeBeforeMove.Tick(Time.deltaTime);
+        else {
+            timeBeforeMove = new Timer(1);
+            timeBeforeMove.OnTimerReachesZero += Move;
+        }
+    }
+
+    private void Move() {
+        Vector3 directionToPlayer = enemy.transform.position - (enemy.target.position - enemy.transform.position);
+        
+        enemy.physics.HandleInput(directionToPlayer.normalized * .04f);
     }
 }
