@@ -24,14 +24,10 @@ public class EnemyBailState : State {
         moveTimer.Tick(Time.deltaTime);
     }
 
-    private void TeleportAway() {
-        Debug.Log("teleport!");
-        MaterialManipulator.Dissolve(enemy, enemy.GetComponent<MeshRenderer>().material, .4f, 10);
-    }
+    private void TeleportAway() => MaterialManipulator.Dissolve(enemy, enemy.GetComponent<MeshRenderer>().material, .4f, 10);
 
     private void Move() {
-        Debug.Log("move!");
-
+        
         Vector3 newLocation = fleeLocations[Random.Range(0, fleeLocations.Count)];
         
         while(Vector3.Distance(enemy.transform.position, newLocation) < 2)

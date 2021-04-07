@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class PhysicsComponent : MonoBehaviour
 {
@@ -33,20 +36,24 @@ public class PhysicsComponent : MonoBehaviour
     float smallNumber = 0.05f;
     float gravityMod = 1f;
 
+    public bool AffectedByBlackHoleGravity;
+    
     Vector3 bhGrav = Vector3.zero;
     
-    public void Update()
-    {
+    public void Update() {
+        
         bhGrav = Vector3.zero;
-        Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
+      //  Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
         AddGravity();
 
         CheckForCollisions(0);
         //CapsuleCollision();
 
         transform.position += velocity * Time.deltaTime;
+
         //OverlapCapsule();
         MoveOutOfGeometry();
+        
     }
     private void CheckForCollisions(int i)
     {
@@ -91,10 +98,11 @@ public class PhysicsComponent : MonoBehaviour
         }
 
     }
-    public void BlackHoleGravity(BlackHole bh)
-    {
+    public void BlackHoleGravity(BlackHole bh) {
+        AffectedByBlackHoleGravity = true;
         bhGrav = bh.gravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
         velocity += bhGrav;
+        
         ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
         bhGrav = Vector3.zero;
     }
@@ -116,6 +124,7 @@ public class PhysicsComponent : MonoBehaviour
             gravityMovement = bhGrav;
             velocity *= 0.05f;
         }
+
         velocity += gravityMovement;
         gravityMod = 1f;
     }

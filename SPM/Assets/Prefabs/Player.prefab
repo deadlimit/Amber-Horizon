@@ -121,11 +121,12 @@ MonoBehaviour:
   dashLength: 30
   timeWithoutGravity: 0.4
   dissolveSpeed: 20
+  blackHoleGravityDashForce: 500
   states:
   - {fileID: 11400000, guid: eb050f581a2120f4aacea0b20dd0ab74, type: 2}
   - {fileID: 11400000, guid: 7ef2ef659fd70e94089613119db7671a, type: 2}
   - {fileID: 11400000, guid: 260658f9bea97144d9bdd78b881f4e67, type: 2}
-  blackHole: {fileID: 0}
+  blackHole: {fileID: 8524585833828388589, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
 --- !u!114 &4281966077296195352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,4 +147,5 @@ MonoBehaviour:
   kineticFrictionCoefficient: 0.35
   airResistance: 0.35
   skinWidth: 0.05
+  AffectedByBlackHoleGravity: 0
   groundCheckDistance: 0.05

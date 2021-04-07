@@ -9,8 +9,6 @@ public static class MaterialManipulator {
     
     private static IEnumerator DissolveProcess(Material material, float timeBeforeResolve, float dissolveSpeed) {
         
-        Debug.Log("dissolving start");
-        
         while (material.GetFloat("Vector1_514c1d1c3a2c490d9cb8e4c3ce390208") < 2) {
             material.SetFloat("Vector1_514c1d1c3a2c490d9cb8e4c3ce390208", material.GetFloat("Vector1_514c1d1c3a2c490d9cb8e4c3ce390208") + dissolveSpeed * Time.deltaTime);
             yield return null;
@@ -23,7 +21,6 @@ public static class MaterialManipulator {
             yield return null;
         }
         
-        Debug.Log("dissolving end");
     }
 
 }

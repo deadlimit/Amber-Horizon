@@ -1,5 +1,4 @@
 using System.Collections;
-using System.ComponentModel;
 using UnityEngine;
 
 public class Controller3D : MonoBehaviour
@@ -20,7 +19,7 @@ public class Controller3D : MonoBehaviour
     [Tooltip("Hur länge spelarens gravitation är avstängd innan den sätts på igen (sekunder)")]
     [SerializeField] private float timeWithoutGravity;
     [SerializeField] private float dissolveSpeed;
-    
+    [SerializeField] private float blackHoleGravityDashForce;
     private float nextDash;
 
     
@@ -64,19 +63,20 @@ public class Controller3D : MonoBehaviour
     }
 
     void Update() {
-
+        
         if (Input.GetKeyDown(KeyCode.F)) {
             Time.timeScale = Time.timeScale == .3f ? Time.timeScale = 1 : Time.timeScale = .3f;
         }
         
         stateMachine.RunUpdate();
-        Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
+        
         PlayerDirection();
         
         playerPhys.AddForce(velocity);
         
         if (Input.GetKeyDown(KeyCode.E) && nextDash < Time.time) {
             nextDash = Time.time + dashCooldown;
+            StopCoroutine(Dash());
             StartCoroutine(Dash());
         }
 
@@ -92,12 +92,18 @@ public class Controller3D : MonoBehaviour
     
     public PhysicsComponent GetPhysics() { return playerPhys; }
     
+    
+    
+    //TODO Första gången spelaren fastnar i ett svarthål är första dashen mycket längre än följande dasher, vet inte varför
     /// <summary>
-    /// Dash. Ska kunna dasha åt input-hållet? Dashar endast rakt fram just nu. 
+    /// Dash. Ska kunna dasha åt input-hållet? Dashar endast rakt fram just nu.
+    /// 
     /// </summary>
     /// <returns></returns>
     private IEnumerator Dash() {
 
+        print(playerPhys.AffectedByBlackHoleGravity);
+        
         MaterialManipulator.Dissolve(this, GetComponent<MeshRenderer>().material, timeWithoutGravity, dissolveSpeed);
         
         //Spara gravitationen innan man sätter den till 0
@@ -111,17 +117,21 @@ public class Controller3D : MonoBehaviour
         //Stänger av gravitationen och nollställer hastigheten för att endast dash-velociteten ska gälla. 
         playerPhys.velocity = Vector3.zero;
         playerPhys.gravity = 0;
-        
-        
-        velocity = cameraForwardDirection * dashLength;
+        //playerPhys.bhGrav = Vector3.zero;
+
+
+        velocity = playerPhys.AffectedByBlackHoleGravity ? cameraForwardDirection * (BlackHole.BlackHoleRadius * blackHoleGravityDashForce) : cameraForwardDirection * dashLength;
         playerPhys.AddForce(velocity);
 
+        Debug.DrawLine(transform.position, velocity, Color.red);
+        
         //Vänta .4 sekunder innan man sätter på gravitationen igen. 
         yield return new WaitForSeconds(timeWithoutGravity);
 
         playerPhys.velocity = transform.forward * 2;
         playerPhys.gravity = gravity;
 
+        playerPhys.AffectedByBlackHoleGravity = false;
     }
     
     private void LaunchBH() 

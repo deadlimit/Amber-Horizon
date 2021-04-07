@@ -10,11 +10,13 @@ public class Enemy : MonoBehaviour {
     
     public LayerMask playerMask;
     public StateMachine stateMachine { get; private set; }
+
     public Transform target { get; private set; }
 
     public bool notMoving;
     
-    public PlayerPhysics physics { get; private set; }
+    public PhysicsComponent physics { get; private set; }
+    public GameObject Bullet;
     
     [HideInInspector] public NavMeshAgent MeshAgent { get; private set; }
     
@@ -22,12 +24,14 @@ public class Enemy : MonoBehaviour {
         target = GameObject.FindGameObjectWithTag("Player").transform;
         MeshAgent = GetComponent<NavMeshAgent>();
         stateMachine = new StateMachine(this, states);
-        notMoving = true;
-        physics = GetComponent<PlayerPhysics>();
-    }
-    
-    private void Update() {
 
+        notMoving = true;
+        physics = GetComponent<PhysicsComponent>();
+        
+    }
+    private void Update() {
+        transform.LookAt(target);
+        
         if (notMoving)
             ProximityCast();
 
@@ -45,12 +49,10 @@ public class Enemy : MonoBehaviour {
             stateMachine.ChangeState<EnemyDistanceState>();
         
     }
-    
-    private void OnDrawGizmos() {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, outerRing);
-        
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(transform.position, innerRing);
+
+    public void Fire(int shots) {
+        for(int i = 0; i < shots; i++)
+         Instantiate(Bullet, transform.position + transform.forward, transform.rotation);
     }
+
 }

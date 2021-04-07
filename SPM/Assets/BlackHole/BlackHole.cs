@@ -12,15 +12,19 @@ public class BlackHole : MonoBehaviour
     public float airResistance = 0f;
     public float skinWidth;
 
+    public static float BlackHoleRadius;
+    
+    
     SphereCollider coll;
     BoxCollider centerColl;
 
     private bool useGravity = true;
     private float terminalDistance = 0.5f;
 
-    private void Awake()
-    {
+    private void Awake() {
+        
         coll = GetComponent<SphereCollider>();
+        BlackHoleRadius = coll.radius;
         centerColl = GetComponent<BoxCollider>();
     }
     // Update is called once per frame
@@ -29,10 +33,10 @@ public class BlackHole : MonoBehaviour
         Collider [] hitcoll = Physics.OverlapSphere(transform.position, coll.radius, physicsLayerMask);
         foreach(Collider c in hitcoll)
         {
-      //-----------------------------------------------------
-      //fysikpåverkan
-            if (c.GetComponent<PhysicsComponent>())
-            {
+
+            //fysikpåverkan
+            if (c.GetComponent<PhysicsComponent>()) {
+                c.GetComponent<PhysicsComponent>().AffectedByBlackHoleGravity = true;
                 if (Vector3.Distance(transform.position, c.transform.position) < terminalDistance)
                     c.GetComponent<PhysicsComponent>().StopVelocity();
 
