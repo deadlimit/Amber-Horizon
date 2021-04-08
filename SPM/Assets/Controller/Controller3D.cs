@@ -46,7 +46,7 @@ public class Controller3D : MonoBehaviour
         
         input = cam.transform.rotation * input;
         Vector3 angle = Vector3.ProjectOnPlane(input, playerPhys.groundHitInfo.normal).normalized;
-        input += angle * input.magnitude;
+        input = angle * input.magnitude;
         Accelerate();
     }
     private void Accelerate()

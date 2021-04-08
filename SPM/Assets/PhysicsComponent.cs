@@ -22,6 +22,9 @@ public class PhysicsComponent : MonoBehaviour
     [Range(0f, 1f)] [SerializeField] float kineticFrictionCoefficient = 0.35f;
     [Range(0f, 1f)] [SerializeField] float airResistance = 0.35f;
 
+    float gravityMod = 1f;
+    public bool AffectedByBlackHoleGravity;
+    Vector3 bhGrav = Vector3.zero;
     private void OnEnable()
     {
         attachedCollider = GetComponent<Collider>();
@@ -40,12 +43,7 @@ public class PhysicsComponent : MonoBehaviour
 
     }
 
-    float smallNumber = 0.05f;
-    float gravityMod = 1f;
 
-    public bool AffectedByBlackHoleGravity;
-
-    Vector3 bhGrav = Vector3.zero;
 
     public void Update() {
         Debug.DrawLine(transform.position, transform.position + velocity);
@@ -196,7 +194,8 @@ public class PhysicsComponent : MonoBehaviour
     public float groundCheckDistance = 0.05f;
     public bool isGrounded()
     {
-        return collisionCaster.CastCollision(transform.position, Vector3.down, groundCheckDistance + skinWidth).collider != null;
+        groundHitInfo = collisionCaster.CastCollision(transform.position, Vector3.down, groundCheckDistance + skinWidth);
+        return groundHitInfo.collider != null;
     }
     
 }
