@@ -84,7 +84,7 @@ public class PhysicsComponent : MonoBehaviour
 
         //kan man använda skalärprodukt för att avgöra om man går åt samma håll... och behövs det? 
 
-        if (velocity.magnitude <= staticFrictionCoefficient * mp.GetVelocity().magnitude)
+        if (velocity.magnitude <= staticFrictionCoefficient )
         {
             velocity = velocity - relativeVelocity;
             velocity.y = 0f;
