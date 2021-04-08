@@ -47,9 +47,7 @@ public class PhysicsComponent : MonoBehaviour
     
     Vector3 bhGrav = Vector3.zero;
 
-    public float mag = 0f;
     public void Update() {
-        mag = velocity.magnitude;
         Debug.DrawLine(transform.position, transform.position + velocity);
         bhGrav = Vector3.zero;
         AddGravity();
@@ -77,8 +75,6 @@ public class PhysicsComponent : MonoBehaviour
         if(i < 10)
             CheckForCollisions(i+1);
     }
-    public float frictionTreshhold = 0f;
-    public float relVelMag = 0f;
     private void HandleMovingPlatform(RaycastHit hitInfo, Vector3 normalForce) 
     {
         //funkar nog för PoC men wonky af när man ska gå åt motsatt håll
