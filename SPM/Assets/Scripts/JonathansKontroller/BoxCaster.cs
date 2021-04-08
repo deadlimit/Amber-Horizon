@@ -9,12 +9,12 @@ public class BoxCaster : CollisionCaster {
     }
     
     public override RaycastHit CastCollision(Vector3 origin, Vector3 direction, float distance) {
-        Physics.BoxCast(origin, attachedCollider.size / 2, direction.normalized, out var hit, Quaternion.identity, distance, CollisionMask);
+        Physics.BoxCast(origin, attachedCollider.size, direction.normalized, out var hit, Quaternion.identity, distance, CollisionMask);
         
         return hit;
     }
 
     public override Collider[] OverlapCast(Vector3 currentPosition) {
-        return Physics.OverlapBox(currentPosition, attachedCollider.size / 2, Quaternion.identity, CollisionMask);
+        return Physics.OverlapBox(currentPosition, attachedCollider.size, Quaternion.identity, CollisionMask);
     }
 }
