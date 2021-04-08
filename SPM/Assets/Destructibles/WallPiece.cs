@@ -1,11 +1,21 @@
 using UnityEngine;
 
-public class WallPiece : MonoBehaviour, IBlackHoleBehaviour {
-    
-    public void BlackHoleBehaviour(BlackHole blackHole) {
-        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+public class WallPiece : MonoBehaviour, IBlackHoleDeath {
 
-        transform.parent = null;
-        print("wall piece");
+    private bool insideBlackHole;
+    private BlackHole blackhole;
+    public void BlackHoleDeath(BlackHole blackHole) {
+        insideBlackHole = true;
+        blackhole = blackHole;
+    }
+
+    private void Update() {
+        if (!insideBlackHole || blackhole == null) return;
+        
+        transform.position = Vector3.Lerp(transform.position, blackhole.center.transform.position, Time.deltaTime * 10);
+        transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, Time.deltaTime * 10);
+        
+        Destroy(gameObject, 2);
+            
     }
 }
