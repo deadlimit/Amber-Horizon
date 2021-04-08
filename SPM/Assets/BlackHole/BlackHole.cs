@@ -72,7 +72,7 @@ public class BlackHole : MonoBehaviour
                 else{
                     IBlackHoleBehaviour blackHoleBehaviour = c.GetComponent<IBlackHoleBehaviour>();
                     IBlackHoleDeath blackHoleDeath = c.GetComponent<IBlackHoleDeath>();
-                    print(blackHoleDeath);
+                    //print(blackHoleDeath);
                     if(blackHoleDeath != null)
                         blackHoleDeath.BlackHoleDeath(this);
                     c.GetComponent<PhysicsComponent>().BlackHoleGravity(this, blackHoleBehaviour);

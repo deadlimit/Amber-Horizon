@@ -4,7 +4,7 @@ using UnityEngine;
 public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
 
     private PhysicsComponent physics;
-
+    public float multiplier = 1f;
     private Vector3 maxBack;
     private Vector3 maxFront;
     
@@ -21,10 +21,10 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
     public void Update() {
         Debug.DrawLine(transform.position,  maxFront, Color.red);
         Debug.DrawLine(transform.position,  maxBack, Color.green);
-        
-        if(!physics.AffectedByBlackHoleGravity)
-            physics.velocity = Vector3.zero;
 
+        /*if(!physics.AffectedByBlackHoleGravity)
+            physics.velocity = Vector3.zero;*/
+        physics.ApplyAirResistance();
         PreventOutOfBounds();
     }
     
@@ -44,16 +44,18 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
             movementDirection = -transform.forward * (MovementSpeed * Time.deltaTime);
 
 
-        physics.velocity = movementDirection;
+        physics.velocity = movementDirection * multiplier;
     }
 
     private void PreventOutOfBounds() {
+        if (physics.velocity.magnitude < 0.1)
+            physics.velocity = Vector3.zero;
+
         if (transform.position.x > maxFront.x && transform.position.z > maxFront.z) {
             transform.position = maxFront;
             physics.velocity = Vector3.zero;
-        }
-            
-        
+        }     
+
         if (transform.position.x < maxBack.x && transform.position.z < maxBack.z) {
             transform.position = maxBack;
             physics.velocity = Vector3.zero;

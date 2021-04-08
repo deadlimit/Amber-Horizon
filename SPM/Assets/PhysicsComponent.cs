@@ -15,13 +15,13 @@ public class PhysicsComponent : MonoBehaviour
 
     [SerializeField] public Vector3 velocity;
     [SerializeField] public float gravity = 10f;
-    [SerializeField]protected float skinWidth = 0.05f;
-    
-    [Header ("Friktion")]
+    [SerializeField] protected float skinWidth = 0.05f;
+
+    [Header("Friktion")]
     [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
     [Range(0f, 1f)] [SerializeField] float kineticFrictionCoefficient = 0.35f;
     [Range(0f, 1f)] [SerializeField] float airResistance = 0.35f;
-    
+
     private void OnEnable()
     {
         attachedCollider = GetComponent<Collider>();
@@ -39,12 +39,12 @@ public class PhysicsComponent : MonoBehaviour
             collisionCaster = new MeshCaster(attachedCollider, collisionMask);
 
     }
-    
+
     float smallNumber = 0.05f;
     float gravityMod = 1f;
 
     public bool AffectedByBlackHoleGravity;
-    
+
     Vector3 bhGrav = Vector3.zero;
 
     public void Update() {
@@ -55,43 +55,56 @@ public class PhysicsComponent : MonoBehaviour
         transform.position += velocity * Time.deltaTime;
         MoveOutOfGeometry();
     }
+    
     private void CheckForCollisions(int i)
     {
 
         RaycastHit hitInfo = collisionCaster.CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);
 
         if (!hitInfo.collider) return;
-        
+
 
         RaycastHit normalHitInfo = collisionCaster.CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
         Vector3 normalForce = General.NormalForce3D(velocity, normalHitInfo.normal);
 
-        if (hitInfo.collider.GetComponent<MovingPlatformV2>())
-            HandleMovingPlatform(hitInfo, normalForce);
 
         velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
         velocity += normalForce;
-        ApplyFriction(normalForce);
-        if(i < 10)
-            CheckForCollisions(i+1);
+        if (hitInfo.collider.GetComponent<MovingPlatformV2>())
+            HandleMovingPlatform(hitInfo, normalForce);
+        else
+            ApplyFriction(normalForce);
+        if (i < 10)
+            CheckForCollisions(i + 1);
     }
-    private void HandleMovingPlatform(RaycastHit hitInfo, Vector3 normalForce) 
+
+    public float relVelMag = 0f;
+    public float treshhold = 0f; 
+    private void HandleMovingPlatform(RaycastHit hitInfo, Vector3 normalForce)
     {
-        //funkar nog för PoC men wonky af när man ska gå åt motsatt håll
 
         MovingPlatformV2 mp = hitInfo.collider.GetComponent<MovingPlatformV2>();
         Vector3 relativeVelocity = velocity - mp.GetVelocity();
+        relativeVelocity.y = 0;
+        
 
-        //kan man använda skalärprodukt för att avgöra om man går åt samma håll... och behövs det? 
+        //debug
+        treshhold = normalForce.magnitude * staticFrictionCoefficient;
+        relVelMag = relativeVelocity.magnitude;
+        Debug.DrawLine(transform.position, transform.position + velocity - relativeVelocity, Color.green); 
 
-        if (velocity.magnitude <= staticFrictionCoefficient )
+
+        Vector3 nf = General.NormalForce3D(velocity, (velocity - relativeVelocity).normalized);
+        if (relativeVelocity.magnitude <= normalForce.magnitude / staticFrictionCoefficient)
         {
-            velocity = velocity - relativeVelocity;
-            velocity.y = 0f;
+            Debug.Log("mag < treshold");
+            velocity = mp.GetVelocity();
         }
         else
         {
-            velocity += mp.GetVelocity() * Time.deltaTime;
+            Vector3 temp = relativeVelocity - General.CalcFriction(normalForce, velocity, staticFrictionCoefficient, kineticFrictionCoefficient);
+            velocity -= temp * Time.deltaTime;
+            ApplyAirResistance();
         }
     }
     private void MoveOutOfGeometry()
@@ -162,8 +175,10 @@ public class PhysicsComponent : MonoBehaviour
         {
             velocity -= velocity.normalized * normalForce.magnitude * kineticFrictionCoefficient;
         }
-        velocity *= Mathf.Pow(airResistance, Time.deltaTime);
+        ApplyAirResistance();
+        //velocity *= Mathf.Pow(airResistance, Time.deltaTime);
     }
+    public void ApplyAirResistance() { velocity *= Mathf.Pow(airResistance, Time.deltaTime); }
     public void AddForce(Vector3 input)
     {
         velocity += input;
