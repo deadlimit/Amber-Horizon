@@ -10,7 +10,10 @@ public class EnemyBailState : State {
     private Timer dissolveTimer, moveTimer;
     protected override void Initialize() {
 
+
         enemy = (Enemy) owner;
+
+
         dissolveTimer = new Timer(.3f);
         dissolveTimer.OnTimerReachesZero += TeleportAway;
 
@@ -27,7 +30,10 @@ public class EnemyBailState : State {
     private void TeleportAway() => MaterialManipulator.Dissolve(enemy, enemy.GetComponent<MeshRenderer>().material, .4f, 10);
 
     private void Move() {
-        
+
+        if (fleeLocations.Count < 1)
+            return;
+
         Vector3 newLocation = fleeLocations[Random.Range(0, fleeLocations.Count)];
         
         while(Vector3.Distance(enemy.transform.position, newLocation) < 2)
