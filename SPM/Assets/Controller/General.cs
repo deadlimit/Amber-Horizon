@@ -19,12 +19,12 @@ public static class General
         return -projection;
     }
 
-    //Returnerar vektor3 innehållandes endast friktionen själv
+    //Returnerar endast friktionen som ska appliceras
     public static Vector3 CalcFriction(Vector3 normalForce, Vector3 vel, float staticFrictionCoefficient, float kineticFrictionCoefficient)
     {
         Vector3 temp = vel;
         if (vel.magnitude < normalForce.magnitude * staticFrictionCoefficient)
-            vel = Vector2.zero;
+            vel = Vector3.zero;
         else
         {
             vel -= vel.normalized * normalForce.magnitude * kineticFrictionCoefficient;

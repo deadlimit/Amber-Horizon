@@ -66,14 +66,18 @@ public class PhysicsComponent : MonoBehaviour
 
         RaycastHit normalHitInfo = collisionCaster.CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
         Vector3 normalForce = General.NormalForce3D(velocity, normalHitInfo.normal);
-
-
-        velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
-        velocity += normalForce;
         if (hitInfo.collider.GetComponent<MovingPlatformV2>())
+        {
+            velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
+            velocity += normalForce;
             HandleMovingPlatform(hitInfo, normalForce);
+        }
         else
+        {
+            velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
+            velocity += normalForce;
             ApplyFriction(normalForce);
+        }
         if (i < 10)
             CheckForCollisions(i + 1);
     }
@@ -85,26 +89,27 @@ public class PhysicsComponent : MonoBehaviour
 
         MovingPlatformV2 mp = hitInfo.collider.GetComponent<MovingPlatformV2>();
         Vector3 relativeVelocity = velocity - mp.GetVelocity();
-        relativeVelocity.y = 0;
+        // relativeVelocity.y = 0;
         
 
         //debug
         treshhold = normalForce.magnitude * staticFrictionCoefficient;
         relVelMag = relativeVelocity.magnitude;
+
         Debug.DrawLine(transform.position, transform.position + velocity - relativeVelocity, Color.green); 
 
-
         Vector3 nf = General.NormalForce3D(velocity, (velocity - relativeVelocity).normalized);
-        if (relativeVelocity.magnitude <= normalForce.magnitude / staticFrictionCoefficient)
+        if (relativeVelocity.magnitude <= normalForce.magnitude * staticFrictionCoefficient)
         {
             Debug.Log("mag < treshold");
             velocity = mp.GetVelocity();
         }
         else
         {
-            Vector3 temp = relativeVelocity - General.CalcFriction(normalForce, velocity, staticFrictionCoefficient, kineticFrictionCoefficient);
-            velocity -= temp * Time.deltaTime;
-            ApplyAirResistance();
+            relativeVelocity += (General.CalcFriction(General.NormalForce3D(relativeVelocity, mp.GetVelocity() - velocity), relativeVelocity - velocity, staticFrictionCoefficient, kineticFrictionCoefficient));
+            velocity -= relativeVelocity * Time.deltaTime;
+            //utan apply friction glider man runt på plattformen
+            //MED applyfriction så fångar den inte upp plattformens hastighet. FATTAR INTE AOSKNDAOSINDAOSNDAOSDN
         }
     }
     private void MoveOutOfGeometry()
@@ -170,7 +175,7 @@ public class PhysicsComponent : MonoBehaviour
     private void ApplyFriction(Vector3 normalForce)
     {
         if (velocity.magnitude < normalForce.magnitude * staticFrictionCoefficient)
-            velocity = Vector2.zero;
+            velocity = Vector3.zero;
         else
         {
             velocity -= velocity.normalized * normalForce.magnitude * kineticFrictionCoefficient;
