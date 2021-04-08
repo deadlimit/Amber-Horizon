@@ -31,7 +31,7 @@ public class BlackHole : MonoBehaviour
     void Update()
     {
         GravitationDrag();
-        CheckCenterCollision();
+        //CheckCenterCollision();
         
         velocity *= Mathf.Pow(airResistance, Time.deltaTime);
         transform.Translate(velocity * Time.deltaTime);
@@ -48,8 +48,11 @@ public class BlackHole : MonoBehaviour
                 if (Vector3.Distance(transform.position, c.transform.position) < terminalDistance)
                     c.GetComponent<PhysicsComponent>().StopVelocity();
 
-                else
-                    c.GetComponent<PhysicsComponent>().BlackHoleGravity(this);
+                else {
+                    IBlackHoleBehaviour blackHoleBehaviour = c.GetComponent<IBlackHoleBehaviour>();
+                    c.GetComponent<PhysicsComponent>().BlackHoleGravity(this, blackHoleBehaviour);
+                }
+                    
             }
 
         }

@@ -35,17 +35,8 @@ public class PhysicsComponent : MonoBehaviour
         if (attachedCollider is CapsuleCollider)
             collisionCaster = new CapsuleCaster(attachedCollider, collisionMask);
 
-        if (attachedCollider is MeshCollider)
-            collisionCaster = new MeshCaster(attachedCollider, collisionMask);
     }
-
-    public Vector3 velocity { get; set; }
-    [SerializeField] public float gravity = 10f;
-    [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
-    [Range(0f, 1f)] [SerializeField] float kineticFrictionCoefficient = 0.35f;
-    [Range(0f, 1f)] [SerializeField] float airResistance = 0.35f;
-    [SerializeField] float skinWidth = 0.05f;
-
+    
     float smallNumber = 0.05f;
     float gravityMod = 1f;
 
@@ -54,16 +45,11 @@ public class PhysicsComponent : MonoBehaviour
     Vector3 bhGrav = Vector3.zero;
     
     public void Update() {
-        
+        transform.position += velocity * Time.deltaTime;
         bhGrav = Vector3.zero;
-      //  Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
         AddGravity();
         CheckForCollisions(0);
-        transform.position += velocity * Time.deltaTime;
-
-        //OverlapCapsule();
         MoveOutOfGeometry();
-        
     }
     private void CheckForCollisions(int i)
     {
@@ -113,9 +99,10 @@ public class PhysicsComponent : MonoBehaviour
         if (blackHoleBehaviour != null) {
             blackHoleBehaviour.BlackHoleBehaviour(bh);
         }
+        
         else {
-            bhGrav = bh.gravitationalPull * (bh.transform.position - transform.position) /
-                Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
+            print("grav pull");
+            bhGrav = bh.gravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
             velocity += bhGrav;
             ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
             bhGrav = Vector3.zero;
