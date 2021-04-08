@@ -6,30 +6,44 @@ public class BlackHole : MonoBehaviour
 {
     public LayerMask physicsLayerMask;
     public LayerMask collisionMask;
-    public float gravitationalPull;
+    public float GravitationalPull;
     public float gravity = 10f;
     public Vector3 velocity;
     public float airResistance = 0f;
     public float skinWidth;
 
     public static float BlackHoleRadius;
-    
+
+    public GameObject sphereEffect;
+    public float maxRadius;
     
     SphereCollider coll;
     BoxCollider centerColl;
 
     private bool useGravity = true;
     private float terminalDistance = 0.5f;
-
+    
+    public float despawnTimer;
+    private float gravitationalPull;
+    private Timer deathTimer, timeBeforePull;
+    
     private void Awake() {
-        
+        gravitationalPull = GravitationalPull;
+        GravitationalPull = 0;
+        deathTimer = new Timer(despawnTimer);
+        timeBeforePull = new Timer(1);
+        timeBeforePull.OnTimerReachesZero += TurnOnGravitationPull;
+        deathTimer.OnTimerReachesZero += Despawn;
         coll = GetComponent<SphereCollider>();
         BlackHoleRadius = coll.radius;
         centerColl = GetComponent<BoxCollider>();
+        Spawn();
     }
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
+        timeBeforePull?.Tick(Time.deltaTime);
+        deathTimer.Tick(Time.deltaTime);
+        
         GravitationDrag();
         //CheckCenterCollision();
         
@@ -105,5 +119,49 @@ public class BlackHole : MonoBehaviour
                 Physics.OverlapBox(transform.position, centerColl.size / 2, Quaternion.identity, collisionMask);
             if (boxHitColl.Length > 0)
         }
-     */   
+     */
+
+    private void TurnOnGravitationPull() => GravitationalPull = gravitationalPull;
+
+        private void Spawn() {
+        StartCoroutine(ExpandRadius(maxRadius));
+        StartCoroutine(ExpandSphereEffect(new Vector3(10, 10, 10)));
+        gravitationalPull = 25;
+    }
+
+    private void Despawn() {
+        StartCoroutine(DespawnProcess());
+    }
+
+    private IEnumerator DespawnProcess() {
+        StartCoroutine(ExpandRadius(0));
+        StartCoroutine(ExpandSphereEffect(Vector3.zero));
+        
+        while (transform.localScale != Vector3.zero) {
+            transform.localScale = Vector3.Lerp( transform.localScale, Vector3.zero, Time.deltaTime / 2);
+            yield return null;
+        }
+        
+        Destroy(gameObject);
+    }
+    
+    private IEnumerator ExpandRadius(float targetRadius) {
+        while (targetRadius < maxRadius) {
+            coll.radius = Mathf.Lerp(coll.radius, maxRadius, Time.deltaTime / 2);
+            yield return null;
+        }
+
+        coll.radius = targetRadius;
+    }
+
+    private IEnumerator ExpandSphereEffect(Vector3 targetScale) {
+        while (sphereEffect.transform.localScale != targetScale) {
+            sphereEffect.transform.localScale = Vector3.Lerp( sphereEffect.transform.localScale, targetScale, Time.deltaTime / 2);
+            yield return null;
+        }
+
+        sphereEffect.transform.localScale = targetScale;
+
+    }
+
 }
