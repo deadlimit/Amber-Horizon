@@ -35,6 +35,9 @@ public class PhysicsComponent : MonoBehaviour
         if (attachedCollider is CapsuleCollider)
             collisionCaster = new CapsuleCaster(attachedCollider, collisionMask);
 
+        if (attachedCollider is MeshCollider)
+            collisionCaster = new MeshCaster(attachedCollider, collisionMask);
+
     }
     
     float smallNumber = 0.05f;
@@ -45,10 +48,10 @@ public class PhysicsComponent : MonoBehaviour
     Vector3 bhGrav = Vector3.zero;
     
     public void Update() {
-        transform.position += velocity * Time.deltaTime;
         bhGrav = Vector3.zero;
         AddGravity();
         CheckForCollisions(0);
+        transform.position += velocity * Time.deltaTime;
         MoveOutOfGeometry();
     }
     private void CheckForCollisions(int i)
@@ -99,9 +102,7 @@ public class PhysicsComponent : MonoBehaviour
         if (blackHoleBehaviour != null) {
             blackHoleBehaviour.BlackHoleBehaviour(bh);
         }
-        
         else {
-            print("grav pull");
             bhGrav = bh.gravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
             velocity += bhGrav;
             ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));

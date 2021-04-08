@@ -39,20 +39,25 @@ public class BlackHole : MonoBehaviour
     private void GravitationDrag()
     {
         Collider[] hitcoll = Physics.OverlapSphere(transform.position, coll.radius, physicsLayerMask);
-        foreach (Collider c in hitcoll)
-        {
+        foreach (Collider c in hitcoll) {
 
+            PhysicsComponent physicsComponent = c.GetComponent<PhysicsComponent>();
+            DestructableWall wall = c.GetComponent<DestructableWall>();
             //fysikp�verkan
-            if (c.GetComponent<PhysicsComponent>()) {
-                c.GetComponent<PhysicsComponent>().AffectedByBlackHoleGravity = true;
+            if (physicsComponent) {
+                physicsComponent.AffectedByBlackHoleGravity = true;
                 if (Vector3.Distance(transform.position, c.transform.position) < terminalDistance)
-                    c.GetComponent<PhysicsComponent>().StopVelocity();
+                    physicsComponent.StopVelocity();
 
-                else {
+
+                else{
                     IBlackHoleBehaviour blackHoleBehaviour = c.GetComponent<IBlackHoleBehaviour>();
                     c.GetComponent<PhysicsComponent>().BlackHoleGravity(this, blackHoleBehaviour);
                 }
                     
+            }else if (wall) {
+                IBlackHoleBehaviour blackHoleBehaviour = c.GetComponent<IBlackHoleBehaviour>();
+                blackHoleBehaviour.BlackHoleBehaviour(this);
             }
 
         }
@@ -87,4 +92,18 @@ public class BlackHole : MonoBehaviour
         velocity *= Mathf.Pow(airResistance, Time.deltaTime);
         transform.Translate(velocity * Time.deltaTime);
     }
+
+    
+    
+    //TODO Den här strök med av någon anledning i en merge och jag hittar verkligen inte orginalet i någon tidigare commit. 
+    /*
+    private void CheckCenterCollision() {
+        if (useGravity) {
+            //verkar som att overlapbox är mycket mindre benägen att gå igenom väggar.
+            //verkar som att overlapbox �r mycket mindre ben�gen att g� igenom v�ggar.
+            Collider[] boxHitColl =
+                Physics.OverlapBox(transform.position, centerColl.size / 2, Quaternion.identity, collisionMask);
+            if (boxHitColl.Length > 0)
+        }
+     */   
 }

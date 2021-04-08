@@ -114,7 +114,7 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   acceleration: 10
   maxSpeed: 1
-  launchSpeed: 5
+  launchSpeed: 20
   jumpHeight: 10
   playerPhys: {fileID: 0}
   dashCooldown: 2
@@ -142,10 +142,11 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 832
+  velocity: {x: 0, y: 0, z: 0}
   gravity: 10
+  skinWidth: 0.05
   staticFrictionCoefficient: 0.5
   kineticFrictionCoefficient: 0.35
   airResistance: 0.35
-  skinWidth: 0.05
   AffectedByBlackHoleGravity: 0
   groundCheckDistance: 0.05

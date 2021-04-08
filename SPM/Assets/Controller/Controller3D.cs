@@ -1,4 +1,5 @@
 using System.Collections;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class Controller3D : MonoBehaviour
@@ -100,6 +101,7 @@ public class Controller3D : MonoBehaviour
     /// 
     /// </summary>
     /// <returns></returns>
+    [CanBeNull]
     private IEnumerator Dash() {
 
         print(playerPhys.AffectedByBlackHoleGravity);

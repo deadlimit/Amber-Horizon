@@ -19,7 +19,6 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
     }
 
     public void LateUpdate() {
-        print("Platform update");
         Debug.DrawLine(transform.position,  maxFront, Color.red);
         Debug.DrawLine(transform.position,  maxBack, Color.green);
         
