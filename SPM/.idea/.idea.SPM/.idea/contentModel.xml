@@ -9,6 +9,10 @@
         <e p="BlackHole" t="Include">
           <e p="BlackHole.cs" t="Include" />
           <e p="BlackHolePhysics.cs" t="Include" />
+          <e p="IBlackHoleDeath.cs" t="Include" />
+        </e>
+        <e p="Camera" t="Include">
+          <e p="ThirdPersonCamera.cs" t="Include" />
         </e>
         <e p="Controller" t="Include">
           <e p="Controller3D.cs" t="Include" />
@@ -21,9 +25,14 @@
             <e p="JumpingState.cs" t="Include" />
           </e>
         </e>
-        <e p="DestructableWall.cs" t="Include" />
-        <e p="IBlackHoleBehaviour.cs" t="Include" />
-        <e p="MovingPlatformV2.cs" t="Include" />
+        <e p="Destructibles" t="Include">
+          <e p="DestructableWall.cs" t="Include" />
+          <e p="WallPiece.cs" t="Include" />
+        </e>
+        <e p="MovingPlatform" t="Include">
+          <e p="IBlackHoleBehaviour.cs" t="Include" />
+          <e p="MovingPlatformV2.cs" t="Include" />
+        </e>
         <e p="PhysicsComponent.cs" t="Include" />
         <e p="Scenes" t="Include">
           <e p="Enemy" t="Include">
@@ -31,6 +40,7 @@
             <e p="Enemy.cs" t="Include" />
             <e p="EnemyStateMachine" t="Include">
               <e p="EnemyBailState.cs" t="Include" />
+              <e p="EnemyDeathState.cs" t="Include" />
               <e p="EnemyDistanceState.cs" t="Include" />
               <e p="EnemyProximityState.cs" t="Include" />
               <e p="Timer.cs" t="Include" />
@@ -48,13 +58,11 @@
             <e p="MeshCaster.cs" t="Include" />
             <e p="SphereCaster.cs" t="Include" />
           </e>
-          <e p="StateMachine" t="Include">
-            <e p="State.cs" t="Include" />
-            <e p="StateMachine.cs" t="Include" />
-          </e>
         </e>
-        <e p="ThirdPersonCamera.cs" t="Include" />
-        <e p="WallPiece.cs" t="Include" />
+        <e p="StateMachine" t="Include">
+          <e p="State.cs" t="Include" />
+          <e p="StateMachine.cs" t="Include" />
+        </e>
       </e>
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
