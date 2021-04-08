@@ -15,7 +15,7 @@ public class EnemyProximityState : State {
         enemy = (Enemy) owner;
     }
     public override void RunUpdate() {
-        
+        enemy.transform.LookAt(enemy.target);
         if (timeBeforeMove != null)
             timeBeforeMove.Tick(Time.deltaTime);
         else {

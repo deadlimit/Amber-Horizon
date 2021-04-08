@@ -16,6 +16,8 @@ public class BlackHole : MonoBehaviour
 
     public GameObject sphereEffect;
     public float maxRadius;
+
+    public Transform center;
     
     SphereCollider coll;
     BoxCollider centerColl;
@@ -50,22 +52,29 @@ public class BlackHole : MonoBehaviour
         velocity *= Mathf.Pow(airResistance, Time.deltaTime);
         transform.Translate(velocity * Time.deltaTime);
     }
-    private void GravitationDrag()
-    {
+    private void GravitationDrag() {
+        bool playerFound = false;
         Collider[] hitcoll = Physics.OverlapSphere(transform.position, coll.radius, physicsLayerMask);
         foreach (Collider c in hitcoll) {
 
+            if (c.tag == "Player")
+                playerFound = true;
+            
             PhysicsComponent physicsComponent = c.GetComponent<PhysicsComponent>();
             DestructableWall wall = c.GetComponent<DestructableWall>();
             //fysikp�verkan
             if (physicsComponent) {
-                physicsComponent.AffectedByBlackHoleGravity = true;
-                if (Vector3.Distance(transform.position, c.transform.position) < terminalDistance)
+                
+                if (Vector3.Distance(transform.position, c.transform.position) < terminalDistance) {
                     physicsComponent.StopVelocity();
-
-
+                }
+                
                 else{
                     IBlackHoleBehaviour blackHoleBehaviour = c.GetComponent<IBlackHoleBehaviour>();
+                    IBlackHoleDeath blackHoleDeath = c.GetComponent<IBlackHoleDeath>();
+                    print(blackHoleDeath);
+                    if(blackHoleDeath != null)
+                        blackHoleDeath.BlackHoleDeath(this);
                     c.GetComponent<PhysicsComponent>().BlackHoleGravity(this, blackHoleBehaviour);
                 }
                     
@@ -75,6 +84,8 @@ public class BlackHole : MonoBehaviour
             }
 
         }
+
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PhysicsComponent>().AffectedByBlackHoleGravity = playerFound;
         //---------------------------------------------------------
 
         //om man s�tter if(useGravity) h�r ute kan vi nog slippa g�ra boxcasten n�r h�let �nd� st�r still? 
@@ -102,6 +113,8 @@ public class BlackHole : MonoBehaviour
 
             velocity += Vector3.down * Time.deltaTime * gravity;
         }
+        
+   
 
         velocity *= Mathf.Pow(airResistance, Time.deltaTime);
         transform.Translate(velocity * Time.deltaTime);
