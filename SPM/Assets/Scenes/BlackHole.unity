@@ -165,6 +165,8 @@ MonoBehaviour:
   kineticFrictionCoefficient: 0.35
   airResistance: 0.35
   AffectedByBlackHoleGravity: 0
+  frictionTreshhold: 0
+  relVelMag: 0
   groundCheckDistance: 0.05
 --- !u!65 &100777947
 BoxCollider:
@@ -236,11 +238,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100777945}
   m_LocalRotation: {x: -0, y: 0.4827012, z: -0, w: 0.8757851}
-  m_LocalPosition: {x: 8.45, y: 8.88, z: 2.08}
+  m_LocalPosition: {x: 13.63, y: 8.88, z: 13.26}
   m_LocalScale: {x: 1.427173, y: 1.1417686, z: 1.2578758}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 57.724, z: 0}
 --- !u!1 &145160982
 GameObject:
@@ -275,7 +277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3339a0f2aa60c1748b2e1ad41afd33f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovementSpeed: 1000
+  MovementSpeed: 200
   MaxMovementLength: 5
 --- !u!114 &145160984
 MonoBehaviour:
@@ -297,8 +299,10 @@ MonoBehaviour:
   skinWidth: 0.1
   staticFrictionCoefficient: 0.5
   kineticFrictionCoefficient: 0.35
-  airResistance: 0.35
+  airResistance: 0.15
   AffectedByBlackHoleGravity: 0
+  frictionTreshhold: 0
+  relVelMag: 0
   groundCheckDistance: 0.05
 --- !u!65 &145160985
 BoxCollider:
@@ -374,7 +378,7 @@ Transform:
   m_LocalScale: {x: 1, y: 0.65844, z: 2.8528}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 57.606, z: 0}
 --- !u!1 &576862694
 GameObject:
@@ -470,7 +474,7 @@ Transform:
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &672975904
 GameObject:
@@ -514,6 +518,8 @@ MonoBehaviour:
   kineticFrictionCoefficient: 0.35
   airResistance: 0.35
   AffectedByBlackHoleGravity: 0
+  frictionTreshhold: 0
+  relVelMag: 0
   groundCheckDistance: 0.05
 --- !u!65 &672975906
 BoxCollider:
@@ -585,11 +591,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 672975904}
   m_LocalRotation: {x: -0, y: 0.4827012, z: -0, w: 0.8757851}
-  m_LocalPosition: {x: 10.18, y: 11.55, z: 3.34}
+  m_LocalPosition: {x: 15.360001, y: 11.55, z: 14.52}
   m_LocalScale: {x: 1.427173, y: 1.1417686, z: 1.2578758}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 57.724, z: 0}
 --- !u!1 &829916228
 GameObject:
@@ -684,7 +690,7 @@ Transform:
   m_LocalScale: {x: 1.6596, y: 1.7620972, z: 3.3355372}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 57.724, z: 0}
 --- !u!1 &1052724626
 GameObject:
@@ -724,11 +730,13 @@ MonoBehaviour:
     m_Bits: 512
   velocity: {x: 0, y: 0, z: 0}
   gravity: 0
-  skinWidth: 0.05
+  skinWidth: 0.1
   staticFrictionCoefficient: 0.5
   kineticFrictionCoefficient: 0.35
-  airResistance: 0.35
+  airResistance: 0.1
   AffectedByBlackHoleGravity: 0
+  frictionTreshhold: 0
+  relVelMag: 0
   groundCheckDistance: 0.05
 --- !u!114 &1052724628
 MonoBehaviour:
@@ -743,7 +751,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MovementSpeed: 100
-  MaxMovementLength: 5
+  MaxMovementLength: 15
 --- !u!65 &1052724629
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -815,10 +823,10 @@ Transform:
   m_GameObject: {fileID: 1052724626}
   m_LocalRotation: {x: -0, y: 0.4817965, z: -0, w: 0.8762831}
   m_LocalPosition: {x: 4.13, y: 8.29, z: -7.18}
-  m_LocalScale: {x: 1, y: 0.65844, z: 2.8528}
+  m_LocalScale: {x: 3.8007, y: 0.65844, z: 15.052799}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 57.606, z: 0}
 --- !u!1 &1221879257
 GameObject:
@@ -960,7 +968,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1221879263
 SphereCollider:
@@ -1017,6 +1025,8 @@ MonoBehaviour:
   kineticFrictionCoefficient: 0.35
   airResistance: 0.35
   AffectedByBlackHoleGravity: 0
+  frictionTreshhold: 0
+  relVelMag: 0
   groundCheckDistance: 0.05
 --- !u!65 &1374547611
 BoxCollider:
@@ -1088,11 +1098,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1374547609}
   m_LocalRotation: {x: -0, y: 0.4827012, z: -0, w: 0.8757851}
-  m_LocalPosition: {x: 9.17, y: 8.1, z: 7.35}
+  m_LocalPosition: {x: 14.35, y: 8.1, z: 18.53}
   m_LocalScale: {x: 1.427173, y: 1.1417686, z: 1.2578758}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 57.724, z: 0}
 --- !u!1 &1570221578
 GameObject:
@@ -1280,7 +1290,7 @@ Transform:
   m_LocalScale: {x: 1, y: 7.6464443, z: 12.011553}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 147.724, z: 0}
 --- !u!1001 &1684215333
 PrefabInstance:
@@ -1293,6 +1303,14 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 1221879261}
+    - target: {fileID: 2982967213069284492, guid: efca6df19a1176a4d8d379ddb6674085, type: 3}
+      propertyPath: jumpHeight
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2982967213069284492, guid: efca6df19a1176a4d8d379ddb6674085, type: 3}
+      propertyPath: acceleration
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2982967213069284493, guid: efca6df19a1176a4d8d379ddb6674085, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1340,6 +1358,18 @@ PrefabInstance:
     - target: {fileID: 2982967213069284598, guid: efca6df19a1176a4d8d379ddb6674085, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2982967213069284598, guid: efca6df19a1176a4d8d379ddb6674085, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4281966077296195352, guid: efca6df19a1176a4d8d379ddb6674085, type: 3}
+      propertyPath: staticFrictionCoefficient
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4281966077296195352, guid: efca6df19a1176a4d8d379ddb6674085, type: 3}
+      propertyPath: kineticFrictionCoefficient
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efca6df19a1176a4d8d379ddb6674085, type: 3}
@@ -1390,6 +1420,8 @@ MonoBehaviour:
   kineticFrictionCoefficient: 0.35
   airResistance: 0.35
   AffectedByBlackHoleGravity: 0
+  frictionTreshhold: 0
+  relVelMag: 0
   groundCheckDistance: 0.05
 --- !u!65 &1724210331
 BoxCollider:
@@ -1461,12 +1493,69 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1724210329}
   m_LocalRotation: {x: -0, y: 0.4827012, z: -0, w: 0.8757851}
-  m_LocalPosition: {x: 12.91, y: 8.88, z: 1.43}
+  m_LocalPosition: {x: 18.09, y: 8.88, z: 12.610001}
   m_LocalScale: {x: 1.427173, y: 1.1417686, z: 1.2578758}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 57.724, z: 0}
+--- !u!1001 &1916536023
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8524585833828388588, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
+      propertyPath: m_Name
+      value: Black Hole
+      objectReference: {fileID: 0}
+    - target: {fileID: 8524585833828388593, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8524585833828388593, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 8524585833828388593, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 8524585833828388593, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 9.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 8524585833828388593, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8524585833828388593, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8524585833828388593, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8524585833828388593, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8524585833828388593, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8524585833828388593, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8524585833828388593, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
 --- !u!23 &27814551281793209
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1916,7 +2005,7 @@ Transform:
   - {fileID: 8943814162351939185}
   - {fileID: 7783890577480747962}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!64 &1374487054024456603
 MeshCollider:

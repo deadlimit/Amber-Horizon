@@ -18,13 +18,13 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
         
     }
 
-    public void LateUpdate() {
+    public void Update() {
         Debug.DrawLine(transform.position,  maxFront, Color.red);
         Debug.DrawLine(transform.position,  maxBack, Color.green);
         
         if(!physics.AffectedByBlackHoleGravity)
             physics.velocity = Vector3.zero;
-        
+
         PreventOutOfBounds();
     }
     
@@ -59,4 +59,6 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
             physics.velocity = Vector3.zero;
         }
     }
+
+    public Vector3 GetVelocity() { return physics.velocity; }
 }

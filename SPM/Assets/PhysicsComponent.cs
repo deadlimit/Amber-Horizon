@@ -46,8 +46,11 @@ public class PhysicsComponent : MonoBehaviour
     public bool AffectedByBlackHoleGravity;
     
     Vector3 bhGrav = Vector3.zero;
-    
+
+    public float mag = 0f;
     public void Update() {
+        mag = velocity.magnitude;
+        Debug.DrawLine(transform.position, transform.position + velocity);
         bhGrav = Vector3.zero;
         AddGravity();
         CheckForCollisions(0);
@@ -60,17 +63,40 @@ public class PhysicsComponent : MonoBehaviour
         RaycastHit hitInfo = collisionCaster.CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);
 
         if (!hitInfo.collider) return;
+        
 
         RaycastHit normalHitInfo = collisionCaster.CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
+        Vector3 normalForce = General.NormalForce3D(velocity, normalHitInfo.normal);
+
+        if (hitInfo.collider.GetComponent<MovingPlatformV2>())
+            HandleMovingPlatform(hitInfo, normalForce);
 
         velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
-
-        Vector3 normalForce = General.NormalForce3D(velocity, normalHitInfo.normal);
         velocity += normalForce;
-
         ApplyFriction(normalForce);
         if(i < 10)
             CheckForCollisions(i+1);
+    }
+    public float frictionTreshhold = 0f;
+    public float relVelMag = 0f;
+    private void HandleMovingPlatform(RaycastHit hitInfo, Vector3 normalForce) 
+    {
+        //funkar nog för PoC men wonky af när man ska gå åt motsatt håll
+
+        MovingPlatformV2 mp = hitInfo.collider.GetComponent<MovingPlatformV2>();
+        Vector3 relativeVelocity = velocity - mp.GetVelocity();
+
+        //kan man använda skalärprodukt för att avgöra om man går åt samma håll... och behövs det? 
+
+        if (velocity.magnitude <= staticFrictionCoefficient * mp.GetVelocity().magnitude)
+        {
+            velocity = velocity - relativeVelocity;
+            velocity.y = 0f;
+        }
+        else
+        {
+            velocity += mp.GetVelocity() * Time.deltaTime;
+        }
     }
     private void MoveOutOfGeometry()
     {
@@ -131,52 +157,7 @@ public class PhysicsComponent : MonoBehaviour
         velocity += gravityMovement;
         gravityMod = 1f;
     }
-    /*private void CapsuleCollision()
-    {
-        point1 = (transform.position + capColl.center) + Vector3.up * capColl.radius;
-        point2 = (transform.position + capColl.center) + Vector3.down * capColl.radius;
 
-        RaycastHit hitInfo;
-        RaycastHit normalHit;
-
-        if (velocity.magnitude < smallNumber)
-            velocity = Vector2.zero;
-
-        if (Physics.CapsuleCast(point1, point2, capColl.radius, velocity.normalized,
-            out hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask))
-        {
-            Physics.CapsuleCast(point1, point2, capColl.radius, -hitInfo.normal,
-                out normalHit, (velocity.magnitude + capColl.radius) * Time.deltaTime + skinWidth, collisionMask);
-
-            velocity += -normalHit.normal * (normalHit.distance - skinWidth);
-
-            //hör applicerar vi "stopp"-kraften från ytan vi kolliderar med
-            Vector3 normalForce = General.NormalForce3D(velocity, normalHit.normal);
-            velocity += normalForce;
-            ApplyFriction(normalForce);
-        }
-    }
-    private void OverlapCapsule()
-    {
-        point1 = (transform.position + capColl.center) + Vector3.up * capColl.radius;
-        point2 = (transform.position + capColl.center) + Vector3.down * capColl.radius;
-
-        Collider[] hitColl = Physics.OverlapCapsule(point1, point2, capColl.radius, collisionMask);
-        if (hitColl.Length != 0)
-        {
-            foreach (Collider c in hitColl)
-            {
-                Physics.ComputePenetration(capColl, transform.position, transform.rotation,
-                    c, c.transform.position, c.transform.rotation,
-                    out Vector3 separationDirection, out float hitDistance);
-
-                Vector3 separationVector = separationDirection * hitDistance;
-                transform.position += separationVector + separationVector.normalized * skinWidth;
-                velocity += General.NormalForce3D(velocity, separationVector.normalized);
-                ApplyFriction(General.NormalForce3D(velocity, separationVector.normalized));
-            }
-        }
-    }*/
     private void ApplyFriction(Vector3 normalForce)
     {
         if (velocity.magnitude < normalForce.magnitude * staticFrictionCoefficient)
