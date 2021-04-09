@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,67 +5,49 @@ public class Enemy : MonoBehaviour, IBlackHoleDeath {
 
     [SerializeField] private State[] states;
 
+    public Transform patrolAreaCenter;
+    public float patrolAreaRadius;
+    public float patrolRangeFromCenter;
     public float outerRing, innerRing;
-    
     public LayerMask playerMask;
+    public float MovementSpeed;
     public StateMachine stateMachine { get; private set; }
     public Transform target { get; private set; }
 
-    public bool notMoving;
-    
+    public Animator Animator { get; private set; }
+    public NavMeshAgent NavMeshAgent { get; private set; }
     public PhysicsComponent physics { get; private set; }
-    public GameObject Bullet;
-
-    public bool processOfDying;
     
-    [HideInInspector] public NavMeshAgent MeshAgent { get; private set; }
-
     [HideInInspector] public BlackHole activeBlackHole;
     
     private void Awake() {
-        
+        NavMeshAgent = GetComponent<NavMeshAgent>();
+        Animator = GetComponent<Animator>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
-        MeshAgent = GetComponent<NavMeshAgent>();
         stateMachine = new StateMachine(this, states);
-
-        notMoving = true;
         physics = GetComponent<PhysicsComponent>();
-        processOfDying = false;
-
     }
+    
     private void Update() {
-        
-        if (notMoving && !processOfDying)
-            ProximityCast();
 
-        if(!physics.isGrounded() && notMoving && !processOfDying)
-            stateMachine.ChangeState<EnemyBailState>();
-        
         stateMachine?.RunUpdate();
     }
 
-    public void ProximityCast() {
-
-        if (Physics.OverlapSphere(transform.position, outerRing, playerMask).Length > 0)
-            if (Physics.OverlapSphere(transform.position, innerRing, playerMask).Length > 0 || !physics.isGrounded()) 
-                stateMachine.ChangeState<EnemyBailState>();
-            else 
-                stateMachine.ChangeState<EnemyProximityState>();
-        else 
-            stateMachine.ChangeState<EnemyDistanceState>();
-        
+    public bool ProximityCast(float radius) {
+        return Physics.OverlapSphere(transform.position, radius, playerMask).Length > 0;
     }
 
-    public void Fire(int shots) {
-        for(int i = 0; i < shots; i++)
-         Instantiate(Bullet, transform.position + transform.forward, transform.rotation);
+    public void SamplePositionOnNavMesh(Vector3 origin, float originRadius) {
+        Vector3 randomPositionInsidePatrolArea = Random.insideUnitSphere * originRadius + origin;
+        NavMesh.SamplePosition(randomPositionInsidePatrolArea, out var hitInfo, 10, NavMesh.AllAreas);
+
+        NavMeshAgent.SetDestination(hitInfo.position);
     }
-    
+
     public void BlackHoleDeath(BlackHole blackHole) {
-        print("blackhole");
-        if (processOfDying) return;
-        processOfDying = true;
+        if (activeBlackHole) return;
         activeBlackHole = blackHole;
         stateMachine.ChangeState<EnemyDeathState>();
     }
+    
 }

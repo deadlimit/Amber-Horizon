@@ -10,8 +10,8 @@ public class EnemyDistanceState : State {
 
     public override void RunUpdate() {
         enemy.transform.LookAt(enemy.target);
-        if(!enemy.physics.isGrounded())
-            enemy.stateMachine.ChangeState<EnemyBailState>();
+        if(enemy.ProximityCast(enemy.outerRing))
+            stateMachine.ChangeState<EnemyProximityState>();
         
     }
     

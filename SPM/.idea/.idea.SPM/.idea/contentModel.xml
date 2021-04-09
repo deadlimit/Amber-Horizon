@@ -17,7 +17,6 @@
         <e p="Controller" t="Include">
           <e p="Controller3D.cs" t="Include" />
           <e p="General.cs" t="Include" />
-          <e p="MaterialManipulator.cs" t="Include" />
           <e p="PlayerPhysics.cs" t="Include" />
           <e p="PlayerStates" t="Include">
             <e p="FallingState.cs" t="Include" />
@@ -29,6 +28,8 @@
           <e p="DestructableWall.cs" t="Include" />
           <e p="WallPiece.cs" t="Include" />
         </e>
+        <e p="Health.cs" t="Include" />
+        <e p="Killzone.cs" t="Include" />
         <e p="MovingPlatform" t="Include">
           <e p="IBlackHoleBehaviour.cs" t="Include" />
           <e p="MovingPlatformV2.cs" t="Include" />
@@ -42,12 +43,17 @@
               <e p="EnemyBailState.cs" t="Include" />
               <e p="EnemyDeathState.cs" t="Include" />
               <e p="EnemyDistanceState.cs" t="Include" />
+              <e p="EnemyPatrolState.cs" t="Include" />
               <e p="EnemyProximityState.cs" t="Include" />
               <e p="Timer.cs" t="Include" />
             </e>
           </e>
         </e>
         <e p="Scripts" t="Include">
+          <e p="CheckpointSystem" t="Include">
+            <e p="Checkpoint.cs" t="Include" />
+            <e p="CheckpointManager.cs" t="Include" />
+          </e>
           <e p="JonathansKontroller" t="Include">
             <e p="BoxCaster.cs" t="Include" />
             <e p="CapsuleCaster.cs" t="Include" />
@@ -57,6 +63,9 @@
             <e p="CustomPhysics3D.cs" t="Include" />
             <e p="MeshCaster.cs" t="Include" />
             <e p="SphereCaster.cs" t="Include" />
+          </e>
+          <e p="Utility" t="Include">
+            <e p="CustomInvoke.cs" t="Include" />
           </e>
         </e>
         <e p="StateMachine" t="Include">

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -21,14 +20,14 @@ public class StateMachine
                 currentState = instantiated;
         }
 
-        currentState?.Enter();
+        //currentState?.Enter();
     }
     public void RunUpdate() 
     {
         currentState?.RunUpdate();
     }
-    public void ChangeState<T>() where T : State
-    {
+    public void ChangeState<T>() where T : State {
+
         if (instantiatedStates.ContainsKey(typeof(T)))
         {
             State instance = instantiatedStates[typeof(T)];
