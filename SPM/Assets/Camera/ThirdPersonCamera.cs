@@ -13,7 +13,7 @@ public class ThirdPersonCamera : MonoBehaviour
     public LayerMask collisionMask;
     public float skinWidth = 0.1f;
     public float camSpeed = 1f;
-
+    public float maxOffset = 5f;
     public Vector3 playerPos;
     Vector3 cameraOffset;
     Vector3 offset = Vector3.zero;
@@ -28,13 +28,23 @@ public class ThirdPersonCamera : MonoBehaviour
     void LateUpdate()
     {     
         GetInput();
-        //rotationY =  Mathf.Clamp(rotationY, -90, 90);
+        CameraScroll();
+        
         rotationX = Mathf.Clamp(rotationX, -15, 85);
         offset = transform.rotation * cameraOffset;
         PlaceCamera();
         transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
     }
 
+    private void CameraScroll() 
+    {
+        float multiplier = cameraDistance / cameraHeight;
+        cameraOffset.z += Input.mouseScrollDelta.y;
+        cameraOffset.y += Input.mouseScrollDelta.y / multiplier;
+        /*
+        cameraOffset.z = Mathf.Clamp(cameraOffset.z, -maxOffset, maxOffset);
+        cameraOffset.y = Mathf.Clamp(cameraOffset.y, -maxOffset / multiplier, maxOffset / multiplier);*/
+    }
     void GetInput()
     {
         rotationX -= Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
