@@ -29,7 +29,7 @@ public class ThirdPersonCamera : MonoBehaviour
     {     
         GetInput();
         //rotationY =  Mathf.Clamp(rotationY, -90, 90);
-        rotationX = Mathf.Clamp(rotationX, -80, 80);
+        rotationX = Mathf.Clamp(rotationX, -15, 85);
         offset = transform.rotation * cameraOffset;
         PlaceCamera();
         transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
