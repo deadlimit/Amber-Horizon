@@ -18,7 +18,6 @@ public class ThirdPersonCamera : MonoBehaviour
     Vector3 cameraOffset;
     Vector3 offset = Vector3.zero;
     SphereCollider coll;
-    // Start is called before the first frame update
     void Start()
     {
         coll = GetComponent<SphereCollider>();
@@ -26,7 +25,6 @@ public class ThirdPersonCamera : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    // Update is called once per frame
     void LateUpdate()
     {     
         GetInput();
@@ -42,19 +40,17 @@ public class ThirdPersonCamera : MonoBehaviour
         rotationY += Input.GetAxisRaw("Mouse X") * mouseSensitivity;
     }
     void PlaceCamera() {     
-        Debug.DrawLine(playerPos, playerPos + offset  , Color.green);
         RaycastHit hitInfo;
         playerPos = player.transform.position;
         offset = transform.rotation * cameraOffset;
-     
-        //kollision.. på något sätt.
-        if (Physics.SphereCast(playerPos, coll.radius, (playerPos + offset) - playerPos, out hitInfo, cameraOffset.magnitude, collisionMask))
+    
+        if (Physics.SphereCast(playerPos, coll.radius, offset.normalized, out hitInfo, cameraOffset.magnitude, collisionMask))
         {
-
-            Vector3 hitOffset = new Vector3(cameraOffset.x, hitInfo.transform.position.y + coll.radius / 2, hitInfo.transform.position.z + coll.radius / 2);
+            //hitInfo transform är collidern vi krockar med. lite tokigt? 
+            Vector3 hitOffset = new Vector3(cameraOffset.x, hitInfo.point.y + coll.radius / 2, hitInfo.point.z + coll.radius / 2);
             offset = transform.rotation * (hitOffset.normalized * hitInfo.distance);
-
         }
+        Debug.DrawLine(playerPos, playerPos + offset  , Color.green);
 
         Vector3 lerp = Vector3.Lerp(transform.position, offset + playerPos, camSpeed * Time.deltaTime);
         transform.position = lerp;

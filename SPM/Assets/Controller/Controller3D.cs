@@ -42,8 +42,7 @@ public class Controller3D : MonoBehaviour
         input = inp;
         
     }
-    void PlayerDirection() {
-        
+    void PlayerDirection() {     
         input = cam.transform.rotation * input;
         Vector3 angle = Vector3.ProjectOnPlane(input, playerPhys.groundHitInfo.normal).normalized;
         input = angle * input.magnitude;
@@ -51,10 +50,9 @@ public class Controller3D : MonoBehaviour
     }
     private void Accelerate()
     {
-        //tror det �r clamp som hindrar gravitationen att appliceras n�r man hoppar intill en v�gg och sedan r�r sig d�rifr�n..? 
         velocity = input * acceleration * Time.deltaTime;
         velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
-       
+    
         //det här är skräp
         if (jump)
         {
@@ -64,7 +62,8 @@ public class Controller3D : MonoBehaviour
     }
 
     void Update() {
-        
+
+        Debug.DrawLine(transform.position, transform.position + transform.forward, Color.red);
         if (Input.GetKeyDown(KeyCode.F)) {
             Time.timeScale = Time.timeScale == .3f ? Time.timeScale = 1 : Time.timeScale = .3f;
         }
@@ -138,10 +137,15 @@ public class Controller3D : MonoBehaviour
     
     private void LaunchBH() 
     {
+        
         BlackHole bh;
-        bh = Instantiate(blackHole, transform.position, cam.transform.rotation);
-        bh.velocity = transform.TransformDirection(Vector3.forward * launchSpeed);
+        bh = Instantiate(blackHole, transform.position, Quaternion.identity);
+        bh.velocity = transform.TransformDirection(BHTrajectory() * launchSpeed);
 
+    }
+    private Vector3 BHTrajectory() 
+    {
+        return (cam.transform.forward + Vector3.up).normalized;
     }
 
 
