@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5585580791807899859}
   - component: {fileID: 5585580791807899870}
   - component: {fileID: 5585580791807899869}
+  - component: {fileID: 964184215}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -102,13 +103,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 806284dc13535224096aeb2121a8deb5, type: 2}
   - {fileID: 11400000, guid: 13bf5501952f90f4684def8fb34787f0, type: 2}
   outerRing: 10
-  innerRing: 3
+  innerRing: 4
   playerMask:
     serializedVersion: 2
     m_Bits: 128
-  notMoving: 0
-  Bullet: {fileID: 4744137218730177727, guid: 00aed5def02963b4196f8289f8197e10, type: 3}
-  processOfDying: 0
   activeBlackHole: {fileID: 0}
 --- !u!65 &5585580791807899870
 BoxCollider:
@@ -140,9 +138,28 @@ MonoBehaviour:
     m_Bits: 960
   velocity: {x: 0, y: 0, z: 0}
   gravity: 10
-  skinWidth: 0.1
+  skinWidth: 0.5
   staticFrictionCoefficient: 0.5
   kineticFrictionCoefficient: 1
   airResistance: 0.35
   AffectedByBlackHoleGravity: 0
   groundCheckDistance: 0.05
+--- !u!95 &964184215
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5585580791807899868}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1f4c38819d0a9b042b27d3e10d02f89b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

@@ -1,43 +1,41 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 [CreateAssetMenu(fileName = "Enemy Bail State", menuName = "New Enemy Bail State")]
 public class EnemyBailState : State {
-
-    public List<Vector3> fleeLocations = new List<Vector3>();
     
     private Enemy enemy;
-    private Timer dissolveTimer, moveTimer;
+    private NavMeshAgent navMeshAgent;
+    
     protected override void Initialize() {
-
         enemy = (Enemy) owner;
-        dissolveTimer = new Timer(.3f);
-        dissolveTimer.OnTimerReachesZero += TeleportAway;
+    }
 
-        moveTimer = new Timer(.8f);
-        moveTimer.OnTimerReachesZero += Move;
-        enemy.notMoving = false;
+
+    public override void Enter() {
+        enemy.GetComponent<BoxCollider>().enabled = false;
+        enemy.Invoke(() => enemy.Animator.SetTrigger("Teleport"));
+        enemy.Invoke(Move, .5f);
+        navMeshAgent = enemy.GetComponent<NavMeshAgent>();
     }
     
-    public override void RunUpdate() {
-        dissolveTimer.Tick(Time.deltaTime);
-        moveTimer.Tick(Time.deltaTime);
-    }
-
-    private void TeleportAway() => MaterialManipulator.Dissolve(enemy, enemy.GetComponent<MeshRenderer>().material, .4f, 10);
-
     private void Move() {
         
-        Vector3 newLocation = fleeLocations[Random.Range(0, fleeLocations.Count)];
+        Vector3 random = Random.insideUnitSphere * (enemy.outerRing - 1) + enemy.transform.position;
+        NavMesh.SamplePosition(random, out var hit, 1000, NavMesh.AllAreas);
         
-        while(Vector3.Distance(enemy.transform.position, newLocation) < 2)
-            newLocation = fleeLocations[Random.Range(0, fleeLocations.Count)];
-        
-        enemy.transform.position = newLocation;
-        enemy.notMoving = true;
+        enemy.transform.position = hit.position;
         enemy.physics.velocity = Vector3.zero;
-        enemy.ProximityCast();
         
+        enemy.GetComponent<BoxCollider>().enabled = true;
+        
+        if(enemy.ProximityCast(enemy.innerRing)) 
+            enemy.stateMachine.ChangeState<EnemyBailState>();
+        else if(enemy.ProximityCast(enemy.outerRing))
+            enemy.stateMachine.ChangeState<EnemyProximityState>();
+        else 
+            enemy.stateMachine.ChangeState<EnemyDistanceState>();
     }
     
 }

@@ -23,6 +23,8 @@ public class Controller3D : MonoBehaviour
     [SerializeField] private float blackHoleGravityDashForce;
     private float nextDash;
 
+    private Animator effects;
+    
     
     [Header("StateMachine")]
     public State[] states;
@@ -35,6 +37,7 @@ public class Controller3D : MonoBehaviour
     {
         playerPhys = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);
+        effects = GetComponent<Animator>();
     }
 
     public void SetInput(Vector3 inp)
@@ -105,9 +108,7 @@ public class Controller3D : MonoBehaviour
     private IEnumerator Dash() {
 
         print(playerPhys.AffectedByBlackHoleGravity);
-        
-        MaterialManipulator.Dissolve(this, GetComponent<MeshRenderer>().material, timeWithoutGravity, dissolveSpeed);
-        
+        effects.SetTrigger("Dash");
         //Spara gravitationen innan man sätter den till 0
         float gravity = playerPhys.gravity;
 

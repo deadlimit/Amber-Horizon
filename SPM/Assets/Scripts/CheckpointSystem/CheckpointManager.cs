@@ -12,21 +12,16 @@ public class CheckpointManager : MonoBehaviour {
         //Hämta alla gameobjects med Checkpoints-tag
         List<GameObject> checkpointsInScene = new List<GameObject>(GameObject.FindGameObjectsWithTag("Checkpoint"));
         
-        List<Checkpoint> sortedCheckpoints = new List<Checkpoint>(checkpointsInScene.Count);
-        
-        
-        //Hämta Checkpoint-komponenten hos varje gameobject och lägg till den i sortedCheckpoints
+        //Loopa igenom alla gameobject, hämta Checkpoint-komponenten och subscribe till checkpointens event
+        //lägg sedan till checkpointen i hashtabellen
         checkpointsInScene.ForEach(checkpoint => {
-            sortedCheckpoints.Add(checkpoint.GetComponent<Checkpoint>());
-            checkpoint.GetComponent<Checkpoint>().OnPlayerEnter += UpdateCheckPoint;
+            
+            Checkpoint checkPoint = checkpoint.GetComponent<Checkpoint>();
+            
+            checkPoint.OnPlayerEnter += UpdateCheckPoint;
+            
+            checkpoints.Add(checkPoint.ID, checkPoint);
         });
-        
-        /*
-        //Sortera alla Checkpoints i stigande ordning efter order-numret
-        sortedCheckpoints.Sort((checkpoint, checkpoint1) => checkpoint1.order.CompareTo(checkpoint.order));
-        */
-        //Flytta sorterade värden till en stack.
-        sortedCheckpoints.ForEach(checkpoint => checkpoints.Add(checkpoint.ID, checkpoint));
         
     }
 
