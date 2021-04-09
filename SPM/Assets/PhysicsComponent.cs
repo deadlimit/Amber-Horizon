@@ -15,13 +15,16 @@ public class PhysicsComponent : MonoBehaviour
 
     [SerializeField] public Vector3 velocity;
     [SerializeField] public float gravity = 10f;
-    [SerializeField]protected float skinWidth = 0.05f;
-    
-    [Header ("Friktion")]
+    [SerializeField] protected float skinWidth = 0.05f;
+
+    [Header("Friktion")]
     [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
     [Range(0f, 1f)] [SerializeField] float kineticFrictionCoefficient = 0.35f;
     [Range(0f, 1f)] [SerializeField] float airResistance = 0.35f;
-    
+
+    float gravityMod = 1f;
+    public bool AffectedByBlackHoleGravity;
+    Vector3 bhGrav = Vector3.zero;
     private void OnEnable()
     {
         attachedCollider = GetComponent<Collider>();
@@ -43,17 +46,17 @@ public class PhysicsComponent : MonoBehaviour
     //float smallNumber = 0.05f;
     float gravityMod = 1f;
 
-    public bool AffectedByBlackHoleGravity;
-    
-    Vector3 bhGrav = Vector3.zero;
-    
+
+
     public void Update() {
+        Debug.DrawLine(transform.position, transform.position + velocity);
         bhGrav = Vector3.zero;
         AddGravity();
         CheckForCollisions(0);
         transform.position += velocity * Time.deltaTime;
         MoveOutOfGeometry();
     }
+    
     private void CheckForCollisions(int i)
     {
 
@@ -61,16 +64,54 @@ public class PhysicsComponent : MonoBehaviour
 
         if (!hitInfo.collider) return;
 
+
         RaycastHit normalHitInfo = collisionCaster.CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
-
-        velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
-
         Vector3 normalForce = General.NormalForce3D(velocity, normalHitInfo.normal);
-        velocity += normalForce;
+        if (hitInfo.collider.GetComponent<MovingPlatformV2>())
+        {
+            velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
+            velocity += normalForce;
+            HandleMovingPlatform(hitInfo, normalForce);
+        }
+        else
+        {
+            velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
+            velocity += normalForce;
+            ApplyFriction(normalForce);
+        }
+        if (i < 10)
+            CheckForCollisions(i + 1);
+    }
 
-        ApplyFriction(normalForce);
-        if(i < 10)
-            CheckForCollisions(i+1);
+    public float relVelMag = 0f;
+    public float treshhold = 0f; 
+    private void HandleMovingPlatform(RaycastHit hitInfo, Vector3 normalForce)
+    {
+
+        MovingPlatformV2 mp = hitInfo.collider.GetComponent<MovingPlatformV2>();
+        Vector3 relativeVelocity = velocity - mp.GetVelocity();
+        // relativeVelocity.y = 0;
+        
+
+        //debug
+        treshhold = normalForce.magnitude * staticFrictionCoefficient;
+        relVelMag = relativeVelocity.magnitude;
+
+        Debug.DrawLine(transform.position, transform.position + velocity - relativeVelocity, Color.green); 
+
+        Vector3 nf = General.NormalForce3D(velocity, (velocity - relativeVelocity).normalized);
+        if (relativeVelocity.magnitude <= normalForce.magnitude * staticFrictionCoefficient)
+        {
+            Debug.Log("mag < treshold");
+            velocity = mp.GetVelocity();
+        }
+        else
+        {
+            relativeVelocity += (General.CalcFriction(General.NormalForce3D(relativeVelocity, mp.GetVelocity() - velocity), relativeVelocity - velocity, staticFrictionCoefficient, kineticFrictionCoefficient));
+            velocity -= relativeVelocity * Time.deltaTime;
+            //utan apply friction glider man runt på plattformen
+            //MED applyfriction så fångar den inte upp plattformens hastighet. FATTAR INTE AOSKNDAOSINDAOSNDAOSDN
+        }
     }
     private void MoveOutOfGeometry()
     {
@@ -131,62 +172,19 @@ public class PhysicsComponent : MonoBehaviour
         velocity += gravityMovement;
         gravityMod = 1f;
     }
-    /*private void CapsuleCollision()
-    {
-        point1 = (transform.position + capColl.center) + Vector3.up * capColl.radius;
-        point2 = (transform.position + capColl.center) + Vector3.down * capColl.radius;
 
-        RaycastHit hitInfo;
-        RaycastHit normalHit;
-
-        if (velocity.magnitude < smallNumber)
-            velocity = Vector2.zero;
-
-        if (Physics.CapsuleCast(point1, point2, capColl.radius, velocity.normalized,
-            out hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask))
-        {
-            Physics.CapsuleCast(point1, point2, capColl.radius, -hitInfo.normal,
-                out normalHit, (velocity.magnitude + capColl.radius) * Time.deltaTime + skinWidth, collisionMask);
-
-            velocity += -normalHit.normal * (normalHit.distance - skinWidth);
-
-            //hör applicerar vi "stopp"-kraften från ytan vi kolliderar med
-            Vector3 normalForce = General.NormalForce3D(velocity, normalHit.normal);
-            velocity += normalForce;
-            ApplyFriction(normalForce);
-        }
-    }
-    private void OverlapCapsule()
-    {
-        point1 = (transform.position + capColl.center) + Vector3.up * capColl.radius;
-        point2 = (transform.position + capColl.center) + Vector3.down * capColl.radius;
-
-        Collider[] hitColl = Physics.OverlapCapsule(point1, point2, capColl.radius, collisionMask);
-        if (hitColl.Length != 0)
-        {
-            foreach (Collider c in hitColl)
-            {
-                Physics.ComputePenetration(capColl, transform.position, transform.rotation,
-                    c, c.transform.position, c.transform.rotation,
-                    out Vector3 separationDirection, out float hitDistance);
-
-                Vector3 separationVector = separationDirection * hitDistance;
-                transform.position += separationVector + separationVector.normalized * skinWidth;
-                velocity += General.NormalForce3D(velocity, separationVector.normalized);
-                ApplyFriction(General.NormalForce3D(velocity, separationVector.normalized));
-            }
-        }
-    }*/
     private void ApplyFriction(Vector3 normalForce)
     {
         if (velocity.magnitude < normalForce.magnitude * staticFrictionCoefficient)
-            velocity = Vector2.zero;
+            velocity = Vector3.zero;
         else
         {
             velocity -= velocity.normalized * normalForce.magnitude * kineticFrictionCoefficient;
         }
-        velocity *= Mathf.Pow(airResistance, Time.deltaTime);
+        ApplyAirResistance();
+        //velocity *= Mathf.Pow(airResistance, Time.deltaTime);
     }
+    public void ApplyAirResistance() { velocity *= Mathf.Pow(airResistance, Time.deltaTime); }
     public void AddForce(Vector3 input)
     {
         velocity += input;
@@ -199,7 +197,8 @@ public class PhysicsComponent : MonoBehaviour
     public float groundCheckDistance = 0.05f;
     public bool isGrounded()
     {
-        return collisionCaster.CastCollision(transform.position, Vector3.down, groundCheckDistance + skinWidth).collider != null;
+        groundHitInfo = collisionCaster.CastCollision(transform.position, Vector3.down, groundCheckDistance + skinWidth);
+        return groundHitInfo.collider != null;
     }
     
 }

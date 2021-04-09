@@ -195,7 +195,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 900d435f2012c5a4fa65c73c3cde667c, type: 2}
+  - {fileID: 2100000, guid: beb5cfdd9c2e0e44f8ebd2906ab4ebd2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -228,7 +228,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.00001
+  m_Radius: 7
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8524585833828388589
 MonoBehaviour:
@@ -244,19 +244,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   physicsLayerMask:
     serializedVersion: 2
-    m_Bits: 896
+    m_Bits: 768
   collisionMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 1088
   GravitationalPull: 50
-  gravity: 10
+  gravity: 35
   velocity: {x: 0, y: 0, z: 0}
-  airResistance: 0.4
+  airResistance: 0.6
   skinWidth: 0
   sphereEffect: {fileID: 1077436575}
   maxRadius: 5
   center: {fileID: 6571698011215792065}
-  despawnTimer: 3
+  despawnTimer: 5
 --- !u!65 &779418612
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -13,12 +13,11 @@ public class ThirdPersonCamera : MonoBehaviour
     public LayerMask collisionMask;
     public float skinWidth = 0.1f;
     public float camSpeed = 1f;
-
+    public float maxOffset = 5f;
     public Vector3 playerPos;
     Vector3 cameraOffset;
     Vector3 offset = Vector3.zero;
     SphereCollider coll;
-    // Start is called before the first frame update
     void Start()
     {
         coll = GetComponent<SphereCollider>();
@@ -26,37 +25,44 @@ public class ThirdPersonCamera : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    // Update is called once per frame
     void LateUpdate()
     {     
         GetInput();
-        //rotationY =  Mathf.Clamp(rotationY, -90, 90);
-        rotationX = Mathf.Clamp(rotationX, -80, 80);    
+        CameraScroll();
+        
+        rotationX = Mathf.Clamp(rotationX, -15, 85);
+        offset = transform.rotation * cameraOffset;
         PlaceCamera();
-       transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
+        transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
     }
 
+    private void CameraScroll() 
+    {
+        float multiplier = cameraDistance / cameraHeight;
+        cameraOffset.z += Input.mouseScrollDelta.y;
+        cameraOffset.y += Input.mouseScrollDelta.y / multiplier;
+        /*
+        cameraOffset.z = Mathf.Clamp(cameraOffset.z, -maxOffset, maxOffset);
+        cameraOffset.y = Mathf.Clamp(cameraOffset.y, -maxOffset / multiplier, maxOffset / multiplier);*/
+    }
     void GetInput()
     {
         rotationX -= Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
         rotationY += Input.GetAxisRaw("Mouse X") * mouseSensitivity;
     }
     void PlaceCamera() {     
-       // Debug.DrawLine(playerPos, playerPos + offset  , Color.green);
         RaycastHit hitInfo;
         playerPos = player.transform.position;
-        offset = transform.rotation * cameraOffset;
-     
-        //kollision.. på något sätt.
-        if (Physics.SphereCast(playerPos, coll.radius, (playerPos + offset) - playerPos, out hitInfo, cameraOffset.magnitude, collisionMask))
-        {
 
-            Vector3 hitOffset = new Vector3(cameraOffset.x, hitInfo.transform.position.y + coll.radius / 2, hitInfo.transform.position.z + coll.radius / 2);
-            offset = transform.rotation * (hitOffset.normalized * hitInfo.distance);
-
+    
+        if (Physics.SphereCast(playerPos, coll.radius, offset.normalized, out hitInfo, offset.magnitude, collisionMask))
+        { 
+            Vector3 hitOffset = new Vector3(cameraOffset.x, hitInfo.point.y - coll.radius/2, hitInfo.point.z - coll.radius/2);
+            offset = hitInfo.distance * offset.normalized;;
         }
+        Debug.DrawLine(playerPos, playerPos + offset  , Color.green);
 
-        Vector3 lerp = Vector3.Lerp(transform.position, offset + playerPos, camSpeed * Time.deltaTime);
-        transform.position = lerp;
+        transform.position = Vector3.Lerp(transform.position, playerPos + offset, camSpeed * Time.deltaTime);
+
     }
 }
