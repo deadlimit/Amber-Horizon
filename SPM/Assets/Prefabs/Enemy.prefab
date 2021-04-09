@@ -293,7 +293,7 @@ MonoBehaviour:
   states:
   - {fileID: 11400000, guid: 27e53a1fd14c1fd4ba2095884a2c07ba, type: 2}
   - {fileID: 11400000, guid: fb8926e5e9fd3f244894785fd74beb4b, type: 2}
-  - {fileID: 11400000, guid: 806284dc13535224096aeb2121a8deb5, type: 2}
+  - {fileID: 11400000, guid: a5fa24b99e5b59a4aae83a1e824f6fc0, type: 2}
   - {fileID: 11400000, guid: 13bf5501952f90f4684def8fb34787f0, type: 2}
   patrolAreaCenter: {fileID: 0}
   patrolAreaRadius: 80
@@ -317,7 +317,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: -0.05, z: 0}
+  m_Center: {x: 0, y: -0.1, z: 0}
 --- !u!114 &5585580791807899869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,11 +335,13 @@ MonoBehaviour:
     m_Bits: 960
   velocity: {x: 0, y: 0, z: 0}
   gravity: 10
-  skinWidth: 0.5
+  skinWidth: 0.05
   staticFrictionCoefficient: 0.5
   kineticFrictionCoefficient: 1
   airResistance: 0.35
   AffectedByBlackHoleGravity: 0
+  relVelMag: 0
+  treshhold: 0
   groundCheckDistance: 0.05
 --- !u!95 &964184215
 Animator:

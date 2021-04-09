@@ -105,8 +105,7 @@ public class Controller3D : MonoBehaviour
     /// <returns></returns>
     [CanBeNull]
     private IEnumerator Dash() {
-
-        print(playerPhys.AffectedByBlackHoleGravity);
+        
         effects.SetTrigger("Dash");
         //Spara gravitationen innan man sätter den till 0
         float gravity = playerPhys.gravity;

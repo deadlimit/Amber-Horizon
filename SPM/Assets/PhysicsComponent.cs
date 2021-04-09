@@ -44,9 +44,8 @@ public class PhysicsComponent : MonoBehaviour
     }
     
     //float smallNumber = 0.05f;
-    float gravityMod = 1f;
-
-
+   // float gravityMod = 1f;
+    
 
     public void Update() {
         Debug.DrawLine(transform.position, transform.position + velocity);
