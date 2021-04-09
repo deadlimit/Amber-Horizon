@@ -11,7 +11,7 @@ public class CheckpointManager : MonoBehaviour {
 
     private Transform player;
 
-    private static int ID = 0;
+    private static int NextID = 0;
     
     private void Awake() {
 
@@ -28,7 +28,7 @@ public class CheckpointManager : MonoBehaviour {
 
             Checkpoint currentCheckpoint = checkpoint.GetComponent<Checkpoint>();
 
-            currentCheckpoint.ID = ID++;
+            currentCheckpoint.ID = NextID++;
                 
             currentCheckpoint.OnPlayerEnter += UpdateCheckPoint;
             
