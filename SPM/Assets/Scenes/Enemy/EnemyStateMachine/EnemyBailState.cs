@@ -35,7 +35,7 @@ public class EnemyBailState : State {
         else if(enemy.ProximityCast(enemy.outerRing))
             enemy.stateMachine.ChangeState<EnemyProximityState>();
         else 
-            enemy.stateMachine.ChangeState<EnemyDistanceState>();
+            enemy.stateMachine.ChangeState<EnemyPatrolState>();
     }
     
 }

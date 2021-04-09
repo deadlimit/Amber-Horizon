@@ -4,13 +4,13 @@ using UnityEngine;
 [Serializable]
 public class Checkpoint : MonoBehaviour {
     
-    public int ID;
+    [HideInInspector] public int ID;
 
-    public Action<int> OnPlayerEnter;
+    public Action OnPlayerEnter;
     
     private void OnTriggerEnter(Collider other) {
         if (!other.CompareTag("Player")) return;
         
-        OnPlayerEnter?.Invoke(ID);
+        OnPlayerEnter?.Invoke();
     }
 }

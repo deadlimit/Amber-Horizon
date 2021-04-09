@@ -5,10 +5,20 @@ public class CheckpointManager : MonoBehaviour {
 
     private Dictionary<int, Checkpoint> checkpoints = new Dictionary<int, Checkpoint>();
 
+    public Checkpoint startCheckpoint;
+    
     private Checkpoint activeCheckpointPosition;
+
+    private Transform player;
+
+    private static int ID = 0;
     
     private void Awake() {
-        
+
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        activeCheckpointPosition = startCheckpoint;
+
         //Hämta alla gameobjects med Checkpoints-tag
         List<GameObject> checkpointsInScene = new List<GameObject>(GameObject.FindGameObjectsWithTag("Checkpoint"));
         
@@ -17,10 +27,11 @@ public class CheckpointManager : MonoBehaviour {
         checkpointsInScene.ForEach(checkpoint => {
             
             Checkpoint checkPoint = checkpoint.GetComponent<Checkpoint>();
-            
+
             checkPoint.OnPlayerEnter += UpdateCheckPoint;
             
             checkpoints.Add(checkPoint.ID, checkPoint);
+            
         });
         
     }
@@ -34,6 +45,10 @@ public class CheckpointManager : MonoBehaviour {
         activeCheckpointPosition = point;
         
         activeCheckpointPosition.gameObject.SetActive(false);
+    }
+
+    public void ResetPlayerPosition() {
+        player.position = activeCheckpointPosition.transform.position;
     }
 
 }

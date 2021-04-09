@@ -31,7 +31,6 @@ public class StateMachine
         if (instantiatedStates.ContainsKey(typeof(T)))
         {
             State instance = instantiatedStates[typeof(T)];
-            Debug.Log(typeof(T));
             currentState?.Exit();
             currentState = instance;
             currentState.Enter();

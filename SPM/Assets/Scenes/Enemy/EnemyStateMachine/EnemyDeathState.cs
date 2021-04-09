@@ -19,7 +19,7 @@ public class EnemyDeathState : State {
             enemy.transform.localScale = Vector3.Lerp(enemy.transform.localScale, Vector3.zero, Time.deltaTime);
         }
         
-        Destroy(enemy.gameObject, 3);
+        Destroy(enemy.gameObject, 2.5f);
             
     }      
     

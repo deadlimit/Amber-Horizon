@@ -9,6 +9,8 @@ public class EnemyProximityState : State {
     private float nextFire;
 
     public GameObject Bullet;
+
+    private bool moving;
     
     protected override void Initialize() {
         enemy = (Enemy) owner;
@@ -23,7 +25,7 @@ public class EnemyProximityState : State {
     public override void RunUpdate() {
         
         //Om denna är false är spelaren inte längre i den yttre sfären
-        if(!enemy.ProximityCast(enemy.outerRing)) enemy.stateMachine.ChangeState<EnemyDistanceState>();
+        if(!enemy.ProximityCast(enemy.outerRing)) enemy.stateMachine.ChangeState<EnemyPatrolState>();
         
         //Om denna är true är spelaren innanför den inre sfären
         if(enemy.ProximityCast(enemy.innerRing)) enemy.stateMachine.ChangeState<EnemyBailState>();
@@ -34,11 +36,12 @@ public class EnemyProximityState : State {
             Fire();
             nextFire = Time.time + FireCoolDown;
         }
-           
-        
-        
-    }
 
+        if (!enemy.NavMeshAgent.hasPath)
+            enemy.Invoke(() => enemy.SamplePositionOnNavMesh(enemy.transform.position, 10), Random.Range(1, 7));
+
+    }
+    
     private void Fire() {
         Instantiate(Bullet, enemy.transform.position + enemy.transform.forward, enemy.transform.rotation);
     }
