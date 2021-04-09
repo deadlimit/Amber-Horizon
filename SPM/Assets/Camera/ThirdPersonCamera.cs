@@ -10,14 +10,13 @@ public class ThirdPersonCamera : MonoBehaviour
     public LayerMask collisionMask;
     public float cameraHeight = 2f;
     public float cameraDistance = -4f;
-
-    private float mouseSense = 0f;
+    
     Vector3 playerPos;
     Vector3 cameraOffset;
     Vector3 offset = Vector3.zero;
     [HideInInspector]public SphereCollider coll;
     public float rotationX;
-     public float rotationY;
+    public float rotationY;
 
    /* public State[] states; 
     private StateMachine stateMachine;*/
@@ -28,7 +27,6 @@ public class ThirdPersonCamera : MonoBehaviour
         coll = GetComponent<SphereCollider>();
         cameraOffset = new Vector3(0, cameraHeight, cameraDistance);
         Cursor.lockState = CursorLockMode.Locked;
-        mouseSense = mouseSensitivity;
     }
 
     void LateUpdate()
@@ -40,7 +38,9 @@ public class ThirdPersonCamera : MonoBehaviour
         //rotationX = Mathf.Clamp(rotationX, -80, 85);
         offset = transform.rotation * cameraOffset;
         PlaceCamera();
-        transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
+
+        //magic number här, roterar kameran ytterligare lite nedåt, tyckte att det blev lättare då
+        transform.rotation = Quaternion.Euler(rotationX - 10, rotationY, 0);
     }
 
     private void CameraScroll() 
@@ -53,40 +53,32 @@ public class ThirdPersonCamera : MonoBehaviour
     }
     void GetInput()
     {
-        rotationX -= Input.GetAxisRaw("Mouse Y") * mouseSense;
-        rotationY += Input.GetAxisRaw("Mouse X") * mouseSense;
-        mouseSense = mouseSensitivity; 
+        rotationX -= Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
+        rotationY += Input.GetAxisRaw("Mouse X") * mouseSensitivity;
     }
     void PlaceCamera() {     
         RaycastHit hitInfo;
         playerPos = player.transform.position;
-        Debug.DrawLine(transform.position, transform.position + Vector3.down * offset.magnitude);
+        Debug.DrawLine(transform.position, transform.position + Vector3.down * coll.radius);
 
 
         if (Physics.SphereCast(playerPos, coll.radius, offset.normalized, out hitInfo, offset.magnitude, collisionMask))
         {
-            Vector3 hitOffset = new Vector3(cameraOffset.x, hitInfo.point.y - coll.radius / 2, hitInfo.point.z - coll.radius / 2);
-            offset = hitInfo.distance * offset.normalized;
-            //stateMachine.ChangeState<CollisionCameraState>(); 
+            offset = hitInfo.distance * offset.normalized; 
             
             if (groundCheck())
             {
-                Debug.Log("cam grounded");
-                mouseSense = mouseSensitivity * 0.1f;
-                
+                //magic number på slutet är bara till för att sakta ned kameran när man slår i marken
+                //rätt fult ibland om kameran släpar i marken när karaktären svänger, men relativt litet problem
+                transform.position = Vector3.Lerp(transform.position, playerPos + offset, camSpeed * Time.deltaTime * 0.15f) ;
+                return;
             }
         }
-
-        
-            //stateMachine.ChangeState<DefaultCameraState>();
-        transform.position = Vector3.Lerp(transform.position, playerPos + offset, camSpeed * Time.deltaTime);
-        
-
-        
+        transform.position = Vector3.Lerp(transform.position, playerPos + offset, camSpeed * Time.deltaTime);             
     }
 
     private bool groundCheck()
     {
-        return Physics.SphereCast(transform.position, coll.radius, Vector3.down, out RaycastHit hitInfo, coll.radius);
+        return Physics.SphereCast(transform.position, coll.radius, Vector3.down, out RaycastHit hitInfo, offset.magnitude);
     }
 }
