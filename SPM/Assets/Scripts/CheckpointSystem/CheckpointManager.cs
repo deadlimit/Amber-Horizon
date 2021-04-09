@@ -25,12 +25,14 @@ public class CheckpointManager : MonoBehaviour {
         //Loopa igenom alla gameobject, hämta Checkpoint-komponenten och subscribe till checkpointens event
         //lägg sedan till checkpointen i hashtabellen
         checkpointsInScene.ForEach(checkpoint => {
-            
-            Checkpoint checkPoint = checkpoint.GetComponent<Checkpoint>();
 
-            checkPoint.OnPlayerEnter += UpdateCheckPoint;
+            Checkpoint currentCheckpoint = checkpoint.GetComponent<Checkpoint>();
+
+            currentCheckpoint.ID = ID++;
+                
+            currentCheckpoint.OnPlayerEnter += UpdateCheckPoint;
             
-            checkpoints.Add(checkPoint.ID, checkPoint);
+            checkpoints.Add(currentCheckpoint.ID, currentCheckpoint);
             
         });
         
