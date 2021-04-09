@@ -28,7 +28,7 @@ public class CheckpointManager : MonoBehaviour {
             
             Checkpoint checkPoint = checkpoint.GetComponent<Checkpoint>();
 
-            checkPoint.OnPlayerEnter += UpdateCheckPoint;
+           // checkPoint.OnPlayerEnter += UpdateCheckPoint(ID+1);
             
             checkpoints.Add(checkPoint.ID, checkPoint);
             
