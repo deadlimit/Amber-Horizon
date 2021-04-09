@@ -40,7 +40,7 @@ public class PhysicsComponent : MonoBehaviour
 
     }
     
-    float smallNumber = 0.05f;
+    //float smallNumber = 0.05f;
     float gravityMod = 1f;
 
     public bool AffectedByBlackHoleGravity;

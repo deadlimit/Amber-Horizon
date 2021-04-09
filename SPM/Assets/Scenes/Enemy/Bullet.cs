@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour {
@@ -23,14 +20,12 @@ public class Bullet : MonoBehaviour {
         physics.AddForce(direction.normalized * BulletSpeed);
 
         Physics.Raycast(transform.position, transform.forward.normalized, out var hit, 1,playerLayer);
-        
+
+        if (hit.collider) {
+            hit.transform.gameObject.GetComponent<Health>().TakeDamage();
+            Destroy(gameObject);
+        }
+            
     }
 
-    private void OnCollisionEnter(Collision other) {
-        if (other.gameObject.CompareTag("Player"))
-            other.gameObject.GetComponent<Health>().TakeDamage();
-
-        Destroy(gameObject);
-
-    }
 }
