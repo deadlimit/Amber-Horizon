@@ -33,7 +33,7 @@ public class ThirdPersonCamera : MonoBehaviour
         //rotationY =  Mathf.Clamp(rotationY, -90, 90);
         rotationX = Mathf.Clamp(rotationX, -80, 80);    
         PlaceCamera();
-       transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
+        transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
     }
 
     void GetInput()
@@ -42,7 +42,7 @@ public class ThirdPersonCamera : MonoBehaviour
         rotationY += Input.GetAxisRaw("Mouse X") * mouseSensitivity;
     }
     void PlaceCamera() {     
-       // Debug.DrawLine(playerPos, playerPos + offset  , Color.green);
+        Debug.DrawLine(playerPos, playerPos + offset  , Color.green);
         RaycastHit hitInfo;
         playerPos = player.transform.position;
         offset = transform.rotation * cameraOffset;
