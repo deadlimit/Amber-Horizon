@@ -79,6 +79,6 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private bool groundCheck()
     {
-        return Physics.SphereCast(transform.position, coll.radius, Vector3.down, out RaycastHit hitInfo, offset.magnitude);
+        return Physics.SphereCast(transform.position, coll.radius, -transform.up, out RaycastHit hitInfo, coll.radius);
     }
 }

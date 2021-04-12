@@ -56,9 +56,7 @@ public class PhysicsComponent : MonoBehaviour
     
     private void CheckForCollisions(int i)
     {
-
         RaycastHit hitInfo = collisionCaster.CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);
-
         if (!hitInfo.collider) return;
 
         RaycastHit normalHitInfo = collisionCaster.CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
