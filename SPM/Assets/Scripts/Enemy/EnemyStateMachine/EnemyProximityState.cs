@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Enemy Proximity State", menuName = "New Enemy Proximity State")]
 public class EnemyProximityState : State {
     
-    private Enemy enemy;
+    private Forager forager;
 
     public float FireCoolDown;
     private float nextFire;
@@ -13,7 +13,7 @@ public class EnemyProximityState : State {
     private bool moving;
     
     protected override void Initialize() {
-        enemy = (Enemy) owner;
+        forager = (Forager) owner;
     }
 
     public override void Enter() {
@@ -25,25 +25,25 @@ public class EnemyProximityState : State {
     public override void RunUpdate() {
         
         //Om denna är false är spelaren inte längre i den yttre sfären
-        if(!enemy.ProximityCast(enemy.outerRing)) enemy.stateMachine.ChangeState<EnemyPatrolState>();
+        if(!forager.ProximityCast(forager.outerRing)) forager.stateMachine.ChangeState<EnemyPatrolState>();
         
         //Om denna är true är spelaren innanför den inre sfären
-        if(enemy.ProximityCast(enemy.innerRing)) enemy.stateMachine.ChangeState<EnemyBailState>();
+        if(forager.ProximityCast(forager.innerRing)) forager.stateMachine.ChangeState<EnemyBailState>();
         
-        enemy.transform.LookAt(enemy.target);
+        forager.transform.LookAt(forager.target);
 
         if (nextFire < Time.time) {
             Fire();
             nextFire = Time.time + FireCoolDown;
         }
 
-        if (!enemy.NavMeshAgent.hasPath)
-            enemy.Invoke(() => enemy.SamplePositionOnNavMesh(enemy.transform.position, 10), Random.Range(1, 7));
+        if (!forager.NavMeshAgent.hasPath)
+            forager.Invoke(() => forager.SamplePositionOnNavMesh(forager.transform.position, 10), Random.Range(1, 7));
 
     }
     
     private void Fire() {
-        Instantiate(Bullet, enemy.transform.position + enemy.transform.forward, enemy.transform.rotation);
+        Instantiate(Bullet, forager.transform.position + forager.transform.forward, forager.transform.rotation);
     }
     
 }
