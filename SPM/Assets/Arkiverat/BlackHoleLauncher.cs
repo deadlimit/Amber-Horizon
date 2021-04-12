@@ -54,11 +54,11 @@ public class BlackHoleLauncher : MonoBehaviour
         return arcArray;
     }
 
-    //räkna ut position för varje vertex
+    //rÃ¤kna ut position fÃ¶r varje vertex
     Vector3 CalculateArcPoint(float t, float maxDistance) 
     {
-        //någonting gör att velocity påverkar arcArray[0]:s position,
-        //vilket inte borde vara möjligt eftersom att ddet indexet är uteslutet ur loopen
+        //nÃ¥gonting gÃ¶r att velocity pÃ¥verkar arcArray[0]:s position,
+        //vilket inte borde vara mÃ¶jligt eftersom att ddet indexet Ã¤r uteslutet ur loopen
         float x = (playerPos.x + t * maxDistance) ;
         float y = playerPos.y +  t * maxDistance * Mathf.Tan(radianAngle) - ((g * x * x) / (2 * velocity * velocity * Mathf.Cos(radianAngle) * Mathf.Cos(radianAngle))) ;
         float z = playerPos.z;

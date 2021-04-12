@@ -4,77 +4,73 @@ using UnityEngine;
 
 public class ThirdPersonCamera : MonoBehaviour
 {
-    public GameObject player;
-    public float mouseSensitivity = 1f;
-    public float camSpeed = 1f;
-    public LayerMask collisionMask;
-    public float cameraHeight = 2f;
-    public float cameraDistance = -4f;
-    public Vector3 CameraOffset;
-    Vector3 playerPos;
-    Vector3 cameraOffset;
-    Vector3 offset = Vector3.zero;
-    [HideInInspector]public SphereCollider coll;
-    public float rotationX;
-    public float rotationY;
+    public float MouseSensitivity = 1f;
+    public float CameraSpeed;
+    public LayerMask CollisionMask;
+    public Vector3 TargetOffset;
+    
+    public SphereCollider coll { get; private set; }
 
-   /* public State[] states; 
-    private StateMachine stateMachine;*/
-    void Awake()
-    {
-        //stateMachine = new StateMachine(this, states);
-
+    private Transform target;
+    private Vector3 playerPos;
+    private Vector3 cameraOffset;
+    private Vector3 offset;
+    private  float rotationX;
+    private float rotationY;
+    
+    void Awake() {
+        
         coll = GetComponent<SphereCollider>();
-        cameraOffset = new Vector3(0, cameraHeight, cameraDistance);
         Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private void Start() {
+        target = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void LateUpdate()
     {
-        //stateMachine.RunUpdate();
         GetInput();
         CameraScroll();
         
-        //rotationX = Mathf.Clamp(rotationX, -80, 85);
-        offset = transform.rotation * cameraOffset + CameraOffset;
+        offset = transform.rotation * TargetOffset;
         PlaceCamera();
 
-        //magic number här, roterar kameran ytterligare lite nedåt, tyckte att det blev lättare då
+        //magic number hï¿½r, roterar kameran ytterligare lite nedï¿½t, tyckte att det blev lï¿½ttare dï¿½
         transform.rotation = Quaternion.Euler(rotationX - 10, rotationY, 0);
     }
 
     private void CameraScroll() 
     {
         //eventuellt ska dessa clampas
-        float multiplier = cameraDistance / cameraHeight;
-        cameraOffset.z += Input.mouseScrollDelta.y;
-        cameraOffset.y += Input.mouseScrollDelta.y / multiplier;
-        
+        TargetOffset.z += Input.mouseScrollDelta.y; 
+        TargetOffset.z = Mathf.Clamp(TargetOffset.z, -6, -2);
+
     }
     void GetInput()
     {
-        rotationX -= Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
-        rotationY += Input.GetAxisRaw("Mouse X") * mouseSensitivity;
+        rotationX -= Input.GetAxisRaw("Mouse Y") * MouseSensitivity;
+        rotationY += Input.GetAxisRaw("Mouse X") * MouseSensitivity;
     }
     void PlaceCamera() {     
         RaycastHit hitInfo;
-        playerPos = player.transform.position;
+        playerPos = target.transform.position;
         Debug.DrawLine(transform.position, transform.position + Vector3.down * coll.radius);
 
 
-        if (Physics.SphereCast(playerPos, coll.radius, offset.normalized, out hitInfo, offset.magnitude, collisionMask))
+        if (Physics.SphereCast(playerPos, coll.radius, offset.normalized, out hitInfo, offset.magnitude, CollisionMask))
         {
             offset = hitInfo.distance * offset.normalized; 
             
             if (groundCheck())
             {
-                //magic number på slutet är bara till för att sakta ned kameran när man slår i marken
-                //rätt fult ibland om kameran släpar i marken när karaktären svänger, men relativt litet problem
-                transform.position = Vector3.Lerp(transform.position, playerPos + offset, camSpeed * Time.deltaTime * 0.15f) ;
+                //magic number pï¿½ slutet ï¿½r bara till fï¿½r att sakta ned kameran nï¿½r man slï¿½r i marken
+                //rï¿½tt fult ibland om kameran slï¿½par i marken nï¿½r karaktï¿½ren svï¿½nger, men relativt litet problem
+                transform.position = Vector3.Lerp(transform.position, playerPos + offset, CameraSpeed * Time.deltaTime * 0.15f) ;
                 return;
             }
         }
-        transform.position = Vector3.Lerp(transform.position, playerPos + offset, camSpeed * Time.deltaTime);             
+        transform.position = Vector3.Lerp(transform.position, playerPos + offset, CameraSpeed * Time.deltaTime);             
     }
 
     private bool groundCheck()
