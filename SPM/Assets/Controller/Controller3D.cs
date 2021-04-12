@@ -9,10 +9,10 @@ public class Controller3D : MonoBehaviour
     [SerializeField] float acceleration = 4f;
     [SerializeField]float maxSpeed;
 
-    public float launchSpeed = 5f;
     public float jumpHeight = 4f;
-    Vector3 input = Vector3.zero;
+    public Vector3 input = Vector3.zero;
     public PhysicsComponent playerPhys;
+    public LauncherBlackHole lbh;
     
     [Header("Dash")]
     [SerializeField] private float dashCooldown;
@@ -31,7 +31,11 @@ public class Controller3D : MonoBehaviour
     private StateMachine stateMachine;
     private bool jump;
 
+    /*obsolete, ska ta bort det så fort jag är säker på min sak-------
     public BlackHole blackHole;
+    public float launchSpeedXZ = 5f;
+    public bool debugPath; 
+    -----------------------------------------------------------*/
 
     void Awake()
     {
@@ -83,8 +87,10 @@ public class Controller3D : MonoBehaviour
             StartCoroutine(Dash());
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-            LaunchBH();
+        if (Input.GetMouseButtonDown(1))
+            lbh.Activate();
+        if (Input.GetMouseButtonUp(1))
+            lbh.Deactivate();
 
     }
     public void SetJump()
@@ -136,19 +142,39 @@ public class Controller3D : MonoBehaviour
         playerPhys.AffectedByBlackHoleGravity = false;
     }
     
-    private void LaunchBH() 
-    {
-        
-        BlackHole bh;
-        bh = Instantiate(blackHole, transform.position, Quaternion.identity);
-        bh.velocity = transform.TransformDirection(BHTrajectory() * launchSpeed);
 
+    //obsolete men inte redo att radera allt riktigt än
+   /* private void LaunchBH() 
+    {
+        BlackHole bh = Instantiate(blackHole, transform.position, Quaternion.identity);
+        bh.velocity = transform.TransformDirection(BHTrajectory() * launchSpeedXZ);
     }
+
+    public float launchSpeedY = 10f;
     private Vector3 BHTrajectory() 
     {
-        return (cam.transform.forward + Vector3.up).normalized;
-    }
+        return (cam.transform.forward + Vector3.up * launchSpeedY).normalized;
+        //man vill nog lägga till spelarens velocitet efter uträkningen här
+    }*/
 
+   /* void DrawPath() 
+    {
+        Debug.Log("Drawpath: bh är " + bh);
+        float timeToTarget = Mathf.Sqrt(-2 * launchSpeedY / playerPhys.gravity) + Mathf.Sqrt(2 * (bh.velocity.y - launchSpeedY) / playerPhys.gravity);        
+        Vector3 previousDrawPoint = bh.transform.position;
+
+        int resolution = 30;
+        for (int i = 0; i < resolution; i++) 
+        {
+            Debug.Log(i);
+            float simulationTime = i / (float)resolution * timeToTarget;
+            Vector3 displacement = bh.velocity * simulationTime +
+            playerPhys.gravity * Vector3.down /*vector3.down??*/ //* simulationTime * simulationTime / 2f;
+            /*Vector3 drawPoint = bh.transform.position + displacement;
+            Debug.DrawLine(previousDrawPoint, drawPoint, Color.green);
+            previousDrawPoint = drawPoint; 
+        }
+    }*/
 
 }
 
