@@ -20,14 +20,6 @@ public class JumpingState : State
         input = input.normalized;
         player.SetInput(input * 0.2f);
 
-        /*  if (player.GetPhysics().isGrounded())
-          {
-              //jag tror att det som h�nder �r att den hinner utv�rdera isGrounded() innan vi helt l�mnat marken, d�rf�r 
-              //g�r den direkt tillbaka till GroundedState, men INTE om man g�r dubbelhoppet som blir m�jligt av den h�r buggen
-              stateMachine.ChangeState<GroundedState>();
-          }*/
-
-
         if (player.playerPhys.velocity.y < 0)
         {
 
