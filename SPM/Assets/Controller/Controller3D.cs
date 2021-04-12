@@ -1,6 +1,9 @@
 using System.Collections;
+using System.Numerics;
 using JetBrains.Annotations;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 public class Controller3D : MonoBehaviour
 {
@@ -19,7 +22,6 @@ public class Controller3D : MonoBehaviour
     [SerializeField] private float dashLength;
     [Tooltip("Hur länge spelarens gravitation är avstängd innan den sätts på igen (sekunder)")]
     [SerializeField] private float timeWithoutGravity;
-    [SerializeField] private float dissolveSpeed;
     [SerializeField] private float blackHoleGravityDashForce;
     private float nextDash;
 
@@ -45,8 +47,14 @@ public class Controller3D : MonoBehaviour
         input = inp;
         
     }
+
+    private void RotateTowardsCameraDirection() {
+
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, cam.transform.localEulerAngles.y, transform.localEulerAngles.z);
+    }
     void PlayerDirection() {     
         input = cam.transform.rotation * input;
+        RotateTowardsCameraDirection();
         Vector3 angle = Vector3.ProjectOnPlane(input, playerPhys.groundHitInfo.normal).normalized;
         input = angle * input.magnitude;
         Accelerate();

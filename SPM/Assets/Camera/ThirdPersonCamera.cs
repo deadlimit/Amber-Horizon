@@ -10,7 +10,7 @@ public class ThirdPersonCamera : MonoBehaviour
     public LayerMask collisionMask;
     public float cameraHeight = 2f;
     public float cameraDistance = -4f;
-    
+    public Vector3 CameraOffset;
     Vector3 playerPos;
     Vector3 cameraOffset;
     Vector3 offset = Vector3.zero;
@@ -36,7 +36,7 @@ public class ThirdPersonCamera : MonoBehaviour
         CameraScroll();
         
         //rotationX = Mathf.Clamp(rotationX, -80, 85);
-        offset = transform.rotation * cameraOffset;
+        offset = transform.rotation * cameraOffset + CameraOffset;
         PlaceCamera();
 
         //magic number här, roterar kameran ytterligare lite nedåt, tyckte att det blev lättare då
