@@ -79,8 +79,6 @@ public class PhysicsComponent : MonoBehaviour
             CheckForCollisions(i + 1);
     }
 
-    public float relVelMag = 0f;
-    public float treshhold = 0f; 
     private void HandleMovingPlatform(RaycastHit hitInfo, Vector3 normalForce)
     {
         MovingPlatformV2 mp = hitInfo.collider.GetComponent<MovingPlatformV2>();
