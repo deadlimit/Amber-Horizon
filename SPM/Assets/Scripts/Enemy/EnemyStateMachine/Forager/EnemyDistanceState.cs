@@ -9,7 +9,7 @@ public class EnemyDistanceState : State {
     }
 
     public override void RunUpdate() {
-        forager.transform.LookAt(forager.target);
+        forager.transform.LookAt(forager.Target);
         if(forager.ProximityCast(forager.outerRing))
             stateMachine.ChangeState<EnemyProximityState>();
         

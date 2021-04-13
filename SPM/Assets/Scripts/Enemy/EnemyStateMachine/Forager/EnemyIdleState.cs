@@ -12,7 +12,7 @@ public class EnemyIdleState : State {
         if(forager.ProximityCast(forager.outerRing))
             forager.stateMachine.ChangeState<EnemyProximityState>();
         
-        forager.pathfinder.agent.ResetPath();
+        forager.Pathfinder.agent.ResetPath();
         
         forager.Invoke(() => forager.stateMachine.ChangeState<EnemyPatrolState>(), Random.Range(0, 3));
         

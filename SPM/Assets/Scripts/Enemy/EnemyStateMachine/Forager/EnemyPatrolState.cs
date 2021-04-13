@@ -5,23 +5,25 @@ public class EnemyPatrolState : State {
     
     private Forager forager;
 
+    public float patrolRadius;
+    
     public override void Initialize(StateMachine stateMachine, object owner) {
         forager = (Forager) owner;
     }
 
     public override void Enter() {
-        Vector3 newPosition = forager.pathfinder.GetSamplePositionOnNavMesh(forager.transform.position, forager.patrolAreaRadius);
-        forager.pathfinder.agent.SetDestination(newPosition);
+        Vector3 newPosition = forager.Pathfinder.GetSamplePositionOnNavMesh(forager.transform.position, patrolRadius);
+        forager.Pathfinder.agent.SetDestination(newPosition);
     }
 
     public override void RunUpdate() {
 
        if (forager.ProximityCast(forager.outerRing)) {
-            forager.pathfinder.agent.ResetPath();
+            forager.Pathfinder.agent.ResetPath();
             forager.stateMachine.ChangeState<EnemyProximityState>();
        }
 
-       if (forager.pathfinder.agent.remainingDistance < .1f) 
+       if (forager.Pathfinder.agent.remainingDistance < .1f) 
            forager.stateMachine.ChangeState<EnemyIdleState>();
        
     }

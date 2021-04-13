@@ -13,7 +13,7 @@ public class EnemyProximityState : State {
     }
 
     public override void Enter() {
-        forager.pathfinder.agent.ResetPath();
+        forager.Pathfinder.agent.ResetPath();
     }
 
     public override void RunUpdate() {
@@ -24,15 +24,13 @@ public class EnemyProximityState : State {
         //Om denna är true är spelaren innanför den inre sfären
         if(forager.ProximityCast(forager.innerRing)) forager.stateMachine.ChangeState<EnemyTeleportState>();
         
-        
-
         if (nextFire < Time.time) {
-            forager.pathfinder.agent.isStopped = true;
-            forager.animator.SetTrigger("Shoot");
+            forager.Pathfinder.agent.isStopped = true;
+            forager.Animator.SetTrigger("Shoot");
             nextFire = Time.time + FireCoolDown;
         }
         
-        forager.transform.LookAt(forager.target);
+        forager.transform.LookAt(forager.Target);
     
     }
 

@@ -12,8 +12,8 @@ public class EnemyBailState : State {
     }
     
     public override void Enter() {
-        forager.collider.enabled = false;
-        forager.Invoke(() => forager.animator.SetTrigger("Teleport"));
+        forager.Collider.enabled = false;
+        forager.Invoke(() => forager.Animator.SetTrigger("Teleport"));
         forager.Invoke(Move, .5f);
     }
     
@@ -24,7 +24,7 @@ public class EnemyBailState : State {
         
         forager.transform.position = hit.position;
         
-        forager.collider.enabled = true;
+        forager.Collider.enabled = true;
         
         if(forager.ProximityCast(forager.innerRing)) 
             forager.stateMachine.ChangeState<EnemyBailState>();
