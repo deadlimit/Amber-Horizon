@@ -130,18 +130,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ea343441da81a4888ea3972cc98f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 1.7
-  rotationX: 0
-  rotationY: 0
-  cameraHeight: 2.5
-  cameraDistance: -10
-  player: {fileID: 0}
-  collisionMask:
+  MouseSensitivity: 1
+  CameraSpeed: 10
+  CollisionMask:
     serializedVersion: 2
-    m_Bits: 576
-  skinWidth: 0.1
-  camSpeed: 5
-  playerPos: {x: 0, y: 0, z: 0}
+    m_Bits: 64
+  TargetOffset: {x: 0.7, y: 1.5, z: -4}
 --- !u!135 &7884709247241317304
 SphereCollider:
   m_ObjectHideFlags: 0
