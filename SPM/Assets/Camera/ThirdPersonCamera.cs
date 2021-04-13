@@ -37,6 +37,8 @@ public class ThirdPersonCamera : MonoBehaviour
         PlaceCamera();
 
         //magic number h�r, roterar kameran ytterligare lite ned�t, tyckte att det blev l�ttare d�
+        rotationX = Mathf.Clamp(rotationX, -40, 80);
+        rotationY = Mathf.Clamp(rotationY, -200, 200);
         transform.rotation = Quaternion.Euler(rotationX - 10, rotationY, 0);
     }
 

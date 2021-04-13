@@ -6,11 +6,12 @@ public class PowderKeg : MonoBehaviour
 {
     public LayerMask collisionMask;
     private SphereCollider coll;
+    private MeshRenderer mr;
     private float blastArea = 10f;
     private void Awake()
     {
         coll = GetComponent<SphereCollider>();
-
+        mr = GetComponent<MeshRenderer>();
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -19,6 +20,7 @@ public class PowderKeg : MonoBehaviour
         {
             Debug.Log("collisionlayer");
             Explode();
+            mr.enabled = false;
         }
     }
 
@@ -41,7 +43,7 @@ public class PowderKeg : MonoBehaviour
     private void Despawn() 
     {
         Debug.Log("despawning");
-        Destroy(this);
+        Destroy(gameObject);
     }
 
 }
