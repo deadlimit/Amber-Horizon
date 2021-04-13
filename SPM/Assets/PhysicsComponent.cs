@@ -52,7 +52,10 @@ public class PhysicsComponent : MonoBehaviour
         bhGrav = Vector3.zero;
         AddGravity();
         CheckForCollisions(0);
-        transform.position += velocity * Time.deltaTime;
+        
+        if (!float.IsNegativeInfinity(velocity.x))
+            transform.position += velocity * Time.deltaTime;
+        
         MoveOutOfGeometry();
     }
     

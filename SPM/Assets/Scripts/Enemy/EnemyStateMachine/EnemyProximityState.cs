@@ -9,18 +9,14 @@ public class EnemyProximityState : State {
     private float nextFire;
 
     public GameObject Bullet;
-
-    private bool moving;
     
     protected override void Initialize() {
         forager = (Forager) owner;
     }
 
     public override void Enter() {
-        Fire();
-        nextFire = Time.time + FireCoolDown;
+        forager.pathfinder.agent.ResetPath();
     }
-
 
     public override void RunUpdate() {
         
@@ -33,17 +29,13 @@ public class EnemyProximityState : State {
         forager.transform.LookAt(forager.target);
 
         if (nextFire < Time.time) {
-            Fire();
+            Instantiate(Bullet, forager.transform.position + forager.transform.forward + Vector3.up, forager.transform.rotation);
             nextFire = Time.time + FireCoolDown;
         }
-
-       /* if (!forager.NavMeshAgent.hasPath)
-            forager.Invoke(() => forager.SamplePositionOnNavMesh(forager.transform.position, 10), Random.Range(1, 7));
-    */
-    }
+        
+        if (forager.pathfinder.agent.remainingDistance < 1f)
+            forager.Invoke(() => forager.pathfinder.SamplePositionOnNavMesh(forager.transform.position, 10));
     
-    private void Fire() {
-        Instantiate(Bullet, forager.transform.position + forager.transform.forward, forager.transform.rotation);
     }
     
 }

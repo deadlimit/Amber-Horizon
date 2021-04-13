@@ -6,18 +6,15 @@ using UnityEngine.AI;
 public class EnemyBailState : State {
     
     private Forager forager;
-    private NavMeshAgent navMeshAgent;
-    
+
     protected override void Initialize() {
         forager = (Forager) owner;
     }
-
-
+    
     public override void Enter() {
-        forager.GetComponent<BoxCollider>().enabled = false;
-        forager.Invoke(() => forager.Animator.SetTrigger("Teleport"));
+        forager.collider.enabled = false;
+        forager.Invoke(() => forager.animator.SetTrigger("Teleport"));
         forager.Invoke(Move, .5f);
-        navMeshAgent = forager.GetComponent<NavMeshAgent>();
     }
     
     private void Move() {
@@ -26,9 +23,8 @@ public class EnemyBailState : State {
         NavMesh.SamplePosition(random, out var hit, 1000, NavMesh.AllAreas);
         
         forager.transform.position = hit.position;
-        //forager.physics.velocity = Vector3.zero;
         
-        forager.GetComponent<BoxCollider>().enabled = true;
+        forager.collider.enabled = true;
         
         if(forager.ProximityCast(forager.innerRing)) 
             forager.stateMachine.ChangeState<EnemyBailState>();

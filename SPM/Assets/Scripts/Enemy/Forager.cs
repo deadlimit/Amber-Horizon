@@ -1,43 +1,45 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class Forager : Enemy {
     
-    public Transform patrolAreaCenter;
     public float patrolAreaRadius;
-    public float patrolRangeFromCenter;
     public float outerRing, innerRing;
     public LayerMask playerMask;
-    public float MovementSpeed;
-    public Transform target { get; private set; }
 
-    public Animator Animator { get; private set; }
-
-    [HideInInspector] public BlackHole activeBlackHole;
     
+    [HideInInspector] public BlackHole activeBlackHole;
+
     private void Awake() {
-        target = GameObject.FindGameObjectWithTag("Player").transform;
+        base.Awake();
     }
     
     private void Update() {
-
+        base.Update();
+        if(ProximityCast(outerRing))
+            stateMachine.ChangeState<EnemyProximityState>();
+        
         stateMachine?.RunUpdate();
     }
 
     public bool ProximityCast(float radius) {
         return Physics.OverlapSphere(transform.position, radius, playerMask).Length > 0;
     }
-
-    public void SamplePositionOnNavMesh(Vector3 origin, float originRadius) {
-        Vector3 randomPositionInsidePatrolArea = Random.insideUnitSphere * originRadius + origin;
-        NavMesh.SamplePosition(randomPositionInsidePatrolArea, out var hitInfo, 10, NavMesh.AllAreas);
-        //NavMeshAgent.SetDestination(hitInfo.position);
-    }
-
+    
     public override void BlackHoleDeath(BlackHole blackHole) {
         if (activeBlackHole) return;
         activeBlackHole = blackHole;
         stateMachine.ChangeState<EnemyDeathState>();
     }
-    
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.black;
+        if (pathfinder != null && pathfinder.agent.hasPath) {
+            Gizmos.DrawLine(transform.position, pathfinder.agent.destination);
+            Gizmos.DrawWireSphere(pathfinder.agent.destination, .5f);
+        }
+        
+    }
 }

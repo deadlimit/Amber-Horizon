@@ -4,20 +4,28 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour {
 
-    protected PhysicsComponent physicsComponent;
-    protected Animator animator;
-    protected AIPathfinder pathfinder;
+    public PhysicsComponent physicsComponent { get; set; }
+    public Animator animator { get; set; }
+    public AIPathfinder pathfinder { get; set; }
+    public Transform target { get; set; }
+    public CapsuleCollider collider { get; set; }
     
-    [SerializeField] protected State[] states;
+    [SerializeField] private State[] states;
     
     public StateMachine stateMachine { get; private set; }
     
-    private void Awake() {
+    public void Awake() {
         stateMachine = new StateMachine(this, states);
         animator = GetComponent<Animator>();
         physicsComponent = GetComponent<PhysicsComponent>();
+        collider = GetComponent<CapsuleCollider>();
         pathfinder = GetComponent<AIPathfinder>();
+        target = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
+    public void Update() {
+        animator.SetFloat("Velocity", Vector3.Distance(transform.position, pathfinder.agent.destination));
+    }
+    
     public abstract void BlackHoleDeath(BlackHole blackHole);
 }

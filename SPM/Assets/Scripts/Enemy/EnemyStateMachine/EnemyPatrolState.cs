@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 [CreateAssetMenu(fileName = "Enemy Patrol State", menuName = "New Enemy Patrol State")]
 public class EnemyPatrolState : State {
@@ -11,19 +10,22 @@ public class EnemyPatrolState : State {
     }
 
     public override void Enter() {
-        forager.Invoke(() => forager.SamplePositionOnNavMesh(forager.patrolAreaCenter.position, forager.patrolAreaRadius));
+        forager.pathfinder.SamplePositionOnNavMesh(forager.transform.position, forager.patrolAreaRadius);
     }
 
     public override void RunUpdate() {
 
-       /* if (forager.ProximityCast(forager.outerRing)) {
-            forager.NavMeshAgent.ResetPath();
+       if (forager.ProximityCast(forager.outerRing)) {
+            forager.pathfinder.agent.ResetPath();
             forager.stateMachine.ChangeState<EnemyProximityState>();
-        }
-        
-        if (!forager.NavMeshAgent.hasPath)
-            forager.Invoke(() => forager.SamplePositionOnNavMesh(forager.patrolAreaCenter.position, forager.patrolAreaRadius), Random.Range(2, 5));
-        */
+       }
+
+       if (forager.pathfinder.agent.remainingDistance < .1f) {
+           forager.stateMachine.ChangeState<EnemyIdleState>();
+           Debug.Log("change to idle state");
+       }
+           
+       
     }
     
 }
