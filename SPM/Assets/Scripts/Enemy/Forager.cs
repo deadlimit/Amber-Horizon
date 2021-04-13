@@ -13,11 +13,8 @@ public class Forager : Enemy  {
     private void Awake() {
         base.Awake();
     }
-    
     private void Update() {
         base.Update();
-        if(ProximityCast(outerRing))
-            stateMachine.ChangeState<EnemyProximityState>();
         
         stateMachine?.RunUpdate();
     }
@@ -28,11 +25,10 @@ public class Forager : Enemy  {
     
     private void OnDrawGizmos() {
         Gizmos.color = Color.black;
-        if (pathfinder != null && pathfinder.agent.hasPath) {
-            Gizmos.DrawLine(transform.position, pathfinder.agent.destination);
-            Gizmos.DrawWireSphere(pathfinder.agent.destination, .5f);
-        }
-        
+        if (pathfinder == null || !pathfinder.agent.hasPath) return;
+        Gizmos.DrawLine(transform.position, pathfinder.agent.destination);
+        Gizmos.DrawWireSphere(pathfinder.agent.destination, .5f);
+
     }
     
     public override void BlackHoleBehaviour(BlackHole blackHole) {

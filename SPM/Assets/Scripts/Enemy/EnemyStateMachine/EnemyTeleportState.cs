@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 [CreateAssetMenu(fileName = "Enemy Teleport State", menuName = "New Enemy Teleport State")]
 public class EnemyTeleportState : State {
@@ -15,9 +12,21 @@ public class EnemyTeleportState : State {
     }
 
     public override void Enter() {
+        Debug.Log("enter");
+        forager.animator.StopPlayback();
         forager.animator.SetTrigger("Teleport");
+        
+        //Hitta en ny plats en distans from spelaren
         Vector3 randomPosition = forager.transform.position + (Vector3)Random.insideUnitCircle * distanceFromPlayer;
-        forager.transform.position = randomPosition;
-        forager.stateMachine.ChangeState<EnemyProximityState>();
+
+        //Hitta en position på navmeshen så fienden inte försvinner in i en vägg eller något. 
+        Vector3 newPosition = forager.pathfinder.GetSamplePositionOnNavMesh(randomPosition, 1);
+
+        Debug.Log(newPosition);
+        
+        forager.Invoke(() => {
+            forager.transform.Translate(newPosition);
+            forager.stateMachine.ChangeState<EnemyProximityState>();
+        }, .2f);
     }
 }

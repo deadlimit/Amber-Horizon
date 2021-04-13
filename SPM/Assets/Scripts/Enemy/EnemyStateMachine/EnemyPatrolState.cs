@@ -10,7 +10,8 @@ public class EnemyPatrolState : State {
     }
 
     public override void Enter() {
-        forager.pathfinder.SamplePositionOnNavMesh(forager.transform.position, forager.patrolAreaRadius);
+        Vector3 newPosition = forager.pathfinder.GetSamplePositionOnNavMesh(forager.transform.position, forager.patrolAreaRadius);
+        forager.pathfinder.agent.SetDestination(newPosition);
     }
 
     public override void RunUpdate() {
@@ -20,10 +21,8 @@ public class EnemyPatrolState : State {
             forager.stateMachine.ChangeState<EnemyProximityState>();
        }
 
-       if (forager.pathfinder.agent.remainingDistance < .1f) {
+       if (forager.pathfinder.agent.remainingDistance < .1f) 
            forager.stateMachine.ChangeState<EnemyIdleState>();
-       }
-           
        
     }
     

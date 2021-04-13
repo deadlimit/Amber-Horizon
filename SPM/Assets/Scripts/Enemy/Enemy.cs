@@ -1,14 +1,13 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 
 public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
 
     public PhysicsComponent physicsComponent { get; set; }
-    public Animator animator { get; set; }
-    public AIPathfinder pathfinder { get; set; }
-    public Transform target { get; set; }
-    public CapsuleCollider collider { get; set; }
+    public Animator animator { get; private set; }
+    public AIPathfinder pathfinder { get; private set; }
+    public Transform target { get; private set; }
+    public CapsuleCollider collider { get; private set; }
     
     [SerializeField] private State[] states;
     
