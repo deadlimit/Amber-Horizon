@@ -26,7 +26,7 @@ public class EnemyBailState : State {
         NavMesh.SamplePosition(random, out var hit, 1000, NavMesh.AllAreas);
         
         forager.transform.position = hit.position;
-        forager.physics.velocity = Vector3.zero;
+        //forager.physics.velocity = Vector3.zero;
         
         forager.GetComponent<BoxCollider>().enabled = true;
         

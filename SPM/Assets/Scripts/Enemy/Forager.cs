@@ -31,8 +31,8 @@ public class Forager : Enemy {
     public void SamplePositionOnNavMesh(Vector3 origin, float originRadius) {
         Vector3 randomPositionInsidePatrolArea = Random.insideUnitSphere * originRadius + origin;
         NavMesh.SamplePosition(randomPositionInsidePatrolArea, out var hitInfo, 10, NavMesh.AllAreas);
-
-        NavMeshAgent.SetDestination(hitInfo.position);
+        
+        //NavMeshAgent.SetDestination(hitInfo.position);
     }
 
     public override void BlackHoleDeath(BlackHole blackHole) {
