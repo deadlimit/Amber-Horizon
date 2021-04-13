@@ -2,15 +2,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Enemy Distance State", menuName = "New Enemy Distance State")]
 public class EnemyDistanceState : State {
 
-    private Enemy enemy;
+    private Forager forager;
 
     protected override void Initialize() {
-        enemy = (Enemy) owner;
+        forager = (Forager) owner;
     }
 
     public override void RunUpdate() {
-        enemy.transform.LookAt(enemy.target);
-        if(enemy.ProximityCast(enemy.outerRing))
+        forager.transform.LookAt(forager.target);
+        if(forager.ProximityCast(forager.outerRing))
             stateMachine.ChangeState<EnemyProximityState>();
         
     }

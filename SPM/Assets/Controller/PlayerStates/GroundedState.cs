@@ -28,8 +28,8 @@ public class GroundedState : State
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && player.playerPhys.isGrounded())
-        {
+        if (Input.GetKeyDown(KeyCode.Space) && player.playerPhys.isGrounded()) {
+            player.GetComponent<Animator>().SetTrigger("Jump");
             stateMachine.ChangeState<JumpingState>();
             player.SetJump();
         }

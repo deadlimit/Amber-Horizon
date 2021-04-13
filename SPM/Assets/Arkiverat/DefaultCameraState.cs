@@ -14,7 +14,7 @@ public class DefaultCameraState : State
     }
     public override void RunUpdate() 
     {
-        camera.rotationX = Mathf.Clamp(camera.rotationX, -120, 120);
+      // camera.rotationX = Mathf.Clamp(camera.rotationX, -120, 120);
 
     }
 

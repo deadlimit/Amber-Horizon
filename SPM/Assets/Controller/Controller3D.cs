@@ -1,13 +1,11 @@
 using System.Collections;
-using System.Numerics;
 using JetBrains.Annotations;
 using UnityEngine;
-using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
 public class Controller3D : MonoBehaviour
 {
-    public Camera cam;
+    private Camera activeCamera;
     [SerializeField] Vector3 velocity = Vector3.zero;
     [SerializeField] float acceleration = 4f;
     [SerializeField]float maxSpeed;
@@ -39,8 +37,8 @@ public class Controller3D : MonoBehaviour
     public bool debugPath; 
     -----------------------------------------------------------*/
 
-    void Awake()
-    {
+    void Awake() {
+        activeCamera = Camera.main;
         playerPhys = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);
         effects = GetComponent<Animator>();
@@ -54,10 +52,10 @@ public class Controller3D : MonoBehaviour
 
     private void RotateTowardsCameraDirection() {
 
-        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, cam.transform.localEulerAngles.y, transform.localEulerAngles.z);
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, activeCamera.transform.localEulerAngles.y, transform.localEulerAngles.z);
     }
     void PlayerDirection() {     
-        input = cam.transform.rotation * input;
+        input = activeCamera.transform.rotation * input;
         RotateTowardsCameraDirection();
         Vector3 angle = Vector3.ProjectOnPlane(input, playerPhys.groundHitInfo.normal).normalized;
         input = angle * input.magnitude;
@@ -124,7 +122,7 @@ public class Controller3D : MonoBehaviour
         //Spara gravitationen innan man sätter den till 0
         float gravity = playerPhys.gravity;
 
-        Vector3 cameraForwardDirection = cam.transform.forward;
+        Vector3 cameraForwardDirection = activeCamera.transform.forward;
 
         //Nollar y-axeln för att bara dasha framåt.
         cameraForwardDirection.y = 0;

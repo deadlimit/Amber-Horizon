@@ -1,31 +1,22 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour, IBlackHoleDeath {
-
-    [SerializeField] private State[] states;
-
+public class Forager : Enemy {
+    
     public Transform patrolAreaCenter;
     public float patrolAreaRadius;
     public float patrolRangeFromCenter;
     public float outerRing, innerRing;
     public LayerMask playerMask;
     public float MovementSpeed;
-    public StateMachine stateMachine { get; private set; }
     public Transform target { get; private set; }
 
     public Animator Animator { get; private set; }
-    public NavMeshAgent NavMeshAgent { get; private set; }
-    public PhysicsComponent physics { get; private set; }
-    
+
     [HideInInspector] public BlackHole activeBlackHole;
     
     private void Awake() {
-        NavMeshAgent = GetComponent<NavMeshAgent>();
-        Animator = GetComponent<Animator>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
-        stateMachine = new StateMachine(this, states);
-        physics = GetComponent<PhysicsComponent>();
     }
     
     private void Update() {
@@ -44,7 +35,7 @@ public class Enemy : MonoBehaviour, IBlackHoleDeath {
         NavMeshAgent.SetDestination(hitInfo.position);
     }
 
-    public void BlackHoleDeath(BlackHole blackHole) {
+    public override void BlackHoleDeath(BlackHole blackHole) {
         if (activeBlackHole) return;
         activeBlackHole = blackHole;
         stateMachine.ChangeState<EnemyDeathState>();

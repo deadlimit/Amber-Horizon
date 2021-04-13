@@ -16,6 +16,7 @@ public class LauncherBlackHole : MonoBehaviour
     private Camera cam;
     private Controller3D player;
     private bool isAiming;
+    
     void Start()
     {
         cam = Camera.main;
@@ -94,7 +95,7 @@ public class LauncherBlackHole : MonoBehaviour
 
     Vector3 CalculateVelocity(Vector3 target, Vector3 origin, float time) 
     {
-        //svarta hÂlet ‰r lite stort, det blir imprecist n‰r man skjuter pÂ en vertikal yta
+        //svarta h√•let √§r lite stort, det blir imprecist n√§r man skjuter p√• en vertikal yta
 
         Vector3 distance = target - origin;
         Vector3 distanceXZ = distance.normalized;

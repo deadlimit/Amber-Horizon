@@ -15,12 +15,12 @@ public class CollisionCameraState : State
     }
     public override void RunUpdate()
     {
-        collisionRotation = camera.rotationX;
+        //collisionRotation = camera.rotationX;
 
         if (groundCheck())
         {
             Debug.Log("cam grounded");
-            camera.rotationX = Mathf.Clamp(camera.rotationX, collisionRotation, collisionRotation + 25);
+           // camera.rotationX = Mathf.Clamp(camera.rotationX, collisionRotation, collisionRotation + 25);
         }
         else
         {
@@ -30,6 +30,6 @@ public class CollisionCameraState : State
     }
     private bool groundCheck() 
     {
-        return Physics.SphereCast(camera.transform.position, camera.coll.radius,Vector3.down, out RaycastHit hitInfo, camera.camSpeed * Time.deltaTime);
+        return Physics.SphereCast(camera.transform.position, camera.coll.radius,Vector3.down, out RaycastHit hitInfo, camera.CameraSpeed * Time.deltaTime);
     }
 }
