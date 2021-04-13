@@ -4,20 +4,31 @@ using UnityEngine;
 
 public class PowderKeg : MonoBehaviour
 {
+    public LayerMask collisionMask;
     private SphereCollider coll;
     private float blastArea = 10f;
     private void Awake()
     {
         coll = GetComponent<SphereCollider>();
-        Explode();
+
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("collision");
+        if (collision.gameObject.layer == 9)
+        {
+            Debug.Log("collisionlayer");
+            Explode();
+        }
+    }
+
+
     private void Explode() 
     {
         Debug.Log("Boom!");
         StartCoroutine(ExpandRadius(coll.radius));
         Invoke("Despawn", 1f);
     }
-
     private IEnumerator ExpandRadius(float targetRadius)
     {
         Debug.Log(targetRadius < blastArea);

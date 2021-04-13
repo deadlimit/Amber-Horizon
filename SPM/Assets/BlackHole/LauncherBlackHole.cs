@@ -63,7 +63,6 @@ public class LauncherBlackHole : MonoBehaviour
 
         else 
         {
-            Debug.Log("else");
             cursor.transform.position = launchPoint.transform.position + camRay.direction  * maxDistance;
         }
         

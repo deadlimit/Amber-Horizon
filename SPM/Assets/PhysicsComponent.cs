@@ -42,10 +42,7 @@ public class PhysicsComponent : MonoBehaviour
             collisionCaster = new MeshCaster(attachedCollider, collisionMask);
 
     }
-    
-    //float smallNumber = 0.05f;
-   // float gravityMod = 1f;
-    
+       
 
     public void Update() {
         Debug.DrawLine(transform.position, transform.position + velocity);
@@ -54,8 +51,7 @@ public class PhysicsComponent : MonoBehaviour
         CheckForCollisions(0);
         transform.position += velocity * Time.deltaTime;
         MoveOutOfGeometry();
-    }
-    
+    }   
     private void CheckForCollisions(int i)
     {
         RaycastHit hitInfo = collisionCaster.CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);

@@ -88,7 +88,6 @@ public class BlackHole : MonoBehaviour
 
         if (useGravity)
         {
-            //verkar som att overlapbox �r mycket mindre ben�gen att g� igenom v�ggar.
             Collider[] boxHitColl =
             Physics.OverlapBox(transform.position, centerColl.size / 2, Quaternion.identity, collisionMask);
             if (boxHitColl.Length > 0)
