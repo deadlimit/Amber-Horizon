@@ -42,8 +42,10 @@ public class PhysicsComponent : MonoBehaviour
             collisionCaster = new MeshCaster(attachedCollider, collisionMask);
 
     }
-
-
+    
+    //float smallNumber = 0.05f;
+   // float gravityMod = 1f;
+    
 
     public void Update() {
         Debug.DrawLine(transform.position, transform.position + velocity);

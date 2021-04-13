@@ -11,7 +11,7 @@ public class CheckpointManager : MonoBehaviour {
 
     private Transform player;
 
-    private static int ID = 0;
+    private static int NextID = 0;
     
     private void Awake() {
 
@@ -25,12 +25,14 @@ public class CheckpointManager : MonoBehaviour {
         //Loopa igenom alla gameobject, hämta Checkpoint-komponenten och subscribe till checkpointens event
         //lägg sedan till checkpointen i hashtabellen
         checkpointsInScene.ForEach(checkpoint => {
-            
-            Checkpoint checkPoint = checkpoint.GetComponent<Checkpoint>();
 
-           // checkPoint.OnPlayerEnter += UpdateCheckPoint(ID+1);
+            Checkpoint currentCheckpoint = checkpoint.GetComponent<Checkpoint>();
+
+            currentCheckpoint.ID = NextID++;
+                
+            currentCheckpoint.OnPlayerEnter += UpdateCheckPoint;
             
-            checkpoints.Add(checkPoint.ID, checkPoint);
+            checkpoints.Add(currentCheckpoint.ID, currentCheckpoint);
             
         });
         
