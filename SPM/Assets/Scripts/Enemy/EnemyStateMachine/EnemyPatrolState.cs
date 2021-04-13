@@ -16,14 +16,14 @@ public class EnemyPatrolState : State {
 
     public override void RunUpdate() {
 
-        if (forager.ProximityCast(forager.outerRing)) {
+       /* if (forager.ProximityCast(forager.outerRing)) {
             forager.NavMeshAgent.ResetPath();
             forager.stateMachine.ChangeState<EnemyProximityState>();
         }
         
         if (!forager.NavMeshAgent.hasPath)
             forager.Invoke(() => forager.SamplePositionOnNavMesh(forager.patrolAreaCenter.position, forager.patrolAreaRadius), Random.Range(2, 5));
-        
+        */
     }
     
 }

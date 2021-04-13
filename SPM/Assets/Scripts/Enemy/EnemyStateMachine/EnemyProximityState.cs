@@ -37,8 +37,8 @@ public class EnemyProximityState : State {
             nextFire = Time.time + FireCoolDown;
         }
 
-        if (!forager.NavMeshAgent.hasPath)
-            forager.Invoke(() => forager.SamplePositionOnNavMesh(forager.transform.position, 10), Random.Range(1, 7));
+        //if (!forager.NavMeshAgent.hasPath)
+           //forager.Invoke(() => forager.SamplePositionOnNavMesh(forager.transform.position, 10), Random.Range(1, 7));
 
     }
     
