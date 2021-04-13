@@ -1,14 +1,12 @@
-using System;
-using UnityEngine;
-using UnityEngine.AI;
-using Random = UnityEngine.Random;
 
-public class Forager : Enemy {
+using UnityEngine;
+
+public class Forager : Enemy  {
     
     public float patrolAreaRadius;
     public float outerRing, innerRing;
     public LayerMask playerMask;
-
+    public GameObject Bullet;
     
     [HideInInspector] public BlackHole activeBlackHole;
 
@@ -28,12 +26,6 @@ public class Forager : Enemy {
         return Physics.OverlapSphere(transform.position, radius, playerMask).Length > 0;
     }
     
-    public override void BlackHoleDeath(BlackHole blackHole) {
-        if (activeBlackHole) return;
-        activeBlackHole = blackHole;
-        stateMachine.ChangeState<EnemyDeathState>();
-    }
-
     private void OnDrawGizmos() {
         Gizmos.color = Color.black;
         if (pathfinder != null && pathfinder.agent.hasPath) {
@@ -41,5 +33,15 @@ public class Forager : Enemy {
             Gizmos.DrawWireSphere(pathfinder.agent.destination, .5f);
         }
         
+    }
+    
+    public override void BlackHoleBehaviour(BlackHole blackHole) {
+        if (activeBlackHole) return;
+        activeBlackHole = blackHole;
+        stateMachine.ChangeState<EnemyDeathState>(); }
+    
+    public void Fire() {
+        Instantiate(Bullet, transform.position + transform.forward + Vector3.up, Quaternion.Euler(transform.forward));
+        pathfinder.agent.isStopped = false;
     }
 }

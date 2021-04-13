@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
-using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
 public class PhysicsComponent : MonoBehaviour
@@ -43,17 +39,14 @@ public class PhysicsComponent : MonoBehaviour
 
     }
     
-    //float smallNumber = 0.05f;
-   // float gravityMod = 1f;
-    
-
     public void Update() {
         Debug.DrawLine(transform.position, transform.position + velocity);
         bhGrav = Vector3.zero;
         AddGravity();
         CheckForCollisions(0);
         
-        if (!float.IsNegativeInfinity(velocity.x))
+        //Silvertejpslösning för att inte få -Infinity eller NaN
+        if (!float.IsNegativeInfinity(velocity.x) || !float.IsNaN(velocity.x) )
             transform.position += velocity * Time.deltaTime;
         
         MoveOutOfGeometry();
@@ -126,17 +119,12 @@ public class PhysicsComponent : MonoBehaviour
         }
 
     }
-    public void BlackHoleGravity(BlackHole bh, IBlackHoleBehaviour blackHoleBehaviour)
-    {
-        if (blackHoleBehaviour != null) {
-            blackHoleBehaviour.BlackHoleBehaviour(bh);
-        }
-        else {
-            bhGrav = bh.GravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
-            velocity += bhGrav;
-            ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
-            bhGrav = Vector3.zero;
-        }
+    public void BlackHoleGravity(BlackHole bh) {
+        bhGrav = bh.GravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
+        velocity += bhGrav;
+        ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
+        bhGrav = Vector3.zero;
+        
     }
     public void StopVelocity()
     {

@@ -7,8 +7,6 @@ public class EnemyProximityState : State {
 
     public float FireCoolDown;
     private float nextFire;
-
-    public GameObject Bullet;
     
     protected override void Initialize() {
         forager = (Forager) owner;
@@ -24,18 +22,20 @@ public class EnemyProximityState : State {
         if(!forager.ProximityCast(forager.outerRing)) forager.stateMachine.ChangeState<EnemyPatrolState>();
         
         //Om denna är true är spelaren innanför den inre sfären
-        if(forager.ProximityCast(forager.innerRing)) forager.stateMachine.ChangeState<EnemyBailState>();
+        if(forager.ProximityCast(forager.innerRing)) forager.stateMachine.ChangeState<EnemyTeleportState>();
         
-        forager.transform.LookAt(forager.target);
+        
 
         if (nextFire < Time.time) {
-            Instantiate(Bullet, forager.transform.position + forager.transform.forward + Vector3.up, forager.transform.rotation);
+            forager.pathfinder.agent.isStopped = true;
+            forager.animator.SetTrigger("Shoot");
             nextFire = Time.time + FireCoolDown;
         }
         
-        if (forager.pathfinder.agent.remainingDistance < 1f)
-            forager.Invoke(() => forager.pathfinder.SamplePositionOnNavMesh(forager.transform.position, 10));
+        forager.transform.LookAt(forager.target);
     
     }
+
+
     
 }

@@ -8,9 +8,9 @@ public class EnemyDeathState : State {
     protected override void Initialize() {
         forager = (Forager) owner;
     }
-
     
     public override void RunUpdate() {
+        Debug.Log("enemy death");
         if (forager.activeBlackHole != null) {
             forager.transform.LookAt(forager.activeBlackHole.transform);
 

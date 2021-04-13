@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public abstract class Enemy : MonoBehaviour {
+public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
 
     public PhysicsComponent physicsComponent { get; set; }
     public Animator animator { get; set; }
@@ -27,5 +27,5 @@ public abstract class Enemy : MonoBehaviour {
         animator.SetFloat("Velocity", Vector3.Distance(transform.position, pathfinder.agent.destination));
     }
     
-    public abstract void BlackHoleDeath(BlackHole blackHole);
+    public virtual void BlackHoleBehaviour(BlackHole blackHole) { Debug.Log("hello");}
 }
