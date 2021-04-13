@@ -39,14 +39,24 @@ public class LauncherBlackHole : MonoBehaviour
         isAiming = false;
         cursor.SetActive(false); }
 
+    public float maxDistance = 400f;
     private void LaunchProjectile() 
     {
         Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask)) 
         {
+
             cursor.transform.position = hit.point;
-            Vector3 vo = CalculateVelocity(hit.point, playerPos.position, flightTime);
+            if (hit.point.magnitude > maxDistance)
+            {
+                Debug.Log("if");
+                Vector3 direction = (hit.point - playerPos.position).normalized;
+                direction.y = 0f;
+                cursor.transform.position = direction * maxDistance;
+            }
+
+            Vector3 vo = CalculateVelocity(cursor.transform.position, playerPos.position, flightTime);
             
             DrawArc(vo, cursor.transform.position);
 
