@@ -38,16 +38,16 @@ public class LauncherBlackHole : MonoBehaviour
         lr.enabled = false;
         isAiming = false;
         cursor.SetActive(false); }
-    void LaunchProjectile() 
+
+    private void LaunchProjectile() 
     {
         Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
 
-        if (Physics.Raycast(camRay, out hit, 100f, collisionMask)) 
+        if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask)) 
         {
-            cursor.transform.position = hit.point + Vector3.up * 0.1f;
+            cursor.transform.position = hit.point;
             Vector3 vo = CalculateVelocity(hit.point, playerPos.position, flightTime);
-
+            
             DrawArc(vo, cursor.transform.position);
 
             transform.rotation = Quaternion.LookRotation(vo);
@@ -69,6 +69,29 @@ public class LauncherBlackHole : MonoBehaviour
 
         lr.SetPosition(resolution, finalPos);
     }
+   /* LaunchData CalculateLaunchData(Vector3 origin, Vector3 target) 
+    {
+        float displacementY = target.y - origin.y;
+        Vector3 displacementXZ = target - origin;
+        displacementXZ.y = 0f;
+
+        float time = Mathf.Sqrt(-2*)
+    }
+    /*        Debug.Log("Drawpath: bh är " + bh);
+        float timeToTarget = Mathf.Sqrt(-2 * launchSpeedY / playerPhys.gravity) + Mathf.Sqrt(2 * (bh.velocity.y - launchSpeedY) / playerPhys.gravity);        
+        Vector3 previousDrawPoint = bh.transform.position;
+
+        int resolution = 30;
+        for (int i = 0; i < resolution; i++) 
+        {
+            Debug.Log(i);
+            float simulationTime = i / (float)resolution * timeToTarget;
+            Vector3 displacement = bh.velocity * simulationTime +
+            playerPhys.gravity * Vector3.down /*vector3.down??*/ //* simulationTime * simulationTime / 2f;
+    /*Vector3 drawPoint = bh.transform.position + displacement;
+    Debug.DrawLine(previousDrawPoint, drawPoint, Color.green);
+    previousDrawPoint = drawPoint; */
+
 
     Vector3 CalculateVelocity(Vector3 target, Vector3 origin, float time) 
     {
@@ -78,11 +101,12 @@ public class LauncherBlackHole : MonoBehaviour
         Vector3 distanceXZ = distance.normalized;
         distanceXZ.y = 0f;
 
-        float speedY = distance.y;
-        float speedXZ = distance.magnitude;
+        float displacementY = distance.y;
+        float displacementXZ = distance.magnitude;
 
-        float velXZ = speedXZ / time;
-        float velY = speedY / time + (0.5f * bh.gravity) * time;
+
+        float velXZ = displacementXZ / time;
+        float velY = displacementY / time + (0.5f * bh.gravity) * time;
 
         Vector3 trajectory = distanceXZ * velXZ;
         trajectory.y = velY;
@@ -93,7 +117,7 @@ public class LauncherBlackHole : MonoBehaviour
     Vector3 CalculatePosInTime(Vector3 vo, float time) 
     {
         Vector3 result = playerPos.position + vo * time;
-        float speedY = (-0.5f * bh.gravity * (time * time)) + (vo.y * time) + playerPos.position.y;
+        float speedY = (-0.5f * bh.gravity* (time * time)) + (vo.y * time) + playerPos.position.y;
 
         result.y = speedY;
         return result;

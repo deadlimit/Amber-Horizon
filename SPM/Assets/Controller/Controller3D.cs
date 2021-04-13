@@ -81,10 +81,8 @@ public class Controller3D : MonoBehaviour
             Time.timeScale = Time.timeScale == .3f ? Time.timeScale = 1 : Time.timeScale = .3f;
         }
         
-        stateMachine.RunUpdate();
-        
-        PlayerDirection();
-        
+        stateMachine.RunUpdate();        
+        PlayerDirection();     
         playerPhys.AddForce(velocity);
         
         if (Input.GetKeyDown(KeyCode.E) && nextDash < Time.time) {

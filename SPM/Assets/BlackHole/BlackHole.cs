@@ -20,7 +20,7 @@ public class BlackHole : MonoBehaviour
     public Transform center;
     
     SphereCollider coll;
-    BoxCollider centerColl;
+    public BoxCollider centerColl;
 
     private bool useGravity = true;
     private float terminalDistance = 0.5f;
@@ -85,20 +85,7 @@ public class BlackHole : MonoBehaviour
         }
 
         GameObject.FindGameObjectWithTag("Player").GetComponent<PhysicsComponent>().AffectedByBlackHoleGravity = playerFound;
-        //---------------------------------------------------------
 
-        //om man s�tter if(useGravity) h�r ute kan vi nog slippa g�ra boxcasten n�r h�let �nd� st�r still? 
-
-        /*
-        RaycastHit hitInfo;
-
-        if (Physics.BoxCast(transform.position, centerColl.size / 2, velocity.normalized, out hitInfo, Quaternion.identity, (velocity.magnitude * Time.deltaTime + skinWidth), collisionMask))
-            {
-                Debug.Log("collision layer");
-            //kanske vill ha liiiite fysik i tr�ffen
-                velocity = Vector3.zero;
-                useGravity = false;
-            }*/
         if (useGravity)
         {
             //verkar som att overlapbox �r mycket mindre ben�gen att g� igenom v�ggar.
@@ -111,8 +98,7 @@ public class BlackHole : MonoBehaviour
             }
 
             velocity += Vector3.down * Time.deltaTime * gravity;
-        }
-        
+        }    
    
 
         velocity *= Mathf.Pow(airResistance, Time.deltaTime);
