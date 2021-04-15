@@ -87,7 +87,7 @@ public class PhysicsComponent : MonoBehaviour
         }
         else
         {
-            velocity += platformVelocity * Time.deltaTime;
+            velocity += platformVelocity  * Time.deltaTime;
             velocity -=  relativeVelocity.normalized * normalForce.magnitude * kineticFrictionCoefficient;           
             ApplyAirResistance();
         }
@@ -161,7 +161,6 @@ public class PhysicsComponent : MonoBehaviour
             velocity -= velocity.normalized * normalForce.magnitude * kineticFrictionCoefficient;
         }
         ApplyAirResistance();
-        //velocity *= Mathf.Pow(airResistance, Time.deltaTime);
     }
     public void ApplyAirResistance() { velocity *= Mathf.Pow(airResistance, Time.deltaTime); }
     public void AddForce(Vector3 input)

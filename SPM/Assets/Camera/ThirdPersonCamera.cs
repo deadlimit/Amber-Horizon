@@ -11,7 +11,7 @@ public class ThirdPersonCamera : MonoBehaviour
     
     public SphereCollider coll { get; private set; }
 
-    private Transform target;
+    public Transform target;
     private Vector3 playerPos;
     private Vector3 cameraOffset;
     private Vector3 offset;
@@ -22,10 +22,6 @@ public class ThirdPersonCamera : MonoBehaviour
         
         coll = GetComponent<SphereCollider>();
         Cursor.lockState = CursorLockMode.Locked;
-    }
-
-    private void Start() {
-        target = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void LateUpdate()
