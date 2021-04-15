@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
-using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
 public class PhysicsComponent : MonoBehaviour
@@ -43,19 +39,18 @@ public class PhysicsComponent : MonoBehaviour
 
     }
     
-    //float smallNumber = 0.05f;
-   // float gravityMod = 1f;
-    
-
     public void Update() {
         Debug.DrawLine(transform.position, transform.position + velocity);
         bhGrav = Vector3.zero;
         AddGravity();
         CheckForCollisions(0);
-        transform.position += velocity * Time.deltaTime;
+        
+        //Silvertejpslösning för att inte få -Infinity eller NaN
+        if (!float.IsNegativeInfinity(velocity.x) || !float.IsNaN(velocity.x) )
+            transform.position += velocity * Time.deltaTime;
+        
         MoveOutOfGeometry();
-    }
-    
+    }   
     private void CheckForCollisions(int i)
     {
         RaycastHit hitInfo = collisionCaster.CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);
@@ -79,8 +74,6 @@ public class PhysicsComponent : MonoBehaviour
             CheckForCollisions(i + 1);
     }
 
-    public float relVelMag = 0f;
-    public float treshhold = 0f; 
     private void HandleMovingPlatform(RaycastHit hitInfo, Vector3 normalForce)
     {
         MovingPlatformV2 mp = hitInfo.collider.GetComponent<MovingPlatformV2>();
@@ -93,7 +86,7 @@ public class PhysicsComponent : MonoBehaviour
         }
         else
         {
-            velocity += platformVelocity * Time.deltaTime;
+            velocity += platformVelocity  * Time.deltaTime;
             velocity -=  relativeVelocity.normalized * normalForce.magnitude * kineticFrictionCoefficient;           
             ApplyAirResistance();
         }
@@ -123,17 +116,12 @@ public class PhysicsComponent : MonoBehaviour
         }
 
     }
-    public void BlackHoleGravity(BlackHole bh, IBlackHoleBehaviour blackHoleBehaviour)
-    {
-        if (blackHoleBehaviour != null) {
-            blackHoleBehaviour.BlackHoleBehaviour(bh);
-        }
-        else {
-            bhGrav = bh.GravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
-            velocity += bhGrav;
-            ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
-            bhGrav = Vector3.zero;
-        }
+    public void BlackHoleGravity(BlackHole bh) {
+        bhGrav = bh.GravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
+        velocity += bhGrav;
+        ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
+        bhGrav = Vector3.zero;
+        
     }
     public void StopVelocity()
     {
@@ -167,7 +155,6 @@ public class PhysicsComponent : MonoBehaviour
             velocity -= velocity.normalized * normalForce.magnitude * kineticFrictionCoefficient;
         }
         ApplyAirResistance();
-        //velocity *= Mathf.Pow(airResistance, Time.deltaTime);
     }
     public void ApplyAirResistance() { velocity *= Mathf.Pow(airResistance, Time.deltaTime); }
     public void AddForce(Vector3 input)

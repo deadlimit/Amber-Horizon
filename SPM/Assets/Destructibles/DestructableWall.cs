@@ -21,6 +21,7 @@ public class DestructableWall : MonoBehaviour, IBlackHoleBehaviour {
             PhysicsComponent physics = child.gameObject.AddComponent<PhysicsComponent>();
             physics.collisionMask = collisionMask;
             physics.gravity = 0;
+            print("wall");
         }
 
         Destroy(gameObject);
