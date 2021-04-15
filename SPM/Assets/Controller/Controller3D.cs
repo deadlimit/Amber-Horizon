@@ -124,8 +124,9 @@ public class Controller3D : MonoBehaviour
 
         //Nollar y-axeln för att bara dasha framåt.
         cameraForwardDirection.y = 0;
-        
+
         //Stänger av gravitationen och nollställer hastigheten för att endast dash-velociteten ska gälla. 
+        Vector3 forwardMomentum = new Vector3(playerPhys.velocity.x, 0f, playerPhys.velocity.z);
         playerPhys.velocity = Vector3.zero;
         playerPhys.gravity = 0;
         //playerPhys.bhGrav = Vector3.zero;
@@ -143,6 +144,7 @@ public class Controller3D : MonoBehaviour
         playerPhys.gravity = gravity;
 
         playerPhys.AffectedByBlackHoleGravity = false;
+        playerPhys.velocity = forwardMomentum;
     }
     
 
