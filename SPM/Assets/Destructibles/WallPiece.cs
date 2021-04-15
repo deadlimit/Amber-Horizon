@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class WallPiece : MonoBehaviour, IBlackHoleDeath {
+public class WallPiece : MonoBehaviour, IBlackHoleBehaviour  {
 
     private bool insideBlackHole;
     private BlackHole blackhole;
-    public void BlackHoleDeath(BlackHole blackHole) {
+    public void BlackHoleBehaviour(BlackHole blackHole) {
         insideBlackHole = true;
         blackhole = blackHole;
     }
