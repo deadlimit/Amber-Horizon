@@ -15,8 +15,6 @@ public class DestructorFist : MonoBehaviour {
     private void Awake() {
         collider = GetComponent<SphereCollider>();
     }
-
-    public void SwitchCollider(bool value) => collider.enabled = value;
     
     public void Update() {
         Collider[] player = Physics.OverlapSphere(transform.position, collider.radius, PlayerMask);
@@ -26,6 +24,7 @@ public class DestructorFist : MonoBehaviour {
         player[0].GetComponent<PhysicsComponent>().AddForce(transform.forward + Vector3.up * hitForce);
         collider.enabled = false;
         enabled = false;
+        
     }
     
 }
