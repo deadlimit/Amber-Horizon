@@ -110,7 +110,7 @@ public class BlackHole : MonoBehaviour
 
     private void TurnOnGravitationPull() => GravitationalPull = gravitationalPull;
 
-        private void Spawn() {
+    private void Spawn() {
         StartCoroutine(ExpandRadius(maxRadius));
         StartCoroutine(ExpandSphereEffect(new Vector3(10, 10, 10)));
         gravitationalPull = 25;
