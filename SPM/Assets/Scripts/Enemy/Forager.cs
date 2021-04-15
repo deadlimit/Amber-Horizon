@@ -1,35 +1,43 @@
-
 using UnityEngine;
+using UnityEngine.AI;
 
-public class Forager : Enemy  {
+public class Forager : Enemy {
     
-    public GameObject Bullet;
-    
+    public Transform patrolAreaCenter;
+    public float patrolAreaRadius;
+    public float patrolRangeFromCenter;
+    public float outerRing, innerRing;
+    public LayerMask playerMask;
+    public float MovementSpeed;
+    public Transform target { get; private set; }
+
+    public Animator Animator { get; private set; }
+
     [HideInInspector] public BlackHole activeBlackHole;
-
+    
     private void Awake() {
-        base.Awake();
+        target = GameObject.FindGameObjectWithTag("Player").transform;
     }
+    
     private void Update() {
-        base.Update();
-        
+
         stateMachine?.RunUpdate();
     }
-    
-    private void OnDrawGizmos() {
-        Gizmos.color = Color.black;
-        if (Pathfinder == null || !Pathfinder.agent.hasPath) return;
-        Gizmos.DrawLine(transform.position, Pathfinder.agent.destination);
-        Gizmos.DrawWireSphere(Pathfinder.agent.destination, .5f);
 
+    public bool ProximityCast(float radius) {
+        return Physics.OverlapSphere(transform.position, radius, playerMask).Length > 0;
     }
-    public override void BlackHoleBehaviour(BlackHole blackHole) {
+
+    public void SamplePositionOnNavMesh(Vector3 origin, float originRadius) {
+        Vector3 randomPositionInsidePatrolArea = Random.insideUnitSphere * originRadius + origin;
+        NavMesh.SamplePosition(randomPositionInsidePatrolArea, out var hitInfo, 10, NavMesh.AllAreas);
+        //NavMeshAgent.SetDestination(hitInfo.position);
+    }
+
+    public override void BlackHoleDeath(BlackHole blackHole) {
         if (activeBlackHole) return;
         activeBlackHole = blackHole;
-        stateMachine.ChangeState<EnemyDeathState>(); }
-    
-    public void Fire() {
-        Instantiate(Bullet, transform.position + transform.forward + Vector3.up, Quaternion.Euler(transform.forward));
-        Pathfinder.agent.isStopped = false;
+        stateMachine.ChangeState<EnemyDeathState>();
     }
+    
 }

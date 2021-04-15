@@ -6,17 +6,15 @@ public class LauncherBlackHole : MonoBehaviour
 {
     public GameObject cursor;
     public GameObject launchPoint;
+    public BlackHole bh;
     public LayerMask collisionMask;
     public LineRenderer lr;
     public float flightTime = 1f;
-    public BlackHole bh;
-    public Camera playerCam;
 
     private int resolution = 10;
     private Camera cam;
     private bool isAiming;
-
-    public Vector3 cursorPos;
+    
     void Start()
     {
         cam = Camera.main;
@@ -27,9 +25,7 @@ public class LauncherBlackHole : MonoBehaviour
     void Update()
     {
         if(isAiming)
-            LaunchProjectile();
-
-       cursorPos = cursor.transform.position;
+            LaunchProjectile(); 
     }
 
     public void Activate() {
@@ -46,34 +42,36 @@ public class LauncherBlackHole : MonoBehaviour
     {
         Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
+        if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask)) 
         {
             Vector3 lastLegalPoint = transform.position;
 
             if ((hit.point - launchPoint.transform.position).magnitude < maxDistance)
             {
                 cursor.transform.position = hit.point;
+                lastLegalPoint = hit.point;
             }
 
-            else if ((hit.point - launchPoint.transform.position).magnitude > maxDistance)
+            if ((hit.point - launchPoint.transform.position).magnitude > maxDistance )
             {
-                cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
-            }          
-        }
+                Debug.Log("if");
+                Vector3 direction = (hit.point - launchPoint.transform.position);
 
-        else 
-        {
-            cursor.transform.position = launchPoint.transform.position + camRay.direction  * maxDistance;
-        }
-        
-        Vector3 vo = CalculateVelocity(cursor.transform.position, launchPoint.transform.position, flightTime);
-        DrawArc(vo, cursor.transform.position);
+                direction.Normalize();
+                cursor.transform.position = lastLegalPoint;
+                cursor.transform.position = launchPoint.transform.position - cursor.transform.localScale / 2 + direction * maxDistance;
+            }
 
-        transform.rotation = Quaternion.LookRotation(vo);
-        if (Input.GetMouseButtonDown(0))
-        {
-            BlackHole obj = Instantiate(bh, launchPoint.transform.position, Quaternion.identity);
-            obj.velocity = vo;
+            Vector3 vo = CalculateVelocity(cursor.transform.position, launchPoint.transform.position, flightTime);
+            
+            DrawArc(vo, cursor.transform.position);
+
+            transform.rotation = Quaternion.LookRotation(vo);
+            if (Input.GetMouseButtonDown(0)) 
+            {
+                BlackHole obj = Instantiate(bh, launchPoint.transform.position, Quaternion.identity);
+                obj.velocity = vo; 
+            }
         }
     }
 
