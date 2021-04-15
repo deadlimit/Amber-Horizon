@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class Forager : Enemy  {
     
-
-
     public GameObject Bullet;
     
     [HideInInspector] public BlackHole activeBlackHole;
