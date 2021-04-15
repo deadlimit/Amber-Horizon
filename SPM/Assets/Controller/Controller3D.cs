@@ -22,6 +22,7 @@ public class Controller3D : MonoBehaviour
     [SerializeField] private float timeWithoutGravity;
     [SerializeField] private float blackHoleGravityDashForce;
     private float nextDash;
+    [SerializeField] private int keyFragments = 0;
 
     private Animator effects;
     
@@ -147,6 +148,10 @@ public class Controller3D : MonoBehaviour
         playerPhys.velocity = forwardMomentum;
     }
     
+    public void AddKeyFragment()
+    {
+        keyFragments += 1;
+    }
 
     //obsolete men inte redo att radera allt riktigt än
    /* private void LaunchBH() 
