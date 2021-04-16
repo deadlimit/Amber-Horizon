@@ -230,6 +230,8 @@ MonoBehaviour:
   kineticFrictionCoefficient: 1
   airResistance: 0.096
   AffectedByBlackHoleGravity: 0
+  relVelMag: 0
+  treshhold: 0
   groundCheckDistance: 0.05
 --- !u!114 &409543006023988583
 MonoBehaviour:
@@ -1570,14 +1572,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cursor: {fileID: 1045832068}
   launchPoint: {fileID: 2306226121296992254}
+  bh: {fileID: 8524585833828388589, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
   collisionMask:
     serializedVersion: 2
     m_Bits: 64
   lr: {fileID: 1115700314}
   flightTime: 1
-  bh: {fileID: 8524585833828388589, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
-  playerCam: {fileID: 0}
-  cursorPos: {x: 0, y: 0, z: 0}
   maxDistance: 20
 --- !u!120 &1115700314
 LineRenderer:

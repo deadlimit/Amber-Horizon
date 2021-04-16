@@ -1,38 +1,23 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
-public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
+public abstract class Enemy : MonoBehaviour {
 
-    public float outerRing, innerRing;
-    public PhysicsComponent PhysicsComponent { get; set; }
-    public Animator Animator { get; private set; }
-    public AIPathfinder Pathfinder { get; private set; }
-    public Transform Target { get; private set; }
-    public CapsuleCollider Collider { get; private set; }
+    protected PhysicsComponent physicsComponent;
+    protected Animator animator;
+    protected AIPathfinder pathfinder;
     
-    public LayerMask PlayerMask;
-    
-    [SerializeField] private State[] states;
+    [SerializeField] protected State[] states;
     
     public StateMachine stateMachine { get; private set; }
     
-    public void Awake() {
+    private void Awake() {
         stateMachine = new StateMachine(this, states);
-        Animator = GetComponent<Animator>();
-        PhysicsComponent = GetComponent<PhysicsComponent>();
-        Collider = GetComponent<CapsuleCollider>();
-        Pathfinder = GetComponent<AIPathfinder>();
-        Target = GameObject.FindGameObjectWithTag("Player").transform;
+        animator = GetComponent<Animator>();
+        physicsComponent = GetComponent<PhysicsComponent>();
+        pathfinder = GetComponent<AIPathfinder>();
     }
 
-    public void Update() {
-        Animator.SetFloat("DistanceToTarget", Vector3.Distance(transform.position, Pathfinder.agent.destination));
-    }
-    
-    public bool ProximityCast(float radius) {
-        return Physics.OverlapSphere(transform.position, radius, PlayerMask).Length > 0;
-    }
-    
-    
-    public virtual void BlackHoleBehaviour(BlackHole blackHole) { Debug.Log("hello");}
+    public abstract void BlackHoleDeath(BlackHole blackHole);
 }

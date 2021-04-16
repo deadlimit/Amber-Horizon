@@ -21,11 +21,11 @@ public class Bullet : MonoBehaviour {
 
         Physics.Raycast(transform.position, transform.forward.normalized, out var hit, 1,playerLayer);
 
-        if (!hit.collider) return;
-        
-        hit.transform.gameObject.GetComponent<Health>()?.TakeDamage();
-        Destroy(gameObject);
-
+        if (hit.collider) {
+            hit.transform.gameObject.GetComponent<Health>().TakeDamage();
+            Destroy(gameObject);
+        }
+            
     }
 
 }
