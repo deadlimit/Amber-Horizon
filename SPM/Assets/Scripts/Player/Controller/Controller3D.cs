@@ -1,5 +1,7 @@
 using AbilitySystem;
+using EventCallbacks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Controller3D : MonoBehaviour
 {
@@ -21,6 +23,8 @@ public class Controller3D : MonoBehaviour
     private StateMachine stateMachine;
     private bool jump;
 
+    private Animator animator;
+    
     /*obsolete, ska ta bort det så fort jag är säker på min sak-------
     public BlackHole blackHole;
     public float launchSpeedXZ = 5f;
@@ -31,7 +35,7 @@ public class Controller3D : MonoBehaviour
         activeCamera = Camera.main;
         playerPhys = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);
-        
+        animator = GetComponent<Animator>();
     }
     
     private void Start() {
@@ -93,8 +97,23 @@ public class Controller3D : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.E))
             abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
-        
 
+
+        if (Input.GetKeyDown(KeyCode.I)) {
+            bool zoomIn = !animator.GetBool("ShowKey");
+
+
+            if (!zoomIn) {
+                CameraEvent cameraEvent = new CameraEvent();
+                cameraEvent.newTarget = GameObject.FindGameObjectWithTag("KeyCameraTarget").transform;
+                EventSystem<CameraEvent>.FireEvent(cameraEvent);
+            }
+
+            animator.SetBool("ShowKey", zoomIn);
+
+        }
+            
+        
         if (Input.GetMouseButtonDown(1))
             lbh.Activate();
         if (Input.GetMouseButtonUp(1))

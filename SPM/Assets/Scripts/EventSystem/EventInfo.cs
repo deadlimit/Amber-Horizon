@@ -26,4 +26,12 @@ namespace EventCallbacks
     }
     public class KeyPickUpEvent : EventInfo { }
     public class UnlockEvent : EventInfo { }
+
+    public class CameraEvent : EventInfo {
+
+        public Transform newTarget;
+
+    }
+    
 }
+

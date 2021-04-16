@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using EventCallbacks;
 using UnityEngine;
 
 public class ThirdPersonCamera : MonoBehaviour
@@ -72,5 +73,9 @@ public class ThirdPersonCamera : MonoBehaviour
     private bool groundCheck()
     {
         return Physics.SphereCast(transform.position, coll.radius, -transform.up, out RaycastHit hitInfo, coll.radius);
+    }
+
+    public void ZoomIntoKey(CameraEvent cameraEvent) {
+        target.transform.position = cameraEvent.newTarget.transform.position;
     }
 }
