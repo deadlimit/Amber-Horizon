@@ -11,7 +11,7 @@ public class ThirdPersonCamera : MonoBehaviour
     
     public SphereCollider coll { get; private set; }
 
-    private Transform target;
+    public Transform target;
     private Vector3 playerPos;
     private Vector3 cameraOffset;
     private Vector3 offset;
@@ -24,10 +24,6 @@ public class ThirdPersonCamera : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    private void Start() {
-        target = GameObject.FindGameObjectWithTag("Player").transform;
-    }
-
     void LateUpdate()
     {
         GetInput();
@@ -36,7 +32,7 @@ public class ThirdPersonCamera : MonoBehaviour
         offset = transform.rotation * TargetOffset;
         PlaceCamera();
 
-        //magic number h�r, roterar kameran ytterligare lite ned�t, tyckte att det blev l�ttare d�
+        rotationX = Mathf.Clamp(rotationX, -40, 80);
         transform.rotation = Quaternion.Euler(rotationX - 10, rotationY, 0);
     }
 
