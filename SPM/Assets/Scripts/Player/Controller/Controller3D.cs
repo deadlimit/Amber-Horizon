@@ -14,6 +14,7 @@ public class Controller3D : MonoBehaviour
     public Vector3 input = Vector3.zero;
     public PhysicsComponent playerPhys;
     public LauncherBlackHole lbh;
+    public float deceleration = 1f;
     
     [Header("Dash")]
     [SerializeField] private float dashCooldown;
@@ -60,13 +61,28 @@ public class Controller3D : MonoBehaviour
         RotateTowardsCameraDirection();
         Vector3 angle = Vector3.ProjectOnPlane(input, playerPhys.groundHitInfo.normal).normalized;
         input = angle * input.magnitude;
-        Accelerate();
+        AccelerateDecelerate();
     }
-    private void Accelerate()
+    private void AccelerateDecelerate()
     {
-        velocity = input * acceleration * Time.deltaTime;
-        velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
-    
+        if (input.magnitude > float.Epsilon)
+        {
+            velocity = input * acceleration * Time.deltaTime;
+            velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
+
+        }
+        else
+        {
+            Vector3 movementXZ = new Vector3(velocity.x, 0, velocity.y);
+            if (deceleration > Mathf.Abs(velocity.x+velocity.y))
+            {
+                velocity.x = 0;
+                velocity.z = 0;
+            }
+            Vector3 projection = new Vector3(velocity.x, 0.0f, velocity.z).normalized;
+            velocity -= projection * deceleration * Time.deltaTime;
+        }
+
         //det här är skräp
         if (jump)
         {
@@ -74,6 +90,7 @@ public class Controller3D : MonoBehaviour
             jump = false;
         }
     }
+
 
     void Update() {
 
