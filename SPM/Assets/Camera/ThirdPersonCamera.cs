@@ -11,7 +11,7 @@ public class ThirdPersonCamera : MonoBehaviour
     
     public SphereCollider coll { get; private set; }
 
-    public GameObject target;
+    private GameObject target;
     private Vector3 playerPos;
     private Vector3 cameraOffset;
     private Vector3 offset;
@@ -19,7 +19,7 @@ public class ThirdPersonCamera : MonoBehaviour
     private float rotationY;
     
     void Awake() {
-        target = GameObject.Find("mixamorig:Neck");
+        target = GameObject.FindGameObjectWithTag("CameraTarget");
         coll = GetComponent<SphereCollider>();
         Cursor.lockState = CursorLockMode.Locked;
     }

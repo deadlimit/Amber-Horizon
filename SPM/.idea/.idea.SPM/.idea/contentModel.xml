@@ -22,7 +22,6 @@
           <e p="Abilitysystem" t="Include">
             <e p="Abilitysystem" t="Include">
               <e p="AbilityEntity.cs" t="Include" />
-              <e p="AssetLoader.cs" t="Include" />
               <e p="BaseScripts" t="Include">
                 <e p="GameplayAbility.cs" t="Include" />
                 <e p="GameplayAbilitySystem.cs" t="Include" />
@@ -33,25 +32,27 @@
               </e>
               <e p="Core" t="Include">
                 <e p="Abilities" t="Include">
+                  <e p="BlackHoleAbility.cs" t="Include" />
                   <e p="DashAbility.cs" t="Include" />
                 </e>
                 <e p="Attributes" t="Include">
                   <e p="HealthAttribute.cs" t="Include" />
                 </e>
                 <e p="Effects" t="Include">
+                  <e p="BlackHoleCooldown.cs" t="Include" />
                   <e p="DashCooldown.cs" t="Include" />
                 </e>
                 <e p="Tags" t="Include">
-                  <e p="CooldownTag.cs" t="Include" />
+                  <e p="AttackTag.cs" t="Include" />
+                  <e p="BlackHoleCooldownTag.cs" t="Include" />
+                  <e p="DashCooldownTag.cs" t="Include" />
                   <e p="MovementTag.cs" t="Include" />
                 </e>
               </e>
-              <e p="GameplayAssetLoader.cs" t="Include" />
             </e>
           </e>
           <e p="BlackHole" t="Include">
             <e p="BlackHole.cs" t="Include" />
-            <e p="IBlackHoleDeath.cs" t="Include" />
             <e p="LauncherBlackHole.cs" t="Include" />
           </e>
           <e p="CheckpointSystem" t="Include">
@@ -95,6 +96,7 @@
           <e p="GameManager.cs" t="Include" />
           <e p="GameVariables.cs" t="Include" />
           <e p="In-Game Items" t="Include">
+            <e p="AbilityPickup.cs" t="Include" />
             <e p="DestructableWall.cs" t="Include" />
             <e p="Door.cs" t="Include" />
             <e p="KeyFragment.cs" t="Include" />

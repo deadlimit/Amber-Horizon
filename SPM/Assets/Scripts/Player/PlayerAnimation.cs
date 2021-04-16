@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerAnimation : MonoBehaviour {
 
     private Animator animator;
-    public float acceleration;
+
     private void Awake() {
         animator = GetComponent<Animator>();
     }
