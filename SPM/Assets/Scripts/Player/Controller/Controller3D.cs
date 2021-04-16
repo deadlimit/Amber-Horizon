@@ -13,8 +13,6 @@ public class Controller3D : MonoBehaviour
     public PhysicsComponent playerPhys;
     public LauncherBlackHole lbh;
     
-    [SerializeField] private int keyFragments = 0;
-
     private GameplayAbilitySystem abilitySystem;
     
     [Header("StateMachine")]
@@ -34,9 +32,7 @@ public class Controller3D : MonoBehaviour
         stateMachine = new StateMachine(this, states);
         
     }
-
-    public DashAbility ability;
-
+    
     private void Start() {
         abilitySystem = GetComponent<GameplayAbilitySystem>();
     }
@@ -72,29 +68,25 @@ public class Controller3D : MonoBehaviour
     }
 
     void Update() {
-
-        Debug.DrawLine(transform.position, transform.position + transform.forward, Color.red);
+        
         if (Input.GetKeyDown(KeyCode.F)) 
         {
             Time.timeScale = Time.timeScale == .3f ? Time.timeScale = 1 : Time.timeScale = .3f;
         }
         
-        stateMachine.RunUpdate();        
-        PlayerDirection();     
-        playerPhys.AddForce(velocity);
-        
         if (Input.GetKeyDown(KeyCode.E))
             abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
-            
-        if (Input.GetKeyDown(KeyCode.B)) {
-            
-        }
-            
+        
 
         if (Input.GetMouseButtonDown(1))
             lbh.Activate();
         if (Input.GetMouseButtonUp(1))
             lbh.Deactivate();
+        
+        stateMachine.RunUpdate();        
+        PlayerDirection();     
+        playerPhys.AddForce(velocity);
+
 
     }
     public void SetJump()
@@ -105,12 +97,6 @@ public class Controller3D : MonoBehaviour
     
     public PhysicsComponent GetPhysics() { return playerPhys; }
     
-    
-    public void AddKeyFragment()
-    {
-        keyFragments += 1;
-    }
-
     //obsolete men inte redo att radera allt riktigt än
    /* private void LaunchBH() 
     {
