@@ -24,7 +24,9 @@ public class BlackHole : MonoBehaviour
     
     private float gravitationalPull;
 
-    private Animation animation;
+    public float Lifetime;
+    
+    private Animator animator;
     
     private void Awake() {
         gravitationalPull = GravitationalPull;
@@ -32,12 +34,13 @@ public class BlackHole : MonoBehaviour
         
         coll = GetComponent<SphereCollider>();
         centerColl = GetComponent<BoxCollider>();
-        animation = GetComponent<Animation>();
-        animation.Play();
+        animator = GetComponent<Animator>();
+
+        animator.SetTrigger("Spawn");
+        
         this.Invoke(() => {
-            animation["Black Hole Shrink"].
-            animation.Play();
-        }, 1);
+            animator.SetTrigger("Despawn");
+        }, Lifetime);
     }
     // Update is called once per frame
     void Update() {

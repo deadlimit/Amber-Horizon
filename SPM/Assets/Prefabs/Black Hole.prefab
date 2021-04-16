@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 8524585833828388594}
   - component: {fileID: 8524585833828388589}
   - component: {fileID: 779418612}
-  - component: {fileID: 7517445404541596371}
+  - component: {fileID: 28986220}
   m_Layer: 0
   m_Name: Black Hole
   m_TagString: Untagged
@@ -257,6 +257,7 @@ MonoBehaviour:
   maxRadius: 5
   center: {fileID: 6571698011215792065}
   centerColl: {fileID: 779418612}
+  Lifetime: 5
 --- !u!65 &779418612
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -270,19 +271,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!111 &7517445404541596371
-Animation:
+--- !u!95 &28986220
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8524585833828388588}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: bdc9224de6dd65d43b5a4093a9978a8c, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: bdc9224de6dd65d43b5a4093a9978a8c, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 71469f6056f28b945bdec07fb6dba77e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

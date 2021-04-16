@@ -667,7 +667,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8391014520148453138, guid: 959f472c02ae680449f1c1f0829bb022, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 959f472c02ae680449f1c1f0829bb022, type: 3}
 --- !u!1 &252048536
 GameObject:
@@ -1222,6 +1223,34 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 610114934}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &651510034 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4469862759675896390, guid: 8cddd6892f1fdd94faf7da9d74f53f1d, type: 3}
+  m_PrefabInstance: {fileID: 990064770}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &651510035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651510034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79eac077e0d2403b8c4a5a103ba3aa5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 448
+  velocity: {x: 0, y: 0, z: 0}
+  gravity: 10
+  skinWidth: 0.05
+  staticFrictionCoefficient: 0.5
+  kineticFrictionCoefficient: 0.35
+  airResistance: 0.35
+  AffectedByBlackHoleGravity: 0
+  groundCheckDistance: 0.05
 --- !u!1001 &668472346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2425,7 +2454,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy - Forager (2)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4469862759675896391, guid: 8cddd6892f1fdd94faf7da9d74f53f1d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8cddd6892f1fdd94faf7da9d74f53f1d, type: 3}
 --- !u!1 &1070778963
 GameObject:
@@ -3576,18 +3606,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1504784523, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
-      propertyPath: AttributeSet.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1504784523, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
-      propertyPath: AttributeSet.Array.data[0].Value
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1504784523, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
-      propertyPath: AttributeSet.Array.data[0].Attribute
-      value: 
-      objectReference: {fileID: 11400000, guid: 836a5ca39735ad34587f0f908224315d, type: 2}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -3598,7 +3616,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.85
+      value: -3.06
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3893,6 +3911,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 62825ea39b9161348bf9409358bd1ec3, type: 3}
+--- !u!1 &1649525057 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8391014520148453139, guid: 959f472c02ae680449f1c1f0829bb022, type: 3}
+  m_PrefabInstance: {fileID: 216928096}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1649525058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649525057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79eac077e0d2403b8c4a5a103ba3aa5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 128
+  velocity: {x: 0, y: 0, z: 0}
+  gravity: 0
+  skinWidth: 0.05
+  staticFrictionCoefficient: 0.5
+  kineticFrictionCoefficient: 0.35
+  airResistance: 0.35
+  AffectedByBlackHoleGravity: 0
+  groundCheckDistance: 0.05
 --- !u!1 &1654985082
 GameObject:
   m_ObjectHideFlags: 0
@@ -3988,6 +4034,34 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1654985082}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1726258916 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 679925758882826158, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
+  m_PrefabInstance: {fileID: 1504784521}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1726258921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726258916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79eac077e0d2403b8c4a5a103ba3aa5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 64
+  velocity: {x: 0, y: 0, z: 0}
+  gravity: 14
+  skinWidth: 0.05
+  staticFrictionCoefficient: 0.5
+  kineticFrictionCoefficient: 0.35
+  airResistance: 0.35
+  AffectedByBlackHoleGravity: 0
+  groundCheckDistance: 0.05
 --- !u!1 &1745833005
 GameObject:
   m_ObjectHideFlags: 0
@@ -5030,15 +5104,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collisionMask:
-    serializedVersion: 2
     m_Bits: 576
+  attachedCollider: {fileID: 0}
   velocity: {x: 0, y: 0, z: 0}
   gravity: 10
   skinWidth: 0.05
   staticFrictionCoefficient: 0.5
   kineticFrictionCoefficient: 0.35
   airResistance: 0.35
+  gravityMod: 1
   AffectedByBlackHoleGravity: 0
+  bhGrav: {x: 0, y: 0, z: 0}
   groundCheckDistance: 0.05
 --- !u!65 &2092339241
 BoxCollider:
@@ -5248,18 +5324,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7517445404541596371, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
-      propertyPath: m_Animations.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7517445404541596371, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
-      propertyPath: m_Animations.Array.data[0]
-      value: 
-      objectReference: {fileID: 7400000, guid: 925825f57afda7f4a9cb7d708b8566aa, type: 2}
-    - target: {fileID: 7517445404541596371, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
-      propertyPath: m_Animations.Array.data[1]
-      value: 
-      objectReference: {fileID: 7400000, guid: bdc9224de6dd65d43b5a4093a9978a8c, type: 2}
     - target: {fileID: 8524585833828388588, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
       propertyPath: m_Name
       value: Black Hole
