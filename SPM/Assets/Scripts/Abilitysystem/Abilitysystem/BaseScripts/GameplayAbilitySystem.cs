@@ -10,11 +10,12 @@ namespace AbilitySystem
     {
         private Dictionary<Type, float> AttributeSet = new Dictionary<Type, float>();
         private Dictionary<Type, GameplayAbility> GrantedAbilities = new Dictionary<Type, GameplayAbility>();
-        private Dictionary<Type, Func<float, float>> AttributeSetCalculations = new Dictionary<Type, Func<float, float>>();
         private Dictionary<Type, Action<float>> OnAttributeChanged = new Dictionary<Type, Action<float>>();
+        private Dictionary<Type, Func<float, float>> AttributeSetCalculations = new Dictionary<Type, Func<float, float>>();
+        
         private Dictionary<GameplayEffect, int> ActiveEffects = new Dictionary<GameplayEffect, int>();
         private HashSet<GameplayTag> ActiveTags = new HashSet<GameplayTag>();
-       
+
         public void RegisterAttributeSet(List<GameplayAttributeSetEntry> Set)
         {
             Set.ForEach(Entry => AttributeSet.Add(Entry.Attribute.GetType(), Entry.Value));
@@ -41,8 +42,8 @@ namespace AbilitySystem
             return null;
         }
 
-        public void ApplyEffectToSelf(GameplayEffect Effect)
-        {
+        public void ApplyEffectToSelf(GameplayEffect Effect) {
+            
             if (Effect.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag)))
             {
                 return;
@@ -64,6 +65,8 @@ namespace AbilitySystem
                     if (!ActiveEffects.ContainsKey(Effect))
                     {
                         ActiveEffects.Add(Effect, 1);
+                        Effect.AppliedTags.ForEach((Tag) => ActiveTags.Add(Tag));
+
                     }
                     else
                     {
@@ -130,26 +133,27 @@ namespace AbilitySystem
             {
                 if (!Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag)))
                 {
-                    Debug.Log("not blocked");
                     Ability.Activate(this);
                     return true;
                 }
-                else {
-                    Debug.Log("Blocked");
-                }
+                
             }
             return false;
         }
 
         public IEnumerator RemoveAfterTime(GameplayEffect Effect)
         {
+            
             yield return new WaitForSeconds(Effect.Duration);
             // TODO: Remove gameplay tags added by this effect
             ActiveEffects[Effect]--;
+            
             if (ActiveEffects[Effect] <= 0) {
                 
                 ActiveEffects.Remove(Effect);
+                Effect.AppliedTags.ForEach((Tag) => ActiveTags.Remove(Tag));
             }
+
         }
     }
 }
