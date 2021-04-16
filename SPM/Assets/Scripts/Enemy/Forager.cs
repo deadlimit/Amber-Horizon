@@ -24,7 +24,7 @@ public class Forager : Enemy  {
         Gizmos.DrawWireSphere(Pathfinder.agent.destination, .5f);
 
     }
-    public override void BlackHoleDeath(BlackHole blackHole) {
+    public override void BlackHoleBehaviour(BlackHole blackHole) {
         if (activeBlackHole) return;
         activeBlackHole = blackHole;
         stateMachine.ChangeState<EnemyDeathState>(); }
