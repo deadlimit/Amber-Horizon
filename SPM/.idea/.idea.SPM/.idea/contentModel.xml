@@ -22,11 +22,13 @@
           <e p="Abilitysystem" t="Include">
             <e p="Abilitysystem" t="Include">
               <e p="AbilityEntity.cs" t="Include" />
+              <e p="AssetLoader.cs" t="Include" />
               <e p="BaseScripts" t="Include">
                 <e p="GameplayAbility.cs" t="Include" />
                 <e p="GameplayAbilitySystem.cs" t="Include" />
                 <e p="GameplayAttribute.cs" t="Include" />
                 <e p="GameplayEffect.cs" t="Include" />
+                <e p="GameplayEntity.cs" t="Include" />
                 <e p="GameplayTag.cs" t="Include" />
               </e>
               <e p="Core" t="Include">
@@ -40,9 +42,11 @@
                   <e p="DashCooldown.cs" t="Include" />
                 </e>
                 <e p="Tags" t="Include">
+                  <e p="CooldownTag.cs" t="Include" />
                   <e p="MovementTag.cs" t="Include" />
                 </e>
               </e>
+              <e p="GameplayAssetLoader.cs" t="Include" />
             </e>
           </e>
           <e p="BlackHole" t="Include">
@@ -131,7 +135,6 @@
             <e p="StateMachine.cs" t="Include" />
           </e>
           <e p="Utility" t="Include">
-            <e p="AbilityLoader.cs" t="Include" />
             <e p="CustomInvoke.cs" t="Include" />
           </e>
         </e>

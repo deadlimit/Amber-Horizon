@@ -11,7 +11,7 @@ namespace AbilitySystem
         Infinite,
     }
     [CreateAssetMenu()]
-    public class GameplayEffect : ScriptableObject
+    public class GameplayEffect : GameplayEntity
     {
         // TODO: Array?
         public GameplayAttribute Attribute;
@@ -20,8 +20,9 @@ namespace AbilitySystem
         public float Duration;
         public EffectDurationType EffectType;
 
-        public List<GameplayTag> AppliedTags;
-        public List<GameplayTag> BlockedByTags;
+        public List<GameplayTag> AppliedTags = new List<GameplayTag>();
+
+        public List<GameplayTag> BlockedByTags = new List<GameplayTag>();
         // TODO: RequiredTags;
     }
 }

@@ -35,6 +35,8 @@ public class Controller3D : MonoBehaviour
         
     }
 
+    public DashAbility ability;
+
     private void Start() {
         abilitySystem = GetComponent<GameplayAbilitySystem>();
     }
@@ -84,11 +86,8 @@ public class Controller3D : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
             abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
             
-            if (Input.GetKeyDown(KeyCode.B)) {
-            DashAbility dashAbility = AbilityLoader.CreateAbility<DashAbility, MovementTag>();
-            dashAbility.dashLength = 20;
-            dashAbility.timeWithOutGravity = .4f;
-            abilitySystem.GrantAbility(dashAbility);
+        if (Input.GetKeyDown(KeyCode.B)) {
+            
         }
             
 

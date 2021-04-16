@@ -4,9 +4,9 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "Dash", menuName = "Abilities/Dash")]
 public class DashAbility : GameplayAbility {
-    
-    public float timeWithOutGravity;
-    public float dashLength;
+
+    public float timeWithOutGravity = .4f;
+    public float dashLength = 20;
     
     public override void Activate(GameplayAbilitySystem Owner) {
         Owner.StartCoroutine(Dash(Owner));
@@ -15,10 +15,14 @@ public class DashAbility : GameplayAbility {
     
     private IEnumerator Dash(GameplayAbilitySystem Owner) {
         
+        Owner.ApplyEffectToSelf(Cooldown);
+        
+        Debug.Log(Cooldown.Duration);
+        
         Controller3D controller3D = Owner.GetComponent<Controller3D>();
 
         controller3D.GetComponent<Animator>().SetTrigger("Dash");
-        
+
         //Spara gravitationen innan man sätter den till 0
         float gravity = controller3D.playerPhys.gravity;
 
@@ -37,6 +41,7 @@ public class DashAbility : GameplayAbility {
         
         //Vänta .4 sekunder innan man sätter på gravitationen igen. 
         yield return new WaitForSeconds(timeWithOutGravity);
+        
         
         controller3D.playerPhys.gravity = gravity;
         controller3D.velocity = forwardMomentum;

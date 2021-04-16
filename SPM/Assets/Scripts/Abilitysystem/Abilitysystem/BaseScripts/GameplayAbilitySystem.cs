@@ -124,20 +124,21 @@ namespace AbilitySystem
 
         public bool TryActivateAbilityByTag(Type AbilityTag)
         {
+            
             GameplayAbility Ability;
             if (GrantedAbilities.TryGetValue(AbilityTag, out Ability))
             {
                 if (!Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag)))
                 {
+                    Debug.Log("not blocked");
                     Ability.Activate(this);
                     return true;
                 }
+                else {
+                    Debug.Log("Blocked");
+                }
             }
             return false;
-        }
-        public bool TryActivateAbilityByTag(GameplayTag AbilityTag)
-        {
-            return TryActivateAbilityByTag(AbilityTag.GetType());
         }
 
         public IEnumerator RemoveAfterTime(GameplayEffect Effect)
@@ -145,8 +146,8 @@ namespace AbilitySystem
             yield return new WaitForSeconds(Effect.Duration);
             // TODO: Remove gameplay tags added by this effect
             ActiveEffects[Effect]--;
-            if (ActiveEffects[Effect] <= 0)
-            {
+            if (ActiveEffects[Effect] <= 0) {
+                
                 ActiveEffects.Remove(Effect);
             }
         }

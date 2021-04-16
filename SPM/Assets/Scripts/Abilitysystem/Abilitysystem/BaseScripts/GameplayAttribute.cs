@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AbilitySystem
 {
-    public abstract class GameplayAttribute : ScriptableObject
+    public abstract class GameplayAttribute : GameplayEntity
     {
         public bool Is(GameplayAttribute Other) => Other.GetType().IsAssignableFrom(GetType());
         public bool Is(Type Other) => Other.IsAssignableFrom(GetType());

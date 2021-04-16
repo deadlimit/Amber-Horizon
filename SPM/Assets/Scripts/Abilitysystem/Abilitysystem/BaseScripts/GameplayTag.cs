@@ -6,7 +6,7 @@ using UnityEngine;
 namespace AbilitySystem
 {
     //Istället för enums, typen är viktig
-    public abstract class GameplayTag : ScriptableObject
+    public abstract class GameplayTag : GameplayEntity
     {
         public bool Is(GameplayTag Other) => Other.GetType().IsAssignableFrom(GetType());
     }

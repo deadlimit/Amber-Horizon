@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace AbilitySystem
 {
-    public abstract class GameplayAbility : ScriptableObject 
+    public abstract class GameplayAbility : GameplayEntity 
     {
-        public GameplayTag AbilityTag;
+        [SerializeReference] public GameplayTag AbilityTag;
         public GameplayEffect AppliedEffect;
         public GameplayEffect Cost;
         public GameplayEffect Cooldown;
@@ -35,5 +34,12 @@ namespace AbilitySystem
             float? Value = Owner.GetAttributeValue(Cost.Attribute.GetType());
             return Value != null && Value > Cost.Value;
         }
+
+        public override string ToString() {
+            return AbilityTag + " " + AppliedEffect + " " + Cost + " " + Cooldown;
+        }
     }
+    
+
+    
 }
