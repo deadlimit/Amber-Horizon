@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KeyFragment : MonoBehaviour
-{
-    private void OnTriggerEnter(Collider other)
+namespace EventCallbacks {
+    public class KeyFragment : MonoBehaviour
     {
-        Controller3D player = other.gameObject.GetComponent<Controller3D>();
-        if (player)
+        private void OnTriggerEnter(Collider other)
         {
-            player.AddKeyFragment();
-            Destroy(gameObject);
+            if (other.gameObject.tag == "Player")
+            {
+                KeyPickUpEvent kpue = new KeyPickUpEvent();
+                EventSystem<KeyPickUpEvent>.FireEvent(kpue);
+                Destroy(gameObject);
+            }
         }
-    }
 
-    
+
+    }
 }

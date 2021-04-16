@@ -10,7 +10,8 @@ public class Forager : Enemy  {
     private void Awake() {
         base.Awake();
     }
-    private void Update() {
+    private void Update()
+    {
         base.Update();
         
         stateMachine?.RunUpdate();
