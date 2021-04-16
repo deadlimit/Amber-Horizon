@@ -104,9 +104,6 @@ namespace AbilitySystem
 
         public void GrantAbility(GameplayAbility Ability) {
             
-            Debug.Log(Ability.AbilityTag);
-            
-            
             if (GrantedAbilities == null)
                 GrantedAbilities = new Dictionary<Type, GameplayAbility>();
             

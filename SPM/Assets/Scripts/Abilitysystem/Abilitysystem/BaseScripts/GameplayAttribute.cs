@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System;
-using System.Collections.Generic;
-using AbilitySystem;
+﻿using System;
 using UnityEngine;
 
 namespace AbilitySystem
@@ -21,7 +18,7 @@ namespace AbilitySystem
 
     public static class GameplayAttributes
     {
-        //public static Type HealthAttribute => typeof(HealthAttribute);
+        public static Type HealthAttribute => typeof(HealthAttribute);
     }
     
 }

@@ -1,8 +1,5 @@
-using System.Collections;
 using AbilitySystem;
-using JetBrains.Annotations;
 using UnityEngine;
-using Vector3 = UnityEngine.Vector3;
 
 public class Controller3D : MonoBehaviour
 {
@@ -16,13 +13,6 @@ public class Controller3D : MonoBehaviour
     public PhysicsComponent playerPhys;
     public LauncherBlackHole lbh;
     
-    [Header("Dash")]
-    [SerializeField] private float dashCooldown;
-    public float dashLength;
-    [Tooltip("Hur länge spelarens gravitation är avstängd innan den sätts på igen (sekunder)")]
-    [SerializeField] private float timeWithoutGravity;
-    [SerializeField] private float blackHoleGravityDashForce;
-    private float nextDash;
     [SerializeField] private int keyFragments = 0;
 
     private GameplayAbilitySystem abilitySystem;
@@ -72,7 +62,7 @@ public class Controller3D : MonoBehaviour
         velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
     
         //det här är skräp
-        if (jump)
+        if (jump) 
         {
             velocity.y += jumpHeight;
             jump = false;
@@ -82,7 +72,8 @@ public class Controller3D : MonoBehaviour
     void Update() {
 
         Debug.DrawLine(transform.position, transform.position + transform.forward, Color.red);
-        if (Input.GetKeyDown(KeyCode.F)) {
+        if (Input.GetKeyDown(KeyCode.F)) 
+        {
             Time.timeScale = Time.timeScale == .3f ? Time.timeScale = 1 : Time.timeScale = .3f;
         }
         
@@ -90,12 +81,10 @@ public class Controller3D : MonoBehaviour
         PlayerDirection();     
         playerPhys.AddForce(velocity);
         
-        if (Input.GetKeyDown(KeyCode.E) && nextDash < Time.time) {
+        if (Input.GetKeyDown(KeyCode.E))
             abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
-            nextDash = Time.time + dashCooldown;
-        }
-
-        if (Input.GetKeyDown(KeyCode.B)) {
+            
+            if (Input.GetKeyDown(KeyCode.B)) {
             DashAbility dashAbility = AbilityLoader.CreateAbility<DashAbility, MovementTag>();
             dashAbility.dashLength = 20;
             dashAbility.timeWithOutGravity = .4f;
