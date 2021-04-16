@@ -26,6 +26,7 @@ public class DestructorFist : MonoBehaviour {
         player[0].GetComponent<PhysicsComponent>().AddForce(transform.forward + Vector3.up * hitForce);
         coll.enabled = false;
         enabled = false;
+        
     }
     
 }
