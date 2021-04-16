@@ -53,35 +53,42 @@ public class BlackHole : MonoBehaviour
         transform.Translate(velocity * Time.deltaTime);
     }
     private void GravitationDrag() {
+        bool playerFound = false;
         Collider[] hitcoll = Physics.OverlapSphere(transform.position, coll.radius, physicsLayerMask);
-        
-        foreach (Collider collider in hitcoll) {
-            
-            PhysicsComponent physicsComponent = collider.GetComponent<PhysicsComponent>();   
+        foreach (Collider c in hitcoll) {
 
+            if (c.tag == "Player")
+                playerFound = true;
+            
+            PhysicsComponent physicsComponent = c.GetComponent<PhysicsComponent>();
+            DestructableWall wall = c.GetComponent<DestructableWall>();
+            //fysikp�verkan
             if (physicsComponent) {
                 
-                if (Vector3.Distance(transform.position, collider.transform.position) < terminalDistance) {
+                if (Vector3.Distance(transform.position, c.transform.position) < terminalDistance) {
                     physicsComponent.StopVelocity();
                 }
-                else
-                    physicsComponent.BlackHoleGravity(this);
                 
+                else{
+                    IBlackHoleBehaviour blackHoleBehaviour = c.GetComponent<IBlackHoleBehaviour>();
+                    IBlackHoleDeath blackHoleDeath = c.GetComponent<IBlackHoleDeath>();
+                    if(blackHoleDeath != null)
+                        blackHoleDeath.BlackHoleDeath(this);
+                    c.GetComponent<PhysicsComponent>().BlackHoleGravity(this, blackHoleBehaviour);
+                }
+                    
+            }else if (wall) {
+                IBlackHoleBehaviour blackHoleBehaviour = c.GetComponent<IBlackHoleBehaviour>();
+                blackHoleBehaviour.BlackHoleBehaviour(this);
             }
-            
-            IBlackHoleBehaviour blackHoleBehaviour = collider.GetComponent<IBlackHoleBehaviour>();
-            if (blackHoleBehaviour != null) 
-            {
-                Debug.Log("usingh bhbehaviour on : " +collider.gameObject);
-                blackHoleBehaviour?.BlackHoleBehaviour(this);
-            }
-            
+
         }
-        
-        
-        
+
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PhysicsComponent>().AffectedByBlackHoleGravity = playerFound;
+
         if (useGravity)
         {
+            //verkar som att overlapbox �r mycket mindre ben�gen att g� igenom v�ggar.
             Collider[] boxHitColl =
             Physics.OverlapBox(transform.position, centerColl.size / 2, Quaternion.identity, collisionMask);
             if (boxHitColl.Length > 0)
@@ -114,7 +121,7 @@ public class BlackHole : MonoBehaviour
 
     private void TurnOnGravitationPull() => GravitationalPull = gravitationalPull;
 
-    private void Spawn() {
+        private void Spawn() {
         StartCoroutine(ExpandRadius(maxRadius));
         StartCoroutine(ExpandSphereEffect(new Vector3(10, 10, 10)));
         gravitationalPull = 25;
