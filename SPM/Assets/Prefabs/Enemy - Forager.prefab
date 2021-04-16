@@ -1302,7 +1302,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 4469862759675896390}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2.1
   m_Direction: 1
@@ -1329,8 +1329,6 @@ MonoBehaviour:
   kineticFrictionCoefficient: 0.35
   airResistance: 0.35
   AffectedByBlackHoleGravity: 0
-  relVelMag: 0
-  treshhold: 0
   groundCheckDistance: 0.05
 --- !u!95 &4469862759675896387
 Animator:
@@ -1389,7 +1387,7 @@ MonoBehaviour:
   innerRing: 4
   PlayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   states:
   - {fileID: 11400000, guid: 27e53a1fd14c1fd4ba2095884a2c07ba, type: 2}
   - {fileID: 11400000, guid: 2f907d8be0157f442b976d82f4585c53, type: 2}

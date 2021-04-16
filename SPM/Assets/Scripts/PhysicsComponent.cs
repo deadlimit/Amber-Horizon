@@ -120,8 +120,7 @@ public class PhysicsComponent : MonoBehaviour
         bhGrav = bh.GravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
         velocity += bhGrav;
         ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
-        bhGrav = Vector3.zero;
-        
+        bhGrav = Vector3.zero;      
     }
     public void StopVelocity()
     {

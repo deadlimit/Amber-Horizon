@@ -54,23 +54,27 @@ public class BlackHole : MonoBehaviour
     }
     private void GravitationDrag() {
         Collider[] hitcoll = Physics.OverlapSphere(transform.position, coll.radius, physicsLayerMask);
+        
         foreach (Collider collider in hitcoll) {
             
-            PhysicsComponent physicsComponent = collider.GetComponent<PhysicsComponent>();
-            
+            PhysicsComponent physicsComponent = collider.GetComponent<PhysicsComponent>();   
+
             if (physicsComponent) {
                 
                 if (Vector3.Distance(transform.position, collider.transform.position) < terminalDistance) {
                     physicsComponent.StopVelocity();
                 }
                 else
-                    collider.GetComponent<PhysicsComponent>().BlackHoleGravity(this);
+                    physicsComponent.BlackHoleGravity(this);
                 
             }
             
             IBlackHoleBehaviour blackHoleBehaviour = collider.GetComponent<IBlackHoleBehaviour>();
-            
-            blackHoleBehaviour?.BlackHoleBehaviour(this);
+            if (blackHoleBehaviour != null) 
+            {
+                Debug.Log("usingh bhbehaviour on : " +collider.gameObject);
+                blackHoleBehaviour?.BlackHoleBehaviour(this);
+            }
             
         }
         

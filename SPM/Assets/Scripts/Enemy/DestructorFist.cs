@@ -6,25 +6,25 @@ using Vector3 = UnityEngine.Vector3;
 
 public class DestructorFist : MonoBehaviour {
 
-    private SphereCollider collider;
+    private SphereCollider coll;
 
     public LayerMask PlayerMask;
 
     public float hitForce;
     
     private void Awake() {
-        collider = GetComponent<SphereCollider>();
+        coll = GetComponent<SphereCollider>();
     }
 
-    public void SwitchCollider(bool value) => collider.enabled = value;
+    public void SwitchCollider(bool value) => coll.enabled = value;
     
     public void Update() {
-        Collider[] player = Physics.OverlapSphere(transform.position, collider.radius, PlayerMask);
+        Collider[] player = Physics.OverlapSphere(transform.position, coll.radius, PlayerMask);
 
         if (player.Length < 1) return;
         
         player[0].GetComponent<PhysicsComponent>().AddForce(transform.forward + Vector3.up * hitForce);
-        collider.enabled = false;
+        coll.enabled = false;
         enabled = false;
     }
     
