@@ -16,7 +16,6 @@ public class GroundedState : State
     }
     public override void RunUpdate()
     {
-        //Debug.Log("Grounded");
         Vector3 input =
         Vector3.right * Input.GetAxisRaw("Horizontal") +
         Vector3.forward * Input.GetAxisRaw("Vertical");

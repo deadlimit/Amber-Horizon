@@ -61,33 +61,32 @@ public class Controller3D : MonoBehaviour
         RotateTowardsCameraDirection();
         Vector3 angle = Vector3.ProjectOnPlane(input, playerPhys.groundHitInfo.normal).normalized;
         input = angle * input.magnitude;
-        AccelerateDecelerate();
-    }
-    private void AccelerateDecelerate()
-    {
         if (input.magnitude > float.Epsilon)
-        {
-            velocity = input * acceleration * Time.deltaTime;
-            velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
-
-        }
+            Accelerate();
         else
-        {
-            Vector3 movementXZ = new Vector3(velocity.x, 0, velocity.y);
-            if (deceleration > Mathf.Abs(velocity.x+velocity.y))
-            {
-                velocity.x = 0;
-                velocity.z = 0;
-            }
-            Vector3 projection = new Vector3(velocity.x, 0.0f, velocity.z).normalized;
-            velocity -= projection * deceleration * Time.deltaTime;
-        }
-
-        //det här är skräp
+            Decelerate();
         if (jump)
         {
             velocity.y += jumpHeight;
             jump = false;
+        }
+    }
+    private void Accelerate()
+    {
+            velocity = input * acceleration * Time.deltaTime;
+    }
+    private void Decelerate() 
+    {
+            Debug.Log("Decelerating");
+            Vector3 movementXZ = new Vector3(input.x, 0, input.z);
+        if (movementXZ.magnitude < deceleration)
+        {
+            velocity.x = 0;
+            velocity.z = 0;
+        }
+        else
+        {
+            playerPhys.AddForce(-deceleration  * Vector3.one);
         }
     }
 
