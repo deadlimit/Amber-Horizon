@@ -3,10 +3,10 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class JumpingState : State
 {
-    Controller3D player;
+    PlayerController player;
     protected override void Initialize()
     {
-        player = (Controller3D)owner;
+        player = (PlayerController)owner;
     }
 
     public override void Enter() {
@@ -18,11 +18,10 @@ public class JumpingState : State
         Vector3.right * Input.GetAxisRaw("Horizontal") +
         Vector3.forward * Input.GetAxisRaw("Vertical");
         input = input.normalized;
-        player.SetInput(input * 0.2f);
+        player.SetInput(input, true);
 
-        if (player.playerPhys.velocity.y < 0)
+        if (player.physics.velocity.y < 0)
         {
-
             stateMachine.ChangeState<FallingState>();
         }
         //om vi �r p� v�g ned -> falling state

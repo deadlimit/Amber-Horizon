@@ -8,10 +8,12 @@ public class PhysicsComponent : MonoBehaviour
 
     private Collider attachedCollider;
     private CollisionCaster collisionCaster;
+    public float smallNumber = 0.1f;
 
-    [SerializeField] public Vector3 velocity;
+    public Vector3 velocity { get;  set; }
     [SerializeField] public float gravity = 10f;
     [SerializeField] protected float skinWidth = 0.05f;
+    [SerializeField] private float maxSpeed;
 
     [Header("Friktion")]
     [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
@@ -24,6 +26,9 @@ public class PhysicsComponent : MonoBehaviour
     private void OnEnable()
     {
         attachedCollider = GetComponent<Collider>();
+        
+        if(GetComponent<PlayerController>())
+            maxSpeed = GetComponent<PlayerController>().maxSpeed;
 
         if (attachedCollider is BoxCollider)
             collisionCaster = new BoxCaster(attachedCollider, collisionMask);
@@ -44,7 +49,9 @@ public class PhysicsComponent : MonoBehaviour
         bhGrav = Vector3.zero;
         AddGravity();
         CheckForCollisions(0);
-        
+
+
+        velocity = maxSpeed != 0 ? Vector3.ClampMagnitude(velocity, maxSpeed) : velocity; 
         //Silvertejpslösning för att inte få -Infinity eller NaN
         if (!float.IsNegativeInfinity(velocity.x) || !float.IsNaN(velocity.x) )
             transform.position += velocity * Time.deltaTime;
@@ -144,7 +151,6 @@ public class PhysicsComponent : MonoBehaviour
         velocity += gravityMovement;
         gravityMod = 1f;
     }
-
     private void ApplyFriction(Vector3 normalForce)
     {
         if (velocity.magnitude < normalForce.magnitude * staticFrictionCoefficient)
@@ -159,6 +165,8 @@ public class PhysicsComponent : MonoBehaviour
     public void AddForce(Vector3 input)
     {
         velocity += input;
+        if (velocity.magnitude < smallNumber)
+            velocity = Vector3.zero;
     }
 
 
