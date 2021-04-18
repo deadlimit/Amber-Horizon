@@ -95,9 +95,9 @@ public class Controller3D : MonoBehaviour
 
 
             if (!zoomIn) {
-                CameraEvent cameraEvent = new CameraEvent();
-                cameraEvent.newTarget = GameObject.FindGameObjectWithTag("KeyCameraTarget").transform;
-                EventSystem<CameraEvent>.FireEvent(cameraEvent);
+             //   CameraFocusEvent cameraFocusEvent = new CameraFocusEvent();
+                //cameraFocusEvent.newFocusTarget = GameObject.FindGameObjectWithTag("KeyCameraTarget").transform;
+               // EventSystem<CameraFocusEvent>.FireEvent(cameraFocusEvent);
             }
 
             animator.SetBool("ShowKey", zoomIn);
@@ -119,47 +119,6 @@ public class Controller3D : MonoBehaviour
     public PhysicsComponent GetPhysics() { return playerPhys; }
     
     
-    
-    //TODO Första gången spelaren fastnar i ett svarthål är första dashen mycket längre än följande dasher, vet inte varför
-    /// <summary>
-    /// Dash. Ska kunna dasha åt input-hållet? Dashar endast rakt fram just nu.
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    [CanBeNull]
-    private IEnumerator Dash() {
-
-        /* effects.SetTrigger("Dash");
-         //Spara gravitationen innan man sätter den till 0
-         float gravity = playerPhys.gravity;
-
-         Vector3 cameraForwardDirection = activeCamera.transform.forward;
-
-         //Nollar y-axeln för att bara dasha framåt.
-         cameraForwardDirection.y = 0;
-
-         //Stänger av gravitationen och nollställer hastigheten för att endast dash-velociteten ska gälla. 
-         Vector3 forwardMomentum = new Vector3(playerPhys.velocity.x, 0f, playerPhys.velocity.z);
-         playerPhys.velocity = Vector3.zero;
-         playerPhys.gravity = 0;
-         //playerPhys.bhGrav = Vector3.zero;
-
-
-         velocity = playerPhys.AffectedByBlackHoleGravity ? cameraForwardDirection * (BlackHole.BlackHoleRadius * blackHoleGravityDashForce) : cameraForwardDirection * dashLength;
-         playerPhys.AddForce(velocity);
-
-         Debug.DrawLine(transform.position, velocity, Color.red);
-
-         //Vänta .4 sekunder innan man sätter på gravitationen igen. 
-         yield return new WaitForSeconds(timeWithoutGravity);
-
-         playerPhys.velocity = transform.forward * 2;
-         playerPhys.gravity = gravity;
-
-         playerPhys.AffectedByBlackHoleGravity = false;
-         playerPhys.velocity = forwardMomentum;*/
-        yield return null;
-    }
 }
 
 

@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using AbilitySystem;
+using EventCallbacks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
@@ -20,18 +23,23 @@ public class PlayerController : MonoBehaviour
     private bool jump;
     float dot;
 
-    private Vector3 force;
+    public Vector3 force;
     private Vector3 input;
     public PhysicsComponent physics;
     private Camera activeCamera;
     public bool airborne;
+    
+    private GameplayAbilitySystem abilitySystem;
+    
     void Awake()
     {
         activeCamera = Camera.main;
         physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);
+        abilitySystem = gameObject.AddComponent<GameplayAbilitySystem>();
     }
-
+    
+    
     public void SetInput(Vector3 inp) 
     {
         input = inp;
@@ -46,25 +54,23 @@ public class PlayerController : MonoBehaviour
     void Decelerate() 
     {
         force = -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
-        //Velocitys magnitud och riktning, multiplicerat med ett värde mellan 1 och 0, fast negativt
+        //Velocitys magnitud och riktning, multiplicerat med ett vï¿½rde mellan 1 och 0, fast negativt
     }
     void Accelerate()
     {
         Vector3 inputXZ = new Vector3(input.x, 0, input.z);
         float dot = Vector3.Dot(inputXZ.normalized, physics.GetXZMovement().normalized);
-
-        Debug.Log(dot);
-
+        
         force = input * Time.deltaTime * acceleration;
         /*
-        om vi accelerar i en annan riktning vill vi egentligen bromsa först
-        skalärprodukten används i multiplikation för att avgöra hur mycket av decelerationen som ska
-        appliceras, då detta bör bero på vinkeln i vilken man byter riktning/velocitet/momentum
+        om vi accelerar i en annan riktning vill vi egentligen bromsa fï¿½rst
+        skalï¿½rprodukten anvï¿½nds i multiplikation fï¿½r att avgï¿½ra hur mycket av decelerationen som ska
+        appliceras, dï¿½ detta bï¿½r bero pï¿½ vinkeln i vilken man byter riktning/velocitet/momentum
         */
  
         force -= (((dot - 1) * turnBerth * -physics.GetXZMovement().normalized) / 2);
-        //addera * turnSpeed av kraften vi precis tog bort, till vår nya riktning.
-        //gör i princip att man svänger snabbare
+        //addera * turnSpeed av kraften vi precis tog bort, till vï¿½r nya riktning.
+        //gï¿½r i princip att man svï¿½nger snabbare
         force += (((dot - 1) * turnBerth * turnSpeed * -force.normalized) / 2) ;
         Debug.DrawLine(transform.position, transform.position + -((dot - 1) * turnBerth * -physics.velocity.normalized) / 2, Color.red);
     }
@@ -110,17 +116,21 @@ public class PlayerController : MonoBehaviour
         //Debug.Log(input);
         Jump();
         physics.AddForce(force);
-        
-       /* if (Input.GetKeyDown(KeyCode.E) && nextDash < Time.time)
-        {
-            nextDash = Time.time + dashCooldown;
-            StopCoroutine(Dash());
-            StartCoroutine(Dash());
-        }
 
-        if (Input.GetMouseButtonDown(1))
-            lbh.Activate();
-        if (Input.GetMouseButtonUp(1))
-            lbh.Deactivate();*/
+        if (Input.GetKeyDown(KeyCode.E))
+            abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
+        
+        
+        /* if (Input.GetKeyDown(KeyCode.E) && nextDash < Time.time)
+         {
+             nextDash = Time.time + dashCooldown;
+             StopCoroutine(Dash());
+             StartCoroutine(Dash());
+         }
+ 
+         if (Input.GetMouseButtonDown(1))
+             lbh.Activate();
+         if (Input.GetMouseButtonUp(1))
+             lbh.Deactivate();*/
     }
 }

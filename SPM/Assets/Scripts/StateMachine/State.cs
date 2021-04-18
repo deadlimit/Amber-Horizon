@@ -1,3 +1,4 @@
+using EventCallbacks;
 using UnityEngine;
 
 [CreateAssetMenu()]
@@ -13,6 +14,7 @@ public abstract class State : ScriptableObject
         Initialize();
     }
     public virtual void Enter() { }
+    public virtual void Enter(EventInfo eventInfo)  { }
     public virtual void RunUpdate() { }
     public virtual void Exit() { }
     protected virtual void Initialize() { }

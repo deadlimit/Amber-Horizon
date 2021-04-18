@@ -19,12 +19,12 @@ public class DashAbility : GameplayAbility {
         
         Debug.Log(Cooldown.Duration);
         
-        Controller3D controller3D = Owner.GetComponent<Controller3D>();
+        PlayerController playerController = Owner.GetComponent<PlayerController>();
 
-        controller3D.GetComponent<Animator>().SetTrigger("Dash");
+        playerController.GetComponent<Animator>().SetTrigger("Dash");
 
         //Spara gravitationen innan man sätter den till 0
-        float gravity = controller3D.playerPhys.gravity;
+        float gravity = playerController.physics.gravity;
 
         Vector3 cameraForwardDirection = Camera.main.transform.forward;
 
@@ -32,18 +32,18 @@ public class DashAbility : GameplayAbility {
         cameraForwardDirection.y = 0;
 
         //Stänger av gravitationen och nollställer hastigheten för att endast dash-velociteten ska gälla. 
-        Vector3 forwardMomentum = new Vector3(controller3D.playerPhys.velocity.x, 0f, controller3D.playerPhys.velocity.z);
-        controller3D.playerPhys.velocity = Vector3.zero;
-        controller3D.playerPhys.gravity = 0;
+        Vector3 forwardMomentum = new Vector3(playerController.physics.velocity.x, 0f, playerController.physics.velocity.z);
+        playerController.physics.velocity = Vector3.zero;
+        playerController.physics.gravity = 0;
 
-        controller3D.velocity = cameraForwardDirection * dashLength;
-        controller3D.playerPhys.AddForce(controller3D.velocity);
+        playerController.force = cameraForwardDirection * dashLength;
+        playerController.physics.AddForce(playerController.force);
         
         //Vänta .4 sekunder innan man sätter på gravitationen igen. 
         yield return new WaitForSeconds(timeWithOutGravity);
         
         
-        controller3D.playerPhys.gravity = gravity;
-        controller3D.velocity = forwardMomentum;
+        playerController.physics.gravity = gravity;
+        playerController.force = forwardMomentum;
     }
 }
