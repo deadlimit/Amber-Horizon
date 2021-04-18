@@ -4594,6 +4594,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   smallNumber: 0.05
+  velocity: {x: 0, y: 0, z: 0}
   gravity: 0
   skinWidth: 0.01
   maxSpeed: 0.05
@@ -9597,6 +9598,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   smallNumber: 0.05
+  velocity: {x: 0, y: 0, z: 0}
   gravity: 0
   skinWidth: 0.01
   maxSpeed: 0.05
@@ -18103,6 +18105,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1747747373, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
+      propertyPath: jumpHeight
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4994216072001837894, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_Name
       value: PlayerControllerPRefab

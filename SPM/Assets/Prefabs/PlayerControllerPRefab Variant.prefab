@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54e333565b79a04cb64f879058c27fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpHeight: 5
+  jumpHeight: 10
   acceleration: 20
-  deceleration: 0.1
+  deceleration: 12
+  turnRate: 4
   airControl: 0.2
   maxSpeed: 8
   states:
@@ -35,15 +36,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 419.1
+      value: -114.2
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 36.21
+      value: 6.3
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 279.2
+      value: 88.24
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalRotation.w
@@ -51,15 +52,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -115,7 +116,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 679925758882826158, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_Name
-      value: PlayerControllerPRefab
+      value: PlayerControllerPRefab Variant
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 409543006023988583, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}

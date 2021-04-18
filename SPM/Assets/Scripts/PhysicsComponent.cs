@@ -10,7 +10,7 @@ public class PhysicsComponent : MonoBehaviour
     private CollisionCaster collisionCaster;
     public float smallNumber = 0.1f;
 
-    public Vector3 velocity { get;  set; }
+    public Vector3 velocity;
     [SerializeField] public float gravity = 10f;
     [SerializeField] protected float skinWidth = 0.05f;
     [SerializeField] private float maxSpeed;
@@ -49,15 +49,25 @@ public class PhysicsComponent : MonoBehaviour
         bhGrav = Vector3.zero;
         AddGravity();
         CheckForCollisions(0);
+        ClampSpeed();
+       
 
-
-        velocity = maxSpeed != 0 ? Vector3.ClampMagnitude(velocity, maxSpeed) : velocity; 
         //Silvertejpslösning för att inte få -Infinity eller NaN
         if (!float.IsNegativeInfinity(velocity.x) || !float.IsNaN(velocity.x) )
             transform.position += velocity * Time.deltaTime;
         
         MoveOutOfGeometry();
     }   
+    public Vector3 GetXZMovement()
+    {
+        return new Vector3(velocity.x, 0, velocity.z);
+    }
+    private void ClampSpeed()
+    {
+        float temp = velocity.y;
+        velocity = maxSpeed != 0 ? Vector3.ClampMagnitude(new Vector3(velocity.x, 0, velocity.z), maxSpeed) : velocity;
+        velocity.y = temp; 
+    }
     private void CheckForCollisions(int i)
     {
         RaycastHit hitInfo = collisionCaster.CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);
@@ -164,9 +174,7 @@ public class PhysicsComponent : MonoBehaviour
     public void ApplyAirResistance() { velocity *= Mathf.Pow(airResistance, Time.deltaTime); }
     public void AddForce(Vector3 input)
     {
-        velocity += input;
-        if (velocity.magnitude < smallNumber)
-            velocity = Vector3.zero;
+        velocity += input.magnitude < smallNumber? Vector3.zero : input;
     }
 
 

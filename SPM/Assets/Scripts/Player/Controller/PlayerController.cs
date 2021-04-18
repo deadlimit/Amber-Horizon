@@ -8,7 +8,8 @@ public class PlayerController : MonoBehaviour
     [Header("Player Control")]
     public float jumpHeight = 5f;
     public float acceleration = 5f;
-     public float deceleration = 2f;
+    public float deceleration = 2f;
+    public float turnRate = 4f;
     public float airControl = 0.2f;
     public float maxSpeed = 5f;
 
@@ -22,7 +23,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 input;
     public PhysicsComponent physics;
     private Camera activeCamera;
-    private float smallNumber = 0.02f;
+    public bool airborne;
     void Awake()
     {
         activeCamera = Camera.main;
@@ -33,27 +34,41 @@ public class PlayerController : MonoBehaviour
     public void SetInput(Vector3 inp) 
     {
         input = inp;
+        airborne = false;
     }
 
    public void SetInput(Vector3 inp, bool airborne) 
     {
         input = inp * airControl;
+        airborne = true;
     }
     void Decelerate() 
     {
-        
-        Vector3 projection = new Vector3(physics.velocity.x, 0, physics.velocity.z).normalized;
-        force = -deceleration * projection * Time.deltaTime;
+        force = -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
         //Velocitys magnitud och riktning, multiplicerat med ett värde mellan 1 och 0, fast negativt
     }
     void Accelerate()
     {
-        /*float dot = Vector3.Dot(input.normalized, physics.velocity.normalized);
+        Vector3 inputXZ = new Vector3(input.x, 0, input.z);
+        float dot = Vector3.Dot(inputXZ.normalized, physics.GetXZMovement().normalized);
 
-        Debug.Log(dot);*/
+        Debug.Log(dot);
 
         force = input * Time.deltaTime * acceleration;
-       // input += ((dot - 1) * deceleration * -physics.velocity.normalized) / 2;                           
+        /*
+        om vi accelerar i en annan riktning vill vi egentligen bromsa först
+        skalärprodukten används i multiplikation för att avgöra hur mycket av decelerationen som ska
+        appliceras, då detta bör bero på vinkeln i vilken man byter riktning/velocitet/momentum
+        */
+ 
+       force -= (((dot - 1) * turnRate * -physics.GetXZMovement().normalized) / 2);
+       Debug.DrawLine(transform.position, transform.position + -((dot - 1) * turnRate * -physics.velocity.normalized) / 2, Color.red);
+    }
+
+
+    private void AccelerateAirborne()
+    {
+        force = input * Time.deltaTime * acceleration;
     }
 
     void PlayerDirection() 
@@ -63,7 +78,7 @@ public class PlayerController : MonoBehaviour
         input = input.magnitude * Vector3.ProjectOnPlane(input, physics.groundHitInfo.normal).normalized;
 
     }
-    void Jump() { if (jump) { input.y += jumpHeight; jump = false; }  }
+    void Jump() { if (jump) { force.y += jumpHeight; jump = false; }  }
     public void SetJump()
     {
         jump = true;
@@ -77,13 +92,16 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+       
         stateMachine.RunUpdate();
         PlayerDirection();
-        
+
         if (input.magnitude < float.Epsilon)
+        {
             Decelerate();
+        }
         else
-            Accelerate();
+            Accelerate(); 
         //Debug.Log(input);
         Jump();
         physics.AddForce(force);
