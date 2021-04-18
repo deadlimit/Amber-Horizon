@@ -57,34 +57,25 @@ public class Controller3D : MonoBehaviour
         RotateTowardsCameraDirection();
         Vector3 angle = Vector3.ProjectOnPlane(input, playerPhys.groundHitInfo.normal).normalized;
         input = angle * input.magnitude;
-        AccelerateDecelerate();
-    }
-    private void AccelerateDecelerate()
-    {
         if (input.magnitude > float.Epsilon)
-        {
-            velocity = input * acceleration * Time.deltaTime;
-            velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
-
-        }
+            Accelerate();
         else
-        {
-            Vector3 movementXZ = new Vector3(velocity.x, 0, velocity.y);
-            if (deceleration > Mathf.Abs(velocity.x+velocity.y))
-            {
-                velocity.x = 0;
-                velocity.z = 0;
-            }
-            Vector3 projection = new Vector3(velocity.x, 0.0f, velocity.z).normalized;
-            velocity -= projection * deceleration * Time.deltaTime;
-        }
-
-        //det här är skräp
-        if (jump) 
+            Decelerate();
+        if (jump)
         {
             velocity.y += jumpHeight;
             jump = false;
         }
+    }
+    private void Accelerate()
+    {
+            velocity = input * acceleration * Time.deltaTime;
+    }
+    private void Decelerate() 
+    {
+        float temp = velocity.y;
+        velocity = (-deceleration  * playerPhys.velocity * Time.deltaTime);
+        velocity.y = temp;
     }
 
 
@@ -118,12 +109,6 @@ public class Controller3D : MonoBehaviour
             lbh.Activate();
         if (Input.GetMouseButtonUp(1))
             lbh.Deactivate();
-        
-        stateMachine.RunUpdate();        
-        PlayerDirection();     
-        playerPhys.AddForce(velocity);
-
-
     }
     public void SetJump()
     {
@@ -133,39 +118,48 @@ public class Controller3D : MonoBehaviour
     
     public PhysicsComponent GetPhysics() { return playerPhys; }
     
-    //obsolete men inte redo att radera allt riktigt än
-   /* private void LaunchBH() 
-    {
-        BlackHole bh = Instantiate(blackHole, transform.position, Quaternion.identity);
-        bh.velocity = transform.TransformDirection(BHTrajectory() * launchSpeedXZ);
+    
+    
+    //TODO Första gången spelaren fastnar i ett svarthål är första dashen mycket längre än följande dasher, vet inte varför
+    /// <summary>
+    /// Dash. Ska kunna dasha åt input-hållet? Dashar endast rakt fram just nu.
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    [CanBeNull]
+    private IEnumerator Dash() {
+
+        /* effects.SetTrigger("Dash");
+         //Spara gravitationen innan man sätter den till 0
+         float gravity = playerPhys.gravity;
+
+         Vector3 cameraForwardDirection = activeCamera.transform.forward;
+
+         //Nollar y-axeln för att bara dasha framåt.
+         cameraForwardDirection.y = 0;
+
+         //Stänger av gravitationen och nollställer hastigheten för att endast dash-velociteten ska gälla. 
+         Vector3 forwardMomentum = new Vector3(playerPhys.velocity.x, 0f, playerPhys.velocity.z);
+         playerPhys.velocity = Vector3.zero;
+         playerPhys.gravity = 0;
+         //playerPhys.bhGrav = Vector3.zero;
+
+
+         velocity = playerPhys.AffectedByBlackHoleGravity ? cameraForwardDirection * (BlackHole.BlackHoleRadius * blackHoleGravityDashForce) : cameraForwardDirection * dashLength;
+         playerPhys.AddForce(velocity);
+
+         Debug.DrawLine(transform.position, velocity, Color.red);
+
+         //Vänta .4 sekunder innan man sätter på gravitationen igen. 
+         yield return new WaitForSeconds(timeWithoutGravity);
+
+         playerPhys.velocity = transform.forward * 2;
+         playerPhys.gravity = gravity;
+
+         playerPhys.AffectedByBlackHoleGravity = false;
+         playerPhys.velocity = forwardMomentum;*/
+        yield return null;
     }
-
-    public float launchSpeedY = 10f;
-    private Vector3 BHTrajectory() 
-    {
-        return (cam.transform.forward + Vector3.up * launchSpeedY).normalized;
-        //man vill nog lägga till spelarens velocitet efter uträkningen här
-    }*/
-
-   /* void DrawPath() 
-    {
-        Debug.Log("Drawpath: bh är " + bh);
-        float timeToTarget = Mathf.Sqrt(-2 * launchSpeedY / playerPhys.gravity) + Mathf.Sqrt(2 * (bh.velocity.y - launchSpeedY) / playerPhys.gravity);        
-        Vector3 previousDrawPoint = bh.transform.position;
-
-        int resolution = 30;
-        for (int i = 0; i < resolution; i++) 
-        {
-            Debug.Log(i);
-            float simulationTime = i / (float)resolution * timeToTarget;
-            Vector3 displacement = bh.velocity * simulationTime +
-            playerPhys.gravity * Vector3.down /*vector3.down??*/ //* simulationTime * simulationTime / 2f;
-            /*Vector3 drawPoint = bh.transform.position + displacement;
-            Debug.DrawLine(previousDrawPoint, drawPoint, Color.green);
-            previousDrawPoint = drawPoint; 
-        }
-    }*/
-
 }
 
 
