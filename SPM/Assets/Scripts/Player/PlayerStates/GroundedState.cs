@@ -21,7 +21,7 @@ public class GroundedState : State
         Vector3.forward * Input.GetAxisRaw("Vertical");
         input = input.normalized;
         //Debug.Log("input från grounded : " + input);
-        player.SetInput(input);
+        player.InputGrounded(input);
         Jump();
         Fall();
     }

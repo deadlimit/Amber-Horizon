@@ -18,7 +18,7 @@ public class JumpingState : State
         Vector3.right * Input.GetAxisRaw("Horizontal") +
         Vector3.forward * Input.GetAxisRaw("Vertical");
         input = input.normalized;
-        player.SetInput(input, true);
+        player.InputAirborne(input, true);
 
         if (player.physics.velocity.y < 0)
         {
