@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using AbilitySystem;
-using EventCallbacks;
 using UnityEngine;
-using UnityEngine.EventSystems;
+
 
 public class PlayerController : MonoBehaviour
 {
@@ -101,36 +98,26 @@ public class PlayerController : MonoBehaviour
             activeCamera.transform.localEulerAngles.y, 
             transform.localEulerAngles.z);
     }
-    void Update()
-    {
-       
+
+    void Update() {
+
         stateMachine.RunUpdate();
         PlayerDirection();
 
-        if (input.magnitude < float.Epsilon)
-        {
+        if (input.magnitude < float.Epsilon) {
             Decelerate();
         }
         else
-            Accelerate(); 
-        //Debug.Log(input);
-        Jump();
-        physics.AddForce(force);
+            Accelerate();
 
-        if (Input.GetKeyDown(KeyCode.E))
+        Jump();
+
+        if (Input.GetKeyDown(KeyCode.E)) {
             abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
+        }
+        
+        physics.AddForce(force);
         
         
-        /* if (Input.GetKeyDown(KeyCode.E) && nextDash < Time.time)
-         {
-             nextDash = Time.time + dashCooldown;
-             StopCoroutine(Dash());
-             StartCoroutine(Dash());
-         }
- 
-         if (Input.GetMouseButtonDown(1))
-             lbh.Activate();
-         if (Input.GetMouseButtonUp(1))
-             lbh.Deactivate();*/
     }
 }

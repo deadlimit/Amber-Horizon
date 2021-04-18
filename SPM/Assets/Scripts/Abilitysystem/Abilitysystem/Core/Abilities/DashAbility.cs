@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Dash", menuName = "Abilities/Dash")]
 public class DashAbility : GameplayAbility {
 
-    public float timeWithOutGravity = .4f;
-    public float dashLength = 20;
+    public float timeWithOutGravity;
+    public float dashLength;
     
     public override void Activate(GameplayAbilitySystem Owner) {
         Owner.StartCoroutine(Dash(Owner));
@@ -16,8 +16,6 @@ public class DashAbility : GameplayAbility {
     private IEnumerator Dash(GameplayAbilitySystem Owner) {
         
         Owner.ApplyEffectToSelf(Cooldown);
-        
-        Debug.Log(Cooldown.Duration);
         
         PlayerController playerController = Owner.GetComponent<PlayerController>();
 
@@ -33,17 +31,17 @@ public class DashAbility : GameplayAbility {
 
         //Stänger av gravitationen och nollställer hastigheten för att endast dash-velociteten ska gälla. 
         Vector3 forwardMomentum = new Vector3(playerController.physics.velocity.x, 0f, playerController.physics.velocity.z);
+        float previousMaxSpeed = playerController.physics.maxSpeed;
         playerController.physics.velocity = Vector3.zero;
         playerController.physics.gravity = 0;
-
+        playerController.physics.maxSpeed = dashLength;
         playerController.force = cameraForwardDirection * dashLength;
-        playerController.physics.AddForce(playerController.force);
         
         //Vänta .4 sekunder innan man sätter på gravitationen igen. 
         yield return new WaitForSeconds(timeWithOutGravity);
         
-        
         playerController.physics.gravity = gravity;
         playerController.force = forwardMomentum;
+        playerController.physics.maxSpeed = previousMaxSpeed;
     }
 }
