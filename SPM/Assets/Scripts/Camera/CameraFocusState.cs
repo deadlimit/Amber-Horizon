@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [CreateAssetMenu(fileName = "CameraFocusState", menuName = "New CameraFocusState")]
 public class CameraFocusState : State {
