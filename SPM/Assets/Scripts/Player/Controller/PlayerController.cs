@@ -9,9 +9,10 @@ public class PlayerController : MonoBehaviour
     public float jumpHeight = 5f;
     public float acceleration = 5f;
     public float deceleration = 2f;
-    public float turnRate = 4f;
     public float airControl = 0.2f;
     public float maxSpeed = 5f;
+    public float turnBerth = 4f;
+    public float turnSpeed = 0.33f; 
 
     [Header("StateMachine")]
     public State[] states;
@@ -61,9 +62,13 @@ public class PlayerController : MonoBehaviour
         appliceras, då detta bör bero på vinkeln i vilken man byter riktning/velocitet/momentum
         */
  
-       force -= (((dot - 1) * turnRate * -physics.GetXZMovement().normalized) / 2);
-       Debug.DrawLine(transform.position, transform.position + -((dot - 1) * turnRate * -physics.velocity.normalized) / 2, Color.red);
+        force -= (((dot - 1) * turnBerth * -physics.GetXZMovement().normalized) / 2);
+        //addera * turnSpeed av kraften vi precis tog bort, till vår nya riktning.
+        //gör i princip att man svänger snabbare
+        force += (((dot - 1) * turnBerth * turnSpeed * -force.normalized) / 2) ;
+        Debug.DrawLine(transform.position, transform.position + -((dot - 1) * turnBerth * -physics.velocity.normalized) / 2, Color.red);
     }
+
 
 
     private void AccelerateAirborne()
