@@ -126,23 +126,24 @@ namespace AbilitySystem
 
         public bool TryActivateAbilityByTag(Type AbilityTag)
         {
-            if (GrantedAbilities.TryGetValue(AbilityTag, out var Ability))
-            {
-                if (!AbilitiesOnCooldown.Contains(Ability) && !Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag))) {
+            if (GrantedAbilities.TryGetValue(AbilityTag, out var Ability)) {
+                if (!AbilitiesOnCooldown.Contains(Ability) &&
+                    !Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag))) {
 
                     if (Ability.Cooldown && Ability.Cooldown.EffectType is EffectDurationType.Duration) {
                         AbilitiesOnCooldown.Add(Ability);
                         StartCoroutine(RemoveAfterTime(Ability));
                     }
-                    
-                if (!Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag))
-                    && Ability.RequiredTags.All(Tag => ActiveTags.Contains(Tag)))
-                {
-                    Ability.Activate(this);
-                    return true;
+
+                    if (!Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag)) &&
+                        Ability.RequiredTags.All(Tag => ActiveTags.Contains(Tag))) {
+                        Ability.Activate(this);
+                        return true;
+                    }
+
                 }
-                
             }
+
             return false;
         }
 

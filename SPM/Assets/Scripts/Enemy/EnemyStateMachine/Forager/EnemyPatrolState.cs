@@ -12,7 +12,7 @@ public class EnemyPatrolState : State {
     }
 
     public override void Enter() {
-        Vector3 newPosition = forager.Pathfinder.GetSamplePositionOnNavMesh(forager.transform.position, patrolRadius);
+        Vector3 newPosition = forager.Pathfinder.GetSamplePositionOnNavMesh(forager.transform.position, patrolRadius, 100);
         forager.Pathfinder.agent.SetDestination(newPosition);
     }
 

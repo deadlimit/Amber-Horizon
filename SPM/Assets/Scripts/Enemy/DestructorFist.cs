@@ -1,32 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
 public class DestructorFist : MonoBehaviour {
 
     private SphereCollider coll;
-
-    public LayerMask PlayerMask;
-
+    
     public float hitForce;
     
     private void Awake() {
         coll = GetComponent<SphereCollider>();
     }
-
-    public void SwitchCollider(bool value) => coll.enabled = value;
     
-    public void Update() {
-        Collider[] player = Physics.OverlapSphere(transform.position, coll.radius, PlayerMask);
+    private void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("Player")) {
 
-        if (player.Length < 1) return;
-        
-        player[0].GetComponent<PhysicsComponent>().AddForce(transform.forward + Vector3.up * hitForce);
-        coll.enabled = false;
-        enabled = false;
-        
+            print("worked");
+            PhysicsComponent player = other.GetComponent<PhysicsComponent>();
+            
+            player.GetComponent<PhysicsComponent>().AddForce(-player.transform.forward * hitForce);
+            coll.enabled = false;
+            enabled = false;
+        }
     }
-    
 }

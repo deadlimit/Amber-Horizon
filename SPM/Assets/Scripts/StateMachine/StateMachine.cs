@@ -6,7 +6,7 @@ using EventCallbacks;
 public class StateMachine
 {
     private Dictionary<Type, State> instantiatedStates = new Dictionary<Type, State>();
-    private State currentState;
+    public State currentState;
 
     public StateMachine(object owner, State[] states) 
     {
@@ -17,6 +17,7 @@ public class StateMachine
             State instantiated = UnityEngine.Object.Instantiate(state);
             instantiated.Initialize(this, owner);
             instantiatedStates.Add(state.GetType(), instantiated);
+            
             if (!currentState)
                 currentState = instantiated;
         }

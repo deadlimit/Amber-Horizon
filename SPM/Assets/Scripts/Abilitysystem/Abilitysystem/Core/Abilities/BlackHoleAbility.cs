@@ -7,8 +7,6 @@ public class BlackHoleAbility: GameplayAbility {
 
     public BlackHole bh;
 
-
-
     public override void Activate(GameplayAbilitySystem Owner) {
 
 

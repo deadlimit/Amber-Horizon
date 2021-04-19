@@ -1269,7 +1269,6 @@ GameObject:
   - component: {fileID: 4469862759675896386}
   - component: {fileID: 4469862759675896385}
   - component: {fileID: 1639410708564195584}
-  - component: {fileID: 651510035}
   m_Layer: 8
   m_Name: Enemy - Forager
   m_TagString: Untagged
@@ -1401,36 +1400,14 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 448
+  smallNumber: 0.1
   velocity: {x: 0, y: 0, z: 0}
   gravity: 10
   skinWidth: 0.05
+  maxSpeed: 0
   staticFrictionCoefficient: 0.5
   kineticFrictionCoefficient: 0.35
   airResistance: 0.35
-  AffectedByBlackHoleGravity: 0
-  groundCheckDistance: 0.05
---- !u!114 &651510035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4469862759675896390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79eac077e0d2403b8c4a5a103ba3aa5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collisionMask:
-    serializedVersion: 2
-    m_Bits: 448
-  velocity: {x: 0, y: 0, z: 0}
-  gravity: 10
-  skinWidth: 0.05
-  staticFrictionCoefficient: 0.5
-  kineticFrictionCoefficient: 0.35
-  airResistance: 0.35
-  AffectedByBlackHoleGravity: 0
   groundCheckDistance: 0.05
 --- !u!1 &4479024915855545912
 GameObject:
