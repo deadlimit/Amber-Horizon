@@ -20,7 +20,7 @@ public class DestructorPatrolState : State {
 
         if (destructor.ProximityCast(destructor.outerRing)) {
             destructor.Pathfinder.agent.ResetPath();
-            destructor.stateMachine.ChangeState<DestructorChargeState>();
+            destructor.stateMachine.ChangeState<DestructorPreEngageState>();
         }
 
         if (destructor.Pathfinder.agent.remainingDistance < .1f) 

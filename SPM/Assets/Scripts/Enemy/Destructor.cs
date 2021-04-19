@@ -5,5 +5,9 @@ public class Destructor : Enemy {
         
         stateMachine.RunUpdate();
     }
+
+    public void StartChasing() {
+        stateMachine.ChangeState<DestructorChargeState>();
+    }
     
 }

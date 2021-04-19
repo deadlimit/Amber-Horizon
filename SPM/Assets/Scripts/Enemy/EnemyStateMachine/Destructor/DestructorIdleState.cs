@@ -17,7 +17,7 @@ public class DestructorIdleState : State {
         
         destructor.Pathfinder.agent.ResetPath();
         
-        destructor.Invoke(() => destructor.stateMachine.ChangeState<DestructorPatrolState>(), Random.Range(0, 3));
+        destructor.Invoke(() => destructor.stateMachine.ChangeState<DestructorPatrolState>());
         
     }
 }

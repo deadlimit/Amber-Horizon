@@ -5,15 +5,20 @@ public class DestructorChargeState : State {
     private Destructor destructor;
 
     protected override void Initialize() {
-        destructor = (Destructor) owner;
+        destructor = owner as Destructor;
     }
 
     public override void Enter() {
-        destructor.Animator.SetTrigger("Melee");
+        //telegraph genom att slå ihop sina händer
+        destructor.Pathfinder.agent.speed += 2;
+        destructor.Pathfinder.agent.SetDestination(destructor.Target.position);
     }
 
     public override void RunUpdate() {
         destructor.transform.LookAt(destructor.Target);
         
+        if(Vector3.Distance(destructor.transform.position, destructor.Target.position) < 1f)
+            stateMachine.ChangeState<DestructorMeleeState>();
+
     }
 }
