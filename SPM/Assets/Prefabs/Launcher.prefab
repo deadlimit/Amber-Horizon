@@ -39,19 +39,22 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4733264653777747056}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd63a6877b51da34e80643f833b78784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cursor: {fileID: 0}
-  playerPos: {fileID: 0}
+  launchPoint: {fileID: 0}
   collisionMask:
     serializedVersion: 2
     m_Bits: 576
   lr: {fileID: 4733264653777747057}
   flightTime: 1
   bh: {fileID: 8524585833828388589, guid: eba0249126e20364eaf7fd99729bdde2, type: 3}
+  playerCam: {fileID: 0}
+  cursorPos: {x: 0, y: 0, z: 0}
+  maxDistance: 400
 --- !u!120 &4733264653777747057
 LineRenderer:
   m_ObjectHideFlags: 0

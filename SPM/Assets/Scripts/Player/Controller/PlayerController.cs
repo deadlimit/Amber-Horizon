@@ -20,11 +20,14 @@ public class PlayerController : MonoBehaviour
     private bool jump;
     float dot;
 
-    public Vector3 force;
+    public GameplayAbility aim; 
+
+    [HideInInspector]public Vector3 force;
     private Vector3 input;
-    public PhysicsComponent physics;
+    public PhysicsComponent physics { get; private set; }
     private Camera activeCamera;
     public bool airborne;
+    private LineRenderer lr;
     
     private GameplayAbilitySystem abilitySystem;
     
@@ -34,6 +37,8 @@ public class PlayerController : MonoBehaviour
         physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);
         abilitySystem = gameObject.AddComponent<GameplayAbilitySystem>();
+        abilitySystem.GrantAbility(aim);
+        lr = GetComponent<LineRenderer>();
     }
 
     public void InputGrounded(Vector3 inp) 
@@ -125,7 +130,23 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E)) {
             abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
         }
-        
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("Försöker aktivera BH"); 
+            abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag);
+        }
+        if (Input.GetMouseButton(1))
+        {
+            Debug.Log("Försöker sikta");
+            abilitySystem.TryActivateAbilityByTag(GameplayTags.AimingTag);
+        }
+        if (Input.GetMouseButtonUp(1))
+        {
+            Debug.Log("Tar bort tag aiming?");
+            abilitySystem.RemoveTag(aim.AbilityTag);
+            lr.enabled = false;
+        }
+
         physics.AddForce(force);
         
         

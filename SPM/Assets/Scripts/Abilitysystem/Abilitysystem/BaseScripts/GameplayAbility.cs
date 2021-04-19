@@ -11,6 +11,7 @@ namespace AbilitySystem
         public GameplayEffect Cooldown;
 
         public List<GameplayTag> BlockedByTags = new List<GameplayTag>();
+        public List<GameplayTag> RequiredTags = new List<GameplayTag>();
         // TODO: RequiredTags;
 
         public abstract void Activate(GameplayAbilitySystem Owner);

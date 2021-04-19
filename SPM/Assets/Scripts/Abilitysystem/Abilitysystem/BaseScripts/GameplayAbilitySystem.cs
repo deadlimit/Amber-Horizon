@@ -55,6 +55,7 @@ namespace AbilitySystem
             }
 
             Effect.AppliedTags.ForEach(Tag => ActiveTags.Add(Tag));
+            Effect.AppliedTags.ForEach(Tag => Debug.Log(Tag));
 
             switch (Effect.EffectType)
             {
@@ -131,8 +132,11 @@ namespace AbilitySystem
             GameplayAbility Ability;
             if (GrantedAbilities.TryGetValue(AbilityTag, out Ability))
             {
-                if (!Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag)))
+                Debug.Log("inuti trygetvalue : " + AbilityTag);
+                if (!Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag))
+                    && Ability.RequiredTags.All(Tag => ActiveTags.Contains(Tag)))
                 {
+                    Debug.Log("inte blocked, all required finns i active");
                     Ability.Activate(this);
                     return true;
                 }
@@ -141,6 +145,10 @@ namespace AbilitySystem
             return false;
         }
 
+        public void RemoveTag(GameplayTag Tag)
+        {
+            ActiveTags.Remove(Tag);
+        }
         public IEnumerator RemoveAfterTime(GameplayEffect Effect)
         {
             

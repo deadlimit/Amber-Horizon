@@ -14,6 +14,8 @@ namespace AbilitySystem
     public static class GameplayTags {
 
         public static Type MovementAbilityTag => typeof(MovementTag);
+        public static Type BlackHoleAbilityTag => typeof(AttackTag);
+        public static Type AimingTag => typeof(AimingTag);
 
     }
 }
