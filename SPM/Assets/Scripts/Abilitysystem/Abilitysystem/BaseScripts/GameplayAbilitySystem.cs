@@ -55,7 +55,6 @@ namespace AbilitySystem
             }
 
             Effect.AppliedTags.ForEach(Tag => ActiveTags.Add(Tag));
-            Effect.AppliedTags.ForEach(Tag => Debug.Log(Tag));
 
             switch (Effect.EffectType)
             {
@@ -132,11 +131,9 @@ namespace AbilitySystem
             GameplayAbility Ability;
             if (GrantedAbilities.TryGetValue(AbilityTag, out Ability))
             {
-                Debug.Log("inuti trygetvalue : " + AbilityTag);
                 if (!Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag))
                     && Ability.RequiredTags.All(Tag => ActiveTags.Contains(Tag)))
                 {
-                    Debug.Log("inte blocked, all required finns i active");
                     Ability.Activate(this);
                     return true;
                 }

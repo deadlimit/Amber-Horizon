@@ -15,16 +15,19 @@ public class AimingAbility : GameplayAbility
 
     private int resolution = 10;
     private Camera cam;
-    private bool isAiming;
+    private void Awake()
+    {
+        
+    }
     public override void Activate(GameplayAbilitySystem Owner)
     {
         lr = Owner.gameObject.GetComponent<LineRenderer>();
         Debug.Assert(lr);
         lr.enabled = true;
         Owner.ApplyEffectToSelf(AppliedEffect);
-
+        launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
         cam = Camera.main;
-        launchPoint = launchPoint == null ? Owner.gameObject : launchPoint;
+        launchPoint = launchPoint == null ? GameObject.Find("mixamorig:RightHand") : launchPoint;
 
         //private void LaunchProjectile()
         {
@@ -50,6 +53,9 @@ public class AimingAbility : GameplayAbility
 
             Vector3 vo = CalculateVelocity(cursor.transform.position, launchPoint.transform.position, flightTime);
             DrawArc(vo, cursor.transform.position);
+            //måste spara velociteten någonstans? vet inte hur man gör det snyggare
+            //det här är ju nackdelen med att dela upp siktandet och skjutandet
+            Owner.gameObject.GetComponent<PlayerController>().bhVelocity = vo; 
         }
     }
 
@@ -65,8 +71,6 @@ public class AimingAbility : GameplayAbility
     }
     Vector3 CalculateVelocity(Vector3 target, Vector3 origin, float time)
     {
-        //svarta hålet är lite stort, det blir imprecist när man skjuter på en vertikal yta
-
         Vector3 distance = target - origin;
         Vector3 distanceXZ = distance.normalized;
         distanceXZ.y = 0f;

@@ -22,7 +22,8 @@ public class PlayerController : MonoBehaviour
 
     public GameplayAbility aim; 
 
-    [HideInInspector]public Vector3 force;
+    [HideInInspector] public Vector3 force;
+     public Vector3 bhVelocity;
     private Vector3 input;
     public PhysicsComponent physics { get; private set; }
     private Camera activeCamera;
@@ -137,12 +138,10 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetMouseButton(1))
         {
-            Debug.Log("Försöker sikta");
             abilitySystem.TryActivateAbilityByTag(GameplayTags.AimingTag);
         }
         if (Input.GetMouseButtonUp(1))
         {
-            Debug.Log("Tar bort tag aiming?");
             abilitySystem.RemoveTag(aim.AbilityTag);
             lr.enabled = false;
         }

@@ -10,9 +10,13 @@ public class BlackHoleAbility: GameplayAbility {
 
 
     public override void Activate(GameplayAbilitySystem Owner) {
-        
-          BlackHole obj = Instantiate(bh, Owner.gameObject.transform.position, Quaternion.identity);
-         // obj.velocity = vo;
+
+
+          GameObject launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
+          BlackHole obj = Instantiate(bh, launchPoint.gameObject.transform.position, Quaternion.identity);
+
+        //USCH
+          obj.velocity = Owner.gameObject.GetComponent<PlayerController>().bhVelocity ;
 
     }
 
