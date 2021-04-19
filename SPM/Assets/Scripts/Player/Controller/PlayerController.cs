@@ -11,8 +11,8 @@ public class PlayerController : MonoBehaviour
     public float deceleration = 2f;
     public float airControl = 0.2f;
     public float maxSpeed = 5f;
-    public float turnBerth = 4f;
-    public float turnSpeed = 0.33f; 
+    public float turnRate = 4f;
+    public float retainedSpeedWhenTurning = 0.33f; 
 
     [Header("StateMachine")]
     public State[] states;
@@ -35,17 +35,27 @@ public class PlayerController : MonoBehaviour
         stateMachine = new StateMachine(this, states);
         abilitySystem = gameObject.AddComponent<GameplayAbilitySystem>();
     }
-    
-    
-    public void SetInput(Vector3 inp) 
+
+    public void InputGrounded(Vector3 inp) 
     {
         input = inp;
+        PlayerDirection();
+        
+        if (input.magnitude < float.Epsilon)
+        {
+            Decelerate();
+        }
+        else
+            Accelerate();
         airborne = false;
     }
 
-   public void SetInput(Vector3 inp, bool airborne) 
+
+   public void InputAirborne(Vector3 inp, bool airborne) 
     {
         input = inp * airControl;
+        PlayerDirection();
+        AccelerateAirborne();
         airborne = true;
     }
     void Decelerate() 
@@ -65,13 +75,12 @@ public class PlayerController : MonoBehaviour
         appliceras, d� detta b�r bero p� vinkeln i vilken man byter riktning/velocitet/momentum
         */
  
-        force -= (((dot - 1) * turnBerth * -physics.GetXZMovement().normalized) / 2);
+        force -= (((dot - 1) * turnRate * -physics.GetXZMovement().normalized) / 2);
         //addera * turnSpeed av kraften vi precis tog bort, till v�r nya riktning.
         //g�r i princip att man sv�nger snabbare
-        force += (((dot - 1) * turnBerth * turnSpeed * -force.normalized) / 2) ;
-        Debug.DrawLine(transform.position, transform.position + -((dot - 1) * turnBerth * -physics.velocity.normalized) / 2, Color.red);
+        force += (((dot - 1) * turnRate * retainedSpeedWhenTurning * -force.normalized) / 2) ;
+        Debug.DrawLine(transform.position, transform.position + -((dot - 1) * turnRate * -physics.velocity.normalized) / 2, Color.red);
     }
-
 
 
     private void AccelerateAirborne()
@@ -102,14 +111,15 @@ public class PlayerController : MonoBehaviour
     void Update() {
 
         stateMachine.RunUpdate();
-        PlayerDirection();
+        //PlayerDirection();
 
-        if (input.magnitude < float.Epsilon) {
-            Decelerate();
-        }
-        else
-            Accelerate();
-
+        //if (input.magnitude < float.Epsilon)
+        //{
+        //    Decelerate();
+        //}
+        //else
+        //    Accelerate(); 
+        //Debug.Log(input);
         Jump();
 
         if (Input.GetKeyDown(KeyCode.E)) {

@@ -20,7 +20,7 @@ public class FallingState : State
         Vector3.right * Input.GetAxisRaw("Horizontal") +
         Vector3.forward * Input.GetAxisRaw("Vertical");
         input = input.normalized;
-        player.SetInput(input, true);
+        player.InputAirborne(input, true);
         //player.GetPhysics().AddFallSpeed();
         //hur fasen ändrar man hastigheten man faller med.. om man bara gör input.y så kommer det ju med i rotationen.
         //ev. kalla ny metod i spelaren/fysiken som påverkar velocity.
