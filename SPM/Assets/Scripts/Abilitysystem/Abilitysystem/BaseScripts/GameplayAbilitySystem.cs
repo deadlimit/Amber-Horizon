@@ -135,6 +135,9 @@ namespace AbilitySystem
                         StartCoroutine(RemoveAfterTime(Ability));
                     }
                     
+                if (!Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag))
+                    && Ability.RequiredTags.All(Tag => ActiveTags.Contains(Tag)))
+                {
                     Ability.Activate(this);
                     return true;
                 }
@@ -143,7 +146,13 @@ namespace AbilitySystem
             return false;
         }
 
-        public IEnumerator RemoveAfterTime(GameplayEffect Effect) {
+        public void RemoveTag(GameplayTag Tag)
+        {
+            ActiveTags.Remove(Tag);
+        }
+        public IEnumerator RemoveAfterTime(GameplayEffect Effect)
+        {
+            
             yield return new WaitForSeconds(Effect.Duration);
             
             ActiveEffects[Effect]--;
