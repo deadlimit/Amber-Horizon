@@ -33,7 +33,11 @@ public class PlayerController : MonoBehaviour
         activeCamera = Camera.main;
         physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);
-        abilitySystem = gameObject.AddComponent<GameplayAbilitySystem>();
+        
+    }
+
+    private void Start() {
+        abilitySystem = GetComponent<GameplayAbilitySystem>();
     }
 
     public void InputGrounded(Vector3 inp) 
@@ -123,7 +127,7 @@ public class PlayerController : MonoBehaviour
         Jump();
 
         if (Input.GetKeyDown(KeyCode.E)) {
-            abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
+            print(abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag));
         }
         
         physics.AddForce(force);

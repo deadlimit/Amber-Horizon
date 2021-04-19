@@ -20,7 +20,6 @@ public class DefaultCameraState : State
     protected override void Initialize() {
         camera = (ThirdPersonCamera)base.owner;
         collider = camera.GetComponent<SphereCollider>();
-        Debug.Log("Default state");
         target = GameObject.FindGameObjectWithTag("CameraDefaultTarget");
         
     }

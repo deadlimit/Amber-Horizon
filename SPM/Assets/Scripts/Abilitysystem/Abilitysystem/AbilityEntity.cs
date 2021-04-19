@@ -13,10 +13,7 @@ public class AbilityEntity : MonoBehaviour {
     private void OnEnable() {
         abilitySystem = gameObject.AddComponent<GameplayAbilitySystem>();
         abilitySystem.RegisterAttributeSet(AttributeSet);
-        StartingAbilities.ForEach(a => {
-            Debug.Log("Granted");
-            abilitySystem.GrantAbility(a);
-        });
+        StartingAbilities.ForEach(a => abilitySystem.GrantAbility(a));
         StartingEffects.ForEach(e => abilitySystem.ApplyEffectToSelf(e));
     }
 }

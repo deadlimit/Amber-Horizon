@@ -12,7 +12,6 @@ namespace AbilitySystem
         private Dictionary<Type, GameplayAbility> GrantedAbilities = new Dictionary<Type, GameplayAbility>();
         private Dictionary<Type, Action<float>> OnAttributeChanged = new Dictionary<Type, Action<float>>();
         private Dictionary<Type, Func<float, float>> AttributeSetCalculations = new Dictionary<Type, Func<float, float>>();
-        
         private Dictionary<GameplayEffect, int> ActiveEffects = new Dictionary<GameplayEffect, int>();
         private HashSet<GameplayTag> ActiveTags = new HashSet<GameplayTag>();
 
@@ -141,11 +140,9 @@ namespace AbilitySystem
             return false;
         }
 
-        public IEnumerator RemoveAfterTime(GameplayEffect Effect)
-        {
-            
+        public IEnumerator RemoveAfterTime(GameplayEffect Effect) {
             yield return new WaitForSeconds(Effect.Duration);
-            // TODO: Remove gameplay tags added by this effect
+            
             ActiveEffects[Effect]--;
             
             if (ActiveEffects[Effect] <= 0) {
