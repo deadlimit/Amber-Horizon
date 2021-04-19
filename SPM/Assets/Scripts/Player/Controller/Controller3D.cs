@@ -1,12 +1,12 @@
-using System.Collections;
-using JetBrains.Annotations;
+using AbilitySystem;
+using EventCallbacks;
 using UnityEngine;
-using Vector3 = UnityEngine.Vector3;
+using UnityEngine.EventSystems;
 
 public class Controller3D : MonoBehaviour
 {
     private Camera activeCamera;
-    [SerializeField] Vector3 velocity = Vector3.zero;
+    public Vector3 velocity;
     [SerializeField] float acceleration = 4f;
     [SerializeField]float maxSpeed;
 
@@ -16,23 +16,15 @@ public class Controller3D : MonoBehaviour
     public LauncherBlackHole lbh;
     public float deceleration = 1f;
     
-    [Header("Dash")]
-    [SerializeField] private float dashCooldown;
-    [SerializeField] private float dashLength;
-    [Tooltip("Hur länge spelarens gravitation är avstängd innan den sätts på igen (sekunder)")]
-    [SerializeField] private float timeWithoutGravity;
-    [SerializeField] private float blackHoleGravityDashForce;
-    private float nextDash;
-    [SerializeField] private int keyFragments = 0;
-
-    private Animator effects;
-    
+    private GameplayAbilitySystem abilitySystem;
     
     [Header("StateMachine")]
     public State[] states;
     private StateMachine stateMachine;
     private bool jump;
 
+    private Animator animator;
+    
     /*obsolete, ska ta bort det så fort jag är säker på min sak-------
     public BlackHole blackHole;
     public float launchSpeedXZ = 5f;
@@ -43,7 +35,11 @@ public class Controller3D : MonoBehaviour
         activeCamera = Camera.main;
         playerPhys = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);
-        effects = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
+    }
+    
+    private void Start() {
+        abilitySystem = GetComponent<GameplayAbilitySystem>();
     }
 
     public void SetInput(Vector3 inp)
@@ -84,22 +80,31 @@ public class Controller3D : MonoBehaviour
 
 
     void Update() {
-
-        Debug.DrawLine(transform.position, transform.position + transform.forward, Color.red);
-        if (Input.GetKeyDown(KeyCode.F)) {
+        
+        if (Input.GetKeyDown(KeyCode.F)) 
+        {
             Time.timeScale = Time.timeScale == .3f ? Time.timeScale = 1 : Time.timeScale = .3f;
         }
         
-        stateMachine.RunUpdate();        
-        PlayerDirection();     
-        playerPhys.AddForce(velocity);
-        
-        if (Input.GetKeyDown(KeyCode.E) && nextDash < Time.time) {
-            nextDash = Time.time + dashCooldown;
-            StopCoroutine(Dash());
-            StartCoroutine(Dash());
-        }
+        if (Input.GetKeyDown(KeyCode.E))
+            abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
 
+
+        if (Input.GetKeyDown(KeyCode.I)) {
+            bool zoomIn = !animator.GetBool("ShowKey");
+
+
+            if (!zoomIn) {
+             //   CameraFocusEvent cameraFocusEvent = new CameraFocusEvent();
+                //cameraFocusEvent.newFocusTarget = GameObject.FindGameObjectWithTag("KeyCameraTarget").transform;
+               // EventSystem<CameraFocusEvent>.FireEvent(cameraFocusEvent);
+            }
+
+            animator.SetBool("ShowKey", zoomIn);
+
+        }
+            
+        
         if (Input.GetMouseButtonDown(1))
             lbh.Activate();
         if (Input.GetMouseButtonUp(1))
@@ -114,47 +119,6 @@ public class Controller3D : MonoBehaviour
     public PhysicsComponent GetPhysics() { return playerPhys; }
     
     
-    
-    //TODO Första gången spelaren fastnar i ett svarthål är första dashen mycket längre än följande dasher, vet inte varför
-    /// <summary>
-    /// Dash. Ska kunna dasha åt input-hållet? Dashar endast rakt fram just nu.
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    [CanBeNull]
-    private IEnumerator Dash() {
-
-        /* effects.SetTrigger("Dash");
-         //Spara gravitationen innan man sätter den till 0
-         float gravity = playerPhys.gravity;
-
-         Vector3 cameraForwardDirection = activeCamera.transform.forward;
-
-         //Nollar y-axeln för att bara dasha framåt.
-         cameraForwardDirection.y = 0;
-
-         //Stänger av gravitationen och nollställer hastigheten för att endast dash-velociteten ska gälla. 
-         Vector3 forwardMomentum = new Vector3(playerPhys.velocity.x, 0f, playerPhys.velocity.z);
-         playerPhys.velocity = Vector3.zero;
-         playerPhys.gravity = 0;
-         //playerPhys.bhGrav = Vector3.zero;
-
-
-         velocity = playerPhys.AffectedByBlackHoleGravity ? cameraForwardDirection * (BlackHole.BlackHoleRadius * blackHoleGravityDashForce) : cameraForwardDirection * dashLength;
-         playerPhys.AddForce(velocity);
-
-         Debug.DrawLine(transform.position, velocity, Color.red);
-
-         //Vänta .4 sekunder innan man sätter på gravitationen igen. 
-         yield return new WaitForSeconds(timeWithoutGravity);
-
-         playerPhys.velocity = transform.forward * 2;
-         playerPhys.gravity = gravity;
-
-         playerPhys.AffectedByBlackHoleGravity = false;
-         playerPhys.velocity = forwardMomentum;*/
-        yield return null;
-    }
 }
 
 

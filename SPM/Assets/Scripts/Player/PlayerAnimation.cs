@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerAnimation : MonoBehaviour {
 
     private Animator animator;
-    public float acceleration;
+
     private void Awake() {
         animator = GetComponent<Animator>();
     }
@@ -15,5 +15,8 @@ public class PlayerAnimation : MonoBehaviour {
         float xAxis = Input.GetAxis("Horizontal");
         animator.SetFloat("VelocityX", xAxis);
         animator.SetFloat("VelocityZ", zAxis);
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+            animator.SetBool("ShowKey", !animator.GetBool("ShowKey"));
     }
 }

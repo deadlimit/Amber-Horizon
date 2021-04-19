@@ -12,8 +12,7 @@ public class FallingState : State
     }
 
     public override void Enter() {
-        //
-        Debug.Log("Falling State!"); 
+        //Debug.Log("Falling State!"); 
     }
     public override void RunUpdate()
     {
@@ -23,17 +22,17 @@ public class FallingState : State
         input = input.normalized;
         player.InputAirborne(input, true);
         //player.GetPhysics().AddFallSpeed();
-        //hur fasen ändrar man hastigheten man faller med.. om man bara gör input.y så kommer det ju med i rotationen.
-        //ev. kalla ny metod i spelaren/fysiken som påverkar velocity.
+        //hur fasen Ã¤ndrar man hastigheten man faller med.. om man bara gÃ¶r input.y sÃ¥ kommer det ju med i rotationen.
+        //ev. kalla ny metod i spelaren/fysiken som pÃ¥verkar velocity.
 
         if (player.physics.isGrounded())
         {
-            //jag tror att det som händer är att den hinner utvärdera isGrounded() innan vi helt lämnat marken, därför 
-            //går den direkt tillbaka till GroundedState, men INTE om man gör dubbelhoppet som blir möjligt av den här buggen
+            //jag tror att det som hÃ¤nder Ã¤r att den hinner utvÃ¤rdera isGrounded() innan vi helt lÃ¤mnat marken, dÃ¤rfÃ¶r 
+            //gÃ¥r den direkt tillbaka till GroundedState, men INTE om man gÃ¶r dubbelhoppet som blir mÃ¶jligt av den hÃ¤r buggen
             stateMachine.ChangeState<GroundedState>();
         }
         
-        //om vi är på väg ned -> falling state
+        //om vi Ã¤r pÃ¥ vÃ¤g ned -> falling state
 
     }
 }
