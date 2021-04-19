@@ -1,6 +1,4 @@
-using UnityEditor.VersionControl;
 using UnityEngine;
-
 
 public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
 
@@ -10,6 +8,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     public AIPathfinder Pathfinder { get; private set; }
     public Transform Target { get; private set; }
     public CapsuleCollider Collider { get; private set; }
+    public Vector3 originPosition { get; set; }
     
     public LayerMask PlayerMask;
     
@@ -24,10 +23,11 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Collider = GetComponent<CapsuleCollider>();
         Pathfinder = GetComponent<AIPathfinder>();
         Target = GameObject.FindGameObjectWithTag("Player").transform;
+        originPosition = transform.position;
     }
 
     public void Update() {
-        Animator.SetFloat("DistanceToTarget", Vector3.Distance(transform.position, Pathfinder.agent.destination));
+        Animator.SetFloat("DistanceToTarget", Pathfinder.agent.velocity.magnitude);
     }
     
     public bool ProximityCast(float radius) {

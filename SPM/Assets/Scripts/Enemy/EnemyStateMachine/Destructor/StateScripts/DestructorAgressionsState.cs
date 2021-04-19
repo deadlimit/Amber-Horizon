@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DestructorAgressionsState State", menuName = "New DestructorAgressionsState State")]
+[CreateAssetMenu(fileName = "DestructorAgressionsState", menuName = "Enemies/Destructor/New DestructorAgressionsState")]
 public class DestructorAgressionsState : State {
 
     private Destructor destructor;
@@ -13,12 +13,14 @@ public class DestructorAgressionsState : State {
         destructor.Pathfinder.agent.isStopped = true;
         destructor.Pathfinder.agent.ResetPath();
         destructor.Animator.SetTrigger("Point");
-
-
+        destructor.Invoke(() => destructor.stateMachine.ChangeState<DestructorChaseState>(), 2);
     }
 
     public override void RunUpdate() {
         destructor.transform.LookAt(destructor.Target);
     }
 
+    public override void Exit() {
+        destructor.Pathfinder.agent.isStopped = false;
+    }
 }

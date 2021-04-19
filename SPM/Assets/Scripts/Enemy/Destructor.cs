@@ -1,9 +1,9 @@
-using System;
-using System.IO;
 using UnityEngine;
 
 public class Destructor : Enemy {
 
+    public TextMesh text;
+    
     private void Start() {
         stateMachine.ChangeState<DestructorPatrolState>();
     }
@@ -12,14 +12,17 @@ public class Destructor : Enemy {
         base.Update();
         
         stateMachine.RunUpdate();
-        print(stateMachine.currentState);
+        text.text = stateMachine.currentState.ToString();
+
     }
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.black;
-        if (!Pathfinder.agent.hasPath) return;
+        if (Pathfinder != null  && Pathfinder.agent.destination == Vector3.zero) return;
         Gizmos.DrawLine(transform.position, Pathfinder.agent.destination);
         Gizmos.DrawWireSphere(Pathfinder.agent.destination, 1);
         Gizmos.DrawWireSphere(transform.position, outerRing);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + Vector3.up, innerRing);
     }
 }
