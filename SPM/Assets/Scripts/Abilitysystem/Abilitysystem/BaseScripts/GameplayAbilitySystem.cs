@@ -14,7 +14,7 @@ namespace AbilitySystem
         private Dictionary<Type, Func<float, float>> AttributeSetCalculations = new Dictionary<Type, Func<float, float>>();
         private Dictionary<GameplayEffect, int> ActiveEffects = new Dictionary<GameplayEffect, int>();
         private HashSet<GameplayTag> ActiveTags = new HashSet<GameplayTag>();
-
+        private HashSet<GameplayAbility> AbilitiesOnCooldown = new HashSet<GameplayAbility>();
         public void RegisterAttributeSet(List<GameplayAttributeSetEntry> Set)
         {
             Set.ForEach(Entry => AttributeSet.Add(Entry.Attribute.GetType(), Entry.Value));
@@ -126,12 +126,15 @@ namespace AbilitySystem
 
         public bool TryActivateAbilityByTag(Type AbilityTag)
         {
-            
-            GameplayAbility Ability;
-            if (GrantedAbilities.TryGetValue(AbilityTag, out Ability))
+            if (GrantedAbilities.TryGetValue(AbilityTag, out var Ability))
             {
-                if (!Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag)))
-                {
+                if (!AbilitiesOnCooldown.Contains(Ability) && !Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag))) {
+
+                    if (Ability.Cooldown && Ability.Cooldown.EffectType is EffectDurationType.Duration) {
+                        AbilitiesOnCooldown.Add(Ability);
+                        StartCoroutine(RemoveAfterTime(Ability));
+                    }
+                    
                     Ability.Activate(this);
                     return true;
                 }
@@ -151,6 +154,12 @@ namespace AbilitySystem
                 Effect.AppliedTags.ForEach((Tag) => ActiveTags.Remove(Tag));
             }
 
+        }
+
+        public IEnumerator RemoveAfterTime(GameplayAbility ability) {
+            yield return new WaitForSeconds(ability.Cooldown.Duration);
+
+            AbilitiesOnCooldown.Remove(ability);
         }
     }
 }
