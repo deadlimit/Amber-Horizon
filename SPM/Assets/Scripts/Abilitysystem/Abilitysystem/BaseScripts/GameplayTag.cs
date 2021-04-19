@@ -17,5 +17,7 @@ namespace AbilitySystem
         public static Type BlackHoleAbilityTag => typeof(AttackTag);
         public static Type AimingTag => typeof(AimingTag);
 
+        public static Type MeleeTag => typeof(MeleeTag);
+
     }
 }

@@ -34,10 +34,19 @@
               </e>
               <e p="Core" t="Include">
                 <e p="Abilities" t="Include">
-                  <e p="AimingAbility.cs" t="Include" />
-                  <e p="BlackHoleAbility.cs" t="Include" />
-                  <e p="DashAbility.cs" t="Include" />
-                  <e p="EnemyShoot.cs" t="Include" />
+                  <e p="Enemy" t="Include">
+                    <e p="Destructor" t="Include">
+                      <e p="FistPunch.cs" t="Include" />
+                    </e>
+                    <e p="Forager" t="Include">
+                      <e p="EnemyShoot.cs" t="Include" />
+                    </e>
+                  </e>
+                  <e p="Player" t="Include">
+                    <e p="AimingAbility.cs" t="Include" />
+                    <e p="BlackHoleAbility.cs" t="Include" />
+                    <e p="DashAbility.cs" t="Include" />
+                  </e>
                 </e>
                 <e p="Attributes" t="Include">
                   <e p="HealthAttribute.cs" t="Include" />
@@ -45,11 +54,14 @@
                 <e p="Effects" t="Include">
                   <e p="Aiming.cs" t="Include" />
                   <e p="Cooldown.cs" t="Include" />
+                  <e p="Stun.cs" t="Include" />
                 </e>
                 <e p="Tags" t="Include">
                   <e p="AimingTag.cs" t="Include" />
                   <e p="AttackTag.cs" t="Include" />
+                  <e p="MeleeTag.cs" t="Include" />
                   <e p="MovementTag.cs" t="Include" />
+                  <e p="StunTag.cs" t="Include" />
                 </e>
               </e>
             </e>

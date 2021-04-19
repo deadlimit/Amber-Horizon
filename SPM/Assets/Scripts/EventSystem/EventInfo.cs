@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using AbilitySystem;
 using UnityEngine;
 
 namespace EventCallbacks
@@ -35,6 +36,17 @@ namespace EventCallbacks
             newFocusTarget = newTarget;
         }
         
+    }
+
+    public class PlayerHitEvent : EventInfo {
+
+        public readonly Transform enemyTransform;
+        public GameplayAbility ability;
+        public PlayerHitEvent(Transform enemyTransform, GameplayAbility ability) {
+            this.enemyTransform = enemyTransform;
+            this.ability = ability;
+        }
+
     }
     
 }

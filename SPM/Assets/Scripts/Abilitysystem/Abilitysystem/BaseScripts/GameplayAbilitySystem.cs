@@ -86,6 +86,10 @@ namespace AbilitySystem
             }
         }
 
+        public void TryApplyEffectToOther(GameplayEffect effect, GameplayAbilitySystem Other) {
+            Other.ApplyEffectToSelf(effect);
+        }
+
         public void TryApplyAttributeChange(Type Attribute, float Value)
         {
             if (AttributeSet.ContainsKey(Attribute))
@@ -127,16 +131,14 @@ namespace AbilitySystem
         public bool TryActivateAbilityByTag(Type AbilityTag)
         {
             if (GrantedAbilities.TryGetValue(AbilityTag, out var Ability)) {
-                if (!AbilitiesOnCooldown.Contains(Ability) &&
-                    !Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag))) {
+                if (!AbilitiesOnCooldown.Contains(Ability) && !Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag))) {
 
                     if (Ability.Cooldown && Ability.Cooldown.EffectType is EffectDurationType.Duration) {
                         AbilitiesOnCooldown.Add(Ability);
                         StartCoroutine(RemoveAfterTime(Ability));
                     }
 
-                    if (!Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag)) &&
-                        Ability.RequiredTags.All(Tag => ActiveTags.Contains(Tag))) {
+                    if (!Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag)) && Ability.RequiredTags.All(Tag => ActiveTags.Contains(Tag))) {
                         Ability.Activate(this);
                         return true;
                     }
