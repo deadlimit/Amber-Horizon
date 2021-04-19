@@ -826,7 +826,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2863595250893694729}
   - component: {fileID: 1635377576}
-  - component: {fileID: 1781738628132540165}
+  - component: {fileID: 1635377577}
   m_Layer: 10
   m_Name: mixamorig:RightHand
   m_TagString: Untagged
@@ -866,22 +866,22 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.28
   m_Center: {x: 0.19, y: 0, z: 0}
---- !u!114 &1781738628132540165
+--- !u!114 &1635377577
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1992707865413842368}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 655f8f4eb8664f08a87ce6ce616deb10, type: 3}
+  m_Script: {fileID: 11500000, guid: 5543094841a4914418f766a5989b7041, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerMask:
     serializedVersion: 2
     m_Bits: 128
-  hitForce: 100
+  hitForce: 1
 --- !u!1 &2156002860908303167
 GameObject:
   m_ObjectHideFlags: 0
@@ -1295,10 +1295,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4469862759675896389}
   - component: {fileID: 4469862759675896388}
+  - component: {fileID: 4469862759675896391}
   - component: {fileID: 4469862759675896387}
   - component: {fileID: 4469862759675896384}
   - component: {fileID: 4469862759675896385}
-  - component: {fileID: 2788272399271417085}
+  - component: {fileID: 1838768410}
   m_Layer: 9
   m_Name: Enemy - Destructor
   m_TagString: Untagged
@@ -1337,6 +1338,29 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &4469862759675896391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4469862759675896390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27331ede0545e9642a169425d7d8ba50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 832
+  velocity: {x: 0, y: 0, z: 0}
+  gravity: 10
+  skinWidth: 0.2
+  staticFrictionCoefficient: 0.5
+  kineticFrictionCoefficient: 0.35
+  airResistance: 0.35
+  AffectedByBlackHoleGravity: 0
+  groundCheckDistance: 0.05
 --- !u!95 &4469862759675896387
 Animator:
   serializedVersion: 3
@@ -1390,7 +1414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e33420389a796fe4a88f50ff02ebbe7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2788272399271417085
+--- !u!114 &1838768410
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1399,20 +1423,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 4469862759675896390}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79eac077e0d2403b8c4a5a103ba3aa5e, type: 3}
+  m_Script: {fileID: 11500000, guid: 4fba1df2a9187984488ee0ddae1d147a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionMask:
+  outerRing: 2
+  innerRing: 2
+  PlayerMask:
     serializedVersion: 2
-    m_Bits: 448
-  velocity: {x: 0, y: 0, z: 0}
-  gravity: 10
-  skinWidth: 0.05
-  staticFrictionCoefficient: 0.5
-  kineticFrictionCoefficient: 0.35
-  airResistance: 0.35
-  AffectedByBlackHoleGravity: 0
-  groundCheckDistance: 0.05
+    m_Bits: 128
+  states:
+  - {fileID: 11400000, guid: e483efc7bd0558343896f6aed932ad3c, type: 2}
+  - {fileID: 11400000, guid: a58db5ecd38b47b4fa009f8b1116b654, type: 2}
+  - {fileID: 11400000, guid: 0f178fb9b74016e4d8bcc1a31a972e09, type: 2}
 --- !u!1 &4479024915855545912
 GameObject:
   m_ObjectHideFlags: 0

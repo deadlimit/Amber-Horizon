@@ -8,55 +8,43 @@
       <e p="Assets" t="Include">
         <e p="Arkiverat" t="Include">
           <e p="BlackHoleLauncher.cs" t="Include" />
+          <e p="CollisionCameraState.cs" t="Include" />
           <e p="DefaultCameraState.cs" t="Include" />
-          <e p="PlayerPhysics.cs" t="Include" />
         </e>
-        <e p="KeyRotator.cs" t="Include" />
+        <e p="BlackHole" t="Include">
+          <e p="BlackHole.cs" t="Include" />
+          <e p="IBlackHoleDeath.cs" t="Include" />
+          <e p="LauncherBlackHole.cs" t="Include" />
+        </e>
+        <e p="Camera" t="Include">
+          <e p="ThirdPersonCamera.cs" t="Include" />
+        </e>
+        <e p="Controller" t="Include">
+          <e p="Controller3D.cs" t="Include" />
+          <e p="General.cs" t="Include" />
+          <e p="PlayerPhysics.cs" t="Include" />
+          <e p="PlayerStates" t="Include">
+            <e p="FallingState.cs" t="Include" />
+            <e p="GroundedState.cs" t="Include" />
+            <e p="JumpingState.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Destructibles" t="Include">
+          <e p="DestructableWall.cs" t="Include" />
+          <e p="PowderKeg.cs" t="Include" />
+          <e p="WallPiece.cs" t="Include" />
+        </e>
+        <e p="Destructor.cs" t="Include" />
+        <e p="DestructorFist.cs" t="Include" />
+        <e p="Health.cs" t="Include" />
+        <e p="Killzone.cs" t="Include" />
         <e p="MovingPlatform" t="Include">
           <e p="IBlackHoleBehaviour.cs" t="Include" />
           <e p="MovingPlatformV2.cs" t="Include" />
         </e>
+        <e p="PhysicsComponent.cs" t="Include" />
+        <e p="PlayerAnimation.cs" t="Include" />
         <e p="Scripts" t="Include">
-          <e p="Abilitysystem" t="Include">
-            <e p="Abilitysystem" t="Include">
-              <e p="AbilityEntity.cs" t="Include" />
-              <e p="BaseScripts" t="Include">
-                <e p="GameplayAbility.cs" t="Include" />
-                <e p="GameplayAbilitySystem.cs" t="Include" />
-                <e p="GameplayAttribute.cs" t="Include" />
-                <e p="GameplayEffect.cs" t="Include" />
-                <e p="GameplayEntity.cs" t="Include" />
-                <e p="GameplayTag.cs" t="Include" />
-              </e>
-              <e p="Core" t="Include">
-                <e p="Abilities" t="Include">
-                  <e p="BlackHoleAbility.cs" t="Include" />
-                  <e p="DashAbility.cs" t="Include" />
-                  <e p="EnemyShoot.cs" t="Include" />
-                </e>
-                <e p="Attributes" t="Include">
-                  <e p="HealthAttribute.cs" t="Include" />
-                </e>
-                <e p="Effects" t="Include">
-                  <e p="Cooldown.cs" t="Include" />
-                </e>
-                <e p="Tags" t="Include">
-                  <e p="AttackTag.cs" t="Include" />
-                  <e p="BlackHoleCooldownTag.cs" t="Include" />
-                  <e p="CooldownTag.cs" t="Include" />
-                  <e p="MovementTag.cs" t="Include" />
-                </e>
-              </e>
-            </e>
-          </e>
-          <e p="BlackHole" t="Include">
-            <e p="BlackHole.cs" t="Include" />
-            <e p="LauncherBlackHole.cs" t="Include" />
-          </e>
-          <e p="Camera" t="Include">
-            <e p="CameraFocusState.cs" t="Include" />
-            <e p="ThirdPersonCamera.cs" t="Include" />
-          </e>
           <e p="CheckpointSystem" t="Include">
             <e p="Checkpoint.cs" t="Include" />
             <e p="CheckpointManager.cs" t="Include" />
@@ -64,8 +52,6 @@
           <e p="Enemy" t="Include">
             <e p="AiPathfinder.cs" t="Include" />
             <e p="Bullet.cs" t="Include" />
-            <e p="Destructor.cs" t="Include" />
-            <e p="DestructorFist.cs" t="Include" />
             <e p="Enemy.cs" t="Include" />
             <e p="EnemyStateMachine" t="Include">
               <e p="Destructor" t="Include">
@@ -86,25 +72,6 @@
             </e>
             <e p="Forager.cs" t="Include" />
           </e>
-          <e p="EventSystem" t="Include">
-            <e p="EventInfo.cs" t="Include" />
-            <e p="EventListeners" t="Include">
-              <e p="KeyListener.cs" t="Include" />
-              <e p="UnlockListener.cs" t="Include" />
-            </e>
-            <e p="EventSystem.cs" t="Include" />
-            <e p="Spawner.cs" t="Include" />
-          </e>
-          <e p="GameManager.cs" t="Include" />
-          <e p="GameVariables.cs" t="Include" />
-          <e p="In-Game Items" t="Include">
-            <e p="AbilityPickup.cs" t="Include" />
-            <e p="DestructableWall.cs" t="Include" />
-            <e p="Door.cs" t="Include" />
-            <e p="KeyFragment.cs" t="Include" />
-            <e p="PowderKeg.cs" t="Include" />
-            <e p="WallPiece.cs" t="Include" />
-          </e>
           <e p="JonathansKontroller" t="Include">
             <e p="BoxCaster.cs" t="Include" />
             <e p="CapsuleCaster.cs" t="Include" />
@@ -115,32 +82,16 @@
             <e p="MeshCaster.cs" t="Include" />
             <e p="SphereCaster.cs" t="Include" />
           </e>
-          <e p="Killzone.cs" t="Include" />
           <e p="ObjectPooling" t="Include">
             <e p="ObjectPool.cs" t="Include" />
-          </e>
-          <e p="PhysicsComponent.cs" t="Include" />
-          <e p="Player" t="Include">
-            <e p="Controller" t="Include">
-              <e p="Controller3D.cs" t="Include" />
-              <e p="General.cs" t="Include" />
-              <e p="PlayerController.cs" t="Include" />
-            </e>
-            <e p="Health.cs" t="Include" />
-            <e p="PlayerAnimation.cs" t="Include" />
-            <e p="PlayerStates" t="Include">
-              <e p="FallingState.cs" t="Include" />
-              <e p="GroundedState.cs" t="Include" />
-              <e p="JumpingState.cs" t="Include" />
-            </e>
-          </e>
-          <e p="StateMachine" t="Include">
-            <e p="State.cs" t="Include" />
-            <e p="StateMachine.cs" t="Include" />
           </e>
           <e p="Utility" t="Include">
             <e p="CustomInvoke.cs" t="Include" />
           </e>
+        </e>
+        <e p="StateMachine" t="Include">
+          <e p="State.cs" t="Include" />
+          <e p="StateMachine.cs" t="Include" />
         </e>
       </e>
       <e p="obj" t="ExcludeRecursive" />

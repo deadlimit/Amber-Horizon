@@ -17,7 +17,7 @@ namespace EventCallbacks
                 UnlockEvent ue = new UnlockEvent();
                 EventSystem<UnlockEvent>.FireEvent(ue);
             }
-            //Lagra antalet nycklar.. nÃ¥gonstans. Game manager? 
+            //Lagra antalet nycklar.. någonstans. Game manager? 
         }
 
     }

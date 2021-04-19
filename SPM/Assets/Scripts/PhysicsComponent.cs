@@ -13,7 +13,7 @@ public class PhysicsComponent : MonoBehaviour
     public Vector3 velocity;
     [SerializeField] public float gravity = 10f;
     [SerializeField] protected float skinWidth = 0.05f;
-    [SerializeField] public float maxSpeed;
+    [SerializeField] private float maxSpeed;
 
     [Header("Friktion")]
     [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
@@ -21,7 +21,7 @@ public class PhysicsComponent : MonoBehaviour
     [Range(0f, 1f)] [SerializeField] float airResistance = 0.35f;
 
     float gravityMod = 1f;
-
+    public bool AffectedByBlackHoleGravity;
     Vector3 bhGrav = Vector3.zero;
     private void OnEnable()
     {
@@ -175,7 +175,6 @@ public class PhysicsComponent : MonoBehaviour
     public void AddForce(Vector3 input)
     {
         velocity += input.magnitude < smallNumber? Vector3.zero : input;
-
     }
 
 
