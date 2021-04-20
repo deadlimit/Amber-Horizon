@@ -1,3 +1,4 @@
+using System;
 using AbilitySystem;
 using UnityEngine;
 
@@ -19,8 +20,7 @@ public class PlayerController : MonoBehaviour
     private StateMachine stateMachine;
     private bool jump;
     float dot;
-
-    public GameplayAbility aim; 
+    
 
     [HideInInspector] public Vector3 force;
      public Vector3 bhVelocity;
@@ -37,11 +37,13 @@ public class PlayerController : MonoBehaviour
         activeCamera = Camera.main;
         physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);
-        abilitySystem = gameObject.AddComponent<GameplayAbilitySystem>();
-        abilitySystem.GrantAbility(aim);
+        
         lr = GetComponent<LineRenderer>();
     }
 
+    private void Start() {
+        abilitySystem = gameObject.GetComponent<GameplayAbilitySystem>();
+    }
     public void InputGrounded(Vector3 inp) 
     {
         input = inp;
@@ -142,12 +144,16 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetMouseButtonUp(1))
         {
-            abilitySystem.RemoveTag(aim.AbilityTag);
+            //abilitySystem.RemoveTag(aim.AbilityTag);
             lr.enabled = false;
         }
 
         physics.AddForce(force);
         
         
+    }
+
+    public void OnDisable() {
+        print("disable");
     }
 }
