@@ -19,7 +19,7 @@ public class ThirdPersonCamera : MonoBehaviour
     private float rotationY;
     
     void Awake() {
-        target = GameObject.Find("mixamorig:Neck");
+        //target = GameObject.Find("mixamorig:Neck");
         coll = GetComponent<SphereCollider>();
         Cursor.lockState = CursorLockMode.Locked;
     }
