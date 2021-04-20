@@ -18,6 +18,7 @@ public class DestructorChaseState : State {
 
     public override void RunUpdate() {
         destructor.Pathfinder.agent.SetDestination(destructor.Target.position);
+
         destructor.transform.LookAt(destructor.Target);
         
         if(Vector3.Distance(destructor.transform.position, destructor.Target.position) < minimumDistanceBeforeMelee)

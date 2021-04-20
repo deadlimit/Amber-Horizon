@@ -11,6 +11,7 @@ public class DestructorPatrolState : State {
     }
 
     public override void Enter() {
+        destructor.Animator.SetBool("PlayerInRange", false);
         destructor.Pathfinder.agent.SetDestination(destructor.Pathfinder.GetSamplePositionOnNavMesh(destructor.originPosition, 10, 15));
         Debug.Log(destructor.Pathfinder.agent.destination);
     }
