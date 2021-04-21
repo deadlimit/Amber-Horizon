@@ -5,6 +5,7 @@ public class PhysicsComponent : MonoBehaviour
 {
     public LayerMask collisionMask;
     public RaycastHit groundHitInfo;
+    public float velocityMagnitude;
 
     private Collider attachedCollider;
     private CollisionCaster collisionCaster;
@@ -50,6 +51,8 @@ public class PhysicsComponent : MonoBehaviour
         AddGravity();
         CheckForCollisions(0);
         ClampSpeed();
+
+        velocityMagnitude = velocity.magnitude;
        
 
         //Silvertejpslösning för att inte få -Infinity eller NaN
@@ -71,24 +74,28 @@ public class PhysicsComponent : MonoBehaviour
     private void CheckForCollisions(int i)
     {
         RaycastHit hitInfo = collisionCaster.CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);
-        if (!hitInfo.collider) return;
+        if (hitInfo.collider)
+        {
 
-        RaycastHit normalHitInfo = collisionCaster.CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
-        Vector3 normalForce = General.NormalForce3D(velocity, normalHitInfo.normal);
-        
-        velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
-        velocity += normalForce;
-        
-        if (hitInfo.collider.GetComponent<MovingPlatformV2>())
-        {
-            HandleMovingPlatform(hitInfo, normalForce);
+            RaycastHit normalHitInfo = collisionCaster.CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
+            Vector3 normalForce = General.NormalForce3D(velocity, normalHitInfo.normal);
+
+            velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
+            velocity += normalForce;
+            Debug.Log("applying normalforce:" + normalForce);
+            Debug.Log(hitInfo.collider);
+
+            if (hitInfo.collider.GetComponent<MovingPlatformV2>())
+            {
+                HandleMovingPlatform(hitInfo, normalForce);
+            }
+            else
+            {
+                ApplyFriction(normalForce);
+            }
+            if (i < 10)
+                CheckForCollisions(i + 1);
         }
-        else
-        {
-            ApplyFriction(normalForce);           
-        }
-        if (i < 10)
-            CheckForCollisions(i + 1);
     }
 
     private void HandleMovingPlatform(RaycastHit hitInfo, Vector3 normalForce)
@@ -186,7 +193,7 @@ public class PhysicsComponent : MonoBehaviour
     public bool isGrounded()
     {
         groundHitInfo = collisionCaster.CastCollision(transform.position, Vector3.down, groundCheckDistance + skinWidth);
-        return groundHitInfo.collider != null;
+        return groundHitInfo.collider;
     }
     
 }
