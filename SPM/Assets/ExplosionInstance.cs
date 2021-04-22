@@ -26,10 +26,12 @@ public class ExplosionInstance : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.GetComponent<Enemy>())
+        Enemy enemy = other.gameObject.GetComponent<Enemy>();
+        Debug.Assert(enemy);
+        if (enemy)
         {
             Debug.Log("hit enemy:" + other);
-            //other.ApplyExplosion(this);
+            enemy.ApplyExplosion(gameObject);
         }
     }
 }

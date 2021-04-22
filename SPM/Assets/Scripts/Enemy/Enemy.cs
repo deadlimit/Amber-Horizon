@@ -15,8 +15,10 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     [SerializeField] private State[] states;
     
     public StateMachine stateMachine { get; private set; }
-    
+
+    private PhysicsComponent physics;
     public void Awake() {
+        physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);
         Animator = GetComponent<Animator>();
         Rigidbody = GetComponent<Rigidbody>();
@@ -36,4 +38,20 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     
     
     public virtual void BlackHoleBehaviour(BlackHole blackHole) { Debug.Log("hello");}
+
+    public void ApplyExplosion(GameObject explosionInstance)
+    {
+        Debug.Log("applyExplosion");
+        Vector3 explosionPos = explosionInstance.transform.position;
+        float distance = Vector3.Distance(explosionPos, transform.position);
+        Vector3 direction = (explosionPos - transform.position).normalized;
+        /*
+         * detta fungerar inte åt rätt håll av någon anledning, 
+         * dessutom är animationen apful så man kan överger det helt
+         * physics.StopVelocity();
+         * physics.AddForce(direction * (500 / distance) + 100 * Vector3.up);
+        */
+        stateMachine.ChangeState<DestructorDeathState>();
+   
+    }
 }
