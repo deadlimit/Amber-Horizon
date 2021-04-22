@@ -5,12 +5,13 @@ using UnityEngine;
 namespace EventCallbacks {
     public class KeyFragment : MonoBehaviour
     {
-        static List<KeyFragment> keyList;
-        private void OnEnable()
+       /* protected static List<KeyFragment> keyList;
+
+        private void Awake()
         {
             keyList.Add(this);
         }
-
+       */
         private void OnDisable()
         {
             //tar vi bort this från listan? Räknar vi ned? 
