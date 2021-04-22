@@ -5,8 +5,16 @@ using UnityEngine;
 namespace EventCallbacks {
     public class KeyFragment : MonoBehaviour
     {
-        //lägg in sig i statisk lista vid OnEnable
-        //när listan är tom/antalet uppfyllt -> unlock door event bla
+        static List<KeyFragment> keyList;
+        private void OnEnable()
+        {
+            keyList.Add(this);
+        }
+
+        private void OnDisable()
+        {
+            //tar vi bort this från listan? Räknar vi ned? 
+        }
 
         private void OnTriggerEnter(Collider other)
         {
