@@ -173,5 +173,16 @@ namespace AbilitySystem
 
             AbilitiesOnCooldown.Remove(ability);
         }
+
+        public GameplayAbility GetAbilityOfType(Type AbilityTag)
+        {
+            // if(GrantedAbilities.ContainsKey(typeof(T)));
+            // return GrantedAbilities[typeof(AimingAbility)];
+            if (GrantedAbilities.ContainsKey(AbilityTag))
+                return GrantedAbilities[AbilityTag];
+
+            return null;
+        }
+
     }
 }

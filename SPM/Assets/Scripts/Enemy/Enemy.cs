@@ -45,12 +45,14 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Vector3 explosionPos = explosionInstance.transform.position;
         float distance = Vector3.Distance(explosionPos, transform.position);
         Vector3 direction = (explosionPos - transform.position).normalized;
-        /*
-         * detta fungerar inte åt rätt håll av någon anledning, 
-         * dessutom är animationen apful så man kan överger det helt
-         * physics.StopVelocity();
-         * physics.AddForce(direction * (500 / distance) + 100 * Vector3.up);
-        */
+        
+
+         /*physics.StopVelocity();
+         physics.AddForce(-direction * (500 / distance) + 100 * Vector3.up);
+         Navmesh skriver över? 
+         stäng av navmesh, aktivera animation
+          */
+        
         stateMachine.ChangeState<DestructorDeathState>();
    
     }

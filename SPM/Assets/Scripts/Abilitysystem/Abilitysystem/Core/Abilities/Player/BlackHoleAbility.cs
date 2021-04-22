@@ -9,8 +9,7 @@ public class BlackHoleAbility: GameplayAbility {
 
     public override void Activate(GameplayAbilitySystem Owner) 
     {
-        AbilityEntity ae = Owner.GetComponent<AbilityEntity>();
-        AimingAbility aa = (AimingAbility) ae.StartingAbilities[1];
+        AimingAbility aa = (AimingAbility)Owner.GetAbilityOfType(typeof(AimingTag));
         Debug.Assert(aa);
         aa.FireBlackHole();
     }
