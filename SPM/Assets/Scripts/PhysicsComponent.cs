@@ -82,8 +82,6 @@ public class PhysicsComponent : MonoBehaviour
 
             velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
             velocity += normalForce;
-            Debug.Log("applying normalforce:" + normalForce);
-            Debug.Log(hitInfo.collider);
 
             if (hitInfo.collider.GetComponent<MovingPlatformV2>())
             {

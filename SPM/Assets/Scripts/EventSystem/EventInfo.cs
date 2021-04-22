@@ -48,6 +48,15 @@ namespace EventCallbacks
         }
 
     }
+
+    public class ExplosionEvent : EventInfo
+    {
+        public Vector3 location;
+        public ExplosionEvent(Vector3 location)
+        {
+            this.location = location; 
+        }
+    }
     
 }
 

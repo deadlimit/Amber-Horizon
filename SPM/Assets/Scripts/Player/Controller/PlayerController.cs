@@ -119,15 +119,6 @@ public class PlayerController : MonoBehaviour
 
         physics.isGrounded();
         stateMachine.RunUpdate();
-        //PlayerDirection();
-
-        //if (input.magnitude < float.Epsilon)
-        //{
-        //    Decelerate();
-        //}
-        //else
-        //    Accelerate(); 
-        //Debug.Log(input);
         Jump();
 
         if (Input.GetKeyDown(KeyCode.E)) 
@@ -148,18 +139,7 @@ public class PlayerController : MonoBehaviour
         {
             abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag);
         }
-          /*
-          if (Input.GetMouseButtonUp(1))
-          {
-              //abilitySystem.RemoveTag(aim.AbilityTag);
-              lr.enabled = false;
-          }*/
 
-        /*if (Input.GetMouseButton(1))
-        {
-            Debug.Log("Försöker sikta m BH");
-            lbh.Activate();
-        }*/
         physics.AddForce(force);
         
         
