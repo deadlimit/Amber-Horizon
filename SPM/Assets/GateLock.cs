@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace EventCallbacks
 {
-    public class KeyListener : MonoBehaviour
+    public class GateLock : MonoBehaviour
     {
         public static List<KeyFragment> keyList = new List<KeyFragment>();
         private BoxCollider interaction;
@@ -25,7 +25,7 @@ namespace EventCallbacks
 
         private void OnTriggerEnter(Collider other)
         {
-            if(keyList.Count <= 0 && other.gameObject.tag == "Player")
+            if (keyList.Count <= 0 && other.gameObject.tag == "Player")
             {
                 UnlockEvent ue = new UnlockEvent();
                 EventSystem<UnlockEvent>.FireEvent(ue);
