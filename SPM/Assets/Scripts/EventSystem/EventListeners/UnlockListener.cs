@@ -11,12 +11,8 @@ namespace EventCallbacks
 
         private void DoorUnlocked(UnlockEvent ue)
         {
-            //door.Trigger.SetActive typ
-            //triggern är sedan det som styr animation och collider, så att dörren kan öppnas när spelaren närmar sig
-            
-            //Vet att man kan lägga scriptet på dörren direkt men det kändes tydligare att ha lyssnaren ett eget GO 
-            gameObject.transform.parent.GetComponent<Door>().Unlock();
             Debug.Log("Trigger aktiverad");
+            gameObject.transform.parent.GetComponent<Door>().Unlock();
         }
     }
 }

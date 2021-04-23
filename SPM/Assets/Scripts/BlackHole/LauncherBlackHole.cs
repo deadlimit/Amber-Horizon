@@ -21,6 +21,7 @@ public class LauncherBlackHole : MonoBehaviour
     {
         cam = Camera.main;
         lr.positionCount = resolution + 1; 
+
     }
 
     // Update is called once per frame
@@ -87,30 +88,6 @@ public class LauncherBlackHole : MonoBehaviour
 
         lr.SetPosition(resolution, finalPos);
     }
-   /* LaunchData CalculateLaunchData(Vector3 origin, Vector3 target) 
-    {
-        float displacementY = target.y - origin.y;
-        Vector3 displacementXZ = target - origin;
-        displacementXZ.y = 0f;
-
-        float time = Mathf.Sqrt(-2*)
-    }
-    /*        Debug.Log("Drawpath: bh �r " + bh);
-        float timeToTarget = Mathf.Sqrt(-2 * launchSpeedY / playerPhys.gravity) + Mathf.Sqrt(2 * (bh.velocity.y - launchSpeedY) / playerPhys.gravity);        
-        Vector3 previousDrawPoint = bh.transform.position;
-
-        int resolution = 30;
-        for (int i = 0; i < resolution; i++) 
-        {
-            Debug.Log(i);
-            float simulationTime = i / (float)resolution * timeToTarget;
-            Vector3 displacement = bh.velocity * simulationTime +
-            playerPhys.gravity * Vector3.down /*vector3.down??*/ //* simulationTime * simulationTime / 2f;
-    /*Vector3 drawPoint = bh.transform.position + displacement;
-    Debug.DrawLine(previousDrawPoint, drawPoint, Color.green);
-    previousDrawPoint = drawPoint; */
-
-
     Vector3 CalculateVelocity(Vector3 target, Vector3 origin, float time) 
     {
         //svarta hålet är lite stort, det blir imprecist när man skjuter på en vertikal yta

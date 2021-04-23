@@ -10,9 +10,9 @@ public class AIPathfinder : MonoBehaviour {
         agent = GetComponent<NavMeshAgent>();
     }
     
-    public Vector3 GetSamplePositionOnNavMesh(Vector3 origin, float originRadius) {
+    public Vector3 GetSamplePositionOnNavMesh(Vector3 origin, float originRadius, float maxDistance) {
         Vector3 randomPositionInsidePatrolArea = Random.insideUnitSphere * originRadius + origin;
-        NavMesh.SamplePosition(randomPositionInsidePatrolArea, out var hitInfo, 10, NavMesh.AllAreas);
+        NavMesh.SamplePosition(randomPositionInsidePatrolArea, out var hitInfo, maxDistance, NavMesh.AllAreas);
         return hitInfo.position;
     }
     
