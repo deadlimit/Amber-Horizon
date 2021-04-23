@@ -1,21 +1,14 @@
 using UnityEngine;
+using EventCallbacks;
 
 public class Killzone : MonoBehaviour {
-    
-    //TODO Gör om killzone-kollision så den triggar ett event istället. 
-
-    private CheckpointManager checkpointManager;
-
-    private void Start() {
-        checkpointManager = GameObject.FindGameObjectWithTag("CheckpointManager").GetComponent<CheckpointManager>();
-        if (checkpointManager == null)
-            Destroy(gameObject);
-    }
-    
+        
     private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player")) {
-            checkpointManager.ResetPlayerPosition();
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PhysicsComponent>().velocity = Vector3.zero;
+        if (other.CompareTag("Player")) 
+        {
+            Debug.Log("Collided with player");
+            PlayerDiedEvent pde = new PlayerDiedEvent();
+            EventSystem<PlayerDiedEvent>.FireEvent(pde);
         }
             
     }

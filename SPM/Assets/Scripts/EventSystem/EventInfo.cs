@@ -48,6 +48,10 @@ namespace EventCallbacks
         }
 
     }
+    public class PlayerDiedEvent : EventInfo
+    { 
+
+    }
 
     public class ExplosionEvent : EventInfo
     {
