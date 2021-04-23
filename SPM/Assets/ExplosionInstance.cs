@@ -6,6 +6,7 @@ public class ExplosionInstance : MonoBehaviour
 {
     public SphereCollider coll;
     private float blastArea = 10;
+    public float blastPower { get; private set; } = 200f;
     private void OnEnable()
     {
         Debug.Log("Boom");
@@ -31,7 +32,7 @@ public class ExplosionInstance : MonoBehaviour
         if (enemy)
         {
             Debug.Log("hit enemy:" + other);
-            enemy.ApplyExplosion(gameObject);
+            enemy.ApplyExplosion(gameObject, blastPower);
         }
     }
 }

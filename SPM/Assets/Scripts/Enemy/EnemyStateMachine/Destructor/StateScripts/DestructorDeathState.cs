@@ -13,6 +13,7 @@ public class DestructorDeathState : State
     }
     public override void RunUpdate()
     {
-        Destroy(destructor.gameObject, 0.5f);
+        Destroy(destructor.gameObject, 3f);
     }
+         
 }

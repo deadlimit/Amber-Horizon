@@ -39,20 +39,21 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     
     public virtual void BlackHoleBehaviour(BlackHole blackHole) { Debug.Log("hello");}
 
-    public void ApplyExplosion(GameObject explosionInstance)
+    public void ApplyExplosion(GameObject explosionInstance, float blastPower)
     {
         Debug.Log("applyExplosion");
         Vector3 explosionPos = explosionInstance.transform.position;
         float distance = Vector3.Distance(explosionPos, transform.position);
         Vector3 direction = (explosionPos - transform.position).normalized;
-        
 
-         /*physics.StopVelocity();
-         physics.AddForce(-direction * (500 / distance) + 100 * Vector3.up);
-         Navmesh skriver över? 
-         stäng av navmesh, aktivera animation
-          */
-        
+
+
+        physics.AddForce(-direction * (blastPower / distance) + blastPower * 0.8f / distance * Vector3.up);
+        /*Navmesh skriver över? 
+        stäng av navmesh, aktivera animation
+         */
+        Animator.SetTrigger("HitByExplosion");
+        Pathfinder.agent.enabled = false;
         stateMachine.ChangeState<DestructorDeathState>();
    
     }

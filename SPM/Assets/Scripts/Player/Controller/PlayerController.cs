@@ -35,8 +35,7 @@ public class PlayerController : MonoBehaviour
     {
         activeCamera = Camera.main;
         physics = GetComponent<PhysicsComponent>();
-        stateMachine = new StateMachine(this, states);
-        
+        stateMachine = new StateMachine(this, states);       
         lr = GetComponent<LineRenderer>();
     }
 
@@ -133,7 +132,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonUp(1))
         {
-            lr.enabled = false;
+            abilitySystem.TryDeactivateAbilityByTag(GameplayTags.AimingTag);
         }
         if (Input.GetMouseButton(0))
         {
