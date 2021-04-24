@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private Camera activeCamera;
     public bool airborne;
     private LineRenderer lr;
+    public LauncherBlackHole lbh;
     
     private GameplayAbilitySystem abilitySystem;
     
@@ -133,21 +134,26 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E)) {
             print(abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag));
         }
-        if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log("Försöker aktivera BH"); 
-            abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag);
-        }
+        /*  if (Input.GetMouseButtonDown(0))
+          {
+              Debug.Log("Försöker aktivera BH"); 
+              abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag);
+          }
+          if (Input.GetMouseButton(1))
+          {
+              abilitySystem.TryActivateAbilityByTag(GameplayTags.AimingTag);
+          }
+          if (Input.GetMouseButtonUp(1))
+          {
+              //abilitySystem.RemoveTag(aim.AbilityTag);
+              lr.enabled = false;
+          }*/
+
         if (Input.GetMouseButton(1))
         {
-            abilitySystem.TryActivateAbilityByTag(GameplayTags.AimingTag);
+            Debug.Log("Försöker sikta m BH");
+            lbh.Activate();
         }
-        if (Input.GetMouseButtonUp(1))
-        {
-            //abilitySystem.RemoveTag(aim.AbilityTag);
-            lr.enabled = false;
-        }
-
         physics.AddForce(force);
         
         
