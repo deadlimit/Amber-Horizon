@@ -15,6 +15,8 @@ namespace AbilitySystem
         private Dictionary<GameplayEffect, int> ActiveEffects = new Dictionary<GameplayEffect, int>();
         private HashSet<GameplayTag> ActiveTags = new HashSet<GameplayTag>();
         private HashSet<GameplayAbility> AbilitiesOnCooldown = new HashSet<GameplayAbility>();
+
+   
         public void RegisterAttributeSet(List<GameplayAttributeSetEntry> Set)
         {
             Set.ForEach(Entry => AttributeSet.Add(Entry.Attribute.GetType(), Entry.Value));
@@ -130,15 +132,19 @@ namespace AbilitySystem
 
         public bool TryActivateAbilityByTag(Type AbilityTag)
         {
+
+            //detta blev fult nu men man invokar cooldown även om man inte har requiredTags
             if (GrantedAbilities.TryGetValue(AbilityTag, out var Ability)) {
-                if (!AbilitiesOnCooldown.Contains(Ability) && !Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag))) {
+                
+                if (!AbilitiesOnCooldown.Contains(Ability) && !Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag)) 
+                    && !Ability.RequiredTags.Any(Tag => !ActiveTags.Contains(Tag))) {
 
                     if (Ability.Cooldown && Ability.Cooldown.EffectType is EffectDurationType.Duration) {
                         AbilitiesOnCooldown.Add(Ability);
                         StartCoroutine(RemoveAfterTime(Ability));
                     }
 
-                    if (!Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag)) && Ability.RequiredTags.All(Tag => ActiveTags.Contains(Tag))) {
+                    if (!Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag))) {
                         Ability.Activate(this);
                         return true;
                     }
@@ -149,10 +155,20 @@ namespace AbilitySystem
             return false;
         }
 
+        public void TryDeactivateAbilityByTag(Type AbilityTag)
+        {
+            if(GrantedAbilities.TryGetValue(AbilityTag, out var Ability))
+            {
+                Ability.Deactivate(this);
+            }
+        }
+
         public void RemoveTag(GameplayTag Tag)
         {
             ActiveTags.Remove(Tag);
+            Debug.Log("removed" + Tag);
         }
+
         public IEnumerator RemoveAfterTime(GameplayEffect Effect)
         {
             
@@ -173,5 +189,14 @@ namespace AbilitySystem
 
             AbilitiesOnCooldown.Remove(ability);
         }
+
+        public GameplayAbility GetAbilityByTag(Type AbilityTag)
+        {
+            if (GrantedAbilities.ContainsKey(AbilityTag))
+                return GrantedAbilities[AbilityTag];
+
+            return null;
+        }
+
     }
 }

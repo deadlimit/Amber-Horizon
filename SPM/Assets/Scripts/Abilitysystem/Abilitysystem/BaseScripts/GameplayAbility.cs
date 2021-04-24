@@ -35,6 +35,7 @@ namespace AbilitySystem
             float? Value = Owner.GetAttributeValue(Cost.Attribute.GetType());
             return Value != null && Value > Cost.Value;
         }
+        public virtual void Deactivate(GameplayAbilitySystem Owner) {  }
         
     }
     

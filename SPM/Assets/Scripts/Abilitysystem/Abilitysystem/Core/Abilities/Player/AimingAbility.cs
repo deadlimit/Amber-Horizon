@@ -15,9 +15,11 @@ public class AimingAbility : GameplayAbility
 
     private int resolution = 10;
     private Camera cam;
-    private void Awake()
+    private Vector3 vo;
+    private void OnEnable()
     {
-        
+        launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
+        cam = Camera.main;
     }
     public override void Activate(GameplayAbilitySystem Owner)
     {
@@ -25,12 +27,8 @@ public class AimingAbility : GameplayAbility
         Debug.Assert(lr);
         lr.enabled = true;
         Owner.ApplyEffectToSelf(AppliedEffect);
-        launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
-        cam = Camera.main;
-        launchPoint = launchPoint == null ? GameObject.Find("mixamorig:RightHand") : launchPoint;
 
-        //private void LaunchProjectile()
-        {
+       
             Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
@@ -51,12 +49,14 @@ public class AimingAbility : GameplayAbility
                 cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
             }
 
-            Vector3 vo = CalculateVelocity(cursor.transform.position, launchPoint.transform.position, flightTime);
-            DrawArc(vo, cursor.transform.position);
-            //måste spara velociteten någonstans? vet inte hur man gör det snyggare
-            //det här är ju nackdelen med att dela upp siktandet och skjutandet
-            Owner.gameObject.GetComponent<PlayerController>().bhVelocity = vo; 
-        }
+        vo = CalculateVelocity(cursor.transform.position, launchPoint.transform.position, flightTime);
+        DrawArc(vo, cursor.transform.position);
+
+    }
+    public void FireBlackHole() 
+    {
+        BlackHole obj = Instantiate(bh, launchPoint.gameObject.transform.position, Quaternion.identity);
+        obj.velocity = vo;
     }
 
     void DrawArc(Vector3 vo, Vector3 finalPos)
@@ -66,7 +66,6 @@ public class AimingAbility : GameplayAbility
             Vector3 pos = CalculatePosInTime(vo, (i / (float)resolution));
             lr.SetPosition(i, pos);
         }
-
         lr.SetPosition(resolution, finalPos);
     }
     Vector3 CalculateVelocity(Vector3 target, Vector3 origin, float time)
@@ -96,5 +95,14 @@ public class AimingAbility : GameplayAbility
         result.y = speedY;
         return result;
     }
+
+    public override void Deactivate(GameplayAbilitySystem Owner)
+    {
+        lr.enabled = false;
+        Owner.RemoveTag(this.AbilityTag);
+        Debug.Log("Deactivate from aiming abiilit");
+    }
+
+
 }
 

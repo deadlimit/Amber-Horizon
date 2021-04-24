@@ -1,49 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EventCallbacks;
 
 public class PowderKeg : MonoBehaviour
 {
     public LayerMask collisionMask;
-    private SphereCollider coll;
-    private MeshRenderer mr;
-    private float blastArea = 10f;
-    private void Awake()
-    {
-        coll = GetComponent<SphereCollider>();
-        mr = GetComponent<MeshRenderer>();
-    }
+
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("collision");
-        if (collision.gameObject.layer == 9)
+        if (collision.gameObject.layer == 8)
         {
-            Debug.Log("collisionlayer");
-            Explode();
-            mr.enabled = false;
+            EventSystem<ExplosionEvent>.FireEvent(new ExplosionEvent(transform.position));
+            Destroy(gameObject);
         }
     }
 
-
-    private void Explode() 
-    {
-        Debug.Log("Boom!");
-        StartCoroutine(ExpandRadius(coll.radius));
-        Invoke("Despawn", 1f);
-    }
-    private IEnumerator ExpandRadius(float targetRadius)
-    {
-        Debug.Log(targetRadius < blastArea);
-        while (targetRadius < blastArea)
-        {
-            coll.radius = Mathf.Lerp(coll.radius, blastArea, Time.deltaTime * 5);
-            yield return null;
-        }
-    }
-    private void Despawn() 
-    {
-        Debug.Log("despawning");
-        Destroy(gameObject);
-    }
 
 }

@@ -16,7 +16,7 @@ public class Destructor : Enemy {
 
     }
 
-    private void OnDrawGizmos() {
+    /*private void OnDrawGizmos() {
         Gizmos.color = Color.black;
         if (Pathfinder != null  && Pathfinder.agent.destination == Vector3.zero) return;
         Gizmos.DrawLine(transform.position, Pathfinder.agent.destination);
@@ -24,5 +24,5 @@ public class Destructor : Enemy {
         Gizmos.DrawWireSphere(transform.position, outerRing);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position + Vector3.up, innerRing);
-    }
+    }*/
 }

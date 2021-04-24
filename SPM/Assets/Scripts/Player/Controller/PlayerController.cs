@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour
     public State[] states;
     private StateMachine stateMachine;
     private bool jump;
-    float dot;
     
 
     [HideInInspector] public Vector3 force;
@@ -29,7 +28,6 @@ public class PlayerController : MonoBehaviour
     private Camera activeCamera;
     public bool airborne;
     private LineRenderer lr;
-    public LauncherBlackHole lbh;
     
     private GameplayAbilitySystem abilitySystem;
     
@@ -37,8 +35,7 @@ public class PlayerController : MonoBehaviour
     {
         activeCamera = Camera.main;
         physics = GetComponent<PhysicsComponent>();
-        stateMachine = new StateMachine(this, states);
-        
+        stateMachine = new StateMachine(this, states);       
         lr = GetComponent<LineRenderer>();
     }
 
@@ -119,41 +116,29 @@ public class PlayerController : MonoBehaviour
 
     void Update() {
 
+        physics.isGrounded();
         stateMachine.RunUpdate();
-        //PlayerDirection();
-
-        //if (input.magnitude < float.Epsilon)
-        //{
-        //    Decelerate();
-        //}
-        //else
-        //    Accelerate(); 
-        //Debug.Log(input);
         Jump();
 
-        if (Input.GetKeyDown(KeyCode.E)) {
+        if (Input.GetKeyDown(KeyCode.E)) 
+        {
             print(abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag));
         }
-        /*  if (Input.GetMouseButtonDown(0))
-          {
-              Debug.Log("Försöker aktivera BH"); 
-              abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag);
-          }
-          if (Input.GetMouseButton(1))
-          {
-              abilitySystem.TryActivateAbilityByTag(GameplayTags.AimingTag);
-          }
-          if (Input.GetMouseButtonUp(1))
-          {
-              //abilitySystem.RemoveTag(aim.AbilityTag);
-              lr.enabled = false;
-          }*/
-
+          
         if (Input.GetMouseButton(1))
         {
-            Debug.Log("Försöker sikta m BH");
-            lbh.Activate();
+            abilitySystem.TryActivateAbilityByTag(GameplayTags.AimingTag);
         }
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            abilitySystem.TryDeactivateAbilityByTag(GameplayTags.AimingTag);
+        }
+        if (Input.GetMouseButton(0))
+        {
+            abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag);
+        }
+
         physics.AddForce(force);
         
         
