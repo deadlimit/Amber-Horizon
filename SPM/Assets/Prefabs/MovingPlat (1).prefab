@@ -28,9 +28,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7166143695935673403}
-  m_LocalRotation: {x: -0, y: 0.69971275, z: -0, w: 0.7144244}
+  m_LocalRotation: {x: 0, y: 0.69971323, z: 0, w: 0.7144239}
   m_LocalPosition: {x: -29.39, y: 0.59, z: 82.67}
-  m_LocalScale: {x: 3.7436333, y: 0.3136808, z: 5.725879}
+  m_LocalScale: {x: 7.619998, y: 0.3136808, z: 5.725878}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -109,8 +109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3339a0f2aa60c1748b2e1ad41afd33f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  multiplier: 4
-  MovementSpeed: 200
+  multiplier: 2
+  MovementSpeed: 100
   MaxMovementLength: 17
 --- !u!114 &7166143695935673400
 MonoBehaviour:
@@ -127,6 +127,7 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 128
+  velocityMagnitude: 0
   smallNumber: 0.1
   velocity: {x: 0, y: 0, z: 0}
   gravity: 0
