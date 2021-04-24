@@ -66,7 +66,15 @@ public class PlayerController : MonoBehaviour
     }
     void Decelerate() 
     {
-        force = -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
+        //viktigt att notera att jag inte riktigt vet varför detta typ(!) fungerar
+        MovingPlatformV2 mp = physics.groundHitInfo.collider.gameObject.GetComponent<MovingPlatformV2>();
+        if (mp)
+        {
+            force = deceleration * mp.GetVelocity().normalized * Time.deltaTime;
+            force += -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
+        }
+        else
+            force = -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
         //Velocitys magnitud och riktning, multiplicerat med ett v�rde mellan 1 och 0, fast negativt
     }
     void Accelerate()
