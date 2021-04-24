@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4744137218730177724}
   - component: {fileID: 8778986644087930171}
   - component: {fileID: 528758747220885061}
-  - component: {fileID: 1739649969088046050}
+  - component: {fileID: 4421049118239895372}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -196,26 +196,20 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
---- !u!114 &1739649969088046050
-MonoBehaviour:
+  bulletSpeed: 100
+--- !u!54 &4421049118239895372
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4744137218730177727}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79eac077e0d2403b8c4a5a103ba3aa5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collisionMask:
-    serializedVersion: 2
-    m_Bits: 128
-  velocity: {x: 0, y: 0, z: 0}
-  gravity: 0
-  skinWidth: 0.05
-  staticFrictionCoefficient: 0.5
-  kineticFrictionCoefficient: 0.35
-  airResistance: 0.35
-  AffectedByBlackHoleGravity: 0
-  groundCheckDistance: 0.05
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 4
+  m_CollisionDetection: 0

@@ -15,6 +15,9 @@
         <e p="Editor" t="Include">
           <e p="FindMissingScripts.cs" t="Include" />
         </e>
+        <e p="ExplosionInstance.cs" t="Include" />
+        <e p="Gate.cs" t="Include" />
+        <e p="GateLock.cs" t="Include" />
         <e p="KeyRotator.cs" t="Include" />
         <e p="MovingPlatform" t="Include">
           <e p="IBlackHoleBehaviour.cs" t="Include" />
@@ -54,6 +57,7 @@
                 <e p="Effects" t="Include">
                   <e p="Aiming.cs" t="Include" />
                   <e p="Cooldown.cs" t="Include" />
+                  <e p="Harm.cs" t="Include" />
                   <e p="Stun.cs" t="Include" />
                 </e>
                 <e p="Tags" t="Include">
@@ -89,9 +93,11 @@
                 <e p="StateScripts" t="Include">
                   <e p="DestructorAgressionsState.cs" t="Include" />
                   <e p="DestructorChaseState.cs" t="Include" />
+                  <e p="DestructorDeathState.cs" t="Include" />
                   <e p="DestructorIdleState.cs" t="Include" />
                   <e p="DestructorMeleeState.cs" t="Include" />
                   <e p="DestructorPatrolState.cs" t="Include" />
+                  <e p="DestructorResetState.cs" t="Include" />
                 </e>
               </e>
               <e p="Forager" t="Include">
@@ -110,14 +116,18 @@
           <e p="EventSystem" t="Include">
             <e p="EventInfo.cs" t="Include" />
             <e p="EventListeners" t="Include">
+              <e p="ExplosionListener.cs" t="Include" />
               <e p="KeyListener.cs" t="Include" />
+              <e p="PlayerDiedListener.cs" t="Include" />
               <e p="UnlockListener.cs" t="Include" />
             </e>
             <e p="EventSystem.cs" t="Include" />
             <e p="Spawner.cs" t="Include" />
           </e>
-          <e p="GameManager.cs" t="Include" />
-          <e p="GameVariables.cs" t="Include" />
+          <e p="GameManager" t="Include">
+            <e p="GameManager.cs" t="Include" />
+            <e p="GameVariables.cs" t="Include" />
+          </e>
           <e p="In-Game Items" t="Include">
             <e p="AbilityPickup.cs" t="Include" />
             <e p="DestructableWall.cs" t="Include" />

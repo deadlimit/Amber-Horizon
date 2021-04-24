@@ -1409,6 +1409,7 @@ GameObject:
   - component: {fileID: 2788272399271417085}
   - component: {fileID: 1602063801}
   - component: {fileID: 1760395686}
+  - component: {fileID: 4063960106665224072}
   m_Layer: 8
   m_Name: Enemy - Destructor
   m_TagString: Untagged
@@ -1549,6 +1550,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 68913d20f22cb64458a1a32baaa95e57, type: 2}
   - {fileID: 11400000, guid: 8c69755b3a03b25449539a75bec5f4cd, type: 2}
   - {fileID: 11400000, guid: cf5aad64c9083ee489b0e33b6d97ee79, type: 2}
+  - {fileID: 11400000, guid: 1854b2552d5b74f419d9c77406c2c71c, type: 2}
+  - {fileID: 11400000, guid: d66259159032d454aae6b57b4a0e8ecb, type: 2}
   text: {fileID: 1436178441}
 --- !u!54 &1760395686
 Rigidbody:
@@ -1566,6 +1569,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 14
   m_CollisionDetection: 0
+--- !u!114 &4063960106665224072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4469862759675896390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37474d6275a4ea34dac749a7457120b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartingAbilities:
+  - {fileID: 11400000, guid: 2c7ad6ead6f3f624dbf57b57fe1c510b, type: 2}
+  StartingEffects: []
+  AttributeSet: []
 --- !u!1 &4479024915855545912
 GameObject:
   m_ObjectHideFlags: 0

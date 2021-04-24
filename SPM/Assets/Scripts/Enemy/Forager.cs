@@ -30,7 +30,7 @@ public class Forager : Enemy  {
         stateMachine.ChangeState<EnemyDeathState>(); }
     
     public void Fire() {
-        Instantiate(Bullet, transform.position + transform.forward + Vector3.up, Quaternion.Euler(transform.forward));
+        Instantiate(Bullet, transform.position + transform.forward + Vector3.up, transform.rotation);
         Pathfinder.agent.isStopped = false;
     }
 }

@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
     {
         //viktigt att notera att jag inte riktigt vet varför detta typ(!) fungerar
         MovingPlatformV2 mp = physics.groundHitInfo.collider.gameObject.GetComponent<MovingPlatformV2>();
-        if (mp)
+        if (!(mp is null))
         {
             force = deceleration * mp.GetVelocity().normalized * Time.deltaTime;
             force += -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
