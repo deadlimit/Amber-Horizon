@@ -3,10 +3,10 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class GroundedState : State
 {
-    Controller3D player;
+    PlayerController player;
     protected override void Initialize()
     {
-        player = (Controller3D)owner;
+        player = (PlayerController)owner;
         Debug.Assert(player);
     }
 
@@ -16,19 +16,19 @@ public class GroundedState : State
     }
     public override void RunUpdate()
     {
-        //Debug.Log("Grounded");
         Vector3 input =
         Vector3.right * Input.GetAxisRaw("Horizontal") +
         Vector3.forward * Input.GetAxisRaw("Vertical");
         input = input.normalized;
-        player.SetInput(input);
+        //Debug.Log("input fr�n grounded : " + input);
+        player.InputGrounded(input);
         Jump();
         Fall();
     }
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && player.playerPhys.isGrounded()) {
+        if (Input.GetKeyDown(KeyCode.Space) && player.physics.isGrounded()) {
             player.GetComponent<Animator>().SetTrigger("Jump");
             stateMachine.ChangeState<JumpingState>();
             player.SetJump();
@@ -37,7 +37,7 @@ public class GroundedState : State
     private void Fall() 
     {
         
-        if (player.playerPhys.velocity.y < 0 && !player.playerPhys.isGrounded())
+        if (player.physics.velocity.y < 0 && !player.physics.isGrounded())
             stateMachine.ChangeState<FallingState>();          
     }
 }

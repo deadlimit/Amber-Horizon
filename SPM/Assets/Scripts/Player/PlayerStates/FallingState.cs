@@ -5,10 +5,10 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class FallingState : State
 {
-    Controller3D player;
+    PlayerController player;
     protected override void Initialize()
     {
-        player = (Controller3D)owner;
+        player = (PlayerController)owner;
     }
 
     public override void Enter() {
@@ -20,19 +20,19 @@ public class FallingState : State
         Vector3.right * Input.GetAxisRaw("Horizontal") +
         Vector3.forward * Input.GetAxisRaw("Vertical");
         input = input.normalized;
-        player.SetInput(input * 0.2f);
+        player.InputAirborne(input, true);
         //player.GetPhysics().AddFallSpeed();
-        //hur fasen ändrar man hastigheten man faller med.. om man bara gör input.y så kommer det ju med i rotationen.
-        //ev. kalla ny metod i spelaren/fysiken som påverkar velocity.
+        //hur fasen Ã¤ndrar man hastigheten man faller med.. om man bara gÃ¶r input.y sÃ¥ kommer det ju med i rotationen.
+        //ev. kalla ny metod i spelaren/fysiken som pÃ¥verkar velocity.
 
-        if (player.GetPhysics().isGrounded())
+        if (player.physics.isGrounded())
         {
-            //jag tror att det som händer är att den hinner utvärdera isGrounded() innan vi helt lämnat marken, därför 
-            //går den direkt tillbaka till GroundedState, men INTE om man gör dubbelhoppet som blir möjligt av den här buggen
+            //jag tror att det som hÃ¤nder Ã¤r att den hinner utvÃ¤rdera isGrounded() innan vi helt lÃ¤mnat marken, dÃ¤rfÃ¶r 
+            //gÃ¥r den direkt tillbaka till GroundedState, men INTE om man gÃ¶r dubbelhoppet som blir mÃ¶jligt av den hÃ¤r buggen
             stateMachine.ChangeState<GroundedState>();
         }
         
-        //om vi är på väg ned -> falling state
+        //om vi Ã¤r pÃ¥ vÃ¤g ned -> falling state
 
     }
 }

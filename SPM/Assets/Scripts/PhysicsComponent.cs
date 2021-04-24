@@ -5,13 +5,16 @@ public class PhysicsComponent : MonoBehaviour
 {
     public LayerMask collisionMask;
     public RaycastHit groundHitInfo;
+    public float velocityMagnitude;
 
     private Collider attachedCollider;
     private CollisionCaster collisionCaster;
+    public float smallNumber = 0.1f;
 
-    [SerializeField] public Vector3 velocity;
+    public Vector3 velocity;
     [SerializeField] public float gravity = 10f;
     [SerializeField] protected float skinWidth = 0.05f;
+    [SerializeField] public float maxSpeed;
 
     [Header("Friktion")]
     [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
@@ -19,11 +22,14 @@ public class PhysicsComponent : MonoBehaviour
     [Range(0f, 1f)] [SerializeField] float airResistance = 0.35f;
 
     float gravityMod = 1f;
-    public bool AffectedByBlackHoleGravity;
+
     Vector3 bhGrav = Vector3.zero;
     private void OnEnable()
     {
         attachedCollider = GetComponent<Collider>();
+        
+        if(GetComponent<PlayerController>())
+            maxSpeed = GetComponent<PlayerController>().maxSpeed;
 
         if (attachedCollider is BoxCollider)
             collisionCaster = new BoxCaster(attachedCollider, collisionMask);
@@ -44,34 +50,50 @@ public class PhysicsComponent : MonoBehaviour
         bhGrav = Vector3.zero;
         AddGravity();
         CheckForCollisions(0);
-        
+        ClampSpeed();
+
+        velocityMagnitude = velocity.magnitude;
+       
+
         //Silvertejpslösning för att inte få -Infinity eller NaN
         if (!float.IsNegativeInfinity(velocity.x) || !float.IsNaN(velocity.x) )
             transform.position += velocity * Time.deltaTime;
         
         MoveOutOfGeometry();
     }   
+    public Vector3 GetXZMovement()
+    {
+        return new Vector3(velocity.x, 0, velocity.z);
+    }
+    private void ClampSpeed()
+    {
+        float temp = velocity.y;
+        velocity = maxSpeed != 0 ? Vector3.ClampMagnitude(new Vector3(velocity.x, 0, velocity.z), maxSpeed) : velocity;
+        velocity.y = temp; 
+    }
     private void CheckForCollisions(int i)
     {
         RaycastHit hitInfo = collisionCaster.CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);
-        if (!hitInfo.collider) return;
+        if (hitInfo.collider)
+        {
 
-        RaycastHit normalHitInfo = collisionCaster.CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
-        Vector3 normalForce = General.NormalForce3D(velocity, normalHitInfo.normal);
-        
-        velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
-        velocity += normalForce;
-        
-        if (hitInfo.collider.GetComponent<MovingPlatformV2>())
-        {
-            HandleMovingPlatform(hitInfo, normalForce);
+            RaycastHit normalHitInfo = collisionCaster.CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
+            Vector3 normalForce = General.NormalForce3D(velocity, normalHitInfo.normal);
+
+            velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
+            velocity += normalForce;
+
+            if (hitInfo.collider.GetComponent<MovingPlatformV2>())
+            {
+                HandleMovingPlatform(hitInfo, normalForce);
+            }
+            else
+            {
+                ApplyFriction(normalForce);
+            }
+            if (i < 10)
+                CheckForCollisions(i + 1);
         }
-        else
-        {
-            ApplyFriction(normalForce);           
-        }
-        if (i < 10)
-            CheckForCollisions(i + 1);
     }
 
     private void HandleMovingPlatform(RaycastHit hitInfo, Vector3 normalForce)
@@ -144,7 +166,6 @@ public class PhysicsComponent : MonoBehaviour
         velocity += gravityMovement;
         gravityMod = 1f;
     }
-
     private void ApplyFriction(Vector3 normalForce)
     {
         if (velocity.magnitude < normalForce.magnitude * staticFrictionCoefficient)
@@ -158,7 +179,8 @@ public class PhysicsComponent : MonoBehaviour
     public void ApplyAirResistance() { velocity *= Mathf.Pow(airResistance, Time.deltaTime); }
     public void AddForce(Vector3 input)
     {
-        velocity += input;
+        velocity += input.magnitude < smallNumber? Vector3.zero : input;
+
     }
 
 
@@ -169,7 +191,7 @@ public class PhysicsComponent : MonoBehaviour
     public bool isGrounded()
     {
         groundHitInfo = collisionCaster.CastCollision(transform.position, Vector3.down, groundCheckDistance + skinWidth);
-        return groundHitInfo.collider != null;
+        return groundHitInfo.collider;
     }
     
 }

@@ -13,8 +13,10 @@ public static class General
     }
     public static Vector3 NormalForce3D(Vector3 velocity, Vector3 normal)
     {
+        
         float dot = Vector3.Dot(velocity, normal);
-
+        //vi kan få bort slope-problemen om vi multiplicerar dot * Vector3.up istället när spelaren träffar mark. Tveksamt vad som händer utöver det dock. 
+        // bör man alltså ha separat kollision för marken? Hmm. 
         Vector3 projection = dot > 0 ? 0 * normal : dot * normal;
         return -projection;
     }
