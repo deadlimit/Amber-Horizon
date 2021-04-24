@@ -1,32 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EventCallbacks;
+public class KeyFragment : MonoBehaviour
+{
 
-namespace EventCallbacks {
-    public class KeyFragment : MonoBehaviour
+
+    private void Start()
     {
-       /* protected static List<KeyFragment> keyList;
+        GateLock.keyList.Add(this);
+    }
 
-        private void Awake()
+    private void OnDisable()
+    {
+        GateLock.keyList.Remove(this);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
         {
-            keyList.Add(this);
-        }
-       */
-        private void OnDisable()
-        {
-            //tar vi bort this från listan? Räknar vi ned? 
-        }
+            Destroy(gameObject);
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.gameObject.tag == "Player")
-            {
-                Destroy(gameObject);
-                KeyPickUpEvent kpue = new KeyPickUpEvent();
-                EventSystem<KeyPickUpEvent>.FireEvent(kpue);
-            }
+            //behöver inte ens skicka events om inte fler saker ska utföras!! 
+            KeyPickUpEvent kpue = new KeyPickUpEvent();
+            EventSystem<KeyPickUpEvent>.FireEvent(kpue);
         }
-
-
     }
 }
+
+
+
