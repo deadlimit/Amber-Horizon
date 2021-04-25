@@ -5,10 +5,14 @@ using System;
 
 namespace EventCallbacks
 {
-    public static class EventSystem<EventType> where EventType : EventInfo
-    {
+    public static class EventSystem<EventType> where EventType : EventInfo {
+        
         private static Dictionary<Type, Action<EventType>> typeEventListeners;
 
+        static EventSystem() {
+            typeEventListeners = new Dictionary<Type, Action<EventType>>();
+        }
+        
         public static void RegisterListener(Action<EventType> listener)
         {
             RegisterType();
@@ -21,20 +25,24 @@ namespace EventCallbacks
 
         private static void RegisterType() 
         {
-            //om dictionairy ‰r tom, l‰gg till ett keyset med typeof(T), List<EventListener>>()
+            //om dictionairy √§r tom, l√§gg till ett keyset med typeof(T), List<EventListener>>()
             if (typeEventListeners == null)
             {
                 typeEventListeners = new Dictionary<Type, Action<EventType>>();
             }
-            //om vi inte har en kategori fˆr listeners av denna typ, eller om kategorin inte har nÂgot V, skapa en ny lista fˆr kategorin
-            if (typeEventListeners.ContainsKey(typeof(EventType)) == false || typeEventListeners[typeof(EventType)] == null)
+            //om vi inte har en kategori f√∂r listeners av denna typ, eller om kategorin inte har n√•got V, skapa en ny lista f√∂r kategorin
+            if (typeEventListeners.ContainsKey(typeof(EventType)) == false)
             {
                 typeEventListeners.Add(typeof(EventType), null);
             }
-            /* RegisterType() kollar om dictionaryn ‰r null och i sÂ fall initializerar den, 
+            //Tog bort checken nedan f√∂r den f√∂rs√∂kte l√§gga till en nyckel som redan existerade, om nyckeln finns 
+            //s√• kommer null instansieras till en ny Action
+            // || typeEventListeners[typeof(EventType)] == null
+            
+            /* RegisterType() kollar om dictionaryn √§r null och i s√• fall initializerar den, 
              * kollar om det finns en nyckel med typ TEvent och om den inte finns ligger till en tom entry. 
-             * FireEvent () tar in en TEvent och anropar .Invoke() fˆr den. 
-             * Sedan behˆver man hantera hur man  registerar och unregistrerar events. */
+             * FireEvent () tar in en TEvent och anropar .Invoke() f√∂r den. 
+             * Sedan beh√∂ver man hantera hur man  registerar och unregistrerar events. */
         }
 
         
@@ -45,6 +53,10 @@ namespace EventCallbacks
                 return;
             }
             typeEventListeners[typeof(EventType)]?.Invoke(eventInfo);
+        }
+
+        public static void UnregisterAllListeners() {
+            Debug.Log(typeEventListeners.GetHashCode());
         }
     }
 }
