@@ -22,7 +22,7 @@ public class KeyFragment : MonoBehaviour
         {
             Destroy(gameObject);
 
-            //behöver inte ens skicka events om inte fler saker ska utföras!! 
+            //behÃ¶ver inte ens skicka events om inte fler saker ska utfÃ¶ras!! 
             KeyPickUpEvent kpue = new KeyPickUpEvent();
             EventSystem<KeyPickUpEvent>.FireEvent(kpue);
         }

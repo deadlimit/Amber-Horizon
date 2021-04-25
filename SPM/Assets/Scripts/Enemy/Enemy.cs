@@ -1,3 +1,4 @@
+using AbilitySystem;
 using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
@@ -11,7 +12,8 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     public Vector3 originPosition { get; set; }
     
     public LayerMask PlayerMask;
-    
+
+    public GameplayAbilitySystem AbilitySystem { get; private set; }
     [SerializeField] private State[] states;
     
     public StateMachine stateMachine { get; private set; }
@@ -26,6 +28,10 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Pathfinder = GetComponent<AIPathfinder>();
         Target = GameObject.FindGameObjectWithTag("Player").transform;
         originPosition = transform.position;
+    }
+
+    private void Start() {
+        AbilitySystem = GetComponent<GameplayAbilitySystem>();
     }
 
     public void Update() {
@@ -49,8 +55,8 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
 
 
         physics.AddForce(-direction * (blastPower / distance) + blastPower * 0.8f / distance * Vector3.up);
-        /*Navmesh skriver över? 
-        stäng av navmesh, aktivera animation
+        /*Navmesh skriver Ã¶ver? 
+        stÃ¤ng av navmesh, aktivera animation
          */
         Animator.SetTrigger("HitByExplosion");
         Pathfinder.agent.enabled = false;

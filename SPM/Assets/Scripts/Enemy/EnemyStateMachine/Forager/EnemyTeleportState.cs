@@ -12,7 +12,6 @@ public class EnemyTeleportState : State {
     }
 
     public override void Enter() {
-        Debug.Log("enter");
         forager.Animator.StopPlayback();
         forager.Animator.SetTrigger("Teleport");
 
