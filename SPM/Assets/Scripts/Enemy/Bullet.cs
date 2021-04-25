@@ -1,13 +1,21 @@
 using System;
+using AbilitySystem;
+using EventCallbacks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Bullet : MonoBehaviour {
-
-    public float BulletSpeed;
     
     public float bulletSpeed;
     private Vector3 direction;
     private Rigidbody rigidbody;
+
+    private GameplayAbility ability;
+    
+    public void Init(GameplayAbility ability) {
+        this.ability = ability;
+    }
+    
     private void Awake() {
         rigidbody = GetComponent<Rigidbody>();
         direction = GameObject.FindGameObjectWithTag("Player").transform.position - transform.position;
@@ -20,9 +28,10 @@ public class Bullet : MonoBehaviour {
     }
     
     private void OnCollisionEnter(Collision other) {
-        if (other.gameObject.CompareTag("Player") == false) return;
+        if (other.gameObject.CompareTag("Player") == false) 
+            return;
 
-        Destroy(gameObject);
-        print("Hit");
+        EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, ability));
+
     }
 }
