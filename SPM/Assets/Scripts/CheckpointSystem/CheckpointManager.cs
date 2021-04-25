@@ -1,11 +1,10 @@
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class CheckpointManager : MonoBehaviour {
 
     private Dictionary<int, Checkpoint> checkpoints = new Dictionary<int, Checkpoint>();
-
-    public Checkpoint startCheckpoint;
     
     private Checkpoint activeCheckpointPosition;
 
@@ -17,8 +16,8 @@ public class CheckpointManager : MonoBehaviour {
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
-        activeCheckpointPosition = startCheckpoint;
-
+        float currentMinimumDistance = int.MaxValue;
+        
         //Hämta alla gameobjects med Checkpoints-tag
         List<GameObject> checkpointsInScene = new List<GameObject>(GameObject.FindGameObjectsWithTag("Checkpoint"));
         
@@ -29,15 +28,20 @@ public class CheckpointManager : MonoBehaviour {
             Checkpoint currentCheckpoint = checkpoint.GetComponent<Checkpoint>();
 
             currentCheckpoint.ID = NextID++;
-                
+
             currentCheckpoint.OnPlayerEnter += UpdateCheckPoint;
             
             checkpoints.Add(currentCheckpoint.ID, currentCheckpoint);
+
+            float distanceToPlayer = Vector3.Distance(checkpoint.transform.position, player.transform.position);
+
+            if (distanceToPlayer < currentMinimumDistance) 
+                activeCheckpointPosition = currentCheckpoint;
             
         });
         
     }
-
+    
     private void UpdateCheckPoint(int ID) {
         Checkpoint point = checkpoints[ID];
         
@@ -50,7 +54,7 @@ public class CheckpointManager : MonoBehaviour {
     }
 
     public void ResetPlayerPosition() {
-        player.position = activeCheckpointPosition.transform.position;
+        player.position = activeCheckpointPosition.SpawnPosition;
     }
 
 }
