@@ -124,6 +124,9 @@ public class PlayerController : MonoBehaviour
 
     void Update() {
 
+        if (Input.GetKeyDown(KeyCode.J))
+            Time.timeScale = Time.timeScale == 1 ? Time.timeScale = .3f : Time.timeScale = .1f;
+        
         physics.isGrounded();
         stateMachine.RunUpdate();
         Jump();

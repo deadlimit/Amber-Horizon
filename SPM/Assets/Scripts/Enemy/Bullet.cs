@@ -3,10 +3,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
 
-    
     public float BulletSpeed;
-
-    public LayerMask playerLayer;
+    
     public float bulletSpeed;
     private Vector3 direction;
     private Rigidbody rigidbody;
@@ -23,7 +21,8 @@ public class Bullet : MonoBehaviour {
     
     private void OnCollisionEnter(Collision other) {
         if (other.gameObject.CompareTag("Player") == false) return;
-        
+
+        Destroy(gameObject);
         print("Hit");
     }
 }

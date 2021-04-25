@@ -98,5 +98,9 @@ public class BlackHole : MonoBehaviour
 
     private void Die() => Destroy(gameObject);
     private void TurnOnGravitationPull() => GravitationalPull = gravitationalPull;
+
+    private void StartParticleEffect() {
+        GetComponentInChildren<ParticleSystem>().Play();
+    }
     
 }
