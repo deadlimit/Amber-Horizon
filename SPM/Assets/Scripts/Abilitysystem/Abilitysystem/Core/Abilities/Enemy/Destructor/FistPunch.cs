@@ -8,7 +8,7 @@ public class FistPunch: GameplayAbility {
     //Väldigt mycket GetComponent här.
     public override void Activate(GameplayAbilitySystem Owner) {
         Destructor parent = Owner.GetComponent<Destructor>();
-        Transform target = parent.Target;
+        
         GameplayAbilitySystem playerAbilitySystem = parent.GetComponent<GameplayAbilitySystem>();
 
         Owner.TryApplyEffectToOther(AppliedEffect, playerAbilitySystem);

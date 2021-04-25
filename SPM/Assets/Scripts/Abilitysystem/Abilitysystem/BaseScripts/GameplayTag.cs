@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace AbilitySystem
@@ -16,6 +17,8 @@ namespace AbilitySystem
         public static Type MovementAbilityTag => typeof(MovementTag);
         public static Type BlackHoleAbilityTag => typeof(AttackTag);
         public static Type AimingTag => typeof(AimingTag);
+
+        public static Type AttackTag => typeof(AttackTag);
 
         public static Type MeleeTag => typeof(MeleeTag);
 
