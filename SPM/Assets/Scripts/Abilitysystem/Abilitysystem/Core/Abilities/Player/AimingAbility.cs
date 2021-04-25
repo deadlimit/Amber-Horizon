@@ -100,7 +100,7 @@ public class AimingAbility : GameplayAbility
     {
         lr.enabled = false;
         Owner.RemoveTag(this.AbilityTag);
-        Debug.Log("Deactivate from aiming abiilit");
+
     }
 
 

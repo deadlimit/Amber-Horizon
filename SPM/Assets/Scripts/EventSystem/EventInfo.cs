@@ -69,6 +69,14 @@ namespace EventCallbacks
             Scene = sceneName;
         }
     }
+
+    public class CheckPointActivatedEvent : EventInfo {
+        public readonly AudioClip audio;
+
+        public CheckPointActivatedEvent(AudioClip audio) {
+            this.audio = audio;
+        }
+    }
     
 }
 

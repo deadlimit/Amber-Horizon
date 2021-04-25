@@ -1,12 +1,14 @@
 using System;
+using EventCallbacks;
 using UnityEngine;
 
 [Serializable]
 public class Checkpoint : MonoBehaviour {
-    
+
+    public AudioClip audio;
     public int ID { get; set; }
 
-    public Vector3 SpawnPosition;
+    public Vector3 SpawnPosition { get; set; }
     
     public Action<int> OnPlayerEnter;
 
@@ -17,6 +19,8 @@ public class Checkpoint : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (!other.CompareTag("Player")) return;
             
+        
         OnPlayerEnter?.Invoke(ID);
+        EventSystem<CheckPointActivatedEvent>.FireEvent(new CheckPointActivatedEvent(audio));
     }
 }

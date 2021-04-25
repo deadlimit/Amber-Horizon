@@ -1,4 +1,3 @@
-using System;
 using AbilitySystem;
 using UnityEngine;
 
@@ -67,8 +66,9 @@ public class PlayerController : MonoBehaviour
     void Decelerate() 
     {
         //panikfix
-        MovingPlatformV2 mp;
-        if (mp = physics.groundHitInfo.collider.gameObject.GetComponent<MovingPlatformV2>())
+        MovingPlatformV2 mp = physics.groundHitInfo.collider?.GetComponent<MovingPlatformV2>();
+
+        if (mp)
         {
             force = deceleration * mp.GetVelocity().normalized * Time.deltaTime;
             force += -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
@@ -130,7 +130,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E)) 
         {
-            print(abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag));
+            abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
         }
           
         if (Input.GetMouseButton(1))
