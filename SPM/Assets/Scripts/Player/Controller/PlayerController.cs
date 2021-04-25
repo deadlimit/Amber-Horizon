@@ -152,7 +152,5 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    public void OnDisable() {
-        print("disable");
-    }
+    
 }

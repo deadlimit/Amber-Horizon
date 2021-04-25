@@ -11,7 +11,10 @@ public class BlackHoleAbility: GameplayAbility {
     {
         /*AimingAbility aa = (AimingAbility)Owner.GetAbilityByTag(typeof(AimingTag));
         Debug.Assert(aa);*/
-        AimingAbility aa = (AimingAbility)Owner.GetComponent<AbilityEntity>().StartingAbilities[1];
-        aa.FireBlackHole();
+
+       // AimingAbility aa = (AimingAbility)Owner.GetComponent<AbilityEntity>().StartingAbilities[1];
+       AimingAbility aa = Owner.GetAbilityByTag(GameplayTags.AimingTag) as AimingAbility;
+       
+       aa?.FireBlackHole();
     }
 }
