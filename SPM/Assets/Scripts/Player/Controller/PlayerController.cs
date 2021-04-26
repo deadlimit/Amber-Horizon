@@ -1,3 +1,4 @@
+using System;
 using AbilitySystem;
 using UnityEngine;
 
@@ -30,14 +31,15 @@ public class PlayerController : MonoBehaviour
     
     private GameplayAbilitySystem abilitySystem;
     
-    void Awake()
+    void Awake() 
     {
+
         activeCamera = Camera.main;
         physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);       
         lr = GetComponent<LineRenderer>();
     }
-
+    
     private void Start() {
         abilitySystem = gameObject.GetComponent<GameplayAbilitySystem>();
     }

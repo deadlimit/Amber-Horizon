@@ -21,33 +21,41 @@ public class AimingAbility : GameplayAbility
         launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
         cam = Camera.main;
     }
-    public override void Activate(GameplayAbilitySystem Owner)
-    {
+    public override void Activate(GameplayAbilitySystem Owner) {
+        
+        //Scriptable objects behåller sina referenser från föregående scener
+        //måste hämta på nytt efter scenetransit. 
+        if (cursor == null)
+            cursor = GameObject.FindGameObjectWithTag("Cursor");
+        
+        if(launchPoint == null)
+            launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
+        
+        Debug.Log(launchPoint);
+        
         lr = Owner.gameObject.GetComponent<LineRenderer>();
         Debug.Assert(lr);
         lr.enabled = true;
         Owner.ApplyEffectToSelf(AppliedEffect);
+        
+        Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-       
-            Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
+        if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
+        {
+            if ((hit.point - launchPoint.transform.position).magnitude < maxDistance)
             {
-                if ((hit.point - launchPoint.transform.position).magnitude < maxDistance)
-                {
-                    cursor.transform.position = hit.point;
-                }
-
-                else if ((hit.point - launchPoint.transform.position).magnitude > maxDistance)
-                {
-                    cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
-                }
+                cursor.transform.position = hit.point;
             }
 
-            else
+            else if ((hit.point - launchPoint.transform.position).magnitude > maxDistance)
             {
                 cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
             }
+        }
+        else
+        {
+            cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
+        }
 
         vo = CalculateVelocity(cursor.transform.position, launchPoint.transform.position, flightTime);
         DrawArc(vo, cursor.transform.position);
