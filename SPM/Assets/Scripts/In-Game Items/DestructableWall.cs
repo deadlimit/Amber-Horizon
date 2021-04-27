@@ -16,6 +16,7 @@ public class DestructableWall : MonoBehaviour, IBlackHoleBehaviour {
     public void BlackHoleBehaviour(BlackHole blackHole) {
         transform.DetachChildren();
         Destroy(gameObject);
+
         foreach (Transform child in children) {
             child.gameObject.AddComponent<Rigidbody>();
             PhysicsComponent physics = child.gameObject.AddComponent<PhysicsComponent>();

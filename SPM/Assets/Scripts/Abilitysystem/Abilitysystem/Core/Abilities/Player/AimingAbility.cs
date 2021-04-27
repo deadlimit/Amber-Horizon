@@ -42,7 +42,11 @@ public class AimingAbility : GameplayAbility
         {
             if ((hit.point - launchPoint.transform.position).magnitude < maxDistance)
             {
+                cursor.SetActive(true);
                 cursor.transform.position = hit.point;
+                Quaternion q = Quaternion.FromToRotation(Vector3.up, hit.normal);
+                cursor.transform.rotation = Quaternion.Slerp(cursor.transform.rotation, q, 20 * Time.deltaTime);
+
             }
 
             else if ((hit.point - launchPoint.transform.position).magnitude > maxDistance)
@@ -52,6 +56,7 @@ public class AimingAbility : GameplayAbility
         }
         else
         {
+            cursor.SetActive(false);
             cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
         }
 
@@ -105,6 +110,7 @@ public class AimingAbility : GameplayAbility
     public override void Deactivate(GameplayAbilitySystem Owner)
     {
         lr.enabled = false;
+        cursor.SetActive(false);
         Owner.RemoveTag(this.AbilityTag);
 
     }
