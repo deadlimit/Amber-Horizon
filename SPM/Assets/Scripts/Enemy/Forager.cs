@@ -8,10 +8,10 @@ public class Forager : Enemy  {
     
     [HideInInspector] public BlackHole activeBlackHole;
 
-    private void Awake() {
+    private new void Awake() {
         base.Awake();
     }
-    private void Update()
+    private new void Update()
     {
         base.Update();
         

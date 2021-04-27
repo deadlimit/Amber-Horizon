@@ -30,9 +30,7 @@ public class AimingAbility : GameplayAbility
         
         if(launchPoint == null)
             launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
-        
-        Debug.Log(launchPoint);
-        
+
         lr = Owner.gameObject.GetComponent<LineRenderer>();
         Debug.Assert(lr);
         lr.enabled = true;

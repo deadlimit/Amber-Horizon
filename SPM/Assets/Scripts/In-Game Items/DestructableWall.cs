@@ -13,17 +13,18 @@ public class DestructableWall : MonoBehaviour, IBlackHoleBehaviour {
     }
 
 
-    public  void BlackHoleBehaviour(BlackHole blackHole) {
+    public void BlackHoleBehaviour(BlackHole blackHole) {
         transform.DetachChildren();
-        
+        Destroy(gameObject);
         foreach (Transform child in children) {
             child.gameObject.AddComponent<Rigidbody>();
             PhysicsComponent physics = child.gameObject.AddComponent<PhysicsComponent>();
             physics.collisionMask = collisionMask;
             physics.gravity = 0;
-            print("wall");
+            //print("wall");
         }
+        Debug.Log("Efter loop");
 
-        Destroy(gameObject);
+
     }
 }
