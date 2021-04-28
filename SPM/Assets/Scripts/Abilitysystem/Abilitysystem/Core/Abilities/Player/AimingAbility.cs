@@ -28,8 +28,25 @@ public class AimingAbility : GameplayAbility
         lr.enabled = true;
         Owner.ApplyEffectToSelf(AppliedEffect);
 
+<<<<<<< Updated upstream
        
             Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
+=======
+        if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
+        {
+            if ((hit.point - launchPoint.transform.position).magnitude < maxDistance)
+            {
+                cursor.SetActive(true);
+                cursor.transform.position = hit.point;
+                Quaternion q = Quaternion.FromToRotation(Vector3.up, hit.normal);
+                /*
+                 funderade på om man vill ha en "sned" cursor när man träffar mellan två objekt, hade kunnat lösas med typ 
+                overlapsphere och räkna ut medelvärdet mellan de olika normalerna men det blir himla mycket jobb
+                för jävligt liten vinst, så lägger det på is så länge. Man kanske inte vill göra Slerp heller, 
+                isåfall sätter man bara cursor.transform.rotation direkt
+                 */
+                cursor.transform.rotation = Quaternion.Slerp(cursor.transform.rotation, q, 20 * Time.deltaTime);
+>>>>>>> Stashed changes
 
             if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
             {
