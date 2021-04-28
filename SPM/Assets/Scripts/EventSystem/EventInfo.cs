@@ -36,6 +36,15 @@ namespace EventCallbacks
         }
 
     }
+
+    public class AbilityUsed : EventInfo {
+        public readonly GameplayAbility ability;
+
+        public AbilityUsed(GameplayAbility gameplayAbility) {
+            this.ability = gameplayAbility;
+        }
+    }
+    
     public class PlayerDiedEvent : EventInfo
     { 
 
