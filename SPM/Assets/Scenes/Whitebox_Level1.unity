@@ -6889,58 +6889,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1040339850}
-    - target: {fileID: 2084372181, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 2084372181, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 2084372182, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 9dcdc7d85dc118649894e30e346ea3c8, type: 3}
-    - target: {fileID: 2084372182, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: m_Color.a
-      value: 0.84313726
-      objectReference: {fileID: 0}
-    - target: {fileID: 2084372182, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2084372182, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2084372182, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2084372182, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2084372182, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: m_FillAmount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2084372182, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: m_FillMethod
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2084372182, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: m_FillOrigin
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2084372182, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: m_FillClockwise
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2084372182, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: m_PreserveAspect
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4994216072001837894, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_Name
       value: Player_Prefab
@@ -7894,6 +7842,36 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 605362628}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &607426834
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 607426835}
+  m_Layer: 0
+  m_Name: CameraOverview
+  m_TagString: TransitOverview
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &607426835
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607426834}
+  m_LocalRotation: {x: -0.4915215, y: 0.5002052, z: -0.5010632, w: -0.5070869}
+  m_LocalPosition: {x: 34.381798, y: 211.53737, z: -3.8557534}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 34
+  m_LocalEulerAnglesHint: {x: 90, y: 63, z: 26}
 --- !u!1001 &611204737
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10558,6 +10536,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 7884709247241317308, guid: 56e64c9d8fe463c4eb12e37e0e075a82, type: 3}
+      propertyPath: states.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7884709247241317308, guid: 56e64c9d8fe463c4eb12e37e0e075a82, type: 3}
+      propertyPath: states.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: f8bb93f9d1d4db5468e67f698741af8c, type: 2}
     - target: {fileID: 7884709247241317309, guid: 56e64c9d8fe463c4eb12e37e0e075a82, type: 3}
       propertyPath: m_RootOrder
       value: 5

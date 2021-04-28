@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using EventCallbacks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,9 +9,17 @@ public class PlayerUI : MonoBehaviour {
 
     public Image dashCooldownImage;
     public Image blackholeCooldownImage;
+    public TextMeshProUGUI interactText;
     
     private void OnEnable() {
         EventSystem<AbilityUsed>.RegisterListener(StartAbilityCooldown);
+        EventSystem<InteractTriggerEnter>.RegisterListener(DisplayInteractText);
+        EventSystem<InteractTriggerExit>.RegisterListener(ClearUIMessage);
+    }
+
+    private void OnDisable() {
+        EventSystem<AbilityUsed>.UnregisterListener(StartAbilityCooldown);
+        EventSystem<InteractTriggerExit>.UnregisterListener(ClearUIMessage);
     }
 
     private void StartAbilityCooldown(AbilityUsed abilityUsed) {
@@ -29,6 +39,14 @@ public class PlayerUI : MonoBehaviour {
         }
         
         image.fillAmount = 0;
+    }
+
+    private void DisplayInteractText(InteractTriggerEnter trigger) {
+        interactText.text = trigger.UIMessage;
+    }
+
+    private void ClearUIMessage(InteractTriggerExit exti) {
+        interactText.text = "";
     }
     
 }

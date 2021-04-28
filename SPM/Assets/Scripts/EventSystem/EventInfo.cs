@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using AbilitySystem;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace EventCallbacks
 {
@@ -86,6 +87,16 @@ namespace EventCallbacks
             this.audio = audio;
         }
     }
+
+    public class InteractTriggerEnter : EventInfo {
+        public string UIMessage;
+
+        public InteractTriggerEnter(string message) {
+            UIMessage = message;
+        }
+    }
+    public class InteractTriggerExit : EventInfo {}
     
+    public class EnterTransitView : EventInfo {}
 }
 
