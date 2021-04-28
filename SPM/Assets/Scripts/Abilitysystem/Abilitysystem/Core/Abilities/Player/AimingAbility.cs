@@ -28,9 +28,10 @@ public class AimingAbility : GameplayAbility
         lr.enabled = true;
         Owner.ApplyEffectToSelf(AppliedEffect);
 
+<<<<<<< Updated upstream
        
-        Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
-
+            Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
+=======
         if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
         {
             if ((hit.point - launchPoint.transform.position).magnitude < maxDistance)
@@ -45,20 +46,29 @@ public class AimingAbility : GameplayAbility
                 isåfall sätter man bara cursor.transform.rotation direkt
                  */
                 cursor.transform.rotation = Quaternion.Slerp(cursor.transform.rotation, q, 20 * Time.deltaTime);
+>>>>>>> Stashed changes
+
+            if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
+            {
+                if ((hit.point - launchPoint.transform.position).magnitude < maxDistance)
+                {
+                    cursor.transform.position = hit.point;
+                }
+
+                else if ((hit.point - launchPoint.transform.position).magnitude > maxDistance)
+                {
+                    cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
+                }
             }
-            else if ((hit.point - launchPoint.transform.position).magnitude > maxDistance)
+
+            else
             {
                 cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
             }
 
-        }
-        else
-        {
-            cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
-        }
+        vo = CalculateVelocity(cursor.transform.position, launchPoint.transform.position, flightTime);
+        DrawArc(vo, cursor.transform.position);
 
-            vo = CalculateVelocity(cursor.transform.position, launchPoint.transform.position, flightTime);
-            DrawArc(vo, cursor.transform.position);
     }
     public void FireBlackHole() 
     {
