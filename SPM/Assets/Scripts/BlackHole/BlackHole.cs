@@ -85,7 +85,6 @@ public class BlackHole : MonoBehaviour
             {
                 velocity = Vector3.zero;
                 useGravity = false;
-                print("No more gravitry");
             }
             
             velocity += Vector3.down * Time.deltaTime * gravity;

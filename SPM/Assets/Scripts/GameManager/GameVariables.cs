@@ -13,7 +13,6 @@ public class GameVariables : ScriptableObject
 
     private void OnEnable()
     {
-        //ingen aning om den wipas vid rätt tillfälle här, vill ha persistent data men egentligen inte för just denna variabel
         keyFragments = 0;
     }
     public bool RequiredNoOfKeys() { 

@@ -11,20 +11,8 @@ namespace EventCallbacks
 
         public string EventDescription; 
     }
-    public class DebugEventInfo : EventInfo
-    {
-        public int VerbosityLevel;
-        new public string EventDescription = "DebugEventInfo:: ";
-    }
-    public class UnitDeathEventInfo : EventInfo
-    {
-        public GameObject UnitGO; 
-    }
+    
 
-    public class UnitClickedEventInfo : EventInfo
-    {
-
-    }
     public class KeyPickUpEvent : EventInfo { }
     public class UnlockEvent : EventInfo { }
 
@@ -59,6 +47,34 @@ namespace EventCallbacks
         public ExplosionEvent(Vector3 location)
         {
             this.location = location; 
+        }
+    }
+
+    //Själva scenetransitionen
+    public class SceneTransitEvent : EventInfo {
+
+        public readonly string Scene;
+
+        public SceneTransitEvent(string sceneName) {
+            Scene = sceneName;
+        }
+
+    }
+    
+    //För scene-transit animationer och dylikt
+    public class StartSceneTransitEvent : EventInfo {
+        public readonly string Scene;
+
+        public StartSceneTransitEvent(string sceneName) {
+            Scene = sceneName;
+        }
+    }
+
+    public class CheckPointActivatedEvent : EventInfo {
+        public readonly AudioClip audio;
+
+        public CheckPointActivatedEvent(AudioClip audio) {
+            this.audio = audio;
         }
     }
     

@@ -8,6 +8,7 @@ public class DestructorChaseState : State {
     public float increasedMovementSpeed;
     public float maxDistanceFromOrigin;
     public float minimumDistanceBeforeMelee;
+    public float PlayerToFarAway;
     protected override void Initialize() {
         destructor = owner as Destructor;
     }
@@ -22,7 +23,7 @@ public class DestructorChaseState : State {
 
         destructor.transform.LookAt(destructor.Target);
         
-        if(Vector3.Distance(destructor.originPosition, destructor.transform.position) > maxDistanceFromOrigin)
+        if(Vector3.Distance(destructor.originPosition, destructor.transform.position) > maxDistanceFromOrigin || Vector3.Distance(destructor.transform.position, destructor.Target.position) > PlayerToFarAway)
             destructor.stateMachine.ChangeState<DestructorResetState>();
         
         

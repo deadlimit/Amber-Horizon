@@ -9,7 +9,6 @@ public class ExplosionListener : MonoBehaviour
 
     private void Explosion (ExplosionEvent ee)
     {
-        Debug.Log("Explosion registered by listener");
         Instantiate(explosion, ee.location, Quaternion.identity);
 
     }

@@ -21,33 +21,44 @@ public class AimingAbility : GameplayAbility
         launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
         cam = Camera.main;
     }
-    public override void Activate(GameplayAbilitySystem Owner)
-    {
+    public override void Activate(GameplayAbilitySystem Owner) {
+        
+        //Scriptable objects behåller sina referenser från föregående scener
+        //måste hämta på nytt efter scenetransit. 
+        if (cursor == null)
+            cursor = GameObject.FindGameObjectWithTag("Cursor");
+        
+        if(launchPoint == null)
+            launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
+
         lr = Owner.gameObject.GetComponent<LineRenderer>();
         Debug.Assert(lr);
         lr.enabled = true;
         Owner.ApplyEffectToSelf(AppliedEffect);
+        
+        Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-       
-            Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
+        if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
+        {
+            if ((hit.point - launchPoint.transform.position).magnitude < maxDistance)
             {
-                if ((hit.point - launchPoint.transform.position).magnitude < maxDistance)
-                {
-                    cursor.transform.position = hit.point;
-                }
+                cursor.SetActive(true);
+                cursor.transform.position = hit.point;
+                Quaternion q = Quaternion.FromToRotation(Vector3.up, hit.normal);
+                cursor.transform.rotation = Quaternion.Slerp(cursor.transform.rotation, q, 20 * Time.deltaTime);
 
-                else if ((hit.point - launchPoint.transform.position).magnitude > maxDistance)
-                {
-                    cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
-                }
             }
 
-            else
+            else if ((hit.point - launchPoint.transform.position).magnitude > maxDistance)
             {
                 cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
             }
+        }
+        else
+        {
+            cursor.SetActive(false);
+            cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
+        }
 
         vo = CalculateVelocity(cursor.transform.position, launchPoint.transform.position, flightTime);
         DrawArc(vo, cursor.transform.position);
@@ -99,8 +110,9 @@ public class AimingAbility : GameplayAbility
     public override void Deactivate(GameplayAbilitySystem Owner)
     {
         lr.enabled = false;
+        cursor.SetActive(false);
         Owner.RemoveTag(this.AbilityTag);
-        Debug.Log("Deactivate from aiming abiilit");
+
     }
 
 
