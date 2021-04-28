@@ -28,7 +28,6 @@ public class PlayerUI : MonoBehaviour {
             yield return null;
         }
         
-        
         image.fillAmount = 0;
     }
     
