@@ -16,7 +16,7 @@ public class EnemyDeathState : State {
     public override void RunUpdate() {
         
         if (forager.activeBlackHole != null) {
-            Debug.Log("die");
+            //Debug.Log("die");
             forager.transform.LookAt(forager.activeBlackHole.transform);
 
             forager.transform.position = Vector3.Lerp(forager.transform.position, forager.activeBlackHole.center.transform.position, Time.deltaTime);
