@@ -20,7 +20,7 @@ public class Checkpoint : MonoBehaviour {
 
     private void OnDisable() => activeCheckpoints.Remove(this);
 
-        private void Awake() {
+    private void Awake() {
         SpawnPosition = transform.GetChild(0).transform.position;
     }
     

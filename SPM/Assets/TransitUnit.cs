@@ -9,10 +9,9 @@ public class TransitUnit : MonoBehaviour {
         
 
     }
-
     private void OnTriggerStay(Collider other) {
         if (Input.GetKeyDown(KeyCode.F))
-            EventSystem<EnterTransitView>.FireEvent(null);
+            EventSystem<EnterTransitView>.FireEvent(new EnterTransitView());
     }
 
     private void OnTriggerExit(Collider other) {
