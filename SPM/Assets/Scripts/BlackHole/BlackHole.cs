@@ -72,7 +72,6 @@ public class BlackHole : MonoBehaviour
             IBlackHoleBehaviour blackHoleBehaviour = collider.GetComponent<IBlackHoleBehaviour>();
             if (blackHoleBehaviour != null) 
             {
-                Debug.Log("usingh bhbehaviour on : " +collider.gameObject);
                 blackHoleBehaviour?.BlackHoleBehaviour(this);
             }
             
@@ -87,7 +86,7 @@ public class BlackHole : MonoBehaviour
                 velocity = Vector3.zero;
                 useGravity = false;
             }
-
+            
             velocity += Vector3.down * Time.deltaTime * gravity;
         }    
    
@@ -98,5 +97,9 @@ public class BlackHole : MonoBehaviour
 
     private void Die() => Destroy(gameObject);
     private void TurnOnGravitationPull() => GravitationalPull = gravitationalPull;
+
+    private void StartParticleEffect() {
+        GetComponentInChildren<ParticleSystem>().Play();
+    }
     
 }

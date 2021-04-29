@@ -6,19 +6,32 @@ namespace EventCallbacks
 {
     public class KeyListener : MonoBehaviour
     {
-        private void OnEnable() => EventSystem<KeyPickUpEvent>.RegisterListener(KeyPickUp);
+        public static List<KeyFragment> keyList = new List<KeyFragment>();
+        private BoxCollider interaction;
+        private void OnEnable()
+        {
+            EventSystem<KeyPickUpEvent>.RegisterListener(KeyPickUp);
+            interaction = GetComponent<BoxCollider>();
+        }
         private void OnDisable() => EventSystem<KeyPickUpEvent>.UnregisterListener(KeyPickUp);
 
-        private void KeyPickUp (KeyPickUpEvent kpue)
+        private void KeyPickUp(KeyPickUpEvent kpue)
         {
-            Debug.Log("nyckelfragment upplockat");
-            if (GameManager.gameManager.gameVariables.RequiredNoOfKeys())
+            if (keyList.Count <= 0)
+            {
+                interaction.enabled = true;
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if(keyList.Count <= 0 && other.gameObject.tag == "Player")
             {
                 UnlockEvent ue = new UnlockEvent();
                 EventSystem<UnlockEvent>.FireEvent(ue);
             }
-            //Lagra antalet nycklar.. någonstans. Game manager? 
         }
+
 
     }
 }

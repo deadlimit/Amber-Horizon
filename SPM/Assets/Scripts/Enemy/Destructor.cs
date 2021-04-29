@@ -8,7 +8,7 @@ public class Destructor : Enemy {
         stateMachine.ChangeState<DestructorPatrolState>();
     }
     
-    private void Update() {
+    private new void Update() {
         base.Update();
         
         stateMachine.RunUpdate();

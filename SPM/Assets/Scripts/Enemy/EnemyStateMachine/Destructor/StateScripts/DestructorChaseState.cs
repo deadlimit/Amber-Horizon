@@ -6,7 +6,9 @@ public class DestructorChaseState : State {
     private Destructor destructor;
 
     public float increasedMovementSpeed;
+    public float maxDistanceFromOrigin;
     public float minimumDistanceBeforeMelee;
+    public float PlayerToFarAway;
     protected override void Initialize() {
         destructor = owner as Destructor;
     }
@@ -20,6 +22,10 @@ public class DestructorChaseState : State {
         destructor.Pathfinder.agent.SetDestination(destructor.Target.position);
 
         destructor.transform.LookAt(destructor.Target);
+        
+        if(Vector3.Distance(destructor.originPosition, destructor.transform.position) > maxDistanceFromOrigin || Vector3.Distance(destructor.transform.position, destructor.Target.position) > PlayerToFarAway)
+            destructor.stateMachine.ChangeState<DestructorResetState>();
+        
         
         if(Vector3.Distance(destructor.transform.position, destructor.Target.position) < minimumDistanceBeforeMelee)
             destructor.stateMachine.ChangeState<DestructorMeleeState>();

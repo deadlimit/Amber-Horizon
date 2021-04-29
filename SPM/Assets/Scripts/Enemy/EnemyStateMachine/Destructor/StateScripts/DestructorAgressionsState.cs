@@ -13,6 +13,8 @@ public class DestructorAgressionsState : State {
         destructor.Pathfinder.agent.isStopped = true;
         destructor.Pathfinder.agent.ResetPath();
         destructor.Animator.SetTrigger("Point");
+        destructor.Animator.SetBool("PlayerInRange", true);
+        
         destructor.Invoke(() => destructor.stateMachine.ChangeState<DestructorChaseState>(), 2);
     }
 

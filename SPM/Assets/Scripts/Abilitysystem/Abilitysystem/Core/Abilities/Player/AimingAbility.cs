@@ -21,33 +21,48 @@ public class AimingAbility : GameplayAbility
         launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
         cam = Camera.main;
     }
-    public override void Activate(GameplayAbilitySystem Owner)
-    {
+    public override void Activate(GameplayAbilitySystem Owner) {
+        
+        //Scriptable objects behåller sina referenser från föregående scener
+        //måste hämta på nytt efter scenetransit. 
+        if (cursor == null)
+            cursor = GameObject.FindGameObjectWithTag("Cursor");
+        
+        if(launchPoint == null)
+            launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
+
         lr = Owner.gameObject.GetComponent<LineRenderer>();
         Debug.Assert(lr);
         lr.enabled = true;
         Owner.ApplyEffectToSelf(AppliedEffect);
+        
+        Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-       
-            Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
+        if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
+        {
+            if ((hit.point - launchPoint.transform.position).magnitude < maxDistance)
             {
-                if ((hit.point - launchPoint.transform.position).magnitude < maxDistance)
-                {
-                    cursor.transform.position = hit.point;
-                }
-
-                else if ((hit.point - launchPoint.transform.position).magnitude > maxDistance)
-                {
-                    cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
-                }
+                cursor.SetActive(true);
+                cursor.transform.position = hit.point;
+                Quaternion q = Quaternion.FromToRotation(Vector3.up, hit.normal);
+                /*
+                 funderade på om man vill ha en "sned" cursor när man träffar mellan två objekt, hade kunnat lösas med typ 
+                overlapsphere och räkna ut medelvärdet mellan de olika normalerna men det blir himla mycket jobb
+                för jävligt liten vinst, så lägger det på is så länge. Man kanske inte vill göra Slerp heller, 
+                isåfall sätter man bara cursor.transform.rotation direkt
+                 */
+                cursor.transform.rotation = Quaternion.Slerp(cursor.transform.rotation, q, 20 * Time.deltaTime);
             }
-
-            else
+            else if ((hit.point - launchPoint.transform.position).magnitude > maxDistance)
             {
                 cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
             }
+        }
+        else
+        {
+            cursor.SetActive(false);
+            cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
+        }
 
         vo = CalculateVelocity(cursor.transform.position, launchPoint.transform.position, flightTime);
         DrawArc(vo, cursor.transform.position);
@@ -99,8 +114,9 @@ public class AimingAbility : GameplayAbility
     public override void Deactivate(GameplayAbilitySystem Owner)
     {
         lr.enabled = false;
+        cursor.SetActive(false);
         Owner.RemoveTag(this.AbilityTag);
-        Debug.Log("Deactivate from aiming abiilit");
+
     }
 
 

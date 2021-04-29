@@ -31,14 +31,15 @@ public class PlayerController : MonoBehaviour
     
     private GameplayAbilitySystem abilitySystem;
     
-    void Awake()
+    void Awake() 
     {
+
         activeCamera = Camera.main;
         physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);       
         lr = GetComponent<LineRenderer>();
     }
-
+    
     private void Start() {
         abilitySystem = gameObject.GetComponent<GameplayAbilitySystem>();
     }
@@ -66,7 +67,16 @@ public class PlayerController : MonoBehaviour
     }
     void Decelerate() 
     {
-        force = -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
+        //panikfix
+        MovingPlatformV2 mp = physics.groundHitInfo.collider?.GetComponent<MovingPlatformV2>();
+
+        if (mp)
+        {
+            force = deceleration * mp.GetVelocity().normalized * Time.deltaTime;
+            force += -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
+        }
+        else
+            force = -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
         //Velocitys magnitud och riktning, multiplicerat med ett v�rde mellan 1 och 0, fast negativt
     }
     void Accelerate()
@@ -122,7 +132,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E)) 
         {
-            print(abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag));
+            abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
         }
           
         if (Input.GetMouseButton(1))
@@ -144,7 +154,5 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    public void OnDisable() {
-        print("disable");
-    }
+    
 }

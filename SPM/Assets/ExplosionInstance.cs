@@ -9,14 +9,12 @@ public class ExplosionInstance : MonoBehaviour
     public float blastPower { get; private set; } = 200f;
     private void OnEnable()
     {
-        Debug.Log("Boom");
         Debug.Assert(coll);
         StartCoroutine(ExpandRadius(coll.radius));
     }
 
     private IEnumerator ExpandRadius(float startingRadius)
     {
-        Debug.Log(startingRadius < blastArea);
         while (coll.radius < 8f)
         {
             coll.radius = Mathf.Lerp(coll.radius, blastArea, Time.deltaTime * 5 );
@@ -31,7 +29,6 @@ public class ExplosionInstance : MonoBehaviour
         Debug.Assert(enemy);
         if (enemy)
         {
-            Debug.Log("hit enemy:" + other);
             enemy.ApplyExplosion(gameObject, blastPower);
         }
     }

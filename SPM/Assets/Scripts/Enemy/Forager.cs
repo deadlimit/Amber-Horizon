@@ -1,4 +1,5 @@
 
+using AbilitySystem;
 using UnityEngine;
 
 public class Forager : Enemy  {
@@ -7,10 +8,10 @@ public class Forager : Enemy  {
     
     [HideInInspector] public BlackHole activeBlackHole;
 
-    private void Awake() {
+    private new void Awake() {
         base.Awake();
     }
-    private void Update()
+    private new void Update()
     {
         base.Update();
         
@@ -30,7 +31,8 @@ public class Forager : Enemy  {
         stateMachine.ChangeState<EnemyDeathState>(); }
     
     public void Fire() {
-        Instantiate(Bullet, transform.position + transform.forward + Vector3.up, Quaternion.Euler(transform.forward));
+        GameObject newBullet = Instantiate(Bullet, transform.position + transform.forward + Vector3.up, transform.rotation);
+        newBullet.GetComponent<Bullet>().Init(AbilitySystem.GetAbilityByTag(GameplayTags.AttackTag));
         Pathfinder.agent.isStopped = false;
     }
 }

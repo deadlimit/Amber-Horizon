@@ -8,10 +8,15 @@ public class EnemyDeathState : State {
     protected override void Initialize() {
         forager = (Forager) owner;
     }
-    
+
+    public override void Enter() {
+        forager.Animator.SetTrigger("Die");
+    }
+
     public override void RunUpdate() {
-        Debug.Log("enemy death");
+        
         if (forager.activeBlackHole != null) {
+            //Debug.Log("die");
             forager.transform.LookAt(forager.activeBlackHole.transform);
 
             forager.transform.position = Vector3.Lerp(forager.transform.position, forager.activeBlackHole.center.transform.position, Time.deltaTime);

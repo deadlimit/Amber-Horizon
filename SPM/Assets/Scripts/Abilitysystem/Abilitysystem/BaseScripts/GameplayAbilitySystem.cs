@@ -109,7 +109,7 @@ namespace AbilitySystem
                 OnAttributeChanged[Attribute]?.Invoke(AttributeSet[Attribute]);
             }
         }
-
+        
         public void GrantAbility(GameplayAbility Ability) {
             
             if (GrantedAbilities == null)
@@ -129,7 +129,7 @@ namespace AbilitySystem
         {
             RevokeAbility(AbilityTag.GetType());
         }
-
+        
         public bool TryActivateAbilityByTag(Type AbilityTag)
         {
 
@@ -166,7 +166,7 @@ namespace AbilitySystem
         public void RemoveTag(GameplayTag Tag)
         {
             ActiveTags.Remove(Tag);
-            Debug.Log("removed" + Tag);
+
         }
 
         public IEnumerator RemoveAfterTime(GameplayEffect Effect)

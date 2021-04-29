@@ -56,7 +56,7 @@ public class PhysicsComponent : MonoBehaviour
        
 
         //Silvertejpslösning för att inte få -Infinity eller NaN
-        if (!float.IsNegativeInfinity(velocity.x) || !float.IsNaN(velocity.x) )
+        if (float.IsNaN(velocity.x) == false || float.IsNegativeInfinity(velocity.x) == false || float.IsPositiveInfinity(velocity.x) == false  )
             transform.position += velocity * Time.deltaTime;
         
         MoveOutOfGeometry();
