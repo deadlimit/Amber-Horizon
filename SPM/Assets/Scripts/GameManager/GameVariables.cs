@@ -7,7 +7,6 @@ using UnityEngine;
 public class GameVariables : ScriptableObject
 {
     [SerializeField] private int keyFragments;
-    [SerializeField] private bool dashAvailable;
     [SerializeField] private int enemiesDefeated;
     private int requiredKeyNumber = 3;
 
@@ -18,5 +17,5 @@ public class GameVariables : ScriptableObject
     public bool RequiredNoOfKeys() { 
 
         return ++keyFragments >= requiredKeyNumber; }
-    public void EnableDash() { dashAvailable = true; }
+
 }

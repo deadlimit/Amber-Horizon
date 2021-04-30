@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using EventCallbacks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class Checkpoint : MonoBehaviour {
@@ -9,7 +10,7 @@ public class Checkpoint : MonoBehaviour {
     public static readonly List<Checkpoint> activeCheckpoints = new List<Checkpoint>();
     public static readonly List<Checkpoint> activatedCheckpoints = new List<Checkpoint>();
     
-    public AudioClip audio;
+    public AudioClip activateAudioClip;
     public int ID { get; set; }
 
     public Vector3 SpawnPosition { get; set; }
@@ -28,7 +29,7 @@ public class Checkpoint : MonoBehaviour {
         if (!other.CompareTag("Player")) return;
         
         OnPlayerEnter?.Invoke(ID);
-        EventSystem<CheckPointActivatedEvent>.FireEvent(new CheckPointActivatedEvent(audio));
+        EventSystem<CheckPointActivatedEvent>.FireEvent(new CheckPointActivatedEvent(activateAudioClip));
         activatedCheckpoints.Add(this);
         enabled = false;
     }

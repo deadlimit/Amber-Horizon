@@ -6,10 +6,10 @@ public class WallPiece : MonoBehaviour, IBlackHoleBehaviour  {
     private BlackHole blackhole;
     public LayerMask collisionMask;
 
-    private MeshCollider collider;
+    private MeshCollider activeCollider;
 
     private void Awake() {
-        collider = GetComponent<MeshCollider>();
+        activeCollider = GetComponent<MeshCollider>();
     }
     
     public void BlackHoleBehaviour(BlackHole blackHole) {
@@ -18,7 +18,7 @@ public class WallPiece : MonoBehaviour, IBlackHoleBehaviour  {
         PhysicsComponent physics = gameObject.AddComponent<PhysicsComponent>();
         physics.collisionMask = collisionMask;
         physics.gravity = 0;
-        collider.enabled = false;
+        activeCollider.enabled = false;
         print("wall piece");
     }
 
