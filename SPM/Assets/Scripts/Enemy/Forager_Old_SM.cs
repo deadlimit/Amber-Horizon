@@ -2,14 +2,12 @@
 using AbilitySystem;
 using UnityEngine;
 
-public class Forager : Enemy  {
+public class Forager_Old_SM : Enemy  {
     
     public GameObject Bullet;
     
     [HideInInspector] public BlackHole activeBlackHole;
 
-
-    public Vector3 patrolPoint;
     private new void Awake() {
         base.Awake();
     }
@@ -17,7 +15,7 @@ public class Forager : Enemy  {
     {
         base.Update();
         
-        //stateMachine?.RunUpdate();
+        stateMachine?.RunUpdate();
     }
     
     private void OnDrawGizmos() {

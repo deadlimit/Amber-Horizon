@@ -1,7 +1,7 @@
 using AbilitySystem;
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
+public abstract class Enemy_Old_SM : MonoBehaviour, IBlackHoleBehaviour {
 
     public float outerRing, innerRing;
     public Rigidbody Rigidbody { get; set; }
@@ -15,13 +15,11 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
 
     public GameplayAbilitySystem AbilitySystem { get; private set; }
     [SerializeField] private State[] states;
+    
     public StateMachine stateMachine { get; private set; }
-
-    BehaviourTree behaviourTree;
 
     private PhysicsComponent physics;
     public void Awake() {
-       
         physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);
         Animator = GetComponent<Animator>();
@@ -30,7 +28,6 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Pathfinder = GetComponent<AIPathfinder>();
         Target = GameObject.FindGameObjectWithTag("Player").transform;
         originPosition = transform.position;
-
     }
 
     private void Start() {
@@ -53,7 +50,6 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Vector3 explosionPos = explosionInstance.transform.position;
         float distance = Vector3.Distance(explosionPos, transform.position);
         Vector3 direction = (explosionPos - transform.position).normalized;
-
 
 
 
