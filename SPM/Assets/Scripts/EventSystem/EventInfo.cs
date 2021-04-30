@@ -47,8 +47,12 @@ namespace EventCallbacks
     }
     
     public class PlayerDiedEvent : EventInfo
-    { 
-
+    {
+        public PlayerController player { get; }
+        public PlayerDiedEvent(GameObject player)
+        {
+            this.player = player.GetComponent<PlayerController>();
+        }
     }
 
     public class ExplosionEvent : EventInfo

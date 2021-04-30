@@ -18,7 +18,11 @@ namespace AbilitySystem
         private HashSet<GameplayTag> ActiveTags = new HashSet<GameplayTag>();
         private HashSet<GameplayAbility> AbilitiesOnCooldown = new HashSet<GameplayAbility>();
 
-   
+        AbilityEntity entity;
+        private void Awake()
+        {
+            entity = GetComponent<AbilityEntity>();
+        }
         public void RegisterAttributeSet(List<GameplayAttributeSetEntry> Set)
         {
             Set.ForEach(Entry => AttributeSet.Add(Entry.Attribute.GetType(), Entry.Value));
@@ -107,11 +111,30 @@ namespace AbilitySystem
                         Value = ((Func<float, float>)Calc)(Value);
                     }
                 }
-                AttributeSet[Attribute] += Value;
-                OnAttributeChanged[Attribute]?.Invoke(AttributeSet[Attribute]);
+                
+                ModifyAttributeValue(Attribute, Value);
+               
+                //vad gör denna? Inget finns i OnAttributeChanged?
+                //OnAttributeChanged[Attribute]?.Invoke(AttributeSet[Attribute]);
             }
         }
-        
+
+        private void ModifyAttributeValue(Type Attribute, float Value)
+        {
+            AttributeSet[Attribute] += Value;
+            GameplayAttributeSetEntry gaSet;
+            foreach (GameplayAttributeSetEntry set in entity.AttributeSet)
+            {
+                if (set.Attribute.GetType() == Attribute)
+                {
+                    gaSet = set;
+                    if (AttributeSet[Attribute] > gaSet.Value)
+                        AttributeSet[Attribute] = gaSet.Value;                      
+                }
+            }
+            Debug.Log(Attribute + " efter ApplyAttributeChange:" + AttributeSet[Attribute]);
+        }
+
         public void GrantAbility(GameplayAbility Ability) {
             
             if (GrantedAbilities == null)
@@ -134,8 +157,6 @@ namespace AbilitySystem
         
         public bool TryActivateAbilityByTag(Type AbilityTag)
         {
-
-            //detta blev fult nu men man invokar cooldown även om man inte har requiredTags
             if (GrantedAbilities.TryGetValue(AbilityTag, out var Ability)) {
                 
                 if (!AbilitiesOnCooldown.Contains(Ability) && !Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag)) 
@@ -196,7 +217,9 @@ namespace AbilitySystem
         public GameplayAbility GetAbilityByTag(Type AbilityTag)
         {
             if (GrantedAbilities.ContainsKey(AbilityTag))
+            {
                 return GrantedAbilities[AbilityTag];
+            }
 
             return null;
         }
