@@ -35,6 +35,7 @@ public class Bullet : MonoBehaviour {
         //annars träffades spelaren
         GameplayAbilitySystem playerAbilitySystem = other.gameObject.GetComponent<GameplayAbilitySystem>();
         parent.AbilitySystem.TryApplyEffectToOther(ability.AppliedEffect, playerAbilitySystem);
+        Destroy(gameObject);
 
         EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, ability));
 
