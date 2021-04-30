@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using EventCallbacks;
+using UnityEngine.EventSystems;
 
 namespace AbilitySystem
 {
@@ -167,6 +169,7 @@ namespace AbilitySystem
 
                     if (!Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag))) {
                         Ability.Activate(this);
+                        EventSystem<AbilityUsed>.FireEvent(new AbilityUsed(Ability));
                         return true;
                     }
 

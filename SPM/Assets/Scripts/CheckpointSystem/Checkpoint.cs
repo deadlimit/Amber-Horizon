@@ -1,17 +1,25 @@
 using System;
+using System.Collections.Generic;
 using EventCallbacks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class Checkpoint : MonoBehaviour {
 
-    public AudioClip audio;
+    public static readonly List<Checkpoint> activeCheckpoints = new List<Checkpoint>();
+    public static readonly List<Checkpoint> activatedCheckpoints = new List<Checkpoint>();
+    
+    public AudioClip activateAudioClip;
     public int ID { get; set; }
-    private bool unvisited = true;
 
     public Vector3 SpawnPosition { get; set; }
     
     public Action<int> OnPlayerEnter;
+
+    private void OnEnable() => activeCheckpoints.Add(this);
+
+    private void OnDisable() => activeCheckpoints.Remove(this);
 
     private void Awake() {
         SpawnPosition = transform.GetChild(0).transform.position;
@@ -19,18 +27,10 @@ public class Checkpoint : MonoBehaviour {
     
     private void OnTriggerEnter(Collider other) {
         if (!other.CompareTag("Player")) return;
-            
+        
         OnPlayerEnter?.Invoke(ID);
-        EventSystem<CheckPointActivatedEvent>.FireEvent(new CheckPointActivatedEvent(audio));
-
-        //Istället för att lägga in abilitySystem på varje checkpoint aktiverar jag en metod i spelaren härifrån
-        // inte supercleant men det är här kollisionen kollas, och känns så orimligt att bygga upp det från checkpointens håll
-        if (unvisited)
-        {
-            unvisited = false;
-            PlayerController pc = other.gameObject.GetComponent<PlayerController>();
-            pc.RestoreHealth();
-        }
-
+        EventSystem<CheckPointActivatedEvent>.FireEvent(new CheckPointActivatedEvent(activateAudioClip));
+        activatedCheckpoints.Add(this);
+        enabled = false;
     }
 }
