@@ -8,7 +8,17 @@ public class PlayerAnimation : MonoBehaviour {
     private void Awake() {
         animator = GetComponent<Animator>();
         physics = GetComponent<PhysicsComponent>();
+
+    }
+
+    private void OnEnable() {
         EventSystem<PlayerHitEvent>.RegisterListener(DestructorHit);
+        EventSystem<AbilityUsed>.RegisterListener(PlayDashAnimation);
+    }
+
+    private void OnDisable() {
+        EventSystem<PlayerHitEvent>.UnregisterListener(DestructorHit);
+        EventSystem<AbilityUsed>.UnregisterListener(PlayDashAnimation);
     }
 
 
@@ -38,5 +48,15 @@ public class PlayerAnimation : MonoBehaviour {
         animator.SetTrigger("PunchHit");
         GetComponent<PlayerController>().enabled = false;
         this.Invoke(() => physics.maxSpeed = oldMaxSpeed, 1);
+    }
+
+    private void PlayDashAnimation(AbilityUsed ability) {
+        print("fire");
+        print(ability.ability);
+        if (ability.ability is AirDashAbility) {
+            animator.SetTrigger("Dash");
+            print("yeah");
+        }
+            
     }
 }
