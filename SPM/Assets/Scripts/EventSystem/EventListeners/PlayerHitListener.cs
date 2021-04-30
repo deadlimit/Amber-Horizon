@@ -20,7 +20,7 @@ public class PlayerHitListener : MonoBehaviour
         Debug.Log("OnPlayerHitEvent");
         if(gas.GetAttributeValue(typeof(HealthAttribute)) <= 0)
         {
-            PlayerDiedEvent pde = new PlayerDiedEvent();
+            PlayerDiedEvent pde = new PlayerDiedEvent(this.gameObject);
             EventSystem<PlayerDiedEvent>.FireEvent(pde);
         }
     }
