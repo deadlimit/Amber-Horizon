@@ -106,7 +106,10 @@ namespace AbilitySystem
                     }
                 }
                 AttributeSet[Attribute] += Value;
-                OnAttributeChanged[Attribute]?.Invoke(AttributeSet[Attribute]);
+                Debug.Log(Attribute + " efter ApplyAttributeChange:" + AttributeSet[Attribute]);
+                
+                //vad gör denna? Inget finns i OnAttributeChanged?
+                //OnAttributeChanged[Attribute]?.Invoke(AttributeSet[Attribute]);
             }
         }
         
@@ -132,8 +135,6 @@ namespace AbilitySystem
         
         public bool TryActivateAbilityByTag(Type AbilityTag)
         {
-
-            //detta blev fult nu men man invokar cooldown även om man inte har requiredTags
             if (GrantedAbilities.TryGetValue(AbilityTag, out var Ability)) {
                 
                 if (!AbilitiesOnCooldown.Contains(Ability) && !Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag)) 
@@ -193,7 +194,9 @@ namespace AbilitySystem
         public GameplayAbility GetAbilityByTag(Type AbilityTag)
         {
             if (GrantedAbilities.ContainsKey(AbilityTag))
+            {
                 return GrantedAbilities[AbilityTag];
+            }
 
             return null;
         }
