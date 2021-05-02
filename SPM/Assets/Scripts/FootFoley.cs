@@ -5,37 +5,34 @@ using UnityEngine;
 public class FootFoley : MonoBehaviour
 {
 
-    private PlayerController m_PlayerController;
     private AudioSource m_AudioSource;
-    private PhysicsComponent physics;
-
-    public string colliderType;
+    private double time;
+    private float filterTime;
+    
     public AudioClip defaultSound;
     public AudioClip houseSound;
     public AudioClip plattformSound;
+
+    private string colliderType;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        m_PlayerController = GetComponent<PlayerController>();
         m_AudioSource = GetComponent<AudioSource>();
-        physics = GetComponent<PhysicsComponent>();
+        time = AudioSettings.dspTime;
+        filterTime = 0.2f;
 
 
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnCollisionEnter(Collision col)
     {
-        
-    }
+        SurfaceColliderType act = col.gameObject.GetComponent<Collider>().gameObject.GetComponent<SurfaceColliderType>();
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.gameObject.GetComponent<Collider>().gameObject.GetComponent<SurfaceColliderType>())
+        if (act)
         {
-            colliderType = hit.gameObject.GetComponent<SurfaceColliderType>().GetTerrainType();
+            colliderType = act.gameObject.GetComponent<SurfaceColliderType>().GetTerrainType();
             Debug.Log("colliderType = " + colliderType);
         }
 
@@ -43,22 +40,26 @@ public class FootFoley : MonoBehaviour
     }
 
 
-    private void PlayDynamicFootstep()
+    private void PlayDynamicFootstep(int foot_number)
     {
-        if (physics.isGrounded())
+        if (AudioSettings.dspTime < time + filterTime)
         {
-            switch (colliderType) // Att switcha olika ljud för olika terrian
-            {
-                case "House":
-                    m_AudioSource.PlayOneShot(houseSound);
-                    break;
-                case "Plattform":
-                    m_AudioSource.PlayOneShot(plattformSound);
-                    break;
-                default:
-                    m_AudioSource.PlayOneShot(defaultSound);
-                    break;
-            }
+            return;
         }
+
+        switch (colliderType) // Att switcha olika ljud för olika terrian
+        {
+            case "House":
+                m_AudioSource.PlayOneShot(houseSound);
+                break;
+            case "Plattform":
+                m_AudioSource.PlayOneShot(plattformSound);
+                break;
+            default:
+                m_AudioSource.PlayOneShot(defaultSound);
+                break;
+        }
+
+        time = AudioSettings.dspTime;
     }
 }
