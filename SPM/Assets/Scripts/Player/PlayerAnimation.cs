@@ -5,13 +5,12 @@ public class PlayerAnimation : MonoBehaviour {
 
     private Animator animator;
     private PhysicsComponent physics;
+
     private void Awake() {
         animator = GetComponent<Animator>();
         physics = GetComponent<PhysicsComponent>();
-<<<<<<< Updated upstream
-
     }
-
+    
     private void OnEnable() {
         EventSystem<PlayerHitEvent>.RegisterListener(DestructorHit);
         EventSystem<AbilityUsed>.RegisterListener(PlayDashAnimation);
@@ -20,14 +19,7 @@ public class PlayerAnimation : MonoBehaviour {
     private void OnDisable() {
         EventSystem<PlayerHitEvent>.UnregisterListener(DestructorHit);
         EventSystem<AbilityUsed>.UnregisterListener(PlayDashAnimation);
-=======
->>>>>>> Stashed changes
-    }
 
-
-    private void OnEnable() {
-        EventSystem<AbilityUsed>.RegisterListener(DashAnimation);
-        EventSystem<PlayerHitEvent>.RegisterListener(DestructorHit);
     }
 
     private void Update() {
@@ -59,24 +51,8 @@ public class PlayerAnimation : MonoBehaviour {
         this.Invoke(() => physics.maxSpeed = oldMaxSpeed, 1);
     }
 
-<<<<<<< Updated upstream
     private void PlayDashAnimation(AbilityUsed ability) {
-        print("fire");
-        print(ability.ability);
-        if (ability.ability is AirDashAbility) {
+        if (ability.ability is DashAbility) 
             animator.SetTrigger("Dash");
-            print("yeah");
-        }
-=======
-    private void DashAnimation(AbilityUsed abilityUsed) {
-        
-        print("was not dash");
-        if (abilityUsed.ability is DashAbility) {
-            print("was dash");
-            animator.SetTrigger("Dash");
-        }
-        
->>>>>>> Stashed changes
-            
     }
 }

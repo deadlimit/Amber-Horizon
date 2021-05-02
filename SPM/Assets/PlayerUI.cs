@@ -23,7 +23,7 @@ public class PlayerUI : MonoBehaviour {
     }
 
     private void StartAbilityCooldown(AbilityUsed abilityUsed) {
-        if (abilityUsed.ability is AirDashAbility)
+        if (abilityUsed.ability is DashAbility)
             StartCoroutine(StartAnimation(dashCooldownImage, abilityUsed.ability.Cooldown.Duration));
         if (abilityUsed.ability is BlackHoleAbility)
             StartCoroutine(StartAnimation(blackholeCooldownImage, abilityUsed.ability.Cooldown.Duration));

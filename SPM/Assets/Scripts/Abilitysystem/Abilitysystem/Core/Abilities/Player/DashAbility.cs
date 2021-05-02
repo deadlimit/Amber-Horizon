@@ -4,7 +4,7 @@ using EventCallbacks;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Air Dash", menuName = "Abilities/Air Dash")]
-public class AirDashAbility : GameplayAbility {
+public class DashAbility : GameplayAbility {
 
     public float timeWithOutGravity;
     public float dashLength;
