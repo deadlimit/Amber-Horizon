@@ -15,8 +15,6 @@ public class AirDashAbility : GameplayAbility {
     
     private IEnumerator Dash(GameplayAbilitySystem Owner) {
         
-        Owner.ApplyEffectToSelf(Cooldown);
-        
         PlayerController playerController = Owner.GetComponent<PlayerController>();
         
         //Spara gravitationen innan man sätter den till 0
