@@ -1336,7 +1336,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 1
+  m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 360
@@ -1360,17 +1360,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d45e3d4781cc5348a8db4e4855306ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outerRing: 12
+  outerRing: 18
   innerRing: 4
   PlayerMask:
     serializedVersion: 2
     m_Bits: 128
+  EnemyMask:
+    serializedVersion: 2
+    m_Bits: 256
   states:
   - {fileID: 11400000, guid: 27e53a1fd14c1fd4ba2095884a2c07ba, type: 2}
   - {fileID: 11400000, guid: 2f907d8be0157f442b976d82f4585c53, type: 2}
   - {fileID: 11400000, guid: 97684c71afd9d314487701ac9f40c3a6, type: 2}
   - {fileID: 11400000, guid: 9df53976c6414594c9bf4063224063b5, type: 2}
   - {fileID: 11400000, guid: e177d870be8e4a04eab92addc6e5cf4f, type: 2}
+  - {fileID: 11400000, guid: bae6b54f58ebd934cb5d306f9b3944b8, type: 2}
   Bullet: {fileID: 4744137218730177727, guid: 00aed5def02963b4196f8289f8197e10, type: 3}
   activeBlackHole: {fileID: 0}
 --- !u!114 &4469862759675896385

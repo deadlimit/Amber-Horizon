@@ -9,7 +9,6 @@ public class Killzone : MonoBehaviour {
             Debug.Log("Collided with player");
             PlayerDiedEvent pde = new PlayerDiedEvent(other.gameObject);
             EventSystem<PlayerDiedEvent>.FireEvent(pde);
-        }
-            
+        }           
     }
 }

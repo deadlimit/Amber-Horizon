@@ -2,10 +2,10 @@
 using AbilitySystem;
 using UnityEngine;
 
-public class Forager : Enemy  {
-    
+public class Forager : Enemy {
+
     public GameObject Bullet;
-    
+    public float range {get; private set;} = 12f;
     [HideInInspector] public BlackHole activeBlackHole;
 
     private new void Awake() {

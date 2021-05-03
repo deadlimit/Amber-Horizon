@@ -12,6 +12,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     public Vector3 originPosition { get; set; }
     
     public LayerMask PlayerMask;
+    public LayerMask EnemyMask;
 
     public GameplayAbilitySystem AbilitySystem { get; private set; }
     [SerializeField] private State[] states;
@@ -41,6 +42,19 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     public bool ProximityCast(float radius) {
         return Physics.OverlapSphere(transform.position, radius, PlayerMask).Length > 0;
     }
+    public bool EnemySeen(float radius)
+    {
+        Collider [] enemies = Physics.OverlapSphere(transform.position, radius, EnemyMask);
+        foreach(Collider e in enemies)
+        {
+            if(e.gameObject.GetComponent<Enemy>().stateMachine.currentState.GetType() == typeof(EnemyProximityState))
+            {
+                Debug.Log("EnemySeen Success");
+                return true;
+            }
+        }
+        return false;
+    }
     
     
     public virtual void BlackHoleBehaviour(BlackHole blackHole) { Debug.Log("hello");}
@@ -51,9 +65,6 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         float distance = Vector3.Distance(explosionPos, transform.position);
         Vector3 direction = (explosionPos - transform.position).normalized;
         
-        /*Navmesh skriver över? 
-        stäng av navmesh, aktivera animation
-         */
         Animator.SetTrigger("HitByExplosion");
         Pathfinder.agent.enabled = false;
         stateMachine.ChangeState<DestructorDeathState>();
