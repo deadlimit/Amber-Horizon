@@ -1,10 +1,8 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
 using AbilitySystem;
-using EventCallbacks;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Air Dash", menuName = "Abilities/Air Dash")]
+[CreateAssetMenu(fileName = "Dash", menuName = "Abilities/Dash")]
 public class DashAbility : GameplayAbility {
 
     public float timeWithOutGravity;
@@ -12,15 +10,17 @@ public class DashAbility : GameplayAbility {
     
     public override void Activate(GameplayAbilitySystem Owner) {
         Owner.StartCoroutine(Dash(Owner));
+        
     }
     
     private IEnumerator Dash(GameplayAbilitySystem Owner) {
-
+        
         Owner.ApplyEffectToSelf(Cooldown);
         
-        Debug.Log("lets go");
         PlayerController playerController = Owner.GetComponent<PlayerController>();
-        
+
+        playerController.GetComponent<Animator>().SetTrigger("Dash");
+
         //Spara gravitationen innan man sätter den till 0
         float gravity = playerController.physics.gravity;
 
@@ -36,8 +36,7 @@ public class DashAbility : GameplayAbility {
         playerController.physics.gravity = 0;
         playerController.physics.maxSpeed = dashLength;
         playerController.force = cameraForwardDirection * dashLength;
-       
-        Debug.Log(playerController.force);
+        
         //Vänta .4 sekunder innan man sätter på gravitationen igen. 
         yield return new WaitForSeconds(timeWithOutGravity);
         

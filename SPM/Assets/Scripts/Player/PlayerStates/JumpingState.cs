@@ -1,4 +1,3 @@
-using AbilitySystem;
 using UnityEngine;
 
 [CreateAssetMenu()]
@@ -11,7 +10,7 @@ public class JumpingState : State
     }
 
     public override void Enter() {
-        Debug.Log("Jumping State!"); 
+        //Debug.Log("Jumping State!"); 
     }
     public override void RunUpdate() 
     {
@@ -20,20 +19,12 @@ public class JumpingState : State
         Vector3.forward * Input.GetAxisRaw("Vertical");
         input = input.normalized;
         player.InputAirborne(input, true);
-        
 
-        
-        if (player.isGrounded()) 
+        if (player.physics.velocity.y < 0)
         {
-            //jag tror att det som händer är att den hinner utvärdera isGrounded() innan vi helt lämnat marken, därför 
-            //går den direkt tillbaka till GroundedState, men INTE om man gör dubbelhoppet som blir möjligt av den här buggen
-            stateMachine.ChangeState<GroundedState>();
+            stateMachine.ChangeState<FallingState>();
         }
-        
-        if (Input.GetKeyDown(KeyCode.E)) 
-        {
-            player.abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
-        }
+        //om vi �r p� v�g ned -> falling state
 
     }
 

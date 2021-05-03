@@ -10,14 +10,10 @@ public class AbilityEntity : MonoBehaviour {
     
     private GameplayAbilitySystem abilitySystem;
 
-    //Ändrade denna från OnEnable till Awake, verkar fungera utan problem? 
-    //behöver ha tillgång till det instansierade GameplayAbilitySystem:et i 
-    //PlayerHitListener (som nu ligger som eget script på player);
-    private void Awake() {
+    private void OnEnable() {
         abilitySystem = gameObject.AddComponent<GameplayAbilitySystem>();
         abilitySystem.RegisterAttributeSet(AttributeSet);
         StartingAbilities.ForEach(gameplayAbility => abilitySystem.GrantAbility(gameplayAbility));
         StartingEffects.ForEach(gameplayEffect => abilitySystem.ApplyEffectToSelf(gameplayEffect));
     }
-
 }
