@@ -23,21 +23,14 @@ public class GroundedState : State
         //Debug.Log("input fr�n grounded : " + input);
         player.InputGrounded(input);
         Jump();
-        Fall();
     }
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && player.physics.isGrounded()) {
+        if (Input.GetKeyDown(KeyCode.Space) && player.isGrounded()) {
             player.GetComponent<Animator>().SetTrigger("Jump");
             stateMachine.ChangeState<JumpingState>();
             player.SetJump();
         }
-    }
-    private void Fall() 
-    {
-        
-        if (player.physics.velocity.y < 0 && !player.physics.isGrounded())
-            stateMachine.ChangeState<FallingState>();          
     }
 }

@@ -25,6 +25,7 @@
           <e p="IBlackHoleBehaviour.cs" t="Include" />
           <e p="MovingPlatformV2.cs" t="Include" />
         </e>
+        <e p="PlayerUI.cs" t="Include" />
         <e p="SceneTransit.cs" t="Include" />
         <e p="SceneTransitEffect.cs" t="Include" />
         <e p="SceneTransitListener.cs" t="Include" />
@@ -54,6 +55,8 @@
                     <e p="AimingAbility.cs" t="Include" />
                     <e p="BlackHoleAbility.cs" t="Include" />
                     <e p="DashAbility.cs" t="Include" />
+                    <e p="GroundDashAbility.cs" t="Include" />
+                    <e p="HealthRestoreAbility.cs" t="Include" />
                   </e>
                 </e>
                 <e p="Attributes" t="Include">
@@ -68,6 +71,7 @@
                 <e p="Tags" t="Include">
                   <e p="AimingTag.cs" t="Include" />
                   <e p="AttackTag.cs" t="Include" />
+                  <e p="HealthRestoreTag.cs" t="Include" />
                   <e p="MeleeTag.cs" t="Include" />
                   <e p="MovementTag.cs" t="Include" />
                   <e p="StunTag.cs" t="Include" />
@@ -80,6 +84,7 @@
             <e p="LauncherBlackHole.cs" t="Include" />
           </e>
           <e p="Camera" t="Include">
+            <e p="CameraBirdView.cs" t="Include" />
             <e p="CameraFocusState.cs" t="Include" />
             <e p="ThirdPersonCamera.cs" t="Include" />
           </e>
@@ -124,6 +129,7 @@
               <e p="ExplosionListener.cs" t="Include" />
               <e p="KeyListener.cs" t="Include" />
               <e p="PlayerDiedListener.cs" t="Include" />
+              <e p="PlayerHitListener.cs" t="Include" />
               <e p="UnlockListener.cs" t="Include" />
             </e>
             <e p="EventSystem.cs" t="Include" />
@@ -209,6 +215,8 @@
             <e p="EmojiOne Attribution.txt" t="Include" />
           </e>
         </e>
+        <e p="TransitOverviewController.cs" t="Include" />
+        <e p="TransitUnit.cs" t="Include" />
       </e>
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />

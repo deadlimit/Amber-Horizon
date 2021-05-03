@@ -5,12 +5,22 @@ public class PlayerAnimation : MonoBehaviour {
 
     private Animator animator;
     private PhysicsComponent physics;
+
     private void Awake() {
         animator = GetComponent<Animator>();
         physics = GetComponent<PhysicsComponent>();
+    }
+    
+    private void OnEnable() {
         EventSystem<PlayerHitEvent>.RegisterListener(DestructorHit);
+        EventSystem<AbilityUsed>.RegisterListener(PlayDashAnimation);
     }
 
+    private void OnDisable() {
+        EventSystem<PlayerHitEvent>.UnregisterListener(DestructorHit);
+        EventSystem<AbilityUsed>.UnregisterListener(PlayDashAnimation);
+
+    }
 
     private void Update() {
 
@@ -23,6 +33,7 @@ public class PlayerAnimation : MonoBehaviour {
             animator.SetBool("ShowKey", !animator.GetBool("ShowKey"));
     }
 
+    //Används i en animationstrigger
     public void ReturnPlayerControl() {
         GetComponent<PlayerController>().enabled = true;
     }
@@ -38,5 +49,10 @@ public class PlayerAnimation : MonoBehaviour {
         animator.SetTrigger("PunchHit");
         GetComponent<PlayerController>().enabled = false;
         this.Invoke(() => physics.maxSpeed = oldMaxSpeed, 1);
+    }
+
+    private void PlayDashAnimation(AbilityUsed ability) {
+        if (ability.ability is DashAbility) 
+            animator.SetTrigger("Dash");
     }
 }
