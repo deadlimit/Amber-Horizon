@@ -1,5 +1,63 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2146800888
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2146800889}
+  - component: {fileID: 2146800890}
+  - component: {fileID: 2146800891}
+  m_Layer: 0
+  m_Name: Transit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2146800889
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2146800888}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.712, z: 1.589}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5862363340298097035}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &2146800890
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2146800888}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2146800891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2146800888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16f039a79602cc14d91bfabca71a7648, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1509433715564973766
 GameObject:
   m_ObjectHideFlags: 0
@@ -44,6 +102,7 @@ GameObject:
   - component: {fileID: 5430889472957229043}
   - component: {fileID: 2606977847105526676}
   - component: {fileID: 1199902423832250814}
+  - component: {fileID: 628228447821469448}
   m_Layer: 6
   m_Name: Checkpoint
   m_TagString: Untagged
@@ -63,6 +122,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3609905798153997329}
+  - {fileID: 2146800889}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 85.737, z: 0}
@@ -154,6 +214,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.0346477, y: 2.921955, z: 0.32365167}
   m_Center: {x: -0.059854507, y: 1.1690431, z: -0.73408073}
+--- !u!54 &628228447821469448
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6489859451217890097}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &8735558537375831538
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,7 +240,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3609905798153997329}
   - component: {fileID: 6111565005574034665}
-  - component: {fileID: 2203842114760883147}
   - component: {fileID: 4304287587347348617}
   m_Layer: 0
   m_Name: Logic
@@ -200,23 +275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4add8de9d9c3424c815509f391fc57b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: {fileID: 8300000, guid: efbb0a7e3967bc6498928896f8d76da5, type: 3}
---- !u!54 &2203842114760883147
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8735558537375831538}
-  serializedVersion: 2
-  m_Mass: 0.0000001
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
+  activateAudioClip: {fileID: 8300000, guid: efbb0a7e3967bc6498928896f8d76da5, type: 3}
 --- !u!65 &4304287587347348617
 BoxCollider:
   m_ObjectHideFlags: 0
