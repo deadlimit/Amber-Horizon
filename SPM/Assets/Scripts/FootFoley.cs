@@ -5,7 +5,7 @@ using UnityEngine;
 public class FootFoley : MonoBehaviour
 {
 
-    private AudioSource m_AudioSource;
+    private AudioSource[] m_AudioSource;
     private double time;
     private float filterTime;
     
@@ -21,7 +21,7 @@ public class FootFoley : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_AudioSource = GetComponent<AudioSource>();
+        m_AudioSource = GetComponents<AudioSource>();
         time = AudioSettings.dspTime;
         filterTime = 0.2f;
 
@@ -52,13 +52,13 @@ public class FootFoley : MonoBehaviour
         switch (colliderType) // Att switcha olika ljud för olika terrian
         {
             case "House":
-                m_AudioSource.PlayOneShot(houseSound);
+                m_AudioSource[0].PlayOneShot(houseSound);
                 break;
             case "Plattform":
-                m_AudioSource.PlayOneShot(plattformSound);
+                m_AudioSource[0].PlayOneShot(plattformSound);
                 break;
             default:
-                m_AudioSource.PlayOneShot(defaultSound);
+                m_AudioSource[0].PlayOneShot(defaultSound);
                 break;
         }
 
@@ -67,11 +67,11 @@ public class FootFoley : MonoBehaviour
 
     private void PlayJumpSound()
     {
-        m_AudioSource.PlayOneShot(jumpSound);
+        m_AudioSource[0].PlayOneShot(jumpSound);
     }
 
     private void PlayDashSound()
     {
-        m_AudioSource.PlayOneShot(dashSound);
+        m_AudioSource[1].PlayOneShot(dashSound);
     }
 }
