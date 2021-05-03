@@ -5,15 +5,15 @@ public class LowerablePillar : MonoBehaviour {
 
     public float unitsDown;
     public float speed;
-    public bool started;
+    private bool hasLowered;
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player") == false) return;
 
         print("player");
-        if(started ==false)
+        if(!hasLowered)
         {
+            hasLowered = true;
             StartCoroutine(Lower());
-            started = true;
         }
     }
 
