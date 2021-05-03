@@ -8,37 +8,30 @@ public class Bullet : MonoBehaviour {
     
     public float bulletSpeed;
     private Vector3 direction;
-    private Rigidbody activeRigidbody;
-    private Forager parent;
+    private Rigidbody rigidbody;
+
     private GameplayAbility ability;
     
-    public void Init(GameplayAbility ability, Forager parent) {
+    public void Init(GameplayAbility ability) {
         this.ability = ability;
-        this.parent = parent;
     }
     
     private void Awake() {
-        activeRigidbody = GetComponent<Rigidbody>();
+        rigidbody = GetComponent<Rigidbody>();
         direction = GameObject.FindGameObjectWithTag("Player").transform.position - transform.position;
         
         Destroy(gameObject, 3f);
     }
 
     private void Update() {
-        activeRigidbody.AddForce(direction.normalized * bulletSpeed);
+        rigidbody.AddForce(direction.normalized * bulletSpeed);
     }
     
     private void OnCollisionEnter(Collision other) {
-        if (other.gameObject.CompareTag("Player")) {
-            //annars träffades spelaren
-            GameplayAbilitySystem playerAbilitySystem = other.gameObject.GetComponent<GameplayAbilitySystem>();
-            parent.AbilitySystem.TryApplyEffectToOther(ability.AppliedEffect, playerAbilitySystem);
+        if (other.gameObject.CompareTag("Player") == false) 
+            return;
 
-            EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, ability));
-        }
-        Destroy(gameObject);
+        EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, ability));
+
     }
-    
-    
-    
 }

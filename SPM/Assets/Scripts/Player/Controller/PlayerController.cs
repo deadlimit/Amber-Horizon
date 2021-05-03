@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     
 
     [HideInInspector] public Vector3 force;
-    public Vector3 bhVelocity;
+     public Vector3 bhVelocity;
     private Vector3 input;
     public PhysicsComponent physics { get; private set; }
     private Camera activeCamera;
@@ -107,7 +107,6 @@ public class PlayerController : MonoBehaviour
     void PlayerDirection() 
     {
         input = activeCamera.transform.rotation * input;
-        input.y = 0;
         RotateTowardsCameraDirection();
         input = input.magnitude * Vector3.ProjectOnPlane(input, physics.groundHitInfo.normal).normalized;
 
