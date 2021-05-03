@@ -7811,6 +7811,7 @@ GameObject:
   - component: {fileID: 464326488}
   - component: {fileID: 464326487}
   - component: {fileID: 464326486}
+  - component: {fileID: 464326489}
   m_Layer: 6
   m_Name: TerrainGround
   m_TagString: Untagged
@@ -7876,6 +7877,19 @@ Transform:
   m_Father: {fileID: 994991708}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &464326489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 464326485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8291dc9b896a754a906e6a672b9ea24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainType: 0
 --- !u!1 &464647605
 GameObject:
   m_ObjectHideFlags: 0
@@ -24238,6 +24252,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ab277a3fbfbfb2742aec3a5cc6814ed3, type: 3}
   m_PrefabInstance: {fileID: 1813310196}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1813924966 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4994216072001837894, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
+  m_PrefabInstance: {fileID: 558695637}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1813924967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813924966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f46a57bf2841d43b7a0c70aa5341dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultSound: {fileID: 8300000, guid: ff955b9cf48329146b9924ab0f93ab37, type: 3}
+  houseSound: {fileID: 0}
+  plattformSound: {fileID: 0}
+  jumpSound: {fileID: 8300000, guid: cb6876eb230d1ff4a872dc023f3cac93, type: 3}
+  dashSound: {fileID: 8300000, guid: 798c54a0cc403844180f33e955dde446, type: 3}
 --- !u!1001 &1816566129
 PrefabInstance:
   m_ObjectHideFlags: 0
