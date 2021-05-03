@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace EventCallbacks
 {
     public class KeyListener : MonoBehaviour
     {
         public static List<KeyFragment> keyList = new List<KeyFragment>();
+        private static List<KeyFragment> keysAcquired = new List<KeyFragment>();
         private BoxCollider interaction;
+        public Text keyText; 
+        
         private void OnEnable()
         {
             EventSystem<KeyPickUpEvent>.RegisterListener(KeyPickUp);
@@ -17,6 +21,8 @@ namespace EventCallbacks
 
         private void KeyPickUp(KeyPickUpEvent kpue)
         {
+
+
             if (keyList.Count <= 0)
             {
                 interaction.enabled = true;
@@ -32,6 +38,9 @@ namespace EventCallbacks
             }
         }
 
-
+        private void SetKeyAmount()
+        {
+            
+        }
     }
 }
