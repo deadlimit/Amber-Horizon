@@ -18,10 +18,11 @@ public class EnemyPatrolState : State {
 
     public override void RunUpdate() {
 
-       if (forager.ProximityCast(forager.outerRing)) {
+        if (forager.ProximityCast(forager.outerRing) || forager.EnemySeen(forager.outerRing)) 
+        {
             forager.Pathfinder.agent.ResetPath();
             forager.stateMachine.ChangeState<EnemyProximityState>();
-       }
+        }
 
        if (forager.Pathfinder.agent.remainingDistance < .1f) 
            forager.stateMachine.ChangeState<EnemyIdleState>();
