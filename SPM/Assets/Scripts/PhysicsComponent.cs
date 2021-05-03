@@ -182,5 +182,16 @@ public class PhysicsComponent : MonoBehaviour
         velocity += input.magnitude < smallNumber? Vector3.zero : input;
 
     }
+
+
+
+
+    //dessa kanske borde flyttas iom att endast spelaren behöver dem.. för states----------------
+    public float groundCheckDistance = 0.05f;
+    public bool isGrounded()
+    {
+        groundHitInfo = collisionCaster.CastCollision(transform.position, Vector3.down, groundCheckDistance + skinWidth);
+        return groundHitInfo.collider;
+    }
     
 }

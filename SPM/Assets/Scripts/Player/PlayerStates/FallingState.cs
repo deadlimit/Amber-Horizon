@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using AbilitySystem;
 using UnityEngine;
 
 [CreateAssetMenu()]
@@ -17,8 +16,6 @@ public class FallingState : State
     }
     public override void RunUpdate()
     {
-
-        
         Vector3 input =
         Vector3.right * Input.GetAxisRaw("Horizontal") +
         Vector3.forward * Input.GetAxisRaw("Vertical");
@@ -28,7 +25,7 @@ public class FallingState : State
         //hur fasen ändrar man hastigheten man faller med.. om man bara gör input.y så kommer det ju med i rotationen.
         //ev. kalla ny metod i spelaren/fysiken som påverkar velocity.
 
-        if (player.isGrounded())
+        if (player.physics.isGrounded())
         {
             //jag tror att det som händer är att den hinner utvärdera isGrounded() innan vi helt lämnat marken, därför 
             //går den direkt tillbaka till GroundedState, men INTE om man gör dubbelhoppet som blir möjligt av den här buggen
