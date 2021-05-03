@@ -13,13 +13,13 @@ public class PlayerController : MonoBehaviour
     public float airControl = 0.2f;
     public float maxSpeed = 5f;
     public float turnRate = 4f;
-    public float retainedSpeedWhenTurning = 0.33f; 
-
+    public float retainedSpeedWhenTurning = 0.33f;
+    public LayerMask groundCheckMask;
     [Header("StateMachine")]
     public State[] states;
     private StateMachine stateMachine;
     private bool jump;
-    
+    public float groundCheckDistance = 0.05f;
 
     [HideInInspector] public Vector3 force;
     public Vector3 bhVelocity;
@@ -126,8 +126,7 @@ public class PlayerController : MonoBehaviour
     }
 
     void Update() {
-
-        physics.isGrounded();
+        
         stateMachine.RunUpdate();
         Jump();
         
@@ -156,4 +155,13 @@ public class PlayerController : MonoBehaviour
     }
 
     
+    public bool isGrounded() {
+        
+        Physics.Raycast(transform.position, Vector3.down, out var groundHitInfo, groundCheckDistance, groundCheckMask);
+        
+        return groundHitInfo.collider;
+       
+        //groundHitInfo = collisionCaster.CastCollision(transform.position, Vector3.down, groundCheckDistance + skinWidth);
+     
+    }
 }

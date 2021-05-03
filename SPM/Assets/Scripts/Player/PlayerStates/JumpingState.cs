@@ -26,7 +26,7 @@ public class JumpingState : State
             player.abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
         }
         
-        if (player.physics.isGrounded()) 
+        if (player.isGrounded()) 
         {
             //jag tror att det som händer är att den hinner utvärdera isGrounded() innan vi helt lämnat marken, därför 
             //går den direkt tillbaka till GroundedState, men INTE om man gör dubbelhoppet som blir möjligt av den här buggen
