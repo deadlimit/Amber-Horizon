@@ -42,7 +42,7 @@ namespace EventCallbacks
         public readonly GameplayAbility ability;
 
         public AbilityUsed(GameplayAbility gameplayAbility) {
-            this.ability = gameplayAbility;
+            ability = gameplayAbility;
         }
     }
     

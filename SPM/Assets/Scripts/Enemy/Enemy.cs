@@ -50,10 +50,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Vector3 explosionPos = explosionInstance.transform.position;
         float distance = Vector3.Distance(explosionPos, transform.position);
         Vector3 direction = (explosionPos - transform.position).normalized;
-
-
-
-        physics.AddForce(-direction * (blastPower / distance) + blastPower * 0.8f / distance * Vector3.up);
+        
         /*Navmesh skriver över? 
         stäng av navmesh, aktivera animation
          */
