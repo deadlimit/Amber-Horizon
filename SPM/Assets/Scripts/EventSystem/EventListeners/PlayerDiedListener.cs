@@ -20,6 +20,5 @@ public class PlayerDiedListener : MonoBehaviour
         //Animation??
         GameObject.FindGameObjectWithTag("Player").GetComponent<PhysicsComponent>().velocity = Vector3.zero;
         checkpointManager.ResetPlayerPosition();
-        pde.player.RestoreHealth();
     }
 }

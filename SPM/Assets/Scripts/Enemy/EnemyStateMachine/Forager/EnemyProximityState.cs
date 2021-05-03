@@ -31,7 +31,6 @@ public class EnemyProximityState : State {
             forager.Pathfinder.agent.isStopped = true;
             forager.Animator.SetTrigger("Shoot");
             nextFire = Time.time + FireCoolDown;
-
         }
         
         forager.transform.LookAt(forager.Target);

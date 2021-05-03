@@ -9,12 +9,11 @@ public class Bullet : MonoBehaviour {
     public float bulletSpeed;
     private Vector3 direction;
     private Rigidbody rigidbody;
-    private Forager parent;
+
     private GameplayAbility ability;
     
-    public void Init(GameplayAbility ability, Forager parent) {
+    public void Init(GameplayAbility ability) {
         this.ability = ability;
-        this.parent = parent;
     }
     
     private void Awake() {
@@ -32,12 +31,7 @@ public class Bullet : MonoBehaviour {
         if (other.gameObject.CompareTag("Player") == false) 
             return;
 
-        //annars träffades spelaren
-        GameplayAbilitySystem playerAbilitySystem = other.gameObject.GetComponent<GameplayAbilitySystem>();
-        parent.AbilitySystem.TryApplyEffectToOther(ability.AppliedEffect, playerAbilitySystem);
-
         EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, ability));
-        Destroy(gameObject);
 
     }
 }
