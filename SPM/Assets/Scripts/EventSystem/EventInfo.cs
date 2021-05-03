@@ -100,7 +100,16 @@ namespace EventCallbacks
         }
     }
     public class InteractTriggerExit : EventInfo {}
+
+    public class EnterTransitView : EventInfo {
+        public readonly List<TransitUnit> TransitUnits;
+
+        public EnterTransitView(List<TransitUnit> transitUnits) {
+            TransitUnits = transitUnits;
+        }
+    }
     
-    public class EnterTransitView : EventInfo {}
+    public class ExitTransitView : EventInfo {}
+    
 }
 
