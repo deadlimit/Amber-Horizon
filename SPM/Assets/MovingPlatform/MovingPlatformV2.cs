@@ -52,15 +52,11 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
         {
             if (Vector3.Dot(transform.forward, transform.position - startPos) < 0 || Vector3.Distance(transform.position, startPos) < frontDistance)
                 movementDirection = transform.forward * (MovementSpeed * Time.deltaTime);
-            else
-                physics.velocity = Vector3.zero;
         }
         else if (dotProduct < -0.1f)
         {
             if (Vector3.Dot(transform.forward, transform.position - startPos) > 0 || Vector3.Distance(transform.position, startPos) < backDistance)
                 movementDirection = -transform.forward * (MovementSpeed * Time.deltaTime);
-            else
-                physics.velocity = Vector3.zero;
         }
 
 

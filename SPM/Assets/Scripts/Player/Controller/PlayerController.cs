@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     private Camera activeCamera;
     public bool airborne;
     private LineRenderer lr;
-    
+    private RaycastHit groundHitInfo;
     public GameplayAbilitySystem abilitySystem { get; private set; }
     
     void Awake() 
@@ -68,10 +68,11 @@ public class PlayerController : MonoBehaviour
     void Decelerate() 
     {
         //panikfix
-        MovingPlatformV2 mp = physics.groundHitInfo.collider?.GetComponent<MovingPlatformV2>();
+        MovingPlatformV2 mp = groundHitInfo.collider?.GetComponent<MovingPlatformV2>();
 
         if (mp)
         {
+            Debug.Log("moving platform collided");
             force = deceleration * mp.GetVelocity().normalized * Time.deltaTime;
             force += -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
         }
@@ -158,7 +159,7 @@ public class PlayerController : MonoBehaviour
     
     public bool isGrounded() {
         
-        Physics.Raycast(transform.position, Vector3.down, out var groundHitInfo, groundCheckDistance, groundCheckMask);
+        Physics.Raycast(transform.position, Vector3.down, out groundHitInfo, groundCheckDistance, groundCheckMask);
         
         return groundHitInfo.collider;
        
