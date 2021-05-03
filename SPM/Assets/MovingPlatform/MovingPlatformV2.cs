@@ -5,26 +5,16 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
 
     private PhysicsComponent physics;
     public float multiplier = 1f;
-    [SerializeField]private Vector3 maxBack;
-    [SerializeField]private Vector3 maxFront;
-    private Vector3 startPos;
-
-    private float frontDistance;
-    private float backDistance;
-
+    private Vector3 maxBack;
+    private Vector3 maxFront;
+    
     public float MovementSpeed;
-    public float MaxMovementLengthBack;
-    public float MaxMovementLengthFront;
-
-
+    public float MaxMovementLength;
+    
     private void Awake() {
         physics = GetComponent<PhysicsComponent>();
-        maxBack = transform.position + -transform.forward * MaxMovementLengthBack;
-        maxFront = transform.position + transform.forward * MaxMovementLengthFront;
-        startPos = transform.position;
-
-        frontDistance = Vector3.Distance(startPos, maxFront);
-        backDistance = Vector3.Distance(startPos, maxBack);
+        maxBack = transform.position + -transform.forward * MaxMovementLength;
+        maxFront = transform.position + transform.forward * MaxMovementLength;
         
     }
 
@@ -40,28 +30,18 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
     
     public void BlackHoleBehaviour(BlackHole blackhole) {
         
-        //PreventOutOfBounds();
+        PreventOutOfBounds();
         
         Vector3 blackHoleVector3 = (blackhole.transform.position - transform.position).normalized;
 
         float dotProduct = Vector3.Dot(transform.forward, blackHoleVector3);
 
         Vector3 movementDirection = Vector3.zero;
-
-        if (dotProduct > 0.1f)
-        {
-            if (Vector3.Dot(transform.forward, transform.position - startPos) < 0 || Vector3.Distance(transform.position, startPos) < frontDistance)
-                movementDirection = transform.forward * (MovementSpeed * Time.deltaTime);
-            else
-                physics.velocity = Vector3.zero;
-        }
-        else if (dotProduct < -0.1f)
-        {
-            if (Vector3.Dot(transform.forward, transform.position - startPos) > 0 || Vector3.Distance(transform.position, startPos) < backDistance)
-                movementDirection = -transform.forward * (MovementSpeed * Time.deltaTime);
-            else
-                physics.velocity = Vector3.zero;
-        }
+        
+        if(dotProduct > 0.1f)
+            movementDirection = transform.forward * (MovementSpeed * Time.deltaTime);
+        else if(dotProduct < -0.1f)
+            movementDirection = -transform.forward * (MovementSpeed * Time.deltaTime);
 
 
         physics.velocity = movementDirection * multiplier;
@@ -70,6 +50,16 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
     private void PreventOutOfBounds() {
         if (physics.velocity.magnitude < 0.1)
             physics.velocity = Vector3.zero;
+
+        if (transform.position.x > maxFront.x && transform.position.z > maxFront.z) {
+            transform.position = maxFront;
+            physics.velocity = Vector3.zero;
+        }     
+
+        if (transform.position.x < maxBack.x && transform.position.z < maxBack.z) {
+            transform.position = maxBack;
+            physics.velocity = Vector3.zero;
+        }
     }
 
     public Vector3 GetVelocity() { return physics.velocity; }

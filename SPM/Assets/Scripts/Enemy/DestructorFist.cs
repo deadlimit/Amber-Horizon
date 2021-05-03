@@ -8,17 +8,13 @@ public class DestructorFist : MonoBehaviour {
     private GameplayAbilitySystem abilitySystem;
     
     private void Awake() {
-        
-        coll = GetComponent<SphereCollider>();
-    }
-
-    private void Start() {
         abilitySystem = GetComponentInParent<GameplayAbilitySystem>();
+        coll = GetComponent<SphereCollider>();
     }
     
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
-
+            
             abilitySystem.TryActivateAbilityByTag(GameplayTags.MeleeTag);
             coll.enabled = false;
             enabled = false;

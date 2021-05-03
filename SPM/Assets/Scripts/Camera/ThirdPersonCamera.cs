@@ -12,5 +12,7 @@ public class ThirdPersonCamera : MonoBehaviour {
     void LateUpdate() {
         stateMachine.RunUpdate();
     }
+
+
     
 }
