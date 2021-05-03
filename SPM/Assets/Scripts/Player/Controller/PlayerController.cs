@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     public bool airborne;
     private LineRenderer lr;
     
-    private GameplayAbilitySystem abilitySystem;
+    public GameplayAbilitySystem abilitySystem { get; private set; }
     
     void Awake() 
     {
@@ -130,12 +130,7 @@ public class PlayerController : MonoBehaviour
         physics.isGrounded();
         stateMachine.RunUpdate();
         Jump();
-
-        if (Input.GetKeyDown(KeyCode.E)) 
-        {
-            abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
-        }
-          
+        
         if (Input.GetMouseButton(1))
         {
             abilitySystem.TryActivateAbilityByTag(GameplayTags.AimingTag);
