@@ -127,6 +127,7 @@ public class PlayerController : MonoBehaviour
 
     void Update() {
         
+        print(stateMachine.currentState);
         stateMachine.RunUpdate();
         Jump();
         
