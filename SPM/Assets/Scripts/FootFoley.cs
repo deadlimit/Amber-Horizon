@@ -12,6 +12,8 @@ public class FootFoley : MonoBehaviour
     public AudioClip defaultSound;
     public AudioClip houseSound;
     public AudioClip plattformSound;
+    public AudioClip jumpSound;
+    public AudioClip dashSound;
 
     private string colliderType;
 
@@ -61,5 +63,15 @@ public class FootFoley : MonoBehaviour
         }
 
         time = AudioSettings.dspTime;
+    }
+
+    private void PlayJumpSound()
+    {
+        m_AudioSource.PlayOneShot(jumpSound);
+    }
+
+    private void PlayDashSound()
+    {
+        m_AudioSource.PlayOneShot(dashSound);
     }
 }
