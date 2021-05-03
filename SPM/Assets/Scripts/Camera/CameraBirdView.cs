@@ -25,9 +25,12 @@ public class CameraBirdView : State {
     public override void RunUpdate() {
         cameraController.transform.position = Vector3.Lerp(cameraController.transform.position, birdViewTransform.transform.position, Time.deltaTime * ZoomOutSpeed);
         cameraController.transform.rotation = Quaternion.Lerp(cameraController.transform.rotation, birdViewTransform.transform.rotation, Time.deltaTime * ZoomOutSpeed);
-        
-        if(Input.GetKeyDown(KeyCode.Escape))
+
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            EventSystem<ExitTransitView>.FireEvent(null);
             stateMachine.ChangeState<DefaultCameraState>();
+        }
+            
     }
 
 

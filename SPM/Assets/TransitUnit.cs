@@ -28,7 +28,7 @@ public class TransitUnit : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) { 
         if(other.CompareTag("Player"))
-            EventSystem<InteractTriggerEnter>.FireEvent(new InteractTriggerEnter("Press F to transit"));
+            EventSystem<InteractTriggerEnter>.FireEvent(new InteractTriggerEnter("Press F to enter transit view"));
         
         print("enter");
         
