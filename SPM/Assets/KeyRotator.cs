@@ -3,47 +3,22 @@ using UnityEngine;
 
 public class KeyRotator : MonoBehaviour {
 
-    //public float RotationSpeed;
-    private TextMesh text;
+    public float RotationSpeed;
+    private MeshRenderer text;
     private Transform thisTransform;
-    private string keyText;
-    private bool showing;
-
     private void Awake() {
-        EventSystem<KeyPickUpEvent>.RegisterListener(UpdateKeyText);
         thisTransform = GetComponent<Transform>();
-        text = GetComponent<TextMesh>();
-        text.text = "";
-        showing = false;
-    }
-
-    private void Start()
-    {
-        keyText = GateLock.keysAcquired.Count + "/" + GateLock.keyList.Count;
-
-    }
-
-    private void OnDisable()
-    {
-        EventSystem<KeyPickUpEvent>.UnregisterListener(UpdateKeyText);
-    }
-
-    private void UpdateKeyText(KeyPickUpEvent KeyEvent)
-    {
-        keyText = GateLock.keysAcquired.Count + "/" + GateLock.keyList.Count;
+        text = GetComponent<MeshRenderer>();
+        text.enabled = false;
     }
 
     
     private void Update() {
-
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            showing = !showing;
-            text.text = showing ? keyText : "";
-        }
-            
         
-     
+        if(Input.GetKeyDown(KeyCode.Tab))
+            text.enabled = !text.enabled;
+        
+        thisTransform.rotation *= Quaternion.Euler(0, 10 * RotationSpeed * Time.deltaTime, 0);
     }
 
 

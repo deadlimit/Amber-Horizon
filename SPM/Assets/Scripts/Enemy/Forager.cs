@@ -32,7 +32,7 @@ public class Forager : Enemy  {
     
     public void Fire() {
         GameObject newBullet = Instantiate(Bullet, transform.position + transform.forward + Vector3.up, transform.rotation);
-        newBullet.GetComponent<Bullet>().Init(AbilitySystem.GetAbilityByTag(GameplayTags.AttackTag), this);
+        newBullet.GetComponent<Bullet>().Init(AbilitySystem.GetAbilityByTag(GameplayTags.AttackTag));
         Pathfinder.agent.isStopped = false;
     }
 }

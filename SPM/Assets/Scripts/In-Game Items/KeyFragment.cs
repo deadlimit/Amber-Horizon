@@ -6,14 +6,14 @@ public class KeyFragment : MonoBehaviour
 {
 
 
-    private void OnEnable()
+    private void Start()
     {
         GateLock.keyList.Add(this);
     }
 
     private void OnDisable()
     {
-        GateLock.keysAcquired.Add(this);
+        GateLock.keyList.Remove(this);
     }
 
     private void OnTriggerEnter(Collider other)

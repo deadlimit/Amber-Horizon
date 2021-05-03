@@ -154,10 +154,5 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    public void RestoreHealth()
-    {
-        abilitySystem.TryActivateAbilityByTag(GameplayTags.HealthRestoreTag);
-    }
-
     
 }
