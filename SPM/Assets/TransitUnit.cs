@@ -5,19 +5,17 @@ using UnityEngine;
 
 public class TransitUnit : MonoBehaviour {
 
-    private static List<TransitUnit> transitUnits = new List<TransitUnit>();
+    private static HashSet<TransitUnit> activatedTransitUnits = new HashSet<TransitUnit>();
 
     public Checkpoint AttachedCheckpoint { get; private set; }
     
     private Collider triggerCollider;
     
     private void OnEnable() {
-        transitUnits.Add(this);
         EventSystem<ExitTransitView>.RegisterListener(EnableTriggers);
     }
 
     private void OnDisable() {
-        transitUnits.Remove(this);
         EventSystem<ExitTransitView>.UnregisterListener(EnableTriggers);
     }
 
@@ -26,16 +24,17 @@ public class TransitUnit : MonoBehaviour {
         print(AttachedCheckpoint = transform.parent.GetComponentInChildren<Checkpoint>());
     }
 
-    private void OnTriggerEnter(Collider other) { 
-        if(other.CompareTag("Player"))
+    private void OnTriggerEnter(Collider other) {
+        if (other.gameObject.CompareTag("Player")) {
             EventSystem<InteractTriggerEnter>.FireEvent(new InteractTriggerEnter("Press F to enter transit view"));
-        
-        print("enter");
+            activatedTransitUnits.Add(this);
+        }
+            
         
     }
     private void OnTriggerStay(Collider other) {
         if (Input.GetKeyDown(KeyCode.F)) {
-            EventSystem<EnterTransitView>.FireEvent(new EnterTransitView(transitUnits));
+            EventSystem<EnterTransitView>.FireEvent(new EnterTransitView(activatedTransitUnits, this));
             triggerCollider.enabled = false;
         }
             
