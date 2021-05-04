@@ -36,8 +36,7 @@ public class DashAbility : GameplayAbility {
         playerController.physics.gravity = 0;
         playerController.physics.maxSpeed = dashLength;
         playerController.force = cameraForwardDirection * dashLength;
-       
-        Debug.Log(playerController.force);
+        
         //Vänta .4 sekunder innan man sätter på gravitationen igen. 
         yield return new WaitForSeconds(timeWithOutGravity);
         

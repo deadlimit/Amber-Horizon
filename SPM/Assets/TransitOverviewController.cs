@@ -32,8 +32,7 @@ public class TransitOverviewController : MonoBehaviour {
 
         foreach (TransitUnit transitUnit in buttons) {
             GameObject button = Instantiate(TransitButton, Camera.main.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, gameObject.transform);
-
-
+            
             TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
 
             if (transitUnit == activatedTransitUnit) {
