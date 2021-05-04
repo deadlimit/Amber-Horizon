@@ -15,5 +15,11 @@ public class Destructor : Enemy {
         text.text = stateMachine.currentState.ToString();
 
     }
+
+    public override void ApplyExplosion(GameObject explosionInstance, float blastPower)
+    {
+        base.ApplyExplosion(explosionInstance, blastPower);
+        stateMachine.ChangeState<DestructorDeathState>();
+    }
     
 }
