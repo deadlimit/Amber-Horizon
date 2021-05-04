@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using EventCallbacks;
 using UnityEngine;
 
-public class TransitUnit : MonoBehaviour {
 
+public class TransitUnit : InteractableObject {
+    
     private static HashSet<TransitUnit> activatedTransitUnits = new HashSet<TransitUnit>();
 
     public Checkpoint AttachedCheckpoint { get; private set; }
@@ -24,29 +24,23 @@ public class TransitUnit : MonoBehaviour {
         print(AttachedCheckpoint = transform.parent.GetComponentInChildren<Checkpoint>());
     }
 
-    private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.CompareTag("Player")) {
-            EventSystem<InteractTriggerEnter>.FireEvent(new InteractTriggerEnter("Press F to enter transit view"));
-            activatedTransitUnits.Add(this);
-        }
-            
-        
+    private void EnableTriggers(ExitTransitView view) {
+        triggerCollider.enabled = true;
     }
-    private void OnTriggerStay(Collider other) {
+
+    protected override void EnterTrigger(string UIMessage) {
+        EventSystem<InteractTriggerEnter>.FireEvent(new InteractTriggerEnter(UIMessage));
+        activatedTransitUnits.Add(this);
+    }
+
+    protected override void InsideTrigger() {
         if (Input.GetKeyDown(KeyCode.F)) {
             EventSystem<EnterTransitView>.FireEvent(new EnterTransitView(activatedTransitUnits, this));
             triggerCollider.enabled = false;
         }
-            
     }
 
-    private void OnTriggerExit(Collider other) {
-        if(other.CompareTag("Player"))
-            EventSystem<InteractTriggerExit>.FireEvent(new InteractTriggerExit());
+    protected override void ExitTrigger() {
+        EventSystem<InteractTriggerExit>.FireEvent(new InteractTriggerExit());
     }
-
-    private void EnableTriggers(ExitTransitView view) {
-        triggerCollider.enabled = true;
-    }
-    
 }

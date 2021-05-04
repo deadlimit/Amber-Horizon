@@ -3459,7 +3459,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 174030574}
   m_LocalRotation: {x: 0.007696387, y: 0.00014318239, z: 0.004113293, w: 0.9999619}
-  m_LocalPosition: {x: 0, y: 0.1400001, z: 0}
+  m_LocalPosition: {x: 0, y: -0.13, z: -0}
   m_LocalScale: {x: 5, y: 1.66, z: 5}
   m_Children: []
   m_Father: {fileID: 1107665069}
@@ -8838,14 +8838,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1231642836, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: m_FillAmount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1752500202, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: m_FillAmount
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4994216072001837894, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_Name
       value: Player_Prefab
@@ -8856,15 +8848,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5621853126853591548, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.3
+      value: 21.6
       objectReference: {fileID: 0}
     - target: {fileID: 5621853126853591548, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.01
+      value: 4.6
       objectReference: {fileID: 0}
     - target: {fileID: 5621853126853591548, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -201.6
+      value: -205.13
       objectReference: {fileID: 0}
     - target: {fileID: 5621853126853591548, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -23364,11 +23356,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5f46a57bf2841d43b7a0c70aa5341dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSound: {fileID: 8300000, guid: ff955b9cf48329146b9924ab0f93ab37, type: 3}
+  defaultSound: {fileID: 0}
   houseSound: {fileID: 0}
-  plattformSound: {fileID: 8300000, guid: a236140e0d2d9364288e583317f2f50e, type: 3}
-  jumpSound: {fileID: 8300000, guid: cb6876eb230d1ff4a872dc023f3cac93, type: 3}
-  dashSound: {fileID: 8300000, guid: 798c54a0cc403844180f33e955dde446, type: 3}
+  plattformSound: {fileID: 0}
+  jumpSound: {fileID: 0}
+  dashSound: {fileID: 0}
 --- !u!1001 &1816566129
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27728,6 +27720,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GateLock_Prefab
       objectReference: {fileID: 0}
+    - target: {fileID: 6602115633302618538, guid: 80d54e4c015a8864c9da4bc5cc5adf2b, type: 3}
+      propertyPath: UIMessage
+      value: Press F to open
+      objectReference: {fileID: 0}
     - target: {fileID: 6635443053801953300, guid: 80d54e4c015a8864c9da4bc5cc5adf2b, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -27738,7 +27734,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6635443053801953300, guid: 80d54e4c015a8864c9da4bc5cc5adf2b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.970001
+      value: 0.676
       objectReference: {fileID: 0}
     - target: {fileID: 6635443053801953300, guid: 80d54e4c015a8864c9da4bc5cc5adf2b, type: 3}
       propertyPath: m_LocalPosition.z
