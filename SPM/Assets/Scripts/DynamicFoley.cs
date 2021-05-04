@@ -27,10 +27,31 @@ public class DynamicFoley : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter(Collision col)
+    void Update()
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(transform.position, Vector3.down, out hit))
+        {
+            if (hit.collider != null)
+            {
+                GameObject gameObj = hit.collider.gameObject;
+                SurfaceColliderType act = gameObj.GetComponent<SurfaceColliderType>();
+
+                if (act)
+                {
+                    colliderType = act.gameObject.GetComponent<SurfaceColliderType>().GetTerrainType();
+                    print("aaa");
+                }
+            }
+        }
+    }
+
+    /*private void OnCollisionEnter(Collision col)
     {
         SurfaceColliderType act = col.gameObject.GetComponent<Collider>().gameObject.GetComponent<SurfaceColliderType>();
-
+     
         if (act)
         {
             colliderType = act.gameObject.GetComponent<SurfaceColliderType>().GetTerrainType();
@@ -38,7 +59,7 @@ public class DynamicFoley : MonoBehaviour
         }
 
 
-    }
+    }*/
 
 
     private void PlayDynamicFootstep(int foot_number)
