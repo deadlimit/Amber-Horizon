@@ -33,7 +33,7 @@ public class TransitUnit : InteractableObject {
         activatedTransitUnits.Add(this);
     }
 
-    protected override void InsideTrigger() {
+    protected override void InsideTrigger(GameObject entity) {
         if (Input.GetKeyDown(KeyCode.F)) {
             EventSystem<EnterTransitView>.FireEvent(new EnterTransitView(activatedTransitUnits, this));
             triggerCollider.enabled = false;

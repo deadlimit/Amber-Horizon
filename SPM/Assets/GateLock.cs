@@ -7,13 +7,24 @@ public class GateLock : InteractableObject
     public static List<KeyFragment> keysAcquired = new List<KeyFragment>();
     private BoxCollider interaction;
 
-    private void OnEnable()
-    {
+    [Header("Fuskknapp, sätt till true för att gaten ska öppna direkt (debug)")]
+    [SerializeField] private bool OpenDoorWithoutKeys;
+    
+    private void OnEnable() {
         EventSystem<KeyPickUpEvent>.RegisterListener(KeyPickUp);
         interaction = GetComponent<BoxCollider>();
     }
     private void OnDisable() => EventSystem<KeyPickUpEvent>.UnregisterListener(KeyPickUp);
 
+    private void Start() {
+        if (OpenDoorWithoutKeys) {
+            keyList.Clear();
+            keysAcquired.Clear();
+            UnlockGateSequence();
+        }
+
+    }
+    
     private void KeyPickUp(KeyPickUpEvent kpue)
     {
         if (keyList.Count == keysAcquired.Count)
@@ -23,21 +34,26 @@ public class GateLock : InteractableObject
     }
 
     protected override void EnterTrigger(string UIMessage) {
-        UIMessage = keyList.Count == keysAcquired.Count ? UIMessage : "Missing keys";
+        UIMessage = keyList.Count == keysAcquired.Count ? UIMessage : "Missing key fragments: " + (keyList.Count - keysAcquired.Count);
         EventSystem<InteractTriggerEnter>.FireEvent(new InteractTriggerEnter(UIMessage));
     }
 
-    protected override void InsideTrigger() {
+    protected override void InsideTrigger(GameObject player) {
+        
         if (keysAcquired.Count == keyList.Count && Input.GetKeyDown(KeyCode.F)) {
-            UnlockEvent ue = new UnlockEvent();
-            EventSystem<UnlockEvent>.FireEvent(ue);
-            EventSystem<InteractTriggerExit>.FireEvent(new InteractTriggerExit());
-            Destroy(this);
+            UnlockGateSequence();
         }
     }
 
     protected override void ExitTrigger() {
         EventSystem<InteractTriggerExit>.FireEvent(new InteractTriggerExit());
+    }
+
+    private void UnlockGateSequence() {
+        UnlockEvent ue = new UnlockEvent();
+        EventSystem<UnlockEvent>.FireEvent(ue);
+        EventSystem<InteractTriggerExit>.FireEvent(new InteractTriggerExit());
+        Destroy(this);
     }
     
 
