@@ -128,7 +128,6 @@ public class PlayerController : MonoBehaviour
 
     void Update() {
         
-        print(stateMachine.currentState);
         stateMachine.RunUpdate();
         Jump();
         
@@ -147,8 +146,6 @@ public class PlayerController : MonoBehaviour
         }
 
         physics.AddForce(force);
-        
-        
     }
 
     public void RestoreHealth()

@@ -42,7 +42,6 @@ public class PlayerUI : MonoBehaviour {
     }
 
     private void DisplayInteractText(InteractTriggerEnter trigger) {
-        print("display");
         interactText.text = trigger.UIMessage;
     }
     
