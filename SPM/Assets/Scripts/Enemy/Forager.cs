@@ -5,8 +5,11 @@ using UnityEngine;
 public class Forager : Enemy {
 
     public GameObject Bullet;
-    public float range {get; private set;} = 12f;
     [HideInInspector] public BlackHole activeBlackHole;
+    
+    //funderar på att göra range lite olika för varje forager? typ värde mellan 10 och 15 eller något, 
+    //så klumpar dom inte ihop sig riktigt på samma sätt
+    public float range {get; private set;} = 12f;
 
     private new void Awake() {
         base.Awake();

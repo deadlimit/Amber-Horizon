@@ -42,6 +42,9 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     public bool ProximityCast(float radius) {
         return Physics.OverlapSphere(transform.position, radius, PlayerMask).Length > 0;
     }
+   
+    //Låter foragers "ge" andra foragers & destructors aggro, men 
+    //destructors har ju inte proximityState så de kan inte göra det
     public bool EnemySeen(float radius)
     {
         Collider [] enemies = Physics.OverlapSphere(transform.position, radius, EnemyMask);

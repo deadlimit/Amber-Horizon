@@ -9,10 +9,7 @@ public class JumpingState : State
     {
         player = (PlayerController)owner;
     }
-
-    public override void Enter() {
-        Debug.Log("Jumping State!"); 
-    }
+    
     public override void RunUpdate() 
     {
         Vector3 input =
@@ -20,8 +17,6 @@ public class JumpingState : State
         Vector3.forward * Input.GetAxisRaw("Vertical");
         input = input.normalized;
         player.InputAirborne(input, true);
-        
-
         
         if (player.isGrounded()) 
         {
