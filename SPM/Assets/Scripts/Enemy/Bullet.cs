@@ -28,9 +28,10 @@ public class Bullet : MonoBehaviour {
         activeRigidbody.AddForce(direction.normalized * bulletSpeed);
     }
     
-    private void OnCollisionEnter(Collision other) {
-        if (other.gameObject.CompareTag("Player")) {
-            //annars träffades spelaren
+    private void OnCollisionEnter(Collision other) 
+    {
+        if (other.gameObject.CompareTag("Player")) 
+        {
             GameplayAbilitySystem playerAbilitySystem = other.gameObject.GetComponent<GameplayAbilitySystem>();
             parent.AbilitySystem.TryApplyEffectToOther(ability.AppliedEffect, playerAbilitySystem);
 
