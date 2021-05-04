@@ -62,15 +62,15 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     
     public virtual void BlackHoleBehaviour(BlackHole blackHole) { Debug.Log("hello");}
 
-    public void ApplyExplosion(GameObject explosionInstance, float blastPower)
+    public virtual void ApplyExplosion(GameObject explosionInstance, float blastPower)
     {
+        Debug.Log(gameObject + "hit by explosion");
         Vector3 explosionPos = explosionInstance.transform.position;
         float distance = Vector3.Distance(explosionPos, transform.position);
         Vector3 direction = (explosionPos - transform.position).normalized;
-        
+
         Animator.SetTrigger("HitByExplosion");
         Pathfinder.agent.enabled = false;
-        stateMachine.ChangeState<DestructorDeathState>();
-   
+
     }
 }

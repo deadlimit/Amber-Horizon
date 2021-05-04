@@ -38,4 +38,12 @@ public class Forager : Enemy {
         newBullet.GetComponent<Bullet>().Init(AbilitySystem.GetAbilityByTag(GameplayTags.AttackTag), this);
         Pathfinder.agent.isStopped = false;
     }
+
+    public override void ApplyExplosion(GameObject explosionInstance, float blastPower)
+    {
+        Debug.Log("Forager apply explosion");
+        base.ApplyExplosion(explosionInstance, blastPower);
+        stateMachine.ChangeState<EnemyDeathState>();
+
+    }
 }
