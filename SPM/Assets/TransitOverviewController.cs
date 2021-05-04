@@ -10,6 +10,8 @@ public class TransitOverviewController : MonoBehaviour {
     public GameObject TransitButton;
     public float WaitUntilButtonSpawn;
     private List<GameObject> activeButtons = new List<GameObject>();
+
+    private Coroutine spawnButtons;
     
     private void OnEnable() {
         EventSystem<EnterTransitView>.RegisterListener(TransitView);
@@ -23,7 +25,7 @@ public class TransitOverviewController : MonoBehaviour {
     
     
     private void TransitView(EnterTransitView view) {
-        StartCoroutine(SpawnButtons(view.TransitUnits, view.ActivatedTransitUnit));
+        spawnButtons = StartCoroutine(SpawnButtons(view.TransitUnits, view.ActivatedTransitUnit));
     }
 
     private IEnumerator SpawnButtons(HashSet<TransitUnit> buttons, TransitUnit activatedTransitUnit) {
@@ -58,7 +60,7 @@ public class TransitOverviewController : MonoBehaviour {
     }
 
     private void ExitView(ExitTransitView view) {
-        StopCoroutine(SpawnButtons(null, null));
+        StopCoroutine(spawnButtons);
         foreach (GameObject button in activeButtons)
             Destroy(button.gameObject);
 

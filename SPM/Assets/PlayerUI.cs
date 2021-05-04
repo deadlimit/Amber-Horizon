@@ -45,7 +45,7 @@ public class PlayerUI : MonoBehaviour {
         interactText.text = trigger.UIMessage;
     }
     
-    private void ClearUIMessage(InteractTriggerExit exti) {
+    private void ClearUIMessage(InteractTriggerExit exit) {
         interactText.text = "";
     }
     
