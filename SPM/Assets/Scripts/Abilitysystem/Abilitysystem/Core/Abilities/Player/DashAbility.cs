@@ -16,9 +16,6 @@ public class DashAbility : GameplayAbility {
     
     private IEnumerator Dash(GameplayAbilitySystem Owner) {
 
-        Owner.ApplyEffectToSelf(Cooldown);
-        
-        Debug.Log("lets go");
         PlayerController playerController = Owner.GetComponent<PlayerController>();
         
         //Spara gravitationen innan man sätter den till 0
