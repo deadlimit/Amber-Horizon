@@ -19,7 +19,7 @@ public class CameraBirdView : State {
 
     public override void Enter() {
         Camera.main.orthographic = true;
-        EventSystem<ExitTransitView>.RegisterListener(CancelView);
+        EventSystem<ExitTransitViewEvent>.RegisterListener(CancelView);
     }
 
     public override void RunUpdate() {
@@ -27,19 +27,19 @@ public class CameraBirdView : State {
         cameraController.transform.rotation = Quaternion.Lerp(cameraController.transform.rotation, birdViewTransform.transform.rotation, Time.deltaTime * ZoomOutSpeed);
 
         if (Input.GetKeyDown(KeyCode.Escape)) {
-            EventSystem<ExitTransitView>.FireEvent(null);
+            EventSystem<ExitTransitViewEvent>.FireEvent(null);
             stateMachine.ChangeState<DefaultCameraState>();
         }
             
     }
 
 
-    private void CancelView(ExitTransitView view) {
+    private void CancelView(ExitTransitViewEvent viewEvent) {
         stateMachine.ChangeState<DefaultCameraState>();
     }
 
     public override void Exit() {
-        EventSystem<ExitTransitView>.UnregisterListener(CancelView);
+        EventSystem<ExitTransitViewEvent>.UnregisterListener(CancelView);
         Camera.main.orthographic = false;
     }
 }

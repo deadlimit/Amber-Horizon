@@ -35,7 +35,7 @@ public class GateLock : InteractableObject
 
     protected override void EnterTrigger(string UIMessage) {
         UIMessage = keyList.Count == keysAcquired.Count ? UIMessage : "Missing key fragments: " + (keyList.Count - keysAcquired.Count);
-        EventSystem<InteractTriggerEnter>.FireEvent(new InteractTriggerEnter(UIMessage));
+        EventSystem<InteractTriggerEnterEvent>.FireEvent(new InteractTriggerEnterEvent(UIMessage));
     }
 
     protected override void InsideTrigger(GameObject player) {
@@ -46,13 +46,13 @@ public class GateLock : InteractableObject
     }
 
     protected override void ExitTrigger() {
-        EventSystem<InteractTriggerExit>.FireEvent(new InteractTriggerExit());
+        EventSystem<InteractTriggerExitEvent>.FireEvent(new InteractTriggerExitEvent());
     }
 
     private void UnlockGateSequence() {
         UnlockEvent ue = new UnlockEvent();
         EventSystem<UnlockEvent>.FireEvent(ue);
-        EventSystem<InteractTriggerExit>.FireEvent(new InteractTriggerExit());
+        EventSystem<InteractTriggerExitEvent>.FireEvent(new InteractTriggerExitEvent());
         Destroy(this);
     }
     

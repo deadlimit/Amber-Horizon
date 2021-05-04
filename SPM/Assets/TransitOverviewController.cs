@@ -14,18 +14,18 @@ public class TransitOverviewController : MonoBehaviour {
     private Coroutine spawnButtons;
     
     private void OnEnable() {
-        EventSystem<EnterTransitView>.RegisterListener(TransitView);
-        EventSystem<ExitTransitView>.RegisterListener(ExitView);
+        EventSystem<EnterTransitViewEvent>.RegisterListener(TransitView);
+        EventSystem<ExitTransitViewEvent>.RegisterListener(ExitView);
     }
 
     private void OnDisable() {
-        EventSystem<EnterTransitView>.UnregisterListener(TransitView);
-        EventSystem<ExitTransitView>.UnregisterListener(ExitView);
+        EventSystem<EnterTransitViewEvent>.UnregisterListener(TransitView);
+        EventSystem<ExitTransitViewEvent>.UnregisterListener(ExitView);
     }
     
     
-    private void TransitView(EnterTransitView view) {
-        spawnButtons = StartCoroutine(SpawnButtons(view.TransitUnits, view.ActivatedTransitUnit));
+    private void TransitView(EnterTransitViewEvent viewEvent) {
+        spawnButtons = StartCoroutine(SpawnButtons(viewEvent.TransitUnits, viewEvent.ActivatedTransitUnit));
     }
 
     private IEnumerator SpawnButtons(HashSet<TransitUnit> buttons, TransitUnit activatedTransitUnit) {
@@ -56,10 +56,10 @@ public class TransitOverviewController : MonoBehaviour {
 
     private void MovePlayer(TransitUnit transitUnit) {
         GameObject.FindGameObjectWithTag("Player").transform.position = transitUnit.AttachedCheckpoint.SpawnPosition;
-        EventSystem<ExitTransitView>.FireEvent(null);
+        EventSystem<ExitTransitViewEvent>.FireEvent(null);
     }
 
-    private void ExitView(ExitTransitView view) {
+    private void ExitView(ExitTransitViewEvent viewEvent) {
         StopCoroutine(spawnButtons);
         foreach (GameObject button in activeButtons)
             Destroy(button.gameObject);
