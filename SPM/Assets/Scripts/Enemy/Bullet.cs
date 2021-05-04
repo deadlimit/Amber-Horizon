@@ -15,12 +15,9 @@ public class Bullet : MonoBehaviour {
     public void Init(GameplayAbility ability, Forager parent) {
         this.ability = ability;
         this.parent = parent;
-    }
-    
-    private void Awake() {
         activeRigidbody = GetComponent<Rigidbody>();
-        direction = GameObject.FindGameObjectWithTag("Player").transform.position - transform.position;
-        
+        direction = parent.Target.transform.position - transform.position;
+
         Destroy(gameObject, 3f);
     }
 

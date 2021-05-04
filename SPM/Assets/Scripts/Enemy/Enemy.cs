@@ -64,7 +64,6 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
 
     public virtual void ApplyExplosion(GameObject explosionInstance, float blastPower)
     {
-        Debug.Log(gameObject + "hit by explosion");
         Vector3 explosionPos = explosionInstance.transform.position;
         float distance = Vector3.Distance(explosionPos, transform.position);
         Vector3 direction = (explosionPos - transform.position).normalized;
