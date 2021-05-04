@@ -21,6 +21,7 @@ public class DefaultCameraState : State
         camera = (ThirdPersonCamera)base.owner;
         collider = camera.GetComponent<SphereCollider>();
         target = GameObject.FindGameObjectWithTag("CameraDefaultTarget");
+        EventSystem<EnterTransitView>.RegisterListener(ChangeToBirdEyeView);
         
     }
     public override void RunUpdate() 
@@ -53,28 +54,21 @@ public class DefaultCameraState : State
     void PlaceCamera() {     
         RaycastHit hitInfo;
         playerPos = target.transform.position;
-        Debug.DrawLine(camera.transform.position, camera.transform.position + Vector3.down * collider.radius);
 
 
-        if (Physics.SphereCast(playerPos, collider.radius, offset.normalized, out hitInfo, offset.magnitude, CollisionMask))
-        {
-            offset = hitInfo.distance * offset.normalized; 
-            
-            if (groundCheck())
-            {
-                //magic number p� slutet �r bara till f�r att sakta ned kameran n�r man sl�r i marken
-                //r�tt fult ibland om kameran sl�par i marken n�r karakt�ren sv�nger, men relativt litet problem
-                camera.transform.position = Vector3.Lerp(camera.transform.position, playerPos + offset, CameraSpeed * Time.deltaTime * 0.15f) ;
-                return;
-            }
+        if (Physics.SphereCast(playerPos, collider.radius, offset.normalized, out hitInfo, offset.magnitude, CollisionMask)) {
+
+            offset = hitInfo.distance * offset.normalized;
         }
+        
+        
         camera.transform.position = Vector3.Lerp(camera.transform.position, playerPos + offset, CameraSpeed * Time.deltaTime);             
     }
 
-    private bool groundCheck()
-    {
-        return Physics.SphereCast(camera.transform.position, collider.radius, -camera.transform.up, out RaycastHit hitInfo, collider.radius);
+    private void ChangeToBirdEyeView(EnterTransitView view) {
+        stateMachine.ChangeState<CameraBirdView>();
     }
-
-
+    
+    
+    
 }

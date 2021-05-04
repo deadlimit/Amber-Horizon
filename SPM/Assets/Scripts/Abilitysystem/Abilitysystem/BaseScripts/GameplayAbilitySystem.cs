@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using EventCallbacks;
+using UnityEngine.EventSystems;
 
 namespace AbilitySystem
 {
@@ -56,6 +58,7 @@ namespace AbilitySystem
 
             if (Effect.Attribute != null)
             {
+                Debug.Log("Try apply attribute change" + Effect.Attribute);
                 TryApplyAttributeChange(Effect.Attribute.GetType(), Effect.Value);
             }
 
@@ -109,12 +112,15 @@ namespace AbilitySystem
                         Value = ((Func<float, float>)Calc)(Value);
                     }
                 }
-                
+
+                Debug.Log("ModifyAttrValue: " + Attribute + ", " + Value);
                 ModifyAttributeValue(Attribute, Value);
-               
+
                 //vad gör denna? Inget finns i OnAttributeChanged?
                 //OnAttributeChanged[Attribute]?.Invoke(AttributeSet[Attribute]);
             }
+            else
+                Debug.Log(Attribute + " not found in " + this.gameObject);
         }
 
         private void ModifyAttributeValue(Type Attribute, float Value)
@@ -167,6 +173,7 @@ namespace AbilitySystem
 
                     if (!Ability.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag))) {
                         Ability.Activate(this);
+                        EventSystem<AbilityUsed>.FireEvent(new AbilityUsed(Ability));
                         return true;
                     }
 
@@ -200,9 +207,15 @@ namespace AbilitySystem
             if (ActiveEffects[Effect] <= 0) {
                 
                 ActiveEffects.Remove(Effect);
-                Effect.AppliedTags.ForEach((Tag) => ActiveTags.Remove(Tag));
+                Effect.AppliedTags.ForEach((Tag) => DebugTag(Tag));
+                
             }
 
+        }
+        void DebugTag(GameplayTag Tag)
+        {
+            ActiveTags.Remove(Tag);
+            Debug.Log("Removing Tag: " + Tag);
         }
 
         public IEnumerator RemoveAfterTime(GameplayAbility ability) {

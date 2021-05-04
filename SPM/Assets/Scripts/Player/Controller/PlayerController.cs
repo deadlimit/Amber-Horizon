@@ -13,23 +13,23 @@ public class PlayerController : MonoBehaviour
     public float airControl = 0.2f;
     public float maxSpeed = 5f;
     public float turnRate = 4f;
-    public float retainedSpeedWhenTurning = 0.33f; 
-
+    public float retainedSpeedWhenTurning = 0.33f;
+    public LayerMask groundCheckMask;
     [Header("StateMachine")]
     public State[] states;
     private StateMachine stateMachine;
     private bool jump;
-    
+    public float groundCheckDistance = 0.05f;
 
     [HideInInspector] public Vector3 force;
-     public Vector3 bhVelocity;
+    public Vector3 bhVelocity;
     private Vector3 input;
     public PhysicsComponent physics { get; private set; }
     private Camera activeCamera;
     public bool airborne;
     private LineRenderer lr;
-    
-    private GameplayAbilitySystem abilitySystem;
+    private RaycastHit groundHitInfo;
+    public GameplayAbilitySystem abilitySystem { get; private set; }
     
     void Awake() 
     {
@@ -68,10 +68,11 @@ public class PlayerController : MonoBehaviour
     void Decelerate() 
     {
         //panikfix
-        MovingPlatformV2 mp = physics.groundHitInfo.collider?.GetComponent<MovingPlatformV2>();
+        MovingPlatformV2 mp = groundHitInfo.collider?.GetComponent<MovingPlatformV2>();
 
         if (mp)
         {
+            Debug.Log("moving platform collided");
             force = deceleration * mp.GetVelocity().normalized * Time.deltaTime;
             force += -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
         }
@@ -107,6 +108,7 @@ public class PlayerController : MonoBehaviour
     void PlayerDirection() 
     {
         input = activeCamera.transform.rotation * input;
+        input.y = 0;
         RotateTowardsCameraDirection();
         input = input.magnitude * Vector3.ProjectOnPlane(input, physics.groundHitInfo.normal).normalized;
 
@@ -125,16 +127,10 @@ public class PlayerController : MonoBehaviour
     }
 
     void Update() {
-
-        physics.isGrounded();
+        
         stateMachine.RunUpdate();
         Jump();
-
-        if (Input.GetKeyDown(KeyCode.E)) 
-        {
-            abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
-        }
-          
+        
         if (Input.GetMouseButton(1))
         {
             abilitySystem.TryActivateAbilityByTag(GameplayTags.AimingTag);
@@ -150,8 +146,6 @@ public class PlayerController : MonoBehaviour
         }
 
         physics.AddForce(force);
-        
-        
     }
 
     public void RestoreHealth()
@@ -160,4 +154,13 @@ public class PlayerController : MonoBehaviour
     }
 
     
+    public bool isGrounded() {
+        
+        Physics.Raycast(transform.position, Vector3.down, out groundHitInfo, groundCheckDistance, groundCheckMask);
+        
+        return groundHitInfo.collider;
+       
+        //groundHitInfo = collisionCaster.CastCollision(transform.position, Vector3.down, groundCheckDistance + skinWidth);
+     
+    }
 }

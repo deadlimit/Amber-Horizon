@@ -13,7 +13,7 @@ public class KeyRotator : MonoBehaviour {
         EventSystem<KeyPickUpEvent>.RegisterListener(UpdateKeyText);
         thisTransform = GetComponent<Transform>();
         text = GetComponent<TextMesh>();
-        text.text = "";
+        text.text = string.Empty;
         showing = false;
     }
 
@@ -39,7 +39,7 @@ public class KeyRotator : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             showing = !showing;
-            text.text = showing ? keyText : "";
+            text.text = showing ? keyText : string.Empty;
         }
             
         

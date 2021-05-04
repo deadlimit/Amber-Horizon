@@ -18,7 +18,7 @@ public class DestructorPatrolState : State {
 
     public override void RunUpdate() {
 
-        if (destructor.ProximityCast(destructor.outerRing)) {
+        if (destructor.ProximityCast(destructor.outerRing) ||destructor.EnemySeen(destructor.outerRing)) {
             destructor.Animator.SetBool("PlayerInRange", true);
             destructor.stateMachine.ChangeState<DestructorAgressionsState>();
             return;

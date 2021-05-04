@@ -2,11 +2,14 @@
 using AbilitySystem;
 using UnityEngine;
 
-public class Forager : Enemy  {
-    
+public class Forager : Enemy {
+
     public GameObject Bullet;
-    
     [HideInInspector] public BlackHole activeBlackHole;
+    
+    //funderar på att göra range lite olika för varje forager? typ värde mellan 10 och 15 eller något, 
+    //så klumpar dom inte ihop sig riktigt på samma sätt
+    public float range {get; private set;} = 12f;
 
     private new void Awake() {
         base.Awake();
@@ -34,5 +37,13 @@ public class Forager : Enemy  {
         GameObject newBullet = Instantiate(Bullet, transform.position + transform.forward + Vector3.up, transform.rotation);
         newBullet.GetComponent<Bullet>().Init(AbilitySystem.GetAbilityByTag(GameplayTags.AttackTag), this);
         Pathfinder.agent.isStopped = false;
+    }
+
+    public override void ApplyExplosion(GameObject explosionInstance, float blastPower)
+    {
+        Debug.Log("Forager apply explosion");
+        base.ApplyExplosion(explosionInstance, blastPower);
+        stateMachine.ChangeState<EnemyDeathState>();
+
     }
 }

@@ -16,13 +16,11 @@ public class Destructor : Enemy {
 
     }
 
-    /*private void OnDrawGizmos() {
-        Gizmos.color = Color.black;
-        if (Pathfinder != null  && Pathfinder.agent.destination == Vector3.zero) return;
-        Gizmos.DrawLine(transform.position, Pathfinder.agent.destination);
-        Gizmos.DrawWireSphere(Pathfinder.agent.destination, 1);
-        Gizmos.DrawWireSphere(transform.position, outerRing);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position + Vector3.up, innerRing);
-    }*/
+    public override void ApplyExplosion(GameObject explosionInstance, float blastPower)
+    {
+        base.ApplyExplosion(explosionInstance, blastPower);
+        stateMachine.ChangeState<DestructorDeathState>();
+        Debug.Log("Entered destructor death state");
+    }
+    
 }

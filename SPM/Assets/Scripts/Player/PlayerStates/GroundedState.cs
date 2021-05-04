@@ -20,24 +20,17 @@ public class GroundedState : State
         Vector3.right * Input.GetAxisRaw("Horizontal") +
         Vector3.forward * Input.GetAxisRaw("Vertical");
         input = input.normalized;
-        //Debug.Log("input fr�n grounded : " + input);
+
         player.InputGrounded(input);
         Jump();
-        Fall();
     }
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && player.physics.isGrounded()) {
+        if (Input.GetKeyDown(KeyCode.Space) && player.isGrounded()) {
             player.GetComponent<Animator>().SetTrigger("Jump");
             stateMachine.ChangeState<JumpingState>();
             player.SetJump();
         }
-    }
-    private void Fall() 
-    {
-        
-        if (player.physics.velocity.y < 0 && !player.physics.isGrounded())
-            stateMachine.ChangeState<FallingState>();          
     }
 }

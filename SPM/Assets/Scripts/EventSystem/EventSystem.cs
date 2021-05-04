@@ -48,7 +48,7 @@ namespace EventCallbacks
         
         public static void FireEvent(EventType eventInfo)
         {
-            if (typeEventListeners == null)
+            if (typeEventListeners == null || !typeEventListeners.ContainsKey(typeof(EventType)))
             {
                 return;
             }
