@@ -16,7 +16,6 @@ public class Gate : MonoBehaviour
 
     private void DoorUnlocked(UnlockEvent ue)
     {
-        Debug.Log("Trigger aktiverad");
         animator.SetTrigger("OpenGate");
     }
 

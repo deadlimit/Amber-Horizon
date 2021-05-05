@@ -2,7 +2,7 @@ using AbilitySystem;
 using UnityEngine;
 
 public class DestructorFist : MonoBehaviour {
-
+    
     private SphereCollider coll;   
     private GameplayAbilitySystem abilitySystem;
     

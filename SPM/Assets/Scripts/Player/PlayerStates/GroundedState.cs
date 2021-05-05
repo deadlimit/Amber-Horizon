@@ -3,20 +3,19 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class GroundedState : State
 {
-    PlayerController player;
+    private PlayerController player;
     protected override void Initialize()
     {
         player = (PlayerController)owner;
         Debug.Assert(player);
     }
-
-    public override void Enter()
-    {
-        //Debug.Log("Grounded State!");
-    }
+    
     public override void RunUpdate()
     {
-        Vector3 input =
+        if(!player.isGrounded())
+            stateMachine.ChangeState<JumpingState>();
+
+            Vector3 input =
         Vector3.right * Input.GetAxisRaw("Horizontal") +
         Vector3.forward * Input.GetAxisRaw("Vertical");
         input = input.normalized;

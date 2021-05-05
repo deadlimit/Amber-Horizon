@@ -12,11 +12,11 @@ public class TransitUnit : InteractableObject {
     private Collider triggerCollider;
     
     private void OnEnable() {
-        EventSystem<ExitTransitView>.RegisterListener(EnableTriggers);
+        EventSystem<ExitTransitViewEvent>.RegisterListener(EnableTriggers);
     }
 
     private void OnDisable() {
-        EventSystem<ExitTransitView>.UnregisterListener(EnableTriggers);
+        EventSystem<ExitTransitViewEvent>.UnregisterListener(EnableTriggers);
     }
 
     private void Awake() {
@@ -24,23 +24,23 @@ public class TransitUnit : InteractableObject {
         print(AttachedCheckpoint = transform.parent.GetComponentInChildren<Checkpoint>());
     }
 
-    private void EnableTriggers(ExitTransitView view) {
+    private void EnableTriggers(ExitTransitViewEvent viewEvent) {
         triggerCollider.enabled = true;
     }
 
     protected override void EnterTrigger(string UIMessage) {
-        EventSystem<InteractTriggerEnter>.FireEvent(new InteractTriggerEnter(UIMessage));
+        EventSystem<InteractTriggerEnterEvent>.FireEvent(new InteractTriggerEnterEvent(UIMessage));
         activatedTransitUnits.Add(this);
     }
 
-    protected override void InsideTrigger() {
+    protected override void InsideTrigger(GameObject entity) {
         if (Input.GetKeyDown(KeyCode.F)) {
-            EventSystem<EnterTransitView>.FireEvent(new EnterTransitView(activatedTransitUnits, this));
+            EventSystem<EnterTransitViewEvent>.FireEvent(new EnterTransitViewEvent(activatedTransitUnits, this));
             triggerCollider.enabled = false;
         }
     }
 
     protected override void ExitTrigger() {
-        EventSystem<InteractTriggerExit>.FireEvent(new InteractTriggerExit());
+        EventSystem<InteractTriggerExitEvent>.FireEvent(new InteractTriggerExitEvent());
     }
 }

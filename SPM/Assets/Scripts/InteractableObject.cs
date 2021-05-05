@@ -8,7 +8,7 @@ public abstract class InteractableObject : MonoBehaviour {
     protected abstract void EnterTrigger(string UIMessage);
 
     //Vad som händer när man befinner sig i triggern
-    protected abstract void InsideTrigger();
+    protected abstract void InsideTrigger(GameObject entity);
 
     //Vad som händer när man går ur triggern
     protected abstract void ExitTrigger();
@@ -22,7 +22,7 @@ public abstract class InteractableObject : MonoBehaviour {
     
     private void OnTriggerStay(Collider other) {
         if (PlayerEntered(other.gameObject) == false) return;
-        InsideTrigger();
+        InsideTrigger(other.gameObject);
     }
 
     
