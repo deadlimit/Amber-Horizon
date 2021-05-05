@@ -8,6 +8,7 @@ public class EnemyProximityState : State {
     public float FireCoolDown;
     private float nextFire;
     public float dropAggroDistance;
+    private int frame;
     protected override void Initialize() {
         forager = (Forager) owner;
     }
@@ -17,7 +18,8 @@ public class EnemyProximityState : State {
     }
 
     public override void RunUpdate() {
-        
+
+
         if(Vector3.Distance(forager.transform.position, forager.Target.transform.position) > dropAggroDistance)
             stateMachine.ChangeState<EnemyPatrolState>();
         

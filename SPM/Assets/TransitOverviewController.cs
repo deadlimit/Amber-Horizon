@@ -23,17 +23,28 @@ public class TransitOverviewController : MonoBehaviour {
     
     
     private void TransitView(EnterTransitView view) {
-        StartCoroutine(SpawnButtons(view.TransitUnits));
+        StartCoroutine(SpawnButtons(view.TransitUnits, view.ActivatedTransitUnit));
     }
 
-    private IEnumerator SpawnButtons(List<TransitUnit> buttons) {
+    private IEnumerator SpawnButtons(HashSet<TransitUnit> buttons, TransitUnit activatedTransitUnit) {
 
         yield return new WaitForSeconds(WaitUntilButtonSpawn);
 
         foreach (TransitUnit transitUnit in buttons) {
             GameObject button = Instantiate(TransitButton, Camera.main.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, gameObject.transform);
-            button.GetComponentInChildren<TextMeshProUGUI>().text = "Travel here";
-            button.GetComponent<Button>().onClick.AddListener(() => MovePlayer(transitUnit));
+            
+            TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
+
+            if (transitUnit == activatedTransitUnit) {
+                buttonText.text = "You are here";
+                buttonText.GetComponentInParent<Image>().color = Color.green;
+            }
+                
+            else {
+                buttonText.text = "Travel here";
+                button.GetComponent<Button>().onClick.AddListener(() => MovePlayer(transitUnit));
+            }
+            
             activeButtons.Add(button);
         }
         
@@ -47,7 +58,7 @@ public class TransitOverviewController : MonoBehaviour {
     }
 
     private void ExitView(ExitTransitView view) {
-        StopCoroutine(SpawnButtons(null));
+        StopCoroutine(SpawnButtons(null, null));
         foreach (GameObject button in activeButtons)
             Destroy(button.gameObject);
 

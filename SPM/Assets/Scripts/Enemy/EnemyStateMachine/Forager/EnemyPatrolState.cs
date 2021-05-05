@@ -6,6 +6,7 @@ public class EnemyPatrolState : State {
     private Forager forager;
 
     public float patrolRadius;
+    private int frame;
     
     public override void Initialize(StateMachine stateMachine, object owner) {
         forager = (Forager) owner;
@@ -17,6 +18,9 @@ public class EnemyPatrolState : State {
     }
 
     public override void RunUpdate() {
+        frame++;
+        if (frame != 10) return;
+        frame = 0;
 
         if (forager.ProximityCast(forager.outerRing) || forager.EnemySeen(forager.outerRing)) 
         {

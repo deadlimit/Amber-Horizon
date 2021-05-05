@@ -102,10 +102,11 @@ namespace EventCallbacks
     public class InteractTriggerExit : EventInfo {}
 
     public class EnterTransitView : EventInfo {
-        public readonly List<TransitUnit> TransitUnits;
-
-        public EnterTransitView(List<TransitUnit> transitUnits) {
+        public readonly HashSet<TransitUnit> TransitUnits;
+        public readonly TransitUnit ActivatedTransitUnit;
+        public EnterTransitView(HashSet<TransitUnit> transitUnits, TransitUnit ActivatedTransitUnit) {
             TransitUnits = transitUnits;
+            this.ActivatedTransitUnit = ActivatedTransitUnit;
         }
     }
     

@@ -3,12 +3,11 @@ using UnityEngine;
 
 public class DestructorFist : MonoBehaviour {
 
-    private SphereCollider coll;
-    
+    private SphereCollider coll;   
     private GameplayAbilitySystem abilitySystem;
     
     private void Awake() {
-        
+        enabled = false;
         coll = GetComponent<SphereCollider>();
     }
 
@@ -17,8 +16,8 @@ public class DestructorFist : MonoBehaviour {
     }
     
     private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player")) {
-
+        if (other.CompareTag("Player")) 
+        {            
             abilitySystem.TryActivateAbilityByTag(GameplayTags.MeleeTag);
             coll.enabled = false;
             enabled = false;
