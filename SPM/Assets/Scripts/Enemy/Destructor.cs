@@ -20,7 +20,6 @@ public class Destructor : Enemy {
     {
         base.ApplyExplosion(explosionInstance, blastPower);
         stateMachine.ChangeState<DestructorDeathState>();
-        Debug.Log("Entered destructor death state");
     }
     
 }

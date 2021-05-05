@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using EventCallbacks;
 using UnityEngine;
 
-public class TransitUnit : MonoBehaviour {
 
+public class TransitUnit : InteractableObject {
+    
     private static HashSet<TransitUnit> activatedTransitUnits = new HashSet<TransitUnit>();
 
     public Checkpoint AttachedCheckpoint { get; private set; }
@@ -12,11 +12,11 @@ public class TransitUnit : MonoBehaviour {
     private Collider triggerCollider;
     
     private void OnEnable() {
-        EventSystem<ExitTransitView>.RegisterListener(EnableTriggers);
+        EventSystem<ExitTransitViewEvent>.RegisterListener(EnableTriggers);
     }
 
     private void OnDisable() {
-        EventSystem<ExitTransitView>.UnregisterListener(EnableTriggers);
+        EventSystem<ExitTransitViewEvent>.UnregisterListener(EnableTriggers);
     }
 
     private void Awake() {
@@ -24,29 +24,23 @@ public class TransitUnit : MonoBehaviour {
         print(AttachedCheckpoint = transform.parent.GetComponentInChildren<Checkpoint>());
     }
 
-    private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.CompareTag("Player")) {
-            EventSystem<InteractTriggerEnter>.FireEvent(new InteractTriggerEnter("Press F to enter transit view"));
-            activatedTransitUnits.Add(this);
-        }
-            
-        
-    }
-    private void OnTriggerStay(Collider other) {
-        if (Input.GetKeyDown(KeyCode.F)) {
-            EventSystem<EnterTransitView>.FireEvent(new EnterTransitView(activatedTransitUnits, this));
-            triggerCollider.enabled = false;
-        }
-            
-    }
-
-    private void OnTriggerExit(Collider other) {
-        if(other.CompareTag("Player"))
-            EventSystem<InteractTriggerExit>.FireEvent(new InteractTriggerExit());
-    }
-
-    private void EnableTriggers(ExitTransitView view) {
+    private void EnableTriggers(ExitTransitViewEvent viewEvent) {
         triggerCollider.enabled = true;
     }
-    
+
+    protected override void EnterTrigger(string UIMessage) {
+        EventSystem<InteractTriggerEnterEvent>.FireEvent(new InteractTriggerEnterEvent(UIMessage));
+        activatedTransitUnits.Add(this);
+    }
+
+    protected override void InsideTrigger(GameObject entity) {
+        if (Input.GetKeyDown(KeyCode.F)) {
+            EventSystem<EnterTransitViewEvent>.FireEvent(new EnterTransitViewEvent(activatedTransitUnits, this));
+            triggerCollider.enabled = false;
+        }
+    }
+
+    protected override void ExitTrigger() {
+        EventSystem<InteractTriggerExitEvent>.FireEvent(new InteractTriggerExitEvent());
+    }
 }

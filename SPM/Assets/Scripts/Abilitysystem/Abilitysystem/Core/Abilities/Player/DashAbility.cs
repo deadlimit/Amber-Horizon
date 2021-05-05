@@ -16,9 +16,6 @@ public class DashAbility : GameplayAbility {
     
     private IEnumerator Dash(GameplayAbilitySystem Owner) {
 
-        Owner.ApplyEffectToSelf(Cooldown);
-        
-        Debug.Log("lets go");
         PlayerController playerController = Owner.GetComponent<PlayerController>();
         
         //Spara gravitationen innan man sätter den till 0
@@ -36,8 +33,7 @@ public class DashAbility : GameplayAbility {
         playerController.physics.gravity = 0;
         playerController.physics.maxSpeed = dashLength;
         playerController.force = cameraForwardDirection * dashLength;
-       
-        Debug.Log(playerController.force);
+        
         //Vänta .4 sekunder innan man sätter på gravitationen igen. 
         yield return new WaitForSeconds(timeWithOutGravity);
         

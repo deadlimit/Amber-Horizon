@@ -43,8 +43,8 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         return Physics.OverlapSphere(transform.position, radius, PlayerMask).Length > 0;
     }
    
-    //Låter foragers "ge" andra foragers & destructors aggro, men 
-    //destructors har ju inte proximityState så de kan inte göra det
+    //LÃ¥ter foragers "ge" andra foragers & destructors aggro, men 
+    //destructors har ju inte proximityState sÃ¥ de kan inte gÃ¶ra det
     public bool EnemySeen(float radius)
     {
         Collider [] enemies = Physics.OverlapSphere(transform.position, radius, EnemyMask);
@@ -64,7 +64,6 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
 
     public virtual void ApplyExplosion(GameObject explosionInstance, float blastPower)
     {
-        Debug.Log(gameObject + "hit by explosion");
         Vector3 explosionPos = explosionInstance.transform.position;
         float distance = Vector3.Distance(explosionPos, transform.position);
         Vector3 direction = (explosionPos - transform.position).normalized;

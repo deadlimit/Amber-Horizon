@@ -13,13 +13,13 @@ public class PlayerUI : MonoBehaviour {
     
     private void OnEnable() {
         EventSystem<AbilityUsed>.RegisterListener(StartAbilityCooldown);
-        EventSystem<InteractTriggerEnter>.RegisterListener(DisplayInteractText);
-        EventSystem<InteractTriggerExit>.RegisterListener(ClearUIMessage);
+        EventSystem<InteractTriggerEnterEvent>.RegisterListener(DisplayInteractText);
+        EventSystem<InteractTriggerExitEvent>.RegisterListener(ClearUIMessage);
     }
 
     private void OnDisable() {
         EventSystem<AbilityUsed>.UnregisterListener(StartAbilityCooldown);
-        EventSystem<InteractTriggerExit>.UnregisterListener(ClearUIMessage);
+        EventSystem<InteractTriggerExitEvent>.UnregisterListener(ClearUIMessage);
     }
 
     private void StartAbilityCooldown(AbilityUsed abilityUsed) {
@@ -41,11 +41,11 @@ public class PlayerUI : MonoBehaviour {
         image.fillAmount = 0;
     }
 
-    private void DisplayInteractText(InteractTriggerEnter trigger) {
+    private void DisplayInteractText(InteractTriggerEnterEvent trigger) {
         interactText.text = trigger.UIMessage;
     }
     
-    private void ClearUIMessage(InteractTriggerExit exti) {
+    private void ClearUIMessage(InteractTriggerExitEvent exitEvent) {
         interactText.text = "";
     }
     

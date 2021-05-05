@@ -67,12 +67,11 @@ public class PlayerController : MonoBehaviour
     }
     void Decelerate() 
     {
-        //panikfix
         MovingPlatformV2 mp = groundHitInfo.collider?.GetComponent<MovingPlatformV2>();
 
         if (mp)
         {
-            Debug.Log("moving platform collided");
+            Debug.Log("On moving platform");
             force = deceleration * mp.GetVelocity().normalized * Time.deltaTime;
             force += -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
         }

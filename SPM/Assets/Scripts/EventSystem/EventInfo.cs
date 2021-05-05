@@ -1,8 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using AbilitySystem;
 using UnityEngine;
-using UnityEngine.EventSystems;
+
 
 namespace EventCallbacks
 {
@@ -30,7 +29,8 @@ namespace EventCallbacks
     public class PlayerHitEvent : EventInfo {
 
         public readonly Transform enemyTransform;
-        public GameplayAbility ability;
+        public readonly GameplayAbility ability;
+ 
         public PlayerHitEvent(Transform enemyTransform, GameplayAbility ability) {
             this.enemyTransform = enemyTransform;
             this.ability = ability;
@@ -92,25 +92,41 @@ namespace EventCallbacks
         }
     }
 
-    public class InteractTriggerEnter : EventInfo {
+    public class InteractTriggerEnterEvent : EventInfo {
         public string UIMessage;
 
-        public InteractTriggerEnter(string message) {
+        public InteractTriggerEnterEvent(string message) {
             UIMessage = message;
         }
     }
-    public class InteractTriggerExit : EventInfo {}
+    public class InteractTriggerExitEvent : EventInfo {}
 
-    public class EnterTransitView : EventInfo {
+    public class EnterTransitViewEvent : EventInfo {
         public readonly HashSet<TransitUnit> TransitUnits;
         public readonly TransitUnit ActivatedTransitUnit;
-        public EnterTransitView(HashSet<TransitUnit> transitUnits, TransitUnit ActivatedTransitUnit) {
+        public EnterTransitViewEvent(HashSet<TransitUnit> transitUnits, TransitUnit ActivatedTransitUnit) {
             TransitUnits = transitUnits;
             this.ActivatedTransitUnit = ActivatedTransitUnit;
         }
     }
     
-    public class ExitTransitView : EventInfo {}
+    public class ExitTransitViewEvent : EventInfo {}
+
+    public class SoundEffectEvent : EventInfo {
+        public readonly AudioClip SFX;
+
+        public SoundEffectEvent(AudioClip SFX) {
+            this.SFX = SFX;
+        }
+    }
+
+    public class EnterSlowMotionEvent : EventInfo {
+        public readonly float duration;
+
+        public EnterSlowMotionEvent(float duration) {
+            this.duration = duration;
+        }
+    }
     
 }
 

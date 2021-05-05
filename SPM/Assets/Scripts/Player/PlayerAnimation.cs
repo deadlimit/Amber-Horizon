@@ -43,7 +43,6 @@ public class PlayerAnimation : MonoBehaviour {
         
         transform.LookAt(playerHitEvent.enemyTransform);
         float oldMaxSpeed = physics.maxSpeed;
-
         physics.maxSpeed = 200;
         physics.AddForce(-transform.forward * 10);
         animator.SetTrigger("PunchHit");

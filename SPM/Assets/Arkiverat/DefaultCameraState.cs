@@ -21,7 +21,7 @@ public class DefaultCameraState : State
         camera = (ThirdPersonCamera)base.owner;
         collider = camera.GetComponent<SphereCollider>();
         target = GameObject.FindGameObjectWithTag("CameraDefaultTarget");
-        EventSystem<EnterTransitView>.RegisterListener(ChangeToBirdEyeView);
+        EventSystem<EnterTransitViewEvent>.RegisterListener(ChangeToBirdEyeView);
         
     }
     public override void RunUpdate() 
@@ -65,7 +65,7 @@ public class DefaultCameraState : State
         camera.transform.position = Vector3.Lerp(camera.transform.position, playerPos + offset, CameraSpeed * Time.deltaTime);             
     }
 
-    private void ChangeToBirdEyeView(EnterTransitView view) {
+    private void ChangeToBirdEyeView(EnterTransitViewEvent viewEvent) {
         stateMachine.ChangeState<CameraBirdView>();
     }
     
