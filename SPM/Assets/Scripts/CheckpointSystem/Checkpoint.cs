@@ -11,6 +11,7 @@ public class Checkpoint : MonoBehaviour {
     public static readonly List<Checkpoint> activatedCheckpoints = new List<Checkpoint>();
     
     public AudioClip activateAudioClip;
+
     public int ID { get; set; }
 
     public Vector3 SpawnPosition { get; set; }
@@ -31,6 +32,7 @@ public class Checkpoint : MonoBehaviour {
         OnPlayerEnter?.Invoke(ID);
         EventSystem<CheckPointActivatedEvent>.FireEvent(new CheckPointActivatedEvent(activateAudioClip));
         activatedCheckpoints.Add(this);
+
         enabled = false;
     }
 }

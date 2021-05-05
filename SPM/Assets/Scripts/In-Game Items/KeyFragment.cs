@@ -4,8 +4,6 @@ using UnityEngine;
 using EventCallbacks;
 public class KeyFragment : MonoBehaviour
 {
-
-
     private void OnEnable()
     {
         GateLock.keyList.Add(this);
