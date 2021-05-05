@@ -8,19 +8,21 @@ public class PlatformRaiseEvent : MonoBehaviour, IEventPanelInteract {
     
     private Vector3 startPosition;
     private float totalDistance;
+    
+    
     private void Awake() {
         startPosition = transform.localPosition;
         totalDistance = Vector3.Distance(startPosition, Destination);
     }
 
-    private void Update() {
-        transform.localPosition = MoveToTargetPosition(startPosition, LowerSpeed);
-    }
-    
     public void ActivateEvent() {
         transform.localPosition = MoveToTargetPosition(Destination, RaiseSpeed);
     }
 
+    public void IdleEvent() {
+        transform.localPosition = MoveToTargetPosition(startPosition, LowerSpeed);
+    }
+    
     public void EventDone() {
         enabled = false;
     }
@@ -33,6 +35,6 @@ public class PlatformRaiseEvent : MonoBehaviour, IEventPanelInteract {
     }
     
     private Vector3 MoveToTargetPosition(Vector3 destination, float speed) {
-        return Vector3.MoveTowards(transform.localPosition, destination, speed * Time.fixedDeltaTime);
+        return Vector3.MoveTowards(transform.localPosition, destination, speed * Time.deltaTime);
     }
 }

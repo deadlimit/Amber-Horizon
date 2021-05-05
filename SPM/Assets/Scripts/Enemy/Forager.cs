@@ -7,8 +7,8 @@ public class Forager : Enemy {
     public GameObject Bullet;
     [HideInInspector] public BlackHole activeBlackHole;
     
-    //funderar på att göra range lite olika för varje forager? typ värde mellan 10 och 15 eller något, 
-    //så klumpar dom inte ihop sig riktigt på samma sätt
+    //funderar pÃ¥ att gÃ¶ra range lite olika fÃ¶r varje forager? typ vÃ¤rde mellan 10 och 15 eller nÃ¥got, 
+    //sÃ¥ klumpar dom inte ihop sig riktigt pÃ¥ samma sÃ¤tt
     public float range {get; private set;} = 12f;
 
     private new void Awake() {

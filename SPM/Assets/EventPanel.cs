@@ -18,6 +18,10 @@ public class EventPanel : InteractableObject {
     private Action barFillDone;
     
     private string UIText;
+
+    private bool eventRunThisFrame;
+
+    private float lowestTotalPercentageDone;
     
     private void Awake() {
         eventInteractions = new List<IEventPanelInteract>();
@@ -52,10 +56,32 @@ public class EventPanel : InteractableObject {
 
         if (activateFunction is null)
             return;
-        
-        if (Input.GetKey(KeyCode.F))
+
+        if (Input.GetKey(KeyCode.F)) {
             activateFunction();
+            eventRunThisFrame = true;
+        }
+        else {
+            eventRunThisFrame = false;
+        }
+    }
+
+    private void LateUpdate() {
+        if (activateFunction is null)
+            return;
         
+        if (!eventRunThisFrame) {
+            foreach (IEventPanelInteract eventPanelInteract in eventInteractions) {
+                float percentageDone = eventPanelInteract.CalculatePercentageDone();
+
+                if (percentageDone < lowestTotalPercentageDone)
+                    lowestTotalPercentageDone = percentageDone;
+                
+                eventPanelInteract.IdleEvent();
+            }
+                
+            SetUITexts(lowestTotalPercentageDone);
+        }
     }
 
     protected override void ExitTrigger() {
@@ -65,7 +91,7 @@ public class EventPanel : InteractableObject {
     }
 
     private void ExecuteFromList() {
-        float lowestTotalPercentageDone = 100;
+        lowestTotalPercentageDone = 100;
 
         foreach (IEventPanelInteract eventInteraction in eventInteractions) {
 
@@ -76,10 +102,9 @@ public class EventPanel : InteractableObject {
             
             eventInteraction.ActivateEvent();
         }
-
         SetUITexts(lowestTotalPercentageDone);
     }
-
+    
     private void SetUITexts(float newPercentBarValue) {
         
         percentBar.fillAmount = newPercentBarValue;
