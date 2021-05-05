@@ -26,7 +26,9 @@ public class EventPanel : InteractableObject {
     private void Awake() {
         eventInteractions = new List<IEventPanelInteract>();
         percentBar = GetComponentInChildren<Image>();
+        percentBar.enabled = false;
         percentText = GetComponentInChildren<TextMeshProUGUI>();
+        percentText.enabled = false;
         
         if (eventObjects.Count < 1) {
             eventInteraction = eventObject.GetComponent<IEventPanelInteract>();
@@ -49,6 +51,7 @@ public class EventPanel : InteractableObject {
         if(activateFunction != null)
             EventSystem<InteractTriggerEnterEvent>.FireEvent(new InteractTriggerEnterEvent(UIMessage));
         percentBar.enabled = true;
+        percentText.enabled = true;
         percentText.text = UIText;
     }
 
@@ -86,8 +89,8 @@ public class EventPanel : InteractableObject {
 
     protected override void ExitTrigger() {
         EventSystem<InteractTriggerExitEvent>.FireEvent(null);
-        percentText.text = string.Empty;
         percentBar.enabled = false;
+        percentText.enabled = false;
     }
 
     private void ExecuteFromList() {
