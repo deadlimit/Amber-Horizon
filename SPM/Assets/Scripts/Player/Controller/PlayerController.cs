@@ -162,4 +162,8 @@ public class PlayerController : MonoBehaviour
         //groundHitInfo = collisionCaster.CastCollision(transform.position, Vector3.down, groundCheckDistance + skinWidth);
      
     }
+    public float GetPlayerHealth()
+    {
+        return (float)abilitySystem.GetAttributeValue(typeof(HealthAttribute));
+    }
 }
