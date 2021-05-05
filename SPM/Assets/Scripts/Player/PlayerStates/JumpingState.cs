@@ -4,7 +4,8 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class JumpingState : State
 {
-    PlayerController player;
+    private PlayerController player;
+
     protected override void Initialize()
     {
         player = (PlayerController)owner;
@@ -24,12 +25,13 @@ public class JumpingState : State
             //går den direkt tillbaka till GroundedState, men INTE om man gör dubbelhoppet som blir möjligt av den här buggen
             stateMachine.ChangeState<GroundedState>();
         }
-        
+
         if (Input.GetKeyDown(KeyCode.E)) 
         {
             player.abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
         }
 
     }
+    
 
 }
