@@ -1,5 +1,6 @@
 using System;
 using AbilitySystem;
+using EventCallbacks;
 using UnityEngine;
 
 
@@ -38,8 +39,10 @@ public class PlayerController : MonoBehaviour
         physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);       
         lr = GetComponent<LineRenderer>();
+
+        EventSystem<CheckPointActivatedEvent>.RegisterListener(CheckpointRestoreHealth);
     }
-    
+
     private void Start() {
         abilitySystem = gameObject.GetComponent<GameplayAbilitySystem>();
     }
@@ -150,9 +153,15 @@ public class PlayerController : MonoBehaviour
     public void RestoreHealth()
     {
         abilitySystem.TryActivateAbilityByTag(GameplayTags.HealthRestoreTag);
+        Debug.Log("reached RestoreHealth, in PlayerCOntroller");
     }
 
-    
+    private void CheckpointRestoreHealth(CheckPointActivatedEvent checkPointActivatedEvent)
+    {
+        RestoreHealth();
+    }
+
+
     public bool isGrounded() {
         
         Physics.Raycast(transform.position, Vector3.down, out groundHitInfo, groundCheckDistance, groundCheckMask);

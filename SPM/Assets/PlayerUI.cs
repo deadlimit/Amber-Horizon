@@ -14,11 +14,13 @@ public class PlayerUI : MonoBehaviour {
     private Slider healthSlider;
     private PlayerController pc;
     
-    private void OnEnable() {
+    private void Start() {
         EventSystem<AbilityUsed>.RegisterListener(StartAbilityCooldown);
         EventSystem<InteractTriggerEnterEvent>.RegisterListener(DisplayInteractText);
         EventSystem<InteractTriggerExitEvent>.RegisterListener(ClearUIMessage);
         EventSystem<PlayerHitEvent>.RegisterListener(ChangeHealthUI);
+        EventSystem<CheckPointActivatedEvent>.RegisterListener(RestoreHealthUI);
+
         pc = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         healthSlider = GetComponentInChildren<Slider>();
         healthSlider.gameObject.SetActive(false);
@@ -56,7 +58,7 @@ public class PlayerUI : MonoBehaviour {
         interactText.text = "";
     }
 
-    public void ChangeHealthUI(PlayerHitEvent playerHitEvent)
+    private void ChangeHealthUI(PlayerHitEvent playerHitEvent)
     {
         healthSlider.gameObject.SetActive(true);
 
@@ -70,6 +72,11 @@ public class PlayerUI : MonoBehaviour {
 
         this.Invoke(() => healthSlider.gameObject.SetActive(false), 1.5f);
         
+    }
+
+    private void RestoreHealthUI(CheckPointActivatedEvent checkPointActivatedEvent)
+    {
+        ChangeHealthUI(null);
     }
 
 }
