@@ -11,8 +11,9 @@ public class DestructorDeathState : State
     {
         destructor = owner as Destructor;
     }
-    public override void RunUpdate()
+    public override void Enter()
     {
+        destructor.Pathfinder.agent.enabled = false;
         Destroy(destructor.gameObject, 3f);
     }
          

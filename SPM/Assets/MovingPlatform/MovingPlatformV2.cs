@@ -1,12 +1,11 @@
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
 
     private PhysicsComponent physics;
     public float multiplier = 1f;
-    [SerializeField]private Vector3 maxBack;
-    [SerializeField]private Vector3 maxFront;
+    private Vector3 maxBack;
+    private Vector3 maxFront;
     private Vector3 startPos;
 
     private float frontDistance;
@@ -32,16 +31,12 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
         Debug.DrawLine(transform.position,  maxFront, Color.red);
         Debug.DrawLine(transform.position,  maxBack, Color.green);
 
-        /*if(!physics.AffectedByBlackHoleGravity)
-            physics.velocity = Vector3.zero;*/
         physics.ApplyAirResistance();
         PreventOutOfBounds();
     }
     
     public void BlackHoleBehaviour(BlackHole blackhole) {
-        
-        //PreventOutOfBounds();
-        
+
         Vector3 blackHoleVector3 = (blackhole.transform.position - transform.position).normalized;
 
         float dotProduct = Vector3.Dot(transform.forward, blackHoleVector3);

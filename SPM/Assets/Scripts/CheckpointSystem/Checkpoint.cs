@@ -18,6 +18,11 @@ public class Checkpoint : MonoBehaviour {
     
     public Action<int> OnPlayerEnter;
 
+    public ParticleSystem activeIndicatorVFX;
+
+    [SerializeField]
+    private Color activeColor, inactiveColor;
+
     private void OnEnable() => activeCheckpoints.Add(this);
 
     private void OnDisable() => activeCheckpoints.Remove(this);
@@ -34,5 +39,30 @@ public class Checkpoint : MonoBehaviour {
         activatedCheckpoints.Add(this);
 
         enabled = false;
+    }
+
+    public void ChangeParticleColor(bool isActive)
+    {             
+        //removes any active particles, so the color changes immediatly
+        activeIndicatorVFX.Clear();
+        if (isActive)
+        {
+            Debug.Log("in Checkpoint ChangeParticleColor. is active.");
+
+            var main = activeIndicatorVFX.main;
+            main.startColor = activeColor;
+
+            //stops the particle system and then starts it, to get the emission burst at the start. nevermind
+            activeIndicatorVFX.Stop();
+            activeIndicatorVFX.Play();
+        }
+        else 
+        {
+            Debug.Log("in Checkpoint ChangeParticleColor. is not active.");
+            //activeIndicatorVFX.main.startColor = activeColor;
+
+            var main = activeIndicatorVFX.main;
+            main.startColor = inactiveColor;
+        }
     }
 }
