@@ -41,7 +41,13 @@ public class PlayerAnimation : MonoBehaviour {
     private void DestructorHit(PlayerHitEvent playerHitEvent) {
         if (!(playerHitEvent.ability is FistPunch)) return;
         
+        //rotera endast y-axel
         transform.LookAt(playerHitEvent.enemyTransform);
+        Vector3 rotation = transform.rotation.eulerAngles;
+        rotation.x = 0;
+        rotation.z = 0;
+        transform.rotation = Quaternion.Euler(rotation);
+
         float oldMaxSpeed = physics.maxSpeed;
         physics.maxSpeed = 200;
         physics.AddForce(-transform.forward * 10);
