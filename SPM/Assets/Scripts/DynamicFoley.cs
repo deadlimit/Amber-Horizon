@@ -42,7 +42,7 @@ public class DynamicFoley : MonoBehaviour
                 if (act)
                 {
                     colliderType = act.gameObject.GetComponent<SurfaceColliderType>().GetTerrainType();
-                    print("aaa");
+                    
                 }
             }
         }

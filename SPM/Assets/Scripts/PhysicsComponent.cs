@@ -121,7 +121,7 @@ public class PhysicsComponent : MonoBehaviour
 
         foreach (Collider currentCollider in colliders)
         {
-            if (currentCollider == attachedCollider)
+            if (currentCollider == attachedCollider || currentCollider.isTrigger)
                 continue;
             Physics.ComputePenetration(attachedCollider,
                                         transform.position,

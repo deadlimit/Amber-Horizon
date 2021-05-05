@@ -11,7 +11,7 @@ public class Checkpoint : MonoBehaviour {
     public static readonly List<Checkpoint> activatedCheckpoints = new List<Checkpoint>();
     
     public AudioClip activateAudioClip;
-    public int ID { get; set; }
+    public int ID;
 
     public Vector3 SpawnPosition { get; set; }
     
