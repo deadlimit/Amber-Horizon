@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using EventCallbacks;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [Serializable]
 public class Checkpoint : MonoBehaviour {
 
-    public static readonly List<Checkpoint> activeCheckpoints = new List<Checkpoint>();
-    public static readonly List<Checkpoint> activatedCheckpoints = new List<Checkpoint>();
+    public static List<Checkpoint> activeCheckpoints = new List<Checkpoint>();
+    public static List<Checkpoint> activatedCheckpoints = new List<Checkpoint>();
     
     public AudioClip activateAudioClip;
 
@@ -35,10 +34,14 @@ public class Checkpoint : MonoBehaviour {
         if (!other.CompareTag("Player")) return;
         
         OnPlayerEnter?.Invoke(ID);
-        EventSystem<CheckPointActivatedEvent>.FireEvent(new CheckPointActivatedEvent(activateAudioClip));
-        activatedCheckpoints.Add(this);
-
+        
+        EventSystem<CheckPointActivatedEvent>.FireEvent(new CheckPointActivatedEvent(activateAudioClip, ID));
+        AddToActivatedList();
         enabled = false;
+    }
+
+    public void AddToActivatedList() {
+        activatedCheckpoints.Add(this);
     }
 
     public void ChangeParticleColor(bool isActive)

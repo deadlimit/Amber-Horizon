@@ -86,9 +86,10 @@ namespace EventCallbacks
 
     public class CheckPointActivatedEvent : EventInfo {
         public readonly AudioClip audio;
-
-        public CheckPointActivatedEvent(AudioClip audio) {
+        public readonly int ID;
+        public CheckPointActivatedEvent(AudioClip audio, int ID) {
             this.audio = audio;
+            this.ID = ID;
         }
     }
 

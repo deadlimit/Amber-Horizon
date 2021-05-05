@@ -13,15 +13,17 @@ public class TransitUnit : InteractableObject {
     
     private void OnEnable() {
         EventSystem<ExitTransitViewEvent>.RegisterListener(EnableTriggers);
+        EventSystem<CheckPointActivatedEvent>.RegisterListener(ActivateTransitUnit);
     }
 
     private void OnDisable() {
         EventSystem<ExitTransitViewEvent>.UnregisterListener(EnableTriggers);
+        EventSystem<CheckPointActivatedEvent>.UnregisterListener(ActivateTransitUnit);
     }
 
     private void Awake() {
         triggerCollider = GetComponent<CapsuleCollider>();
-        print(AttachedCheckpoint = transform.parent.GetComponentInChildren<Checkpoint>());
+        AttachedCheckpoint = transform.parent.GetComponentInChildren<Checkpoint>();
     }
 
     private void EnableTriggers(ExitTransitViewEvent viewEvent) {
@@ -30,9 +32,8 @@ public class TransitUnit : InteractableObject {
 
     protected override void EnterTrigger(string UIMessage) {
         EventSystem<InteractTriggerEnterEvent>.FireEvent(new InteractTriggerEnterEvent(UIMessage));
-        activatedTransitUnits.Add(this);
     }
-
+    
     protected override void InsideTrigger(GameObject entity) {
         if (Input.GetKeyDown(KeyCode.F)) {
             EventSystem<EnterTransitViewEvent>.FireEvent(new EnterTransitViewEvent(activatedTransitUnits, this));
@@ -42,5 +43,10 @@ public class TransitUnit : InteractableObject {
 
     protected override void ExitTrigger() {
         EventSystem<InteractTriggerExitEvent>.FireEvent(new InteractTriggerExitEvent());
+    }
+
+    private void ActivateTransitUnit(CheckPointActivatedEvent checkPointActivatedEvent) {
+        if(checkPointActivatedEvent.ID.Equals(AttachedCheckpoint.ID))
+            activatedTransitUnits.Add(this);
     }
 }
