@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 5136033958234214884}
   - component: {fileID: 5136033958234214886}
   - component: {fileID: 5136033958234214425}
-  - component: {fileID: 4000695297888609609}
   m_Layer: 9
   m_Name: PowderKeg
   m_TagString: Untagged
@@ -128,27 +127,3 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   explosion: {fileID: 8710301720422447588, guid: f02e0410e7e3de1458d45d3bf70d5448, type: 3}
---- !u!114 &4000695297888609609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5136033958234214424}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79eac077e0d2403b8c4a5a103ba3aa5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collisionMask:
-    serializedVersion: 2
-    m_Bits: 64
-  velocityMagnitude: 0
-  smallNumber: 0.1
-  velocity: {x: 0, y: 0, z: 0}
-  gravity: 10
-  skinWidth: 0.05
-  maxSpeed: 0
-  staticFrictionCoefficient: 0.5
-  kineticFrictionCoefficient: 0.35
-  airResistance: 0.35
