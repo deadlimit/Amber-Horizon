@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour
 
         if (mp)
         {
+            Debug.Log("On moving platform");
             force = deceleration * mp.GetVelocity().normalized * Time.deltaTime;
             force += -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
         }

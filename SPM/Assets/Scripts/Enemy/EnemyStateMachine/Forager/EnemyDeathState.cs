@@ -11,6 +11,8 @@ public class EnemyDeathState : State {
 
     public override void Enter() {
         forager.Animator.SetTrigger("Die");
+        forager.Pathfinder.agent.ResetPath();
+        forager.Pathfinder.agent.isStopped = true;
     }
 
     public override void RunUpdate() {
@@ -29,3 +31,4 @@ public class EnemyDeathState : State {
     }      
     
 }
+        

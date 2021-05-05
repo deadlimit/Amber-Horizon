@@ -43,7 +43,6 @@ public class Forager : Enemy {
     {
         Debug.Log("Forager apply explosion");
         base.ApplyExplosion(explosionInstance, blastPower);
-        stateMachine.ChangeState<EnemyDeathState>();
-
+        stateMachine.ChangeState<EnemyExplodedState>();
     }
 }
