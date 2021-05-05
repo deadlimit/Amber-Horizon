@@ -41,8 +41,7 @@ public class Forager : Enemy {
 
     public override void ApplyExplosion(GameObject explosionInstance, float blastPower)
     {
-        Debug.Log("Forager apply explosion");
-        base.ApplyExplosion(explosionInstance, blastPower);
         stateMachine.ChangeState<EnemyExplodedState>();
+        base.ApplyExplosion(explosionInstance, blastPower);
     }
 }

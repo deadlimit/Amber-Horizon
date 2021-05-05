@@ -18,8 +18,8 @@ public class Destructor : Enemy {
 
     public override void ApplyExplosion(GameObject explosionInstance, float blastPower)
     {
-        base.ApplyExplosion(explosionInstance, blastPower);
         stateMachine.ChangeState<DestructorDeathState>();
+        base.ApplyExplosion(explosionInstance, blastPower);
     }
     
 }

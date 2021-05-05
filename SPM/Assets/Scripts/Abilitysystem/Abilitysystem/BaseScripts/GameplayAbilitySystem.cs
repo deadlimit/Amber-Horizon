@@ -49,17 +49,18 @@ namespace AbilitySystem
             return null;
         }
 
-        public void ApplyEffectToSelf(GameplayEffect Effect) {
-            
+        public bool ApplyEffectToSelf(GameplayEffect Effect) {
+            bool retur = false;
             if (Effect.BlockedByTags.Any(Tag => ActiveTags.Contains(Tag)))
             {
-                return;
+                return false;
             }
 
             if (Effect.Attribute != null)
             {
                 Debug.Log("Try apply attribute change" + Effect.Attribute);
                 TryApplyAttributeChange(Effect.Attribute.GetType(), Effect.Value);
+                retur = true;
             }
 
             Effect.AppliedTags.ForEach(Tag => ActiveTags.Add(Tag));
@@ -93,10 +94,11 @@ namespace AbilitySystem
                     }
                 } break;
             }
+            return retur;
         }
 
-        public void TryApplyEffectToOther(GameplayEffect effect, GameplayAbilitySystem Other) {
-            Other.ApplyEffectToSelf(effect);
+        public bool TryApplyEffectToOther(GameplayEffect effect, GameplayAbilitySystem Other) {
+           return Other.ApplyEffectToSelf(effect);
         }
 
         public void TryApplyAttributeChange(Type Attribute, float Value)
