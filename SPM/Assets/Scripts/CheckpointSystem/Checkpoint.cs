@@ -40,14 +40,19 @@ public class Checkpoint : MonoBehaviour {
     }
 
     public void ChangeParticleColor(bool isActive)
-    { 
-        if(isActive)
+    {             
+        //removes any active particles, so the color changes immediatly
+        activeIndicatorVFX.Clear();
+        if (isActive)
         {
-            
             Debug.Log("in Checkpoint ChangeParticleColor. is active.");
 
             var main = activeIndicatorVFX.main;
             main.startColor = activeColor;
+
+            //stops the particle system and then starts it, to get the emission burst at the start. nevermind
+            activeIndicatorVFX.Stop();
+            activeIndicatorVFX.Play();
         }
         else 
         {
