@@ -1,4 +1,3 @@
-
 using AbilitySystem;
 using UnityEngine;
 
@@ -16,8 +15,7 @@ public class Forager : Enemy {
     }
     private new void Update()
     {
-        base.Update();
-        
+        base.Update();       
         stateMachine?.RunUpdate();
     }
     
