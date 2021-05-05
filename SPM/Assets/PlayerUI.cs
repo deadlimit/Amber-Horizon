@@ -13,6 +13,8 @@ public class PlayerUI : MonoBehaviour {
 
     private Slider healthSlider;
     private PlayerController pc;
+
+    public Image sliderBackground, sliderFill;
     
     private void Start() {
         EventSystem<AbilityUsed>.RegisterListener(StartAbilityCooldown);
@@ -23,9 +25,21 @@ public class PlayerUI : MonoBehaviour {
 
         pc = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         healthSlider = GetComponentInChildren<Slider>();
-        healthSlider.gameObject.SetActive(false);
+
+        ChangeColor(0);
+
     }
 
+    private void ChangeColor(float value) {
+        
+        Color trans = sliderFill.color;
+        trans.a = value;
+        sliderFill.color = trans;
+        Color trans1 = sliderBackground.color;
+        trans1.a = value;
+        sliderBackground.color = trans1;
+        
+    }
     private void OnDisable() {
         EventSystem<AbilityUsed>.UnregisterListener(StartAbilityCooldown);
         EventSystem<InteractTriggerExitEvent>.UnregisterListener(ClearUIMessage);
@@ -58,9 +72,10 @@ public class PlayerUI : MonoBehaviour {
         interactText.text = "";
     }
 
-    private void ChangeHealthUI(PlayerHitEvent playerHitEvent)
-    {
-        healthSlider.gameObject.SetActive(true);
+    private void ChangeHealthUI(PlayerHitEvent playerHitEvent) {
+        sliderBackground = GameObject.FindGameObjectWithTag("BackgroundTag").GetComponent<Image>();
+        sliderFill = GameObject.FindGameObjectWithTag("FillTag").GetComponent<Image>();
+        ChangeColor(255);
 
         float currentHealth = pc.GetPlayerHealth();
         Debug.Log("reached ChangeHealthUI");
@@ -70,7 +85,7 @@ public class PlayerUI : MonoBehaviour {
         }
         healthSlider.value = currentHealth;
 
-        this.Invoke(() => healthSlider.gameObject.SetActive(false), 1.5f);
+        sliderBackground.Invoke(() => ChangeColor(0), 1.5f);
         
     }
 
