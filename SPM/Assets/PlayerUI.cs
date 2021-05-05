@@ -14,7 +14,7 @@ public class PlayerUI : MonoBehaviour {
     private Slider healthSlider;
     private PlayerController pc;
     
-    private void OnEnable() {
+    private void Start() {
         EventSystem<AbilityUsed>.RegisterListener(StartAbilityCooldown);
         EventSystem<InteractTriggerEnterEvent>.RegisterListener(DisplayInteractText);
         EventSystem<InteractTriggerExitEvent>.RegisterListener(ClearUIMessage);
