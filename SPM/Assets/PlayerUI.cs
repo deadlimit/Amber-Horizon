@@ -48,5 +48,10 @@ public class PlayerUI : MonoBehaviour {
     private void ClearUIMessage(InteractTriggerExitEvent exitEvent) {
         interactText.text = "";
     }
-    
+
+    public void ChangeHealthUI()
+    {
+        
+    }
+
 }
