@@ -53,6 +53,7 @@ public class GateLock : InteractableObject
         UnlockEvent ue = new UnlockEvent();
         EventSystem<UnlockEvent>.FireEvent(ue);
         EventSystem<InteractTriggerExitEvent>.FireEvent(new InteractTriggerExitEvent());
+        interaction.enabled = false;
         Destroy(this);
     }
     
