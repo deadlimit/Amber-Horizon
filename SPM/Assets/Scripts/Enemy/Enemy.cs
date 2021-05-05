@@ -69,7 +69,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Vector3 direction = (explosionPos - transform.position).normalized;
 
         Animator.SetTrigger("HitByExplosion");
-        Pathfinder.agent.enabled = false;
+
 
     }
 }

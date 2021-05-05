@@ -16,6 +16,6 @@ public class EnemyExplodedState : State
         forager.Pathfinder.agent.ResetPath();
         forager.Pathfinder.agent.isStopped = true;
         Destroy(forager.gameObject, 3f);
+        forager.Pathfinder.agent.enabled = false;
     }
-
 }
