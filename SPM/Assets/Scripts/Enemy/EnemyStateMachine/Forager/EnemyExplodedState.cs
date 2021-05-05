@@ -8,12 +8,13 @@ public class EnemyExplodedState : State
     Forager forager;
     public override void Initialize(StateMachine stateMachine, object owner)
     {
-        forager = (Forager)owner;
-        
+        forager = (Forager)owner;      
     }
 
     public override void Enter()
     {
+        forager.Pathfinder.agent.ResetPath();
+        forager.Pathfinder.agent.isStopped = true;
         Destroy(forager.gameObject, 3f);
     }
 
