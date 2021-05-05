@@ -17,6 +17,11 @@ public class Checkpoint : MonoBehaviour {
     
     public Action<int> OnPlayerEnter;
 
+    public ParticleSystem activeIndicatorVFX;
+
+    [SerializeField]
+    private Color activeColor, inactiveColor;
+
     private void OnEnable() => activeCheckpoints.Add(this);
 
     private void OnDisable() => activeCheckpoints.Remove(this);
@@ -32,5 +37,25 @@ public class Checkpoint : MonoBehaviour {
         EventSystem<CheckPointActivatedEvent>.FireEvent(new CheckPointActivatedEvent(activateAudioClip));
         activatedCheckpoints.Add(this);
         enabled = false;
+    }
+
+    public void ChangeParticleColor(bool isActive)
+    { 
+        if(isActive)
+        {
+            
+            Debug.Log("in Checkpoint ChangeParticleColor. is active.");
+
+            var main = activeIndicatorVFX.main;
+            main.startColor = activeColor;
+        }
+        else 
+        {
+            Debug.Log("in Checkpoint ChangeParticleColor. is not active.");
+            //activeIndicatorVFX.main.startColor = activeColor;
+
+            var main = activeIndicatorVFX.main;
+            main.startColor = inactiveColor;
+        }
     }
 }

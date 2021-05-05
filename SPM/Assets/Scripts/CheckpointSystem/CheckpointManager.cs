@@ -43,12 +43,15 @@ public class CheckpointManager : MonoBehaviour {
     
     private void UpdateCheckPoint(int ID) {
         Checkpoint point = checkpoints[ID];
-        
+        //här sätts activecheckpoint till röd
+        activeCheckpointPosition.ChangeParticleColor(false);
         if(activeCheckpointPosition)
             activeCheckpointPosition.gameObject.SetActive(true);
         
         activeCheckpointPosition = point;
-        
+        //här sätts den nya activecheckpoint till grön
+        activeCheckpointPosition.ChangeParticleColor(true);
+
         activeCheckpointPosition.gameObject.SetActive(false);
     }
 
