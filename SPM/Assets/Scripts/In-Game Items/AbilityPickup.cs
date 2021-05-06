@@ -1,4 +1,5 @@
 using AbilitySystem;
+using EventCallbacks;
 using UnityEngine;
 
 public class AbilityPickup : MonoBehaviour {
@@ -10,6 +11,7 @@ public class AbilityPickup : MonoBehaviour {
         if (!other.CompareTag("Player")) return;
         
         other.GetComponent<GameplayAbilitySystem>().GrantAbility(ability);
+        EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("New ability: Dash", 2, true));
         Destroy(gameObject);
     }
 }

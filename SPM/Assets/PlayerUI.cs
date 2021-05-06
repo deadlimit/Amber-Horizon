@@ -11,6 +11,8 @@ public class PlayerUI : MonoBehaviour {
     public Image blackholeCooldownImage;
     public TextMeshProUGUI interactText;
 
+    public AudioClip UIMessageSFX;
+    
     private Slider healthSlider;
     private PlayerController pc;
 
@@ -22,6 +24,7 @@ public class PlayerUI : MonoBehaviour {
         EventSystem<InteractTriggerExitEvent>.RegisterListener(ClearUIMessage);
         EventSystem<PlayerHitEvent>.RegisterListener(ChangeHealthUI);
         EventSystem<CheckPointActivatedEvent>.RegisterListener(RestoreHealthUI);
+        EventSystem<DisplayUIMessage>.RegisterListener(DisplayMessageOnUI);
 
         pc = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         healthSlider = GetComponentInChildren<Slider>();
@@ -43,6 +46,7 @@ public class PlayerUI : MonoBehaviour {
     private void OnDisable() {
         EventSystem<AbilityUsed>.UnregisterListener(StartAbilityCooldown);
         EventSystem<InteractTriggerExitEvent>.UnregisterListener(ClearUIMessage);
+        EventSystem<DisplayUIMessage>.UnregisterListener(DisplayMessageOnUI);
     }
 
     private void StartAbilityCooldown(AbilityUsed abilityUsed) {
@@ -66,6 +70,23 @@ public class PlayerUI : MonoBehaviour {
 
     private void DisplayInteractText(InteractTriggerEnterEvent trigger) {
         interactText.text = trigger.UIMessage;
+    }
+
+    private void DisplayMessageOnUI(DisplayUIMessage message) {
+        if(message.PlayUISFX)
+            EventSystem<SoundEffectEvent>.FireEvent(new SoundEffectEvent(UIMessageSFX));
+        StartCoroutine(SpellOutText(message.UIMessage));
+        this.Invoke(() => ClearUIMessage(null), message.duration);
+    }
+
+    private IEnumerator SpellOutText(string message) {
+        string word = "";
+        
+        foreach (char letter in message) {
+            word += letter;
+            interactText.text = word;
+            yield return new WaitForSeconds(.02f);
+        }
     }
     
     private void ClearUIMessage(InteractTriggerExitEvent exitEvent) {

@@ -128,6 +128,17 @@ namespace EventCallbacks
             this.duration = duration;
         }
     }
+
+    public class DisplayUIMessage : EventInfo {
+        public readonly string UIMessage;
+        public readonly float duration;
+        public readonly bool PlayUISFX;
+        public DisplayUIMessage(string message, float duration, bool PlayUISFX) {
+            UIMessage = message;
+            this.duration = duration;
+            this.PlayUISFX = PlayUISFX;
+        }
+    }
     
 }
 

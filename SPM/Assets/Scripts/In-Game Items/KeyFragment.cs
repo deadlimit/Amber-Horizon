@@ -23,6 +23,7 @@ public class KeyFragment : MonoBehaviour
             //behöver inte ens skicka events om inte fler saker ska utföras!! 
             KeyPickUpEvent kpue = new KeyPickUpEvent();
             EventSystem<KeyPickUpEvent>.FireEvent(kpue);
+            EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("Key fragment aquired", 2, true));
         }
     }
 }

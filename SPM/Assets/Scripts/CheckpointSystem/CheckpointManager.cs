@@ -10,8 +10,6 @@ public class CheckpointManager : MonoBehaviour {
     private Transform player;
 
     private static int NextID = 0;
-
-    public int objects;
     
     private void Awake() {
 
@@ -42,14 +40,10 @@ public class CheckpointManager : MonoBehaviour {
             }
             
         });
-
-        print(closestCheckpoint);
+        
         activeCheckpointPosition = closestCheckpoint;
-        activeCheckpointPosition.AddToActivatedList();
-
+        
     }
-
-    private void Update() => objects = checkpoints.Count;
     
     private void UpdateCheckPoint(int ID) {
         Checkpoint point = checkpoints[ID];

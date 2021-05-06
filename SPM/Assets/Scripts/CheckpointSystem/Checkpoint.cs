@@ -36,13 +36,11 @@ public class Checkpoint : MonoBehaviour {
         OnPlayerEnter?.Invoke(ID);
         
         EventSystem<CheckPointActivatedEvent>.FireEvent(new CheckPointActivatedEvent(activateAudioClip, ID));
-        AddToActivatedList();
+        EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("Checkpoint activated", 2, false));
+        activatedCheckpoints.Add(this);
         enabled = false;
     }
-
-    public void AddToActivatedList() {
-        activatedCheckpoints.Add(this);
-    }
+    
 
     public void ChangeParticleColor(bool isActive)
     {             

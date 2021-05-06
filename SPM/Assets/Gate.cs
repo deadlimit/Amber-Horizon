@@ -6,10 +6,6 @@ using EventCallbacks;
 public class Gate : MonoBehaviour
 {   
     Animator animator;
-
-    public GameObject dustVFX_Right;
-    public GameObject dustVFX_Left;
-
     private void OnEnable() 
     {
         animator = GetComponent<Animator>();
@@ -20,8 +16,12 @@ public class Gate : MonoBehaviour
     private void DoorUnlocked(UnlockEvent ue)
     {
         animator.SetTrigger("OpenGate");
-        dustVFX_Right.SetActive(true);
-        dustVFX_Left.SetActive(true);
+
+        ParticleSystem[] systems = GetComponentsInChildren<ParticleSystem>();
+        
+        foreach(ParticleSystem system in systems)
+            system.Play();
+        
     }
 
 

@@ -6,7 +6,7 @@ using UnityEngine;
 public class TransitUnit : InteractableObject {
     
     private static HashSet<TransitUnit> activatedTransitUnits = new HashSet<TransitUnit>();
-
+    
     public Checkpoint AttachedCheckpoint { get; private set; }
     
     private Collider triggerCollider;
@@ -14,11 +14,13 @@ public class TransitUnit : InteractableObject {
     private void OnEnable() {
         EventSystem<ExitTransitViewEvent>.RegisterListener(EnableTriggers);
         EventSystem<CheckPointActivatedEvent>.RegisterListener(ActivateTransitUnit);
+        EventSystem<StartSceneTransitEvent>.RegisterListener(ClearTransitUnits);
     }
 
     private void OnDisable() {
         EventSystem<ExitTransitViewEvent>.UnregisterListener(EnableTriggers);
         EventSystem<CheckPointActivatedEvent>.UnregisterListener(ActivateTransitUnit);
+        EventSystem<StartSceneTransitEvent>.RegisterListener(ClearTransitUnits);
     }
 
     private void Awake() {
@@ -48,5 +50,9 @@ public class TransitUnit : InteractableObject {
     private void ActivateTransitUnit(CheckPointActivatedEvent checkPointActivatedEvent) {
         if(checkPointActivatedEvent.ID.Equals(AttachedCheckpoint.ID))
             activatedTransitUnits.Add(this);
+    }
+
+    private void ClearTransitUnits(StartSceneTransitEvent transitEvent) {
+        activatedTransitUnits.Clear();
     }
 }
