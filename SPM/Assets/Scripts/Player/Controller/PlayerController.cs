@@ -51,7 +51,6 @@ public class PlayerController : MonoBehaviour
         input = inp;
         if (input.magnitude > 1f)
         {
-            Debug.Log("Grounded input normalized");
             input.Normalize();
         }
         PlayerDirection();
