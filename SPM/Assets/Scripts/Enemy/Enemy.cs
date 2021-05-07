@@ -7,7 +7,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     public Rigidbody Rigidbody { get; set; }
     public Animator Animator { get; private set; }
     public AIPathfinder Pathfinder { get; private set; }
-    public Transform Target { get; private set; }
+    public Transform Target { get;  set; }
     public CapsuleCollider Collider { get; private set; }
     public Vector3 originPosition { get; set; }
     

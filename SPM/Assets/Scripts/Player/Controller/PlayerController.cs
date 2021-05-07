@@ -51,7 +51,6 @@ public class PlayerController : MonoBehaviour
         input = inp;
         if (input.magnitude > 1f)
         {
-            Debug.Log("Grounded input normalized");
             input.Normalize();
         }
         PlayerDirection();
@@ -127,7 +126,7 @@ public class PlayerController : MonoBehaviour
         fixedDeltaTime gör att assignmenten alltid blir samma.. men då har vi antalet frames att ta in i beräkningen
          */
         force = input * acceleration;
-        Debug.Log(force);
+
     }
 
     void PlayerDirection() 
