@@ -6,27 +6,52 @@ public class MenuTest : MonoBehaviour
 {
     public GameObject menu;
 
-    // Start is called before the first frame update
     void Start()
     {
         menu.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            menu.SetActive(true);
-            Cursor.lockState = CursorLockMode.Confined;
-            Time.timeScale = 0;
+            PauseGame();
         }
     }
 
     public void OnClose()
     {
+        UnpauseGame();
+    }
+
+    private void PauseGame()
+    {
+        Cursor.lockState = CursorLockMode.Confined;
+        menu.SetActive(true);
+        Time.timeScale = 0;
+        AudioListener.pause = true;
+
+
+        GameObject playerObj = GameObject.FindWithTag("Player");
+        playerObj.GetComponent<PlayerController>().enabled = false;
+
+        GameObject camObj = GameObject.FindWithTag("MainCamera");
+        camObj.GetComponent<ThirdPersonCamera>().enabled = false;
+    }
+
+    private void UnpauseGame()
+    {
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1;
+        AudioListener.pause = false;
+
+
+        GameObject playerObj = GameObject.FindWithTag("Player");
+        playerObj.GetComponent<PlayerController>().enabled = true;
+
+        GameObject camObj = GameObject.FindWithTag("MainCamera");
+        camObj.GetComponent<ThirdPersonCamera>().enabled = true;
+
     }
 
 }
