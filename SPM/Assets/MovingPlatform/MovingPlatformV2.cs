@@ -31,7 +31,7 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
         Debug.DrawLine(transform.position,  maxFront, Color.red);
         Debug.DrawLine(transform.position,  maxBack, Color.green);
 
-        physics.ApplyAirResistance();
+        //physics.ApplyAirResistance();
         PreventOutOfBounds();
     }
     
@@ -46,16 +46,16 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
         if (dotProduct > 0.1f)
         {
             if (Vector3.Dot(transform.forward, transform.position - startPos) < 0 || Vector3.Distance(transform.position, startPos) < frontDistance)
-                movementDirection = transform.forward * (MovementSpeed * Time.deltaTime);
+                movementDirection = transform.forward * (MovementSpeed * Time.fixedDeltaTime);
         }
         else if (dotProduct < -0.1f)
         {
             if (Vector3.Dot(transform.forward, transform.position - startPos) > 0 || Vector3.Distance(transform.position, startPos) < backDistance)
-                movementDirection = -transform.forward * (MovementSpeed * Time.deltaTime);
+                movementDirection = -transform.forward * (MovementSpeed * Time.fixedDeltaTime);
         }
 
 
-        physics.velocity = movementDirection * multiplier;
+        physics.velocity  = (movementDirection * multiplier);
     }
 
     private void PreventOutOfBounds() {
