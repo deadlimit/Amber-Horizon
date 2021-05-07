@@ -16,7 +16,7 @@ public class CheckpointManager : MonoBehaviour {
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
         float currentMinimumDistance = int.MaxValue;
-        
+        Checkpoint closestCheckpoint = null;
         //Hämta alla gameobjects med Checkpoints-tag
         List<GameObject> checkpointsInScene = new List<GameObject>(GameObject.FindGameObjectsWithTag("Checkpoint"));
         
@@ -32,23 +32,30 @@ public class CheckpointManager : MonoBehaviour {
             
             checkpoints.Add(currentCheckpoint.ID, currentCheckpoint);
 
-            float distanceToPlayer = Vector3.Distance(checkpoint.transform.position, player.transform.position);
-
-            if (distanceToPlayer < currentMinimumDistance) 
-                activeCheckpointPosition = currentCheckpoint;
+            float distanceToPlayer = Vector3.Distance(player.transform.position, currentCheckpoint.transform.position);
+            
+            if (distanceToPlayer < currentMinimumDistance) {
+                closestCheckpoint = currentCheckpoint;
+                currentMinimumDistance = distanceToPlayer;
+            }
             
         });
+        
+        activeCheckpointPosition = closestCheckpoint;
         
     }
     
     private void UpdateCheckPoint(int ID) {
         Checkpoint point = checkpoints[ID];
-        
+        //här sätts activecheckpoint till röd
+        activeCheckpointPosition.ChangeParticleColor(false);
         if(activeCheckpointPosition)
             activeCheckpointPosition.gameObject.SetActive(true);
         
         activeCheckpointPosition = point;
-        
+        //här sätts den nya activecheckpoint till grön
+        activeCheckpointPosition.ChangeParticleColor(true);
+
         activeCheckpointPosition.gameObject.SetActive(false);
     }
 

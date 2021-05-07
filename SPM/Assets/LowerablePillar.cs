@@ -1,11 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
-public class LowerablePillar : MonoBehaviour {
+public class LowerablePillar : MonoBehaviour, IEventPanelInteract {
 
     public float unitsDown;
     public float speed;
     private bool hasLowered;
+    
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player") == false) return;
 
@@ -25,7 +26,22 @@ public class LowerablePillar : MonoBehaviour {
             transform.position = Vector3.Lerp(transform.position, distanceDown, Time.deltaTime * speed);
             yield return null;
         }
+        
+    }
 
-        print("done");
+    public void ActivateEvent() {
+        throw new System.NotImplementedException();
+    }
+
+    public void IdleEvent() {
+        throw new System.NotImplementedException();
+    }
+
+    public void EventDone() {
+        throw new System.NotImplementedException();
+    }
+
+    public float CalculatePercentageDone() {
+        throw new System.NotImplementedException();
     }
 }

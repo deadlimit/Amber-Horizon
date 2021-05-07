@@ -6,7 +6,6 @@ using EventCallbacks;
 public class Gate : MonoBehaviour
 {   
     Animator animator;
-
     private void OnEnable() 
     {
         animator = GetComponent<Animator>();
@@ -17,6 +16,12 @@ public class Gate : MonoBehaviour
     private void DoorUnlocked(UnlockEvent ue)
     {
         animator.SetTrigger("OpenGate");
+
+        ParticleSystem[] systems = GetComponentsInChildren<ParticleSystem>();
+        
+        foreach(ParticleSystem system in systems)
+            system.Play();
+        
     }
 
 

@@ -28,7 +28,7 @@ public class EnemyPatrolState : State {
             forager.stateMachine.ChangeState<EnemyProximityState>();
         }
 
-       if (forager.Pathfinder.agent.remainingDistance < .1f) 
+        if (forager.Pathfinder.agent.remainingDistance < .1f) 
            forager.stateMachine.ChangeState<EnemyIdleState>();
        
     }

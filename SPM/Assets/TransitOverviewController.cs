@@ -29,7 +29,7 @@ public class TransitOverviewController : MonoBehaviour {
     }
 
     private IEnumerator SpawnButtons(HashSet<TransitUnit> buttons, TransitUnit activatedTransitUnit) {
-
+        
         yield return new WaitForSeconds(WaitUntilButtonSpawn);
 
         foreach (TransitUnit transitUnit in buttons) {

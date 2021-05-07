@@ -86,9 +86,10 @@ namespace EventCallbacks
 
     public class CheckPointActivatedEvent : EventInfo {
         public readonly AudioClip audio;
-
-        public CheckPointActivatedEvent(AudioClip audio) {
+        public readonly int ID;
+        public CheckPointActivatedEvent(AudioClip audio, int ID) {
             this.audio = audio;
+            this.ID = ID;
         }
     }
 
@@ -125,6 +126,17 @@ namespace EventCallbacks
 
         public EnterSlowMotionEvent(float duration) {
             this.duration = duration;
+        }
+    }
+
+    public class DisplayUIMessage : EventInfo {
+        public readonly string UIMessage;
+        public readonly float duration;
+        public readonly bool PlayUISFX;
+        public DisplayUIMessage(string message, float duration, bool PlayUISFX) {
+            UIMessage = message;
+            this.duration = duration;
+            this.PlayUISFX = PlayUISFX;
         }
     }
     

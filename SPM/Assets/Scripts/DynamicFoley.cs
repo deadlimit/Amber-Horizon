@@ -7,7 +7,7 @@ public class DynamicFoley : MonoBehaviour
     private AudioSource[] m_AudioSource;
     private double time;
     private float filterTime;
-
+    
     public AudioClip defaultSound;
     public AudioClip houseSound;
     public AudioClip plattformSound;
@@ -16,15 +16,14 @@ public class DynamicFoley : MonoBehaviour
 
     private string colliderType;
 
-
+    
     // Start is called before the first frame update
     void Start()
     {
         m_AudioSource = GetComponents<AudioSource>();
         time = AudioSettings.dspTime;
         filterTime = 0.2f;
-
-
+        
     }
 
     void Update()
@@ -42,7 +41,7 @@ public class DynamicFoley : MonoBehaviour
                 if (act)
                 {
                     colliderType = act.gameObject.GetComponent<SurfaceColliderType>().GetTerrainType();
-                    print("aaa");
+                    
                 }
             }
         }

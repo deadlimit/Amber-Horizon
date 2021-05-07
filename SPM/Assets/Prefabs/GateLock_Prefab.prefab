@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6602115633302618540}
   - component: {fileID: 6602115633302618538}
   m_Layer: 0
-  m_Name: WB_EndGateLock
+  m_Name: GateLock_Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,9 +28,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6295474696737686190}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -96.098, y: -3.0292282, z: 70.276}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 3.253244, y: 3.253244, z: 3.253244}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: 93c5dacf6484196408c9c95b89f599af, type: 3}
+  - {fileID: 2100000, guid: a7f6f0dd2e7c88d4eae100222cdf4c1c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -125,3 +125,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78af3169e2b52754da5d55d104ecd522, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UIMessage: Press F to open
+  OpenDoorWithoutKeys: 0
