@@ -12,10 +12,9 @@ public class EnemyBailState : State {
     }
     
     public override void Enter() {
-        Debug.Log("Bail State");
         forager.Collider.enabled = false;
         forager.Invoke(() => forager.Animator.SetTrigger("Teleport"));
-        //forager.Invoke(Move, .5f);
+        forager.Invoke(Move, .5f);
     }
     
     private void Move() {

@@ -14,7 +14,6 @@ public class EnemyProximityState : State {
     }
 
     public override void Enter() {
-        Debug.Log("Prox State");
         forager.Pathfinder.agent.ResetPath();
     }
 

@@ -21,8 +21,6 @@ public class StateMachine
             if (!currentState)
                 currentState = instantiated;
         }
-
-       // currentState = instantiatedStates[(typeof(EnemyPatrolState))];
         
     }
     public void RunUpdate() 

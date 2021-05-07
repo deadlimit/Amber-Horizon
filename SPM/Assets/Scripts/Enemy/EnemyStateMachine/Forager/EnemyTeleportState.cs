@@ -12,7 +12,6 @@ public class EnemyTeleportState : State {
     }
 
     public override void Enter() {
-        Debug.Log("Teleport State");
         forager.Animator.StopPlayback();
         forager.Animator.SetTrigger("Teleport");
 
@@ -25,6 +24,6 @@ public class EnemyTeleportState : State {
         forager.Invoke(() => {
             forager.transform.position = randomPosition;
             forager.stateMachine.ChangeState<EnemyProximityState>();
-        },0.2f);
+        }, .2f);
     }
 }

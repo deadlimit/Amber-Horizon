@@ -7,10 +7,7 @@ public class EnemyDistanceState : State {
     protected override void Initialize() {
         forager = (Forager) owner;
     }
-    public override void Enter()
-    {
-        Debug.Log("Distance state");
-    }
+
     public override void RunUpdate() {
         forager.transform.LookAt(forager.Target);
         if(forager.ProximityCast(forager.outerRing))

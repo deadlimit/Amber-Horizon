@@ -13,13 +13,12 @@ public class EnemyDeathState : State {
         forager.Animator.SetTrigger("Die");
         forager.Pathfinder.agent.ResetPath();
         forager.Pathfinder.agent.isStopped = true;
-        Debug.Log("die");
     }
 
     public override void RunUpdate() {
         
         if (forager.activeBlackHole != null) {
-
+            //Debug.Log("die");
             forager.transform.LookAt(forager.activeBlackHole.transform);
 
             forager.transform.position = Vector3.Lerp(forager.transform.position, forager.activeBlackHole.center.transform.position, Time.deltaTime);
@@ -29,11 +28,7 @@ public class EnemyDeathState : State {
         
         Destroy(forager.gameObject, 2.5f);
             
-    }
-    public override void Exit()
-    {
-        Debug.Log("Leaving death state");
-    }
-
+    }      
+    
 }
         

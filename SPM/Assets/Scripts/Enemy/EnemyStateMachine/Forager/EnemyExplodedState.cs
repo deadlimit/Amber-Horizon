@@ -13,7 +13,6 @@ public class EnemyExplodedState : State
 
     public override void Enter()
     {
-        Debug.Log("Exploded State");
         forager.Pathfinder.agent.ResetPath();
         forager.Pathfinder.agent.isStopped = true;
         Destroy(forager.gameObject, 3f);

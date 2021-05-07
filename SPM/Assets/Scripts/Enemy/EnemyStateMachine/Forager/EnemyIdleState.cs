@@ -9,7 +9,6 @@ public class EnemyIdleState : State {
     }
 
     public override void Enter() {
-        Debug.Log("Idle state" + forager.gameObject);
         if(forager.ProximityCast(forager.outerRing))
             forager.stateMachine.ChangeState<EnemyProximityState>();
         
