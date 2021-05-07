@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuTest : MonoBehaviour
 {
     [SerializeField] private GameObject menu;
+    public string MainMenuSceneName;
 
     void Start()
     {
@@ -62,6 +64,16 @@ public class MenuTest : MonoBehaviour
         GameObject camObj = GameObject.FindWithTag("MainCamera");
         camObj.GetComponent<ThirdPersonCamera>().enabled = true;
 
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
+    public void MainMenu()
+    {
+        print("load main menu scene");
     }
 
 }
