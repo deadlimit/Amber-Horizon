@@ -89,10 +89,6 @@ public class BlackHole : MonoBehaviour
             
             velocity += Vector3.down * Time.deltaTime * gravity;
         }    
-   
-
-        velocity *= Mathf.Pow(airResistance, Time.deltaTime);
-        transform.Translate(velocity * Time.deltaTime);
     }
 
     private void Die() => Destroy(gameObject);
