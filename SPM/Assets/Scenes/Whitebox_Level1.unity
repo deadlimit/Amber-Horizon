@@ -11895,42 +11895,6 @@ PrefabInstance:
       propertyPath: m_text
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 978711527852657021, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: maxSpeed
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 978711527852657021, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: turnRate
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 978711527852657021, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: airControl
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 978711527852657021, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: jumpHeight
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 978711527852657021, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: acceleration
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 978711527852657021, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: deceleration
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 978711527852657021, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: groundCheckDistance
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 978711527852657021, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: groundCheckMask.m_Bits
-      value: 576
-      objectReference: {fileID: 0}
-    - target: {fileID: 978711527852657021, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: retainedSpeedWhenTurning
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4994216072001837894, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_Name
       value: Player_Prefab
@@ -11949,15 +11913,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5485544801497685701, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: turnRate
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5485544801497685701, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
-      propertyPath: m_Enabled
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5485544801497685701, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: airControl
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5485544801497685701, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
+      propertyPath: jumpHeight
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5485544801497685701, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: acceleration
@@ -11965,7 +11929,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5485544801497685701, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: retainedSpeedWhenTurning
-      value: 1
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 5621853126853591548, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_RootOrder
@@ -11973,7 +11937,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5621853126853591548, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.73
+      value: 33.2
       objectReference: {fileID: 0}
     - target: {fileID: 5621853126853591548, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -11981,7 +11945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5621853126853591548, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -203.4
+      value: -58.9
       objectReference: {fileID: 0}
     - target: {fileID: 5621853126853591548, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -29932,7 +29896,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7166143695935673401, guid: 959f472c02ae680449f1c1f0829bb022, type: 3}
       propertyPath: MovementSpeed
-      value: 90
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 7166143695935673401, guid: 959f472c02ae680449f1c1f0829bb022, type: 3}
       propertyPath: MaxMovementLengthBack
@@ -34945,33 +34909,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1737953804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1737953802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65db9b2d341de37488d13cb274793656, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumpHeight: 5
-  acceleration: 5
-  deceleration: 2
-  airControl: 0.2
-  maxSpeed: 5
-  turnRate: 4
-  retainedSpeedWhenTurning: 0.33
-  groundCheckMask:
-    serializedVersion: 2
-    m_Bits: 0
-  states: []
-  groundCheckDistance: 0.05
-  force: {x: 0, y: 0, z: 0}
-  bhVelocity: {x: 0, y: 0, z: 0}
-  airborne: 0
 --- !u!1001 &1739722305
 PrefabInstance:
   m_ObjectHideFlags: 0
