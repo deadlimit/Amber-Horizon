@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MenuTest : MonoBehaviour
 {
-    public GameObject menu;
+    [SerializeField] private GameObject menu;
 
     void Start()
     {
@@ -15,7 +15,16 @@ public class MenuTest : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            PauseGame();
+            if(!menu.activeInHierarchy)
+            {
+                PauseGame();
+            }else 
+            
+            if(menu.activeInHierarchy)
+            {
+                UnpauseGame();
+            }
+            
         }
     }
 
@@ -42,6 +51,7 @@ public class MenuTest : MonoBehaviour
     private void UnpauseGame()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        menu.SetActive(false);
         Time.timeScale = 1;
         AudioListener.pause = false;
 
