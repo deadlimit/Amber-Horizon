@@ -31,7 +31,19 @@ public class PlayerController : MonoBehaviour
     private LineRenderer lr;
     private RaycastHit groundHitInfo;
     public GameplayAbilitySystem abilitySystem { get; private set; }
-    
+
+    private void OnEnable() {
+        EventSystem<CheckPointActivatedEvent>.RegisterListener(CheckpointRestoreHealth);
+        EventSystem<PlayerDiedEvent>.RegisterListener(DisablePlayerControl);
+        EventSystem<PlayerReviveEvent>.RegisterListener(EnablePlayerControl);
+    }
+
+    private void OnDisable() {
+        EventSystem<CheckPointActivatedEvent>.UnregisterListener(CheckpointRestoreHealth);
+        EventSystem<PlayerDiedEvent>.UnregisterListener(DisablePlayerControl);
+        EventSystem<PlayerReviveEvent>.UnregisterListener(EnablePlayerControl);
+    }
+
     void Awake() 
     {
 
@@ -40,7 +52,7 @@ public class PlayerController : MonoBehaviour
         stateMachine = new StateMachine(this, states);       
         lr = GetComponent<LineRenderer>();
 
-        EventSystem<CheckPointActivatedEvent>.RegisterListener(CheckpointRestoreHealth);
+        
     }
 
     private void Start() {
@@ -195,5 +207,13 @@ public class PlayerController : MonoBehaviour
     public float GetPlayerHealth()
     {
         return (float)abilitySystem.GetAttributeValue(typeof(HealthAttribute));
+    }
+
+    private void DisablePlayerControl(PlayerDiedEvent playerDiedEvent) {
+        physics.enabled = false;
+    }
+
+    private void EnablePlayerControl(PlayerReviveEvent playerReviveEvent) {
+        physics.enabled = true;
     }
 }

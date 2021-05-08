@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using AbilitySystem;
 using EventCallbacks;
 using UnityEngine;
@@ -28,11 +26,13 @@ public class PlayerAnimation : MonoBehaviour {
     private void OnEnable() {
         EventSystem<PlayerHitEvent>.RegisterListener(OnPlayerHit);
         EventSystem<AbilityUsed>.RegisterListener(PlayDashAnimation);
+        EventSystem<PlayerDiedEvent>.RegisterListener(OnPlayerDied);
     }
 
     private void OnDisable() {
         EventSystem<PlayerHitEvent>.UnregisterListener(OnPlayerHit);
         EventSystem<AbilityUsed>.UnregisterListener(PlayDashAnimation);
+        EventSystem<PlayerDiedEvent>.UnregisterListener(OnPlayerDied);
 
     }
 
@@ -58,10 +58,8 @@ public class PlayerAnimation : MonoBehaviour {
     }
 
     public void OnDestructorHit(Transform culprit) {
-       // if (!(playerHitEvent.ability is FistPunch)) return;
-        
-        //rotera endast y-axel
-       // transform.LookAt(playerHitEvent.enemyTransform);
+
+        transform.LookAt(culprit);
         Vector3 rotation = transform.rotation.eulerAngles;
         rotation.x = 0;
         rotation.z = 0;
@@ -73,6 +71,15 @@ public class PlayerAnimation : MonoBehaviour {
         animator.SetTrigger("PunchHit");
         GetComponent<PlayerController>().enabled = false;
         this.Invoke(() => physics.maxSpeed = oldMaxSpeed, 1);
+    }
+
+    private void OnPlayerDied(PlayerDiedEvent playerDiedEvent) {
+        animator.SetTrigger("PlayerDeath");
+    }
+
+    private void OnDeathAnimationDone() {
+        EventSystem<PlayerReviveEvent>.FireEvent(null);
+        animator.SetTrigger("PlayerRevive");
     }
 
     public void OnForagerHit(Transform culprit) {

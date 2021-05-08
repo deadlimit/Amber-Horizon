@@ -137,5 +137,7 @@ namespace EventCallbacks
         }
     }
     
+    public class PlayerReviveEvent : EventInfo {}
+    
 }
 
