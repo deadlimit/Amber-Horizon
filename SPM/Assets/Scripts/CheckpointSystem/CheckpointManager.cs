@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using EventCallbacks;
 using UnityEngine;
 
 public class CheckpointManager : MonoBehaviour {
@@ -10,7 +11,12 @@ public class CheckpointManager : MonoBehaviour {
     private Transform player;
 
     private static int NextID = 0;
-    
+
+    private void OnEnable() => EventSystem<CheckPointActivatedEvent>.RegisterListener(UpdateCheckPoint);
+
+    private void OnDisable() => EventSystem<CheckPointActivatedEvent>.UnregisterListener(UpdateCheckPoint);
+
+    //TODO Custom-inspektor för att kunna välja om man vill assigna en referens till startcheckpoint eller om scriptet ska sköta det själv. 
     private void Awake() {
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -27,8 +33,6 @@ public class CheckpointManager : MonoBehaviour {
             Checkpoint currentCheckpoint = checkpoint.GetComponent<Checkpoint>();
 
             currentCheckpoint.ID = NextID++;
-
-            currentCheckpoint.OnPlayerEnter += UpdateCheckPoint;
             
             checkpoints.Add(currentCheckpoint.ID, currentCheckpoint);
 
@@ -45,8 +49,8 @@ public class CheckpointManager : MonoBehaviour {
         
     }
     
-    private void UpdateCheckPoint(int ID) {
-        Checkpoint point = checkpoints[ID];
+    private void UpdateCheckPoint(CheckPointActivatedEvent checkPointActivatedEvent) {
+        Checkpoint point = checkpoints[checkPointActivatedEvent.ID];
         //här sätts activecheckpoint till röd
         activeCheckpointPosition.ChangeParticleColor(false);
         if(activeCheckpointPosition)

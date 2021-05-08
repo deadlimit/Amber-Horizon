@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlackHole : MonoBehaviour
+public class BlackHole : PoolObject
 {
     public LayerMask physicsLayerMask;
     public LayerMask collisionMask;
@@ -11,9 +11,6 @@ public class BlackHole : MonoBehaviour
     public Vector3 velocity;
     public float airResistance = 0f;
     
-    public GameObject sphereEffect;
-    public float maxRadius;
-
     public Transform center;
     
     SphereCollider coll;
@@ -28,25 +25,10 @@ public class BlackHole : MonoBehaviour
     
     private Animator animator;
     
-    private void Awake() {
-        gravitationalPull = GravitationalPull;
-        GravitationalPull = 0;
-        
-        coll = GetComponent<SphereCollider>();
-        centerColl = GetComponent<BoxCollider>();
-        animator = GetComponent<Animator>();
-
-        animator.SetTrigger("Spawn");
-        
-        this.Invoke(() => {
-            animator.SetTrigger("Despawn");
-        }, Lifetime);
-    }
     // Update is called once per frame
     void Update() {
         
         GravitationDrag();
-        //CheckCenterCollision();
         
         velocity *= Mathf.Pow(airResistance, Time.deltaTime);
         transform.Translate(velocity * Time.deltaTime);
@@ -91,11 +73,28 @@ public class BlackHole : MonoBehaviour
         }    
     }
 
-    private void Die() => Destroy(gameObject);
+    private void Die() => gameObject.SetActive(false);
     private void TurnOnGravitationPull() => GravitationalPull = gravitationalPull;
 
     private void StartParticleEffect() {
         GetComponentInChildren<ParticleSystem>().Play();
     }
-    
+
+    public override void Initialize(Vector3 position, Quaternion rotation) {
+
+        base.Initialize(position, rotation);
+        
+        gravitationalPull = GravitationalPull;
+        GravitationalPull = 0;
+        
+        coll = GetComponent<SphereCollider>();
+        centerColl = GetComponent<BoxCollider>();
+        animator = GetComponent<Animator>();
+
+        animator.SetTrigger("Spawn");
+        
+        this.Invoke(() => {
+            animator.SetTrigger("Despawn");
+        }, Lifetime);
+    }
 }

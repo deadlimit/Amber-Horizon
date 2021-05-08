@@ -17,7 +17,6 @@ public class PlayerDiedListener : MonoBehaviour
 
     public void OnPlayerDeath(PlayerDiedEvent pde)
     {
-        Debug.Log("Player died");
         pde.player.GetComponent<Animator>().StopPlayback();
         GameObject.FindGameObjectWithTag("Player").GetComponent<PhysicsComponent>().velocity = Vector3.zero;
         checkpointManager.ResetPlayerPosition();

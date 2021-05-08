@@ -3,13 +3,14 @@ using UnityEngine.EventSystems;
 
 [CreateAssetMenu(fileName = "CameraFocusState", menuName = "New CameraFocusState")]
 public class CameraFocusState : State {
-
+    
+    [SerializeField] private float Distance;
+    [SerializeField] private float ZoomInSpeed;
     private ThirdPersonCamera camera;
-
-    public float Distance;
-    public float ZoomInSpeed;
     private Transform target;
     private PlayerController player;
+    
+    //TODO Annat sätt att få tag i spelaren?
     protected override void Initialize() {
         camera = owner as ThirdPersonCamera;
         target = GameObject.FindGameObjectWithTag("KeyCameraTarget").transform;

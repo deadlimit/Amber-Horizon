@@ -126,7 +126,6 @@ public class PlayerController : MonoBehaviour
         fixedDeltaTime gör att assignmenten alltid blir samma.. men då har vi antalet frames att ta in i beräkningen
          */
         force = input * acceleration;
-        Debug.Log(force);
     }
 
     void PlayerDirection() 
@@ -173,23 +172,17 @@ public class PlayerController : MonoBehaviour
         physics.AddForce(force);
         force = Vector3.zero;
     }
-
-    private void FixedUpdate()
-    {
-        
-    }
+    
     public void RestoreHealth()
     {
         abilitySystem.TryActivateAbilityByTag(GameplayTags.HealthRestoreTag);
-        Debug.Log("reached RestoreHealth, in PlayerCOntroller");
     }
 
     private void CheckpointRestoreHealth(CheckPointActivatedEvent checkPointActivatedEvent)
     {
         RestoreHealth();
     }
-
-
+    
     public bool isGrounded() {
         
         Physics.Raycast(transform.position, Vector3.down, out groundHitInfo, groundCheckDistance, groundCheckMask);

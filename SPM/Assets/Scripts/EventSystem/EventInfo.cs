@@ -12,7 +12,6 @@ namespace EventCallbacks
         public string EventDescription; 
     }
     
-
     public class KeyPickUpEvent : EventInfo { }
     public class UnlockEvent : EventInfo { }
 
@@ -28,19 +27,17 @@ namespace EventCallbacks
 
     public class PlayerHitEvent : EventInfo {
 
-        public readonly Transform enemyTransform;
-        public readonly GameplayAbility ability;
- 
-        public PlayerHitEvent(Transform enemyTransform, GameplayAbility ability) {
-            this.enemyTransform = enemyTransform;
-            this.ability = ability;
+        public readonly Transform culprit;
+        public readonly GameplayEffect appliedEffect;
+        public PlayerHitEvent(Transform culprit, GameplayEffect appliedEffect) {
+            this.culprit = culprit;
+            this.appliedEffect = appliedEffect;
         }
-
     }
 
     public class AbilityUsed : EventInfo {
         public readonly GameplayAbility ability;
-
+        
         public AbilityUsed(GameplayAbility gameplayAbility) {
             ability = gameplayAbility;
         }

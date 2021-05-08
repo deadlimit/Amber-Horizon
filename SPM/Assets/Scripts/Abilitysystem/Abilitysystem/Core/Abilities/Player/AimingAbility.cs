@@ -10,16 +10,13 @@ public class AimingAbility : GameplayAbility
     public LineRenderer lr;
     public float flightTime = 1f;
     public BlackHole bh;
-    public Camera playerCam;
     public float maxDistance = 10f;
 
     private int resolution = 10;
-    private Camera cam;
     private Vector3 vo;
     private void OnEnable()
     {
         launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
-        cam = Camera.main;
     }
     public override void Activate(GameplayAbilitySystem Owner) {
         
@@ -64,8 +61,8 @@ public class AimingAbility : GameplayAbility
     }
     public void FireBlackHole() 
     {
-        BlackHole obj = Instantiate(bh, launchPoint.gameObject.transform.position, Quaternion.identity);
-        obj.velocity = vo;
+        GameObject blackHole = ObjectPooler.Instance.Spawn("BlackHole",launchPoint.gameObject.transform.position, Quaternion.identity);
+        blackHole.GetComponent<BlackHole>().velocity = vo;
     }
 
     void DrawArc(Vector3 vo, Vector3 finalPos)

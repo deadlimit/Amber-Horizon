@@ -10,8 +10,9 @@ public class CameraBirdView : State {
     private Transform birdViewTransform;
     private ThirdPersonCamera cameraController;
 
-    public float ZoomOutSpeed;
+    [SerializeField] private float zoomOutSpeed;
     
+    //TODO 3D-view vid checkpointen istället för att lerpa upp i luften?
     protected override void Initialize() {
         cameraController = owner as ThirdPersonCamera;
         birdViewTransform = GameObject.FindGameObjectWithTag("TransitOverview").transform;
@@ -23,8 +24,8 @@ public class CameraBirdView : State {
     }
 
     public override void RunUpdate() {
-        cameraController.transform.position = Vector3.Lerp(cameraController.transform.position, birdViewTransform.transform.position, Time.deltaTime * ZoomOutSpeed);
-        cameraController.transform.rotation = Quaternion.Lerp(cameraController.transform.rotation, birdViewTransform.transform.rotation, Time.deltaTime * ZoomOutSpeed);
+        cameraController.transform.position = Vector3.Lerp(cameraController.transform.position, birdViewTransform.transform.position, Time.deltaTime * zoomOutSpeed);
+        cameraController.transform.rotation = Quaternion.Lerp(cameraController.transform.rotation, birdViewTransform.transform.rotation, Time.deltaTime * zoomOutSpeed);
 
         if (Input.GetKeyDown(KeyCode.Escape)) {
             EventSystem<ExitTransitViewEvent>.FireEvent(null);

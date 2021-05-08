@@ -6,21 +6,17 @@ using UnityEngine;
 [Serializable]
 public class Checkpoint : MonoBehaviour {
 
+    
     public static List<Checkpoint> activeCheckpoints = new List<Checkpoint>();
     public static List<Checkpoint> activatedCheckpoints = new List<Checkpoint>();
     
-    public AudioClip activateAudioClip;
-
+   
     public int ID { get; set; }
+    public Vector3 SpawnPosition { get; private set; }
 
-    public Vector3 SpawnPosition { get; set; }
-    
-    public Action<int> OnPlayerEnter;
-
-    public ParticleSystem activeIndicatorVFX;
-
-    [SerializeField]
-    private Color activeColor, inactiveColor;
+    [SerializeField] private AudioClip activateAudioClip;
+    [SerializeField] private Color activeColor, inactiveColor;
+    [SerializeField] private ParticleSystem activeIndicatorVFX;
 
     private void OnEnable() => activeCheckpoints.Add(this);
 
@@ -32,8 +28,6 @@ public class Checkpoint : MonoBehaviour {
     
     private void OnTriggerEnter(Collider other) {
         if (!other.CompareTag("Player")) return;
-        
-        OnPlayerEnter?.Invoke(ID);
         
         EventSystem<CheckPointActivatedEvent>.FireEvent(new CheckPointActivatedEvent(activateAudioClip, ID));
         EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("Checkpoint activated", 2, false));
@@ -48,8 +42,6 @@ public class Checkpoint : MonoBehaviour {
         activeIndicatorVFX.Clear();
         if (isActive)
         {
-            Debug.Log("in Checkpoint ChangeParticleColor. is active.");
-
             var main = activeIndicatorVFX.main;
             main.startColor = activeColor;
 
@@ -59,7 +51,6 @@ public class Checkpoint : MonoBehaviour {
         }
         else 
         {
-            Debug.Log("in Checkpoint ChangeParticleColor. is not active.");
             //activeIndicatorVFX.main.startColor = activeColor;
 
             var main = activeIndicatorVFX.main;
