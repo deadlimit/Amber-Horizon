@@ -4,9 +4,8 @@ using UnityEngine;
 
 [Serializable]
 public class Checkpoint : MonoBehaviour {
-
-    public static Checkpoint ActiveCheckPoint;
-
+    public static Checkpoint ActiveCheckPoint { get; private set; }
+    
     private Transform player;
     
     public Vector3 SpawnPosition { get; private set; }
