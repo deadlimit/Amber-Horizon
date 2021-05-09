@@ -14,7 +14,6 @@ public abstract class InteractableObject : MonoBehaviour {
     //Vad som händer när man går ur triggern
     protected abstract void ExitTrigger();
     
-    
     private void OnTriggerEnter(Collider other) {
         if (PlayerEntered(other.gameObject) == false) return;
         EnterTrigger(UIMessage);

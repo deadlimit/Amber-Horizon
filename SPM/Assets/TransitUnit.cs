@@ -6,7 +6,7 @@ using UnityEngine;
 public class TransitUnit : InteractableObject {
     
     private static HashSet<TransitUnit> activatedTransitUnits = new HashSet<TransitUnit>();
-    
+
     public Checkpoint AttachedCheckpoint { get; private set; }
     
     private Collider triggerCollider;
@@ -37,18 +37,19 @@ public class TransitUnit : InteractableObject {
     }
     
     protected override void InsideTrigger(GameObject entity) {
+        
         if (Input.GetKeyDown(KeyCode.F)) {
             EventSystem<EnterTransitViewEvent>.FireEvent(new EnterTransitViewEvent(activatedTransitUnits, this));
             triggerCollider.enabled = false;
         }
     }
-
+    
     protected override void ExitTrigger() {
         EventSystem<InteractTriggerExitEvent>.FireEvent(new InteractTriggerExitEvent());
     }
 
     private void ActivateTransitUnit(CheckPointActivatedEvent checkPointActivatedEvent) {
-        if(checkPointActivatedEvent.ID.Equals(AttachedCheckpoint.ID))
+        if(checkPointActivatedEvent.checkpoint.GetInstanceID().Equals(AttachedCheckpoint.GetInstanceID()))
             activatedTransitUnits.Add(this);
     }
 

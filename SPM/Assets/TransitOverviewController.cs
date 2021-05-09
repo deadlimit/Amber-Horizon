@@ -7,10 +7,10 @@ using UnityEngine.UI;
 
 public class TransitOverviewController : MonoBehaviour {
 
-    public GameObject TransitButton;
-    public float WaitUntilButtonSpawn;
-    private List<GameObject> activeButtons = new List<GameObject>();
-
+    [SerializeField] private GameObject transitButton;
+    [SerializeField] private float waitUntilButtonSpawn;
+    private readonly List<GameObject> activeButtons = new List<GameObject>();
+    
     private Coroutine spawnButtons;
     
     private void OnEnable() {
@@ -23,17 +23,18 @@ public class TransitOverviewController : MonoBehaviour {
         EventSystem<ExitTransitViewEvent>.UnregisterListener(ExitView);
     }
     
-    
     private void TransitView(EnterTransitViewEvent viewEvent) {
         spawnButtons = StartCoroutine(SpawnButtons(viewEvent.TransitUnits, viewEvent.ActivatedTransitUnit));
     }
 
     private IEnumerator SpawnButtons(HashSet<TransitUnit> buttons, TransitUnit activatedTransitUnit) {
         
-        yield return new WaitForSeconds(WaitUntilButtonSpawn);
+        yield return new WaitForSeconds(waitUntilButtonSpawn);
 
+        print(buttons.Count);
+        
         foreach (TransitUnit transitUnit in buttons) {
-            GameObject button = Instantiate(TransitButton, Camera.main.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, gameObject.transform);
+            GameObject button = Instantiate(transitButton, Camera.main.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, gameObject.transform);
             
             TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
 
@@ -66,7 +67,6 @@ public class TransitOverviewController : MonoBehaviour {
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        
     }
     
     

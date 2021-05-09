@@ -82,11 +82,12 @@ namespace EventCallbacks
     }
 
     public class CheckPointActivatedEvent : EventInfo {
+        public readonly Checkpoint checkpoint;
         public readonly AudioClip audio;
-        public readonly int ID;
-        public CheckPointActivatedEvent(AudioClip audio, int ID) {
+        public CheckPointActivatedEvent(Checkpoint checkpoint, AudioClip audio) {
+            this.checkpoint = checkpoint;
             this.audio = audio;
-            this.ID = ID;
+            
         }
     }
 
@@ -102,9 +103,9 @@ namespace EventCallbacks
     public class EnterTransitViewEvent : EventInfo {
         public readonly HashSet<TransitUnit> TransitUnits;
         public readonly TransitUnit ActivatedTransitUnit;
-        public EnterTransitViewEvent(HashSet<TransitUnit> transitUnits, TransitUnit ActivatedTransitUnit) {
+        public EnterTransitViewEvent(HashSet<TransitUnit> transitUnits, TransitUnit activatedTransitUnit) {
             TransitUnits = transitUnits;
-            this.ActivatedTransitUnit = ActivatedTransitUnit;
+            ActivatedTransitUnit = activatedTransitUnit;
         }
     }
     

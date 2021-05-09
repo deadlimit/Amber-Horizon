@@ -11,15 +11,18 @@ public class CameraBirdView : State {
     private ThirdPersonCamera cameraController;
 
     [SerializeField] private float zoomOutSpeed;
+
+    private Camera camera;
     
     //TODO 3D-view vid checkpointen istället för att lerpa upp i luften?
     protected override void Initialize() {
         cameraController = owner as ThirdPersonCamera;
         birdViewTransform = GameObject.FindGameObjectWithTag("TransitOverview").transform;
+        camera = Camera.main;
     }
 
     public override void Enter() {
-        Camera.main.orthographic = true;
+        camera.orthographic = true;
         EventSystem<ExitTransitViewEvent>.RegisterListener(CancelView);
     }
 
@@ -43,4 +46,6 @@ public class CameraBirdView : State {
         EventSystem<ExitTransitViewEvent>.UnregisterListener(CancelView);
         Camera.main.orthographic = false;
     }
+    
+
 }
