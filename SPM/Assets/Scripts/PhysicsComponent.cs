@@ -60,8 +60,7 @@ public class PhysicsComponent : MonoBehaviour
             transform.position += velocity * Time.deltaTime;
         
         MoveOutOfGeometry();
-    }
-    
+    }   
     public Vector3 GetXZMovement()
     {
         return new Vector3(velocity.x, 0, velocity.z);
@@ -140,7 +139,7 @@ public class PhysicsComponent : MonoBehaviour
 
     }
     public void BlackHoleGravity(BlackHole bh) {
-        bhGrav = bh.GravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.fixedDeltaTime;
+        bhGrav = bh.GravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
         velocity += bhGrav;
         ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
         bhGrav = Vector3.zero;      
@@ -180,13 +179,8 @@ public class PhysicsComponent : MonoBehaviour
     public void ApplyAirResistance() { velocity *= Mathf.Pow(airResistance, Time.deltaTime); }
     public void AddForce(Vector3 input)
     {
-        velocity += input.magnitude < smallNumber? Vector3.zero : input * Time.deltaTime;
+        velocity += input.magnitude < smallNumber? Vector3.zero : input;
 
-    }
-
-    public void PlatformAddForce(Vector3 input)
-    {
-        velocity += input;
     }
     
 }

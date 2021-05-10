@@ -49,10 +49,6 @@ public class PlayerController : MonoBehaviour
     public void InputGrounded(Vector3 inp) 
     {
         input = inp;
-        if (input.magnitude > 1f)
-        {
-            input.Normalize();
-        }
         PlayerDirection();
         
         if (input.magnitude < float.Epsilon)
@@ -67,7 +63,7 @@ public class PlayerController : MonoBehaviour
 
    public void InputAirborne(Vector3 inp, bool airborne) 
     {
-        input = inp.normalized * airControl;
+        input = inp * airControl;
         PlayerDirection();
         AccelerateAirborne();
         airborne = true;
@@ -79,31 +75,19 @@ public class PlayerController : MonoBehaviour
         if (mp)
         {
             //Debug.Log("On moving platform");
-
-            //Måste slå ut decelerationen så att plattformen får chans att påverka spelaren
-            //men det här är inte riktigt rätt - om man rör sig ett steg i sidled när plattformen är i rörelse
-            //skjutsas man med mer kraft än plattformen, och hamnar lite längre ut på den. 
-            //undrar vad den skillnaden kommer ifrån.
-
-            force = deceleration * mp.GetVelocity().normalized;
-            force += -deceleration * physics.GetXZMovement().normalized;
+            force = deceleration * mp.GetVelocity().normalized * Time.deltaTime;
+            force += -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
         }
         else
-            force = -deceleration * physics.GetXZMovement().normalized;
+            force = -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
         //Velocitys magnitud och riktning, multiplicerat med ett v�rde mellan 1 och 0, fast negativt
-        /*
-         *Frågan är om det faktiskt är en bättre idé att sköta plattformens påverkan på spelaren genom direkt positionsändring, istället för 
-         * att göra det genom velociteten. Tekniskt sett mindre korrekt, men de blir mindre sammankopplade på det sättet, och det svåra med deceleration 
-         * 
-         */
-
     }
     void Accelerate()
     {
         Vector3 inputXZ = new Vector3(input.x, 0, input.z);
         float dot = Vector3.Dot(inputXZ.normalized, physics.GetXZMovement().normalized);
         
-        force = input * acceleration;
+        force = input * Time.deltaTime * acceleration;
         /*
         om vi accelerar i en annan riktning vill vi egentligen bromsa f�rst
         skal�rprodukten anv�nds i multiplikation f�r att avg�ra hur mycket av decelerationen som ska
@@ -120,25 +104,18 @@ public class PlayerController : MonoBehaviour
 
     private void AccelerateAirborne()
     {
-        /*
-         Force assignas här istället för att adderas, då blir resultatet beroende av multiplikationen med DT
-        Men varför påverkas inte det som händer på marken?? Assignment till force där också ju 
-        fixedDeltaTime gör att assignmenten alltid blir samma.. men då har vi antalet frames att ta in i beräkningen
-         */
-        force = input * acceleration;
-        Debug.Log(force);
+        force = input * Time.deltaTime * acceleration;
     }
 
     void PlayerDirection() 
     {
         input = activeCamera.transform.rotation * input;
         input.y = 0;
-        Vector3 normal  = isGrounded() ?  groundHitInfo.normal : Vector3.up;
         RotateTowardsCameraDirection();
         input = input.magnitude * Vector3.ProjectOnPlane(input, physics.groundHitInfo.normal).normalized;
 
     }
-    void Jump() { if (jump) { force.y += jumpHeight / Time.deltaTime; jump = false; }  }
+    void Jump() { if (jump) { force.y += jumpHeight; jump = false; }  }
     public void SetJump()
     {
         jump = true;
@@ -171,13 +148,8 @@ public class PlayerController : MonoBehaviour
         }
 
         physics.AddForce(force);
-        force = Vector3.zero;
     }
 
-    private void FixedUpdate()
-    {
-        
-    }
     public void RestoreHealth()
     {
         abilitySystem.TryActivateAbilityByTag(GameplayTags.HealthRestoreTag);

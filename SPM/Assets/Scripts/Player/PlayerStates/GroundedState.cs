@@ -18,6 +18,7 @@ public class GroundedState : State
             Vector3 input =
         Vector3.right * Input.GetAxisRaw("Horizontal") +
         Vector3.forward * Input.GetAxisRaw("Vertical");
+        input = input.normalized;
 
         player.InputGrounded(input);
         Jump();

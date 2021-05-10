@@ -32,9 +32,7 @@ public class DashAbility : GameplayAbility {
         playerController.physics.velocity = Vector3.zero;
         playerController.physics.gravity = 0;
         playerController.physics.maxSpeed = dashLength;
-
-        //förlåt för divison med DT, det är hemskt och beror på hur fixen med FPS-problemen är. Ska göra om allt senare.. om jag hinner.
-        playerController.force = cameraForwardDirection * dashLength / Time.deltaTime;
+        playerController.force = cameraForwardDirection * dashLength;
         
         //Vänta .4 sekunder innan man sätter på gravitationen igen. 
         yield return new WaitForSeconds(timeWithOutGravity);

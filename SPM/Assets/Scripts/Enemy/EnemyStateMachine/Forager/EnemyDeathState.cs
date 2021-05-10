@@ -13,7 +13,6 @@ public class EnemyDeathState : State {
         forager.Animator.SetTrigger("Die");
         forager.Pathfinder.agent.ResetPath();
         forager.Pathfinder.agent.isStopped = true;
-        forager.StopAllCoroutines();
     }
 
     public override void RunUpdate() {
