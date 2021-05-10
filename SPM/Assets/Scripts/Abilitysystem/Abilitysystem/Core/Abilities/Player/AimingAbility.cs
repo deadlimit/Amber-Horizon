@@ -29,11 +29,10 @@ public class AimingAbility : GameplayAbility
             launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
 
         lr = Owner.gameObject.GetComponent<LineRenderer>();
-        Debug.Assert(lr);
         lr.enabled = true;
         Owner.ApplyEffectToSelf(AppliedEffect);
         
-        Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
         {
@@ -46,6 +45,7 @@ public class AimingAbility : GameplayAbility
             }
             else if ((hit.point - launchPoint.transform.position).magnitude > maxDistance)
             {
+                cursor.SetActive(false);
                 cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
             }
         }
@@ -83,7 +83,6 @@ public class AimingAbility : GameplayAbility
         float displacementY = distance.y;
         float displacementXZ = distance.magnitude;
 
-
         float velXZ = displacementXZ / time;
         float velY = displacementY / time + (0.5f * bh.gravity) * time;
 
@@ -107,7 +106,6 @@ public class AimingAbility : GameplayAbility
         lr.enabled = false;
         cursor.SetActive(false);
         Owner.RemoveTag(this.AbilityTag);
-
     }
 
 

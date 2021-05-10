@@ -70,7 +70,10 @@ public class BlackHole : PoolObject
             }
             
             velocity += Vector3.down * Time.deltaTime * gravity;
-        }    
+        }
+        
+        velocity *= Mathf.Pow(airResistance, Time.deltaTime);
+        transform.Translate(velocity * Time.deltaTime);
     }
 
     private void Die() => gameObject.SetActive(false);

@@ -142,9 +142,12 @@ public class PlayerController : MonoBehaviour
 
     void PlayerDirection() 
     {
-        input = activeCamera.transform.rotation * input;
+        Vector3 temp = activeCamera.transform.rotation.eulerAngles;
+        temp.x = 0;
+        Quaternion q = Quaternion.Euler(temp);
+
+        input = q * input;
         input.y = 0;
-        Vector3 normal  = isGrounded() ?  groundHitInfo.normal : Vector3.up;
         RotateTowardsCameraDirection();
         input = input.magnitude * Vector3.ProjectOnPlane(input, physics.groundHitInfo.normal).normalized;
 
