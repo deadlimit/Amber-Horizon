@@ -15,11 +15,11 @@ public class DashAbility : GameplayAbility {
     }
     
     private IEnumerator Dash(GameplayAbilitySystem Owner) {
-
         PlayerController playerController = Owner.GetComponent<PlayerController>();
         
+        
         //Spara gravitationen innan man sätter den till 0
-        float gravity = playerController.physics.gravity;
+        
 
         Vector3 cameraForwardDirection = Camera.main.transform.forward;
 
@@ -28,13 +28,15 @@ public class DashAbility : GameplayAbility {
 
         //Stänger av gravitationen och nollställer hastigheten för att endast dash-velociteten ska gälla. 
         Vector3 forwardMomentum = new Vector3(playerController.physics.velocity.x, 0f, playerController.physics.velocity.z);
-        float previousMaxSpeed = playerController.physics.maxSpeed;
+        float previousMaxSpeed = playerController.physics.maxSpeed; 
+        float gravity = playerController.physics.gravity;
+        
         playerController.physics.velocity = Vector3.zero;
-        playerController.physics.gravity = 0;
+        playerController.physics.gravity = playerController.isGrounded() ? gravity * 2 : 0;
         playerController.physics.maxSpeed = dashLength;
 
         //förlåt för divison med DT, det är hemskt och beror på hur fixen med FPS-problemen är. Ska göra om allt senare.. om jag hinner.
-        playerController.force = cameraForwardDirection * dashLength / Time.deltaTime;
+        playerController.physics.AddForce(cameraForwardDirection * dashLength / Time.deltaTime);
         
         //Vänta .4 sekunder innan man sätter på gravitationen igen. 
         yield return new WaitForSeconds(timeWithOutGravity);

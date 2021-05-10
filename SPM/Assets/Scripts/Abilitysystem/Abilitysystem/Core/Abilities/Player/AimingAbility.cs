@@ -32,7 +32,7 @@ public class AimingAbility : GameplayAbility
         lr.enabled = true;
         Owner.ApplyEffectToSelf(AppliedEffect);
         
-        Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
+        Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
         {
