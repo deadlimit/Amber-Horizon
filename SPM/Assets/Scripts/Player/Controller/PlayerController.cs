@@ -131,9 +131,9 @@ public class PlayerController : MonoBehaviour
 
     void PlayerDirection() 
     {
+
         input = activeCamera.transform.rotation * input;
         input.y = 0;
-        Vector3 normal  = isGrounded() ?  groundHitInfo.normal : Vector3.up;
         RotateTowardsCameraDirection();
         input = input.magnitude * Vector3.ProjectOnPlane(input, physics.groundHitInfo.normal).normalized;
 
