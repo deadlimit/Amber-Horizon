@@ -85,7 +85,6 @@ public class AimingAbility : GameplayAbility
         float displacementY = distance.y;
         float displacementXZ = distance.magnitude;
 
-
         float velXZ = displacementXZ / time;
         float velY = displacementY / time + (0.5f * bh.gravity) * time;
 
