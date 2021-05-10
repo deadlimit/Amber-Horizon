@@ -131,8 +131,11 @@ public class PlayerController : MonoBehaviour
 
     void PlayerDirection() 
     {
+        Vector3 temp = activeCamera.transform.rotation.eulerAngles;
+        temp.x = 0;
+        Quaternion q = Quaternion.Euler(temp);
 
-        input = activeCamera.transform.rotation * input;
+        input = q * input;
         input.y = 0;
         RotateTowardsCameraDirection();
         input = input.magnitude * Vector3.ProjectOnPlane(input, physics.groundHitInfo.normal).normalized;
