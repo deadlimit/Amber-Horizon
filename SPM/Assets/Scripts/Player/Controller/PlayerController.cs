@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
         force -= (((dot - 1) * turnRate * -physics.GetXZMovement().normalized) / 2);
         //addera * turnSpeed av kraften vi precis tog bort, till v�r nya riktning.
         //g�r i princip att man sv�nger snabbare
-        force += (((dot - 1) *  retainedSpeedWhenTurning * -force.normalized) / 2) ;
+        force += (((dot - 1) * turnRate * retainedSpeedWhenTurning * -force.normalized) / 2) ;
         Debug.DrawLine(transform.position, transform.position + -((dot - 1) * turnRate * -physics.velocity.normalized) / 2, Color.red);
     }
 
