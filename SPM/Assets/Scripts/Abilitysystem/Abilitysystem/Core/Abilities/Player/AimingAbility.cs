@@ -10,7 +10,6 @@ public class AimingAbility : GameplayAbility
     public LineRenderer lr;
     public float flightTime = 1f;
     public BlackHole bh;
-    public Camera playerCam;
     public float maxDistance = 10f;
 
     private int resolution = 10;
@@ -32,11 +31,10 @@ public class AimingAbility : GameplayAbility
             launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
 
         lr = Owner.gameObject.GetComponent<LineRenderer>();
-        Debug.Assert(lr);
         lr.enabled = true;
         Owner.ApplyEffectToSelf(AppliedEffect);
         
-        Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
         {
@@ -49,6 +47,7 @@ public class AimingAbility : GameplayAbility
             }
             else if ((hit.point - launchPoint.transform.position).magnitude > maxDistance)
             {
+                cursor.SetActive(false);
                 cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
             }
         }
@@ -110,7 +109,6 @@ public class AimingAbility : GameplayAbility
         lr.enabled = false;
         cursor.SetActive(false);
         Owner.RemoveTag(this.AbilityTag);
-
     }
 
 
