@@ -5202,7 +5202,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8524585833828388593}
-  - component: {fileID: 8524585833828388594}
   - component: {fileID: 8524585833828388589}
   - component: {fileID: 779418612}
   - component: {fileID: 28986220}
@@ -5229,19 +5228,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &8524585833828388594
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8524585833828388588}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8524585833828388589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5254,21 +5240,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5c97b20ca843d249bbcdaacd2488273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gravitationalPull: 20
   physicsLayerMask:
     serializedVersion: 2
     m_Bits: 768
   collisionMask:
     serializedVersion: 2
     m_Bits: 1088
-  GravitationalPull: 50
   gravity: 9.81
-  velocity: {x: 0, y: 0, z: 0}
   airResistance: 0.5
-  sphereEffect: {fileID: 1077436575}
-  maxRadius: 5
-  center: {fileID: 876691092}
-  centerColl: {fileID: 779418612}
+  effectRadius: 5
   Lifetime: 5
+  sphereEffect: {fileID: 1077436575}
 --- !u!65 &779418612
 BoxCollider:
   m_ObjectHideFlags: 0

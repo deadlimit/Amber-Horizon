@@ -127,7 +127,7 @@ public class PlayerPhysics : MonoBehaviour
 
     public void BlackHoleGravity(BlackHole bh) 
     {
-        bhGrav = bh.GravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
+        bhGrav = bh.GetGravitationalPull() * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
         velocity += bhGrav;
         ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
         bhGrav = Vector3.zero;

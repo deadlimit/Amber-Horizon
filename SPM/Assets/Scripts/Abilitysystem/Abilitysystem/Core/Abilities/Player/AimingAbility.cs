@@ -11,14 +11,11 @@ public class AimingAbility : GameplayAbility
     public float flightTime = 1f;
     public BlackHole bh;
     public float maxDistance = 10f;
-
     private int resolution = 10;
-    private Camera cam;
     private Vector3 vo;
     private void OnEnable()
     {
         launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
-        cam = Camera.main;
     }
     public override void Activate(GameplayAbilitySystem Owner) {
         
@@ -34,7 +31,7 @@ public class AimingAbility : GameplayAbility
         lr.enabled = true;
         Owner.ApplyEffectToSelf(AppliedEffect);
         
-        Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
+        Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
         {
@@ -86,7 +83,7 @@ public class AimingAbility : GameplayAbility
         float displacementXZ = distance.magnitude;
 
         float velXZ = displacementXZ / time;
-        float velY = displacementY / time + (0.5f * bh.gravity) * time;
+        float velY = displacementY / time + (0.5f * bh.GetGravity()) * time;
 
         Vector3 trajectory = distanceXZ * velXZ;
         trajectory.y = velY;
@@ -97,7 +94,7 @@ public class AimingAbility : GameplayAbility
     Vector3 CalculatePosInTime(Vector3 vo, float time)
     {
         Vector3 result = launchPoint.transform.position + vo * time;
-        float speedY = (-0.5f * bh.gravity * (time * time)) + (vo.y * time) + launchPoint.transform.position.y;
+        float speedY = (-0.5f * bh.GetGravity() * (time * time)) + (vo.y * time) + launchPoint.transform.position.y;
 
         result.y = speedY;
         return result;
