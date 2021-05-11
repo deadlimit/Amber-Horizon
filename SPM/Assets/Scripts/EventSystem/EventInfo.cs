@@ -15,16 +15,6 @@ namespace EventCallbacks
     public class KeyPickUpEvent : EventInfo { }
     public class UnlockEvent : EventInfo { }
 
-    public class CameraFocusEvent : EventInfo {
-
-        public readonly Transform newFocusTarget;
-
-        public CameraFocusEvent(Transform newTarget) {
-            newFocusTarget = newTarget;
-        }
-        
-    }
-
     public class PlayerHitEvent : EventInfo {
 
         public readonly Transform culprit;
@@ -103,8 +93,6 @@ namespace EventCallbacks
     public struct TransitCameraFocusInfo {
         public HashSet<TransitUnit> TransitUnits;
         public TransitUnit ActivatedTransitUnit;
-        public Transform NewFocusTarget;
-        public Vector3 NewOffset;
     }
     
     public class EnterTransitViewEvent : EventInfo {
@@ -113,6 +101,14 @@ namespace EventCallbacks
             
         public EnterTransitViewEvent(TransitCameraFocusInfo transitCameraFocusInfo) {
             TransitCameraFocusInfo = transitCameraFocusInfo;
+        }
+    }
+
+    public class NewCameraFocus : EventInfo {
+        public readonly Transform Target;
+
+        public NewCameraFocus(Transform target) {
+            Target = target;
         }
     }
     

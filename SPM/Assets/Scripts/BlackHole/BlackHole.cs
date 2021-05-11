@@ -31,7 +31,7 @@ public class BlackHole : PoolObject
         GravitationDrag();
         
         velocity *= Mathf.Pow(airResistance, Time.deltaTime);
-        transform.Translate(velocity * Time.deltaTime);
+        transform.position += velocity * Time.deltaTime;
     }
     private void GravitationDrag() {
         
@@ -73,7 +73,7 @@ public class BlackHole : PoolObject
         }
         
         velocity *= Mathf.Pow(airResistance, Time.deltaTime);
-        transform.Translate(velocity * Time.deltaTime);
+        transform.position += velocity * Time.deltaTime;
     }
 
     private void Die() => gameObject.SetActive(false);

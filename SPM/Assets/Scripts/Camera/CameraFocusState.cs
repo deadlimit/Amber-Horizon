@@ -2,22 +2,21 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [CreateAssetMenu(fileName = "CameraFocusState", menuName = "New CameraFocusState")]
-public class CameraFocusState : State {
-    
+public class CameraFocusState : CameraBaseState  {
+  /*  
     [SerializeField] private float distance;
     [SerializeField] private float zoomInSpeed;
     private ThirdPersonCamera camera;
     private Transform target;
-    private PlayerController player;
-    
+
     protected override void Initialize() {
         camera = owner as ThirdPersonCamera;
         target = GameObject.FindGameObjectWithTag("KeyCameraTarget").transform;
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
 
     public override void Enter() {
-        player.enabled = false;
+        Target = target;
+        Player.enabled = false;
     }
 
     public override void RunUpdate() {
@@ -26,11 +25,11 @@ public class CameraFocusState : State {
 
         //TODO Vafan gör du här
         if (Input.GetKeyDown(KeyCode.Tab)) {
-            player.enabled = true;
+            Player.enabled = true;
             stateMachine.ChangeState<DefaultCameraState>();
         }
             
         camera.transform.LookAt(target);
     }
-
+*/
 }
