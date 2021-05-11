@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
          */
 
     }
-    void Accelerate()
+    private void Accelerate()
     {
         Vector3 inputXZ = new Vector3(input.x, 0, input.z);
         float dot = Vector3.Dot(inputXZ.normalized, physics.GetXZMovement().normalized);
@@ -118,13 +118,12 @@ public class PlayerController : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + -((dot - 1) * turnRate * -physics.velocity.normalized) / 2, Color.red);
     }
 
-
     private void AccelerateAirborne()
     {
         force = input * acceleration;
     }
 
-    void PlayerDirection() 
+    private void PlayerDirection() 
     {
         Vector3 temp = cameraTransform.rotation.eulerAngles;
         temp.x = 0;
@@ -136,12 +135,12 @@ public class PlayerController : MonoBehaviour
         RotateTowardsCameraDirection();
 
     }
-    void Jump() { if (jump) { force.y += jumpHeight / Time.deltaTime; jump = false; }  }
+    private void Jump() { if (jump) { force.y += jumpHeight / Time.fixedDeltaTime; jump = false; }  }
     public void SetJump()
     {
         jump = true;
     }
-    void RotateTowardsCameraDirection() 
+    private void RotateTowardsCameraDirection() 
     {
             transform.localEulerAngles = new Vector3(
             transform.localEulerAngles.x,
@@ -149,11 +148,9 @@ public class PlayerController : MonoBehaviour
             transform.localEulerAngles.z);
     }
 
-    void Update() {
-        
+    void Update() {       
         stateMachine.RunUpdate();
-        Jump();
-        
+             
         if (Input.GetMouseButton(1))
         {
             abilitySystem.TryActivateAbilityByTag(GameplayTags.AimingTag);
@@ -168,17 +165,18 @@ public class PlayerController : MonoBehaviour
             abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag);
         }
 
+       
+    }
+    private void FixedUpdate()
+    {
+        Jump();
         physics.AddForce(force);
         force = Vector3.zero;
     }
-    public bool isGrounded() {
-        
-        Physics.Raycast(transform.position, Vector3.down, out groundHitInfo, groundCheckDistance, groundCheckMask);
-        
-        return groundHitInfo.collider;
-       
-        //groundHitInfo = collisionCaster.CastCollision(transform.position, Vector3.down, groundCheckDistance + skinWidth);
-     
+    public bool isGrounded() 
+    {        
+        Physics.Raycast(transform.position, Vector3.down, out groundHitInfo, groundCheckDistance, groundCheckMask);       
+        return groundHitInfo.collider;    
     }
     private void CheckpointRestoreHealth(CheckPointActivatedEvent checkPointActivatedEvent)
     {

@@ -80,7 +80,7 @@ public class PhysicsComponent : MonoBehaviour
         {
 
             RaycastHit normalHitInfo = collisionCaster.CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
-            Vector3 normalForce = General.NormalForce3D(velocity, normalHitInfo.normal);
+            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, normalHitInfo.normal);
 
             velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
             velocity += normalForce;
@@ -136,14 +136,14 @@ public class PhysicsComponent : MonoBehaviour
 
             Vector3 seperationVec = seperationVector * distance;
             transform.position += seperationVec + seperationVec.normalized * skinWidth;
-            velocity += General.NormalForce3D(velocity, seperationVector);
+            velocity += PhysicsFunctions.NormalForce3D(velocity, seperationVector);
         }
 
     }
     public void BlackHoleGravity(BlackHole bh) {
         bhGrav = bh.GetGravitationalPull() * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.fixedDeltaTime;
         velocity += bhGrav;
-        ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
+        ApplyFriction(PhysicsFunctions.NormalForce3D(velocity, bh.transform.position - transform.position));
         bhGrav = Vector3.zero;      
     }
     public void StopVelocity()
