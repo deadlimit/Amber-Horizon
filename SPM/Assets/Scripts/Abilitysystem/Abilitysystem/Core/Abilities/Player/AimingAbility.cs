@@ -4,62 +4,71 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "AimingAbility", menuName = "Abilities/AimingAbility")]
 public class AimingAbility : GameplayAbility
 {
-    public GameObject cursor;
-    public GameObject launchPoint;
-    public LayerMask collisionMask;
-    public LineRenderer lr;
-    public float flightTime = 1f;
-    public BlackHole bh;
-    public float maxDistance = 10f;
+    [SerializeField] private float maxDistance = 10f;
+    [SerializeField] private LayerMask collisionMask;
 
+    [Header("Inspector Assigns")]
+    [SerializeField] private GameObject cursor;
+    [SerializeField] private GameObject launchPoint;
+    [SerializeField] private BlackHole bh;
+   
+    private LineRenderer lr;
+    private float flightTime = 1f;
     private int resolution = 10;
-    private Camera cam;
     private Vector3 vo;
-    private void OnEnable()
-    {
-        launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
-        cam = Camera.main;
-    }
+    private Transform cursorTransform;
+    private Transform launchPointTransform;
+
     public override void Activate(GameplayAbilitySystem Owner) {
-        
+
         //Scriptable objects behåller sina referenser från föregående scener
         //måste hämta på nytt efter scenetransit. 
+        //Cached transforms
         if (cursor == null)
-            cursor = GameObject.FindGameObjectWithTag("Cursor");
-        
-        if(launchPoint == null)
-            launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
+        {
+            cursor = AimCursor.CursorObject.gameObject;
+            cursorTransform = cursor.transform;
+        }
+        if (launchPoint == null)
+        {
+            launchPoint = LaunchPoint.Point.gameObject;
+            launchPointTransform = launchPoint.transform;
+        }
 
         lr = Owner.gameObject.GetComponent<LineRenderer>();
         lr.enabled = true;
         Owner.ApplyEffectToSelf(AppliedEffect);
         
-        Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
+        Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(camRay, out RaycastHit hit, 100f, collisionMask))
+        if (Physics.Raycast(camRay, out RaycastHit hit, Mathf.Infinity, collisionMask))
         {
-            if ((hit.point - launchPoint.transform.position).magnitude < maxDistance)
-            {
-                cursor.SetActive(true);
-                cursor.transform.position = hit.point;
-                Quaternion q = Quaternion.FromToRotation(Vector3.up, hit.normal);
-                cursor.transform.rotation = Quaternion.Slerp(cursor.transform.rotation, q, 20 * Time.deltaTime);
-            }
-            else if ((hit.point - launchPoint.transform.position).magnitude > maxDistance)
-            {
-                cursor.SetActive(false);
-                cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
-            }
+            PlaceCursor(hit, camRay);
         }
         else
         {
             cursor.SetActive(false);
-            cursor.transform.position = launchPoint.transform.position + camRay.direction * maxDistance;
+            cursorTransform.position = launchPointTransform.position + camRay.direction * maxDistance;
         }
 
-        vo = CalculateVelocity(cursor.transform.position, launchPoint.transform.position, flightTime);
-        DrawArc(vo, cursor.transform.position);
+        vo = CalculateVelocity(cursorTransform.position, launchPointTransform.position, flightTime);
+        DrawArc(vo, cursorTransform.position);
 
+    }
+    private void PlaceCursor(RaycastHit hit, Ray camRay)
+    {
+        if ((hit.point - launchPointTransform.position).magnitude <= maxDistance)
+        {
+            cursor.SetActive(true);
+            cursorTransform.position = hit.point;
+            Quaternion q = Quaternion.FromToRotation(Vector3.up, hit.normal);
+            cursorTransform.rotation = Quaternion.Slerp(cursorTransform.rotation, q, 20 * Time.deltaTime);
+        }
+        else if ((hit.point - launchPointTransform.position).magnitude > maxDistance)
+        {
+            cursor.SetActive(false);
+            cursorTransform.position = launchPointTransform.position + camRay.direction * maxDistance;
+        }
     }
     public void FireBlackHole() 
     {
@@ -86,7 +95,7 @@ public class AimingAbility : GameplayAbility
         float displacementXZ = distance.magnitude;
 
         float velXZ = displacementXZ / time;
-        float velY = displacementY / time + (0.5f * bh.gravity) * time;
+        float velY = displacementY / time + (0.5f * bh.GetGravity()) * time;
 
         Vector3 trajectory = distanceXZ * velXZ;
         trajectory.y = velY;
@@ -96,8 +105,8 @@ public class AimingAbility : GameplayAbility
 
     Vector3 CalculatePosInTime(Vector3 vo, float time)
     {
-        Vector3 result = launchPoint.transform.position + vo * time;
-        float speedY = (-0.5f * bh.gravity * (time * time)) + (vo.y * time) + launchPoint.transform.position.y;
+        Vector3 result = launchPointTransform.position + vo * time;
+        float speedY = (-0.5f * bh.GetGravity() * (time * time)) + (vo.y * time) + launchPointTransform.position.y;
 
         result.y = speedY;
         return result;

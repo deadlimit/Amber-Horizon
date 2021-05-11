@@ -3,25 +3,29 @@ using Vector3 = UnityEngine.Vector3;
 
 public class PhysicsComponent : MonoBehaviour
 {
-    public LayerMask collisionMask;
-    public RaycastHit groundHitInfo;
-    public float velocityMagnitude;
-
-    private Collider attachedCollider;
-    private CollisionCaster collisionCaster;
-    public float smallNumber = 0.1f;
-
+    //modifierar .y-värdet på velocity, kan alltså inte vara en property
     public Vector3 velocity;
+    //går denna att göra private istället? 
+    public LayerMask collisionMask;
+
+
+    public RaycastHit groundHitInfo { get; private set; }
+
+    [Header("Values")]
+    [SerializeField] public float maxSpeed;
     [SerializeField] public float gravity = 10f;
     [SerializeField] protected float skinWidth = 0.05f;
-    [SerializeField] public float maxSpeed;
+    [SerializeField] private float inputThreshold = 0.1f;
+    [SerializeField] private float gravityModifier = 1f;
 
     [Header("Friktion")]
-    [Range(0f, 1f)] [SerializeField] float staticFrictionCoefficient = 0.5f;
-    [Range(0f, 1f)] [SerializeField] float kineticFrictionCoefficient = 0.35f;
-    [Range(0f, 1f)] [SerializeField] float airResistance = 0.35f;
+    [Range(0f, 1f)] [SerializeField] private float staticFrictionCoefficient = 0.5f;
+    [Range(0f, 1f)] [SerializeField] private float kineticFrictionCoefficient = 0.35f;
+    [Range(0f, 1f)] [SerializeField] private float airResistance = 0.35f;
+    
+    private Collider attachedCollider;
+    private CollisionCaster collisionCaster;
 
-    float gravityMod = 1f;
 
     Vector3 bhGrav = Vector3.zero;
     private void OnEnable()
@@ -29,7 +33,7 @@ public class PhysicsComponent : MonoBehaviour
         attachedCollider = GetComponent<Collider>();
         
         if(GetComponent<PlayerController>())
-            maxSpeed = GetComponent<PlayerController>().maxSpeed;
+            maxSpeed = GetComponent<PlayerController>().GetMaxSpeed();
 
         if (attachedCollider is BoxCollider)
             collisionCaster = new BoxCaster(attachedCollider, collisionMask);
@@ -51,9 +55,6 @@ public class PhysicsComponent : MonoBehaviour
         AddGravity();
         CheckForCollisions(0);
         ClampSpeed();
-
-        velocityMagnitude = velocity.magnitude;
-       
 
         //Silvertejpslösning för att inte få -Infinity eller NaN
         if (float.IsNaN(velocity.x) == false || float.IsNegativeInfinity(velocity.x) == false || float.IsPositiveInfinity(velocity.x) == false  )
@@ -79,7 +80,7 @@ public class PhysicsComponent : MonoBehaviour
         {
 
             RaycastHit normalHitInfo = collisionCaster.CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
-            Vector3 normalForce = General.NormalForce3D(velocity, normalHitInfo.normal);
+            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, normalHitInfo.normal);
 
             velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
             velocity += normalForce;
@@ -135,14 +136,14 @@ public class PhysicsComponent : MonoBehaviour
 
             Vector3 seperationVec = seperationVector * distance;
             transform.position += seperationVec + seperationVec.normalized * skinWidth;
-            velocity += General.NormalForce3D(velocity, seperationVector);
+            velocity += PhysicsFunctions.NormalForce3D(velocity, seperationVector);
         }
 
     }
     public void BlackHoleGravity(BlackHole bh) {
-        bhGrav = bh.GravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.fixedDeltaTime;
+        bhGrav = bh.GetGravitationalPull() * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.fixedDeltaTime;
         velocity += bhGrav;
-        ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
+        ApplyFriction(PhysicsFunctions.NormalForce3D(velocity, bh.transform.position - transform.position));
         bhGrav = Vector3.zero;      
     }
     public void StopVelocity()
@@ -152,11 +153,11 @@ public class PhysicsComponent : MonoBehaviour
         velocity -= velocity * 0.02f;
 
         //gravityMod assignment m�ste just nu appliceras kontinuerligt, oavsett hur man vill g�ra med velocity
-        gravityMod = 0.1f;
+        gravityModifier = 0.1f;
     }
     protected void AddGravity()
     {
-        Vector3 gravityMovement = gravity * Vector3.down * Time.deltaTime * gravityMod;
+        Vector3 gravityMovement = gravity * Vector3.down * Time.deltaTime * gravityModifier;
 
         if (bhGrav != Vector3.zero)
         {
@@ -165,7 +166,7 @@ public class PhysicsComponent : MonoBehaviour
         }
 
         velocity += gravityMovement;
-        gravityMod = 1f;
+        gravityModifier = 1f;
     }
     private void ApplyFriction(Vector3 normalForce)
     {
@@ -180,7 +181,7 @@ public class PhysicsComponent : MonoBehaviour
     public void ApplyAirResistance() { velocity *= Mathf.Pow(airResistance, Time.deltaTime); }
     public void AddForce(Vector3 input)
     {
-        velocity += input.magnitude < smallNumber? Vector3.zero : input * Time.deltaTime;
+        velocity += input.magnitude < inputThreshold? Vector3.zero : input * Time.deltaTime;
 
     }
 
