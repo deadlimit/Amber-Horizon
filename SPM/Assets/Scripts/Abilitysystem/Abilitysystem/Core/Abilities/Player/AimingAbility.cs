@@ -23,18 +23,15 @@ public class AimingAbility : GameplayAbility
 
         //Scriptable objects behåller sina referenser från föregående scener
         //måste hämta på nytt efter scenetransit. 
-
-
-        //Cached transforms but still don't know how to get around FindWithTag, dont quite understand the static property stuff
+        //Cached transforms
         if (cursor == null)
         {
-            cursor = GameObject.FindGameObjectWithTag("Cursor");
+            cursor = AimCursor.CursorObject.gameObject;
             cursorTransform = cursor.transform;
         }
-
         if (launchPoint == null)
         {
-            launchPoint = GameObject.FindGameObjectWithTag("LaunchPoint");
+            launchPoint = LaunchPoint.Point.gameObject;
             launchPointTransform = launchPoint.transform;
         }
 

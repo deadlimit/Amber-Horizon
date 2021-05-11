@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class AimCursor : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private static AimCursor cursorObject;
+    public static AimCursor CursorObject
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        get
+        {
+            if (cursorObject == null)
+            {
+                cursorObject = FindObjectOfType<AimCursor>();
+            }
+            return cursorObject;
+        }
     }
 }
