@@ -9,7 +9,9 @@ public class TransitOverviewController : MonoBehaviour {
 
     [SerializeField] private GameObject transitButton;
     [SerializeField] private float waitUntilButtonSpawn;
+    [SerializeField] private Camera overviewCamera;
     private readonly List<GameObject> activeButtons = new List<GameObject>();
+    
     
     private Coroutine spawnButtons;
     
@@ -24,21 +26,19 @@ public class TransitOverviewController : MonoBehaviour {
     }
     
     private void TransitView(EnterTransitViewEvent viewEvent) {
-        spawnButtons = StartCoroutine(SpawnButtons(viewEvent.TransitUnits, viewEvent.ActivatedTransitUnit));
+        spawnButtons = StartCoroutine(SpawnButtons(viewEvent.TransitCameraFocusInfo));
     }
 
-    private IEnumerator SpawnButtons(HashSet<TransitUnit> buttons, TransitUnit activatedTransitUnit) {
+    private IEnumerator SpawnButtons(TransitCameraFocusInfo focusInfo) {
         
         yield return new WaitForSeconds(waitUntilButtonSpawn);
-
-        print(buttons.Count);
         
-        foreach (TransitUnit transitUnit in buttons) {
-            GameObject button = Instantiate(transitButton, Camera.main.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, gameObject.transform);
+        foreach (TransitUnit transitUnit in focusInfo.TransitUnits) {
+            GameObject button = Instantiate(transitButton, overviewCamera.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, gameObject.transform);
             
             TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
 
-            if (transitUnit == activatedTransitUnit) {
+            if (transitUnit == focusInfo.ActivatedTransitUnit) {
                 buttonText.text = "You are here";
                 buttonText.GetComponentInParent<Image>().color = Color.green;
             }

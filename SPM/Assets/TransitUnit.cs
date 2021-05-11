@@ -1,12 +1,15 @@
+using System;
 using System.Collections.Generic;
 using EventCallbacks;
 using UnityEngine;
 
 
 public class TransitUnit : InteractableObject {
-    
+
     private static HashSet<TransitUnit> activatedTransitUnits = new HashSet<TransitUnit>();
 
+    [SerializeField] private Vector3 newOffset;
+    [SerializeField] private Canvas target;
     public Checkpoint AttachedCheckpoint { get; private set; }
     
     private Collider triggerCollider;
@@ -39,7 +42,14 @@ public class TransitUnit : InteractableObject {
     protected override void InsideTrigger(GameObject entity) {
         
         if (Input.GetKeyDown(KeyCode.F)) {
-            EventSystem<EnterTransitViewEvent>.FireEvent(new EnterTransitViewEvent(activatedTransitUnits, this));
+
+            TransitCameraFocusInfo info = new TransitCameraFocusInfo();
+            info.TransitUnits = activatedTransitUnits;
+            info.ActivatedTransitUnit = this;
+            info.NewFocusTarget = target.transform;
+            info.NewOffset = newOffset;
+            
+            EventSystem<EnterTransitViewEvent>.FireEvent(new EnterTransitViewEvent(info));
             triggerCollider.enabled = false;
         }
     }

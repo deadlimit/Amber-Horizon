@@ -7,8 +7,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Air Dash", menuName = "Abilities/Air Dash")]
 public class DashAbility : GameplayAbility {
 
-    public float timeWithOutGravity;
-    public float dashLength;
+    [SerializeField] private float timeWithOutGravity;
+    [SerializeField] private float dashLength;
     
     public override void Activate(GameplayAbilitySystem Owner) {
         Owner.StartCoroutine(Dash(Owner));
@@ -20,7 +20,6 @@ public class DashAbility : GameplayAbility {
         
         //Spara gravitationen innan man sätter den till 0
         
-
         Vector3 cameraForwardDirection = Camera.main.transform.forward;
 
         //Nollar y-axeln för att bara dasha framåt.
@@ -32,7 +31,7 @@ public class DashAbility : GameplayAbility {
         float gravity = playerController.physics.gravity;
         
         playerController.physics.velocity = Vector3.zero;
-        playerController.physics.gravity = playerController.isGrounded() ? gravity * 2 : 0;
+        playerController.physics.gravity = playerController.isGrounded() ? gravity * 3 : 0;
         playerController.physics.maxSpeed = dashLength;
 
         //förlåt för divison med DT, det är hemskt och beror på hur fixen med FPS-problemen är. Ska göra om allt senare.. om jag hinner.

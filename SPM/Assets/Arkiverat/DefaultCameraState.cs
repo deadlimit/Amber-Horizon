@@ -22,7 +22,7 @@ public class DefaultCameraState : State
         collider = camera.GetComponent<SphereCollider>();
         target = GameObject.FindGameObjectWithTag("CameraDefaultTarget");
         EventSystem<EnterTransitViewEvent>.RegisterListener(ChangeToBirdEyeView);
-        
+
     }
     public override void RunUpdate() 
     {
@@ -66,7 +66,8 @@ public class DefaultCameraState : State
     }
 
     private void ChangeToBirdEyeView(EnterTransitViewEvent viewEvent) {
-        stateMachine.ChangeState<CameraBirdView>();
+        target = viewEvent.TransitCameraFocusInfo.NewFocusTarget.gameObject;
+        offset = viewEvent.TransitCameraFocusInfo.NewOffset;
     }
     
     

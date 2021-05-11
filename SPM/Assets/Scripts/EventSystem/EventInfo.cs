@@ -100,12 +100,19 @@ namespace EventCallbacks
     }
     public class InteractTriggerExitEvent : EventInfo {}
 
+    public struct TransitCameraFocusInfo {
+        public HashSet<TransitUnit> TransitUnits;
+        public TransitUnit ActivatedTransitUnit;
+        public Transform NewFocusTarget;
+        public Vector3 NewOffset;
+    }
+    
     public class EnterTransitViewEvent : EventInfo {
-        public readonly HashSet<TransitUnit> TransitUnits;
-        public readonly TransitUnit ActivatedTransitUnit;
-        public EnterTransitViewEvent(HashSet<TransitUnit> transitUnits, TransitUnit activatedTransitUnit) {
-            TransitUnits = transitUnits;
-            ActivatedTransitUnit = activatedTransitUnit;
+
+        public readonly TransitCameraFocusInfo TransitCameraFocusInfo;
+            
+        public EnterTransitViewEvent(TransitCameraFocusInfo transitCameraFocusInfo) {
+            TransitCameraFocusInfo = transitCameraFocusInfo;
         }
     }
     
