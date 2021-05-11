@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BlackHole : MonoBehaviour
 {
     public Vector3 velocity { set; get; }
-    [Header("Collision")]
+    [Header("LayerMasks")]
     [SerializeField] private LayerMask physicsLayerMask;
     [SerializeField] private LayerMask collisionMask;
        
@@ -19,19 +17,16 @@ public class BlackHole : MonoBehaviour
     private BoxCollider centerColl;
     private bool useGravity = true;
     private float terminalDistance = 0.5f;    
-    private float maxGravitationalPullTemp;
-    
+    private float maxGravitationalPullTemp;  
     private Animator animator;
     
     private void Awake() {
         maxGravitationalPullTemp = gravitationalPull;
-        gravitationalPull = 0;
 
         centerColl = GetComponent<BoxCollider>();
         animator = GetComponent<Animator>();
 
-        animator.SetTrigger("Spawn");
-        
+        animator.SetTrigger("Spawn");        
         this.Invoke(() => {
             animator.SetTrigger("Despawn");
         }, Lifetime);

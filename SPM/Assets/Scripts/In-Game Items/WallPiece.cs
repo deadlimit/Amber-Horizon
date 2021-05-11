@@ -16,7 +16,10 @@ public class WallPiece : MonoBehaviour, IBlackHoleBehaviour  {
         insideBlackHole = true;
         blackhole = blackHole;
         PhysicsComponent physics = gameObject.AddComponent<PhysicsComponent>();
-        physics.collisionMask = collisionMask;
+
+        //vad gör denna kodrad? 
+        //physics.collisionMask = collisionMask;
+
         physics.gravity = 0;
         activeCollider.enabled = false;
         print("wall piece");
