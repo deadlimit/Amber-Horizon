@@ -5,7 +5,7 @@ public class DestructorMeleeState : State {
 
     private Destructor destructor;
 
-    public float recoveryTime;
+    [SerializeField] private float recoveryTime;
     
     protected override void Initialize() {
         destructor = owner as Destructor;

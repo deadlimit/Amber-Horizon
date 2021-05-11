@@ -22,7 +22,7 @@ public class EnemyDeathState : State {
             //Debug.Log("die");
             forager.transform.LookAt(forager.activeBlackHole.transform);
 
-            forager.transform.position = Vector3.Lerp(forager.transform.position, forager.activeBlackHole.center.transform.position, Time.deltaTime);
+            forager.transform.position = Vector3.Lerp(forager.transform.position, forager.activeBlackHole.transform.position, Time.deltaTime);
 
             forager.transform.localScale = Vector3.Lerp(forager.transform.localScale, Vector3.zero, Time.deltaTime);
         }

@@ -8,34 +8,37 @@ public class PlayerController : MonoBehaviour
 {
 
     [Header("Player Control")]
-    public float jumpHeight = 5f;
-    public float acceleration = 5f;
-    public float deceleration = 2f;
-    public float airControl = 0.2f;
-    public float maxSpeed = 5f;
-    public float turnRate = 4f;
-    public float retainedSpeedWhenTurning = 0.33f;
-    public LayerMask groundCheckMask;
+    [SerializeField] private float jumpHeight = 5f;
+    [SerializeField] private float acceleration = 5f;
+    [SerializeField] private float deceleration = 2f;
+    [SerializeField] private float airControl = 0.2f;
+    [SerializeField] private float maxSpeed = 5f;
+    [SerializeField] private float turnRate = 4f;
+    [SerializeField] private float retainedSpeedWhenTurning = 0.33f;
+    
+    [Header("GroundCheck")]
+    [SerializeField] private LayerMask groundCheckMask;
+    [SerializeField] private float groundCheckDistance = 0.05f;
+
     [Header("StateMachine")]
-    public State[] states;
+    [SerializeField] private State[] states;
     private StateMachine stateMachine;
-    private bool jump;
-    public float groundCheckDistance = 0.05f;
 
     [HideInInspector] public Vector3 force;
     public Vector3 bhVelocity;
     private Vector3 input;
+
+    public GameplayAbilitySystem abilitySystem { get; private set; }
     public PhysicsComponent physics { get; private set; }
-    private Camera activeCamera;
-    public bool airborne;
+   
+    private bool jump;
+    private Transform cameraTransform;
     private LineRenderer lr;
     private RaycastHit groundHitInfo;
-    public GameplayAbilitySystem abilitySystem { get; private set; }
     
     void Awake() 
     {
-
-        activeCamera = Camera.main;
+        cameraTransform = Camera.main.transform;
         physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);       
         lr = GetComponent<LineRenderer>();
@@ -61,7 +64,6 @@ public class PlayerController : MonoBehaviour
         }
         else
             Accelerate();
-        airborne = false;
     }
 
 
@@ -70,7 +72,6 @@ public class PlayerController : MonoBehaviour
         input = inp.normalized * airControl;
         PlayerDirection();
         AccelerateAirborne();
-        airborne = true;
     }
     void Decelerate() 
     {
@@ -98,7 +99,7 @@ public class PlayerController : MonoBehaviour
          */
 
     }
-    void Accelerate()
+    private void Accelerate()
     {
         Vector3 inputXZ = new Vector3(input.x, 0, input.z);
         float dot = Vector3.Dot(inputXZ.normalized, physics.GetXZMovement().normalized);
@@ -117,48 +118,39 @@ public class PlayerController : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + -((dot - 1) * turnRate * -physics.velocity.normalized) / 2, Color.red);
     }
 
-
     private void AccelerateAirborne()
     {
-        /*
-         Force assignas här istället för att adderas, då blir resultatet beroende av multiplikationen med DT
-        Men varför påverkas inte det som händer på marken?? Assignment till force där också ju 
-        fixedDeltaTime gör att assignmenten alltid blir samma.. men då har vi antalet frames att ta in i beräkningen
-         */
         force = input * acceleration;
-        Debug.Log(force);
     }
 
-    void PlayerDirection() 
+    private void PlayerDirection() 
     {
-        Vector3 temp = activeCamera.transform.rotation.eulerAngles;
+        Vector3 temp = cameraTransform.rotation.eulerAngles;
         temp.x = 0;
-        Quaternion q = Quaternion.Euler(temp);
+        Quaternion camRotation = Quaternion.Euler(temp);
 
-        input = q * input;
+        input = camRotation * input;
         input.y = 0;
-        RotateTowardsCameraDirection();
         input = input.magnitude * Vector3.ProjectOnPlane(input, physics.groundHitInfo.normal).normalized;
+        RotateTowardsCameraDirection();
 
     }
-    void Jump() { if (jump) { force.y += jumpHeight / Time.deltaTime; jump = false; }  }
+    private void Jump() { if (jump) { force.y += jumpHeight / Time.fixedDeltaTime; jump = false; }  }
     public void SetJump()
     {
         jump = true;
     }
-    void RotateTowardsCameraDirection() 
+    private void RotateTowardsCameraDirection() 
     {
             transform.localEulerAngles = new Vector3(
-            transform.localEulerAngles.x, 
-            activeCamera.transform.localEulerAngles.y, 
+            transform.localEulerAngles.x,
+            cameraTransform.transform.localEulerAngles.y, 
             transform.localEulerAngles.z);
     }
 
-    void Update() {
-        
+    void Update() {       
         stateMachine.RunUpdate();
-        Jump();
-        
+             
         if (Input.GetMouseButton(1))
         {
             abilitySystem.TryActivateAbilityByTag(GameplayTags.AimingTag);
@@ -173,34 +165,31 @@ public class PlayerController : MonoBehaviour
             abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag);
         }
 
+       
+    }
+    private void FixedUpdate()
+    {
+        Jump();
         physics.AddForce(force);
         force = Vector3.zero;
     }
-
-    private void FixedUpdate()
+    public bool isGrounded() 
+    {        
+        Physics.Raycast(transform.position, Vector3.down, out groundHitInfo, groundCheckDistance, groundCheckMask);       
+        return groundHitInfo.collider;    
+    }
+    private void CheckpointRestoreHealth(CheckPointActivatedEvent checkPointActivatedEvent)
     {
-        
+        RestoreHealth();
     }
     public void RestoreHealth()
     {
         abilitySystem.TryActivateAbilityByTag(GameplayTags.HealthRestoreTag);
         Debug.Log("reached RestoreHealth, in PlayerCOntroller");
     }
-
-    private void CheckpointRestoreHealth(CheckPointActivatedEvent checkPointActivatedEvent)
+    public float GetMaxSpeed()
     {
-        RestoreHealth();
-    }
-
-
-    public bool isGrounded() {
-        
-        Physics.Raycast(transform.position, Vector3.down, out groundHitInfo, groundCheckDistance, groundCheckMask);
-        
-        return groundHitInfo.collider;
-       
-        //groundHitInfo = collisionCaster.CastCollision(transform.position, Vector3.down, groundCheckDistance + skinWidth);
-     
+        return maxSpeed;
     }
     public float GetPlayerHealth()
     {
