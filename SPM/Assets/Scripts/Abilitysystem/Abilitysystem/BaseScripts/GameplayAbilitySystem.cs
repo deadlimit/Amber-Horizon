@@ -133,7 +133,10 @@ namespace AbilitySystem
                 {
                     gaSet = set;
                     if (AttributeSet[Attribute] > gaSet.Value)
-                        AttributeSet[Attribute] = gaSet.Value;                      
+                        AttributeSet[Attribute] = gaSet.Value;
+                    if (AttributeSet[Attribute] < 0)
+                        AttributeSet[Attribute] = 0;
+
                 }
             }
         }
@@ -214,7 +217,7 @@ namespace AbilitySystem
         void DebugTag(GameplayTag Tag)
         {
             ActiveTags.Remove(Tag);
-            Debug.Log("Removing Tag: " + Tag);
+            //Debug.Log("Removing Tag: " + Tag);
         }
 
         public IEnumerator RemoveAfterTime(GameplayAbility ability) {

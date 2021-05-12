@@ -9,7 +9,7 @@ public class TransitOverviewController : MonoBehaviour {
 
     [SerializeField] private GameObject transitButton;
     [SerializeField] private float waitUntilButtonSpawn;
-    [SerializeField] private Camera overviewCamera;
+    [SerializeField] private Canvas UI; 
     private readonly List<GameObject> activeButtons = new List<GameObject>();
     
     
@@ -34,7 +34,7 @@ public class TransitOverviewController : MonoBehaviour {
         yield return new WaitForSeconds(waitUntilButtonSpawn);
         
         foreach (TransitUnit transitUnit in focusInfo.TransitUnits) {
-            GameObject button = Instantiate(transitButton, overviewCamera.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, gameObject.transform);
+            GameObject button = Instantiate(transitButton, Camera.main.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, UI.transform);
             
             TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
 
