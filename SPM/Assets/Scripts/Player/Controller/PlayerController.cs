@@ -150,7 +150,10 @@ public class PlayerController : MonoBehaviour
 
     void Update() {       
         stateMachine.RunUpdate();
-             
+
+        if (Input.GetKeyDown(KeyCode.E))
+            abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
+        
         if (Input.GetMouseButton(1))
         {
             abilitySystem.TryActivateAbilityByTag(GameplayTags.AimingTag);
