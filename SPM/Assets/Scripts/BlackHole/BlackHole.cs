@@ -45,7 +45,6 @@ public class BlackHole : MonoBehaviour
         Collider[] hitcoll = Physics.OverlapSphere(transform.position, effectRadius, physicsLayerMask);
         
         foreach (Collider collider in hitcoll) {
-            Debug.Log(collider.gameObject +"hit");
             PhysicsComponent physicsComponent = collider.GetComponent<PhysicsComponent>();   
 
             if (physicsComponent) {
