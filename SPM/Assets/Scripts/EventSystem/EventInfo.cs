@@ -106,9 +106,10 @@ namespace EventCallbacks
 
     public class NewCameraFocus : EventInfo {
         public readonly Transform Target;
-
-        public NewCameraFocus(Transform target) {
+        public readonly bool IsOrthographic;
+        public NewCameraFocus(Transform target, bool isOrthographic) {
             Target = target;
+            IsOrthographic = isOrthographic;
         }
     }
     
