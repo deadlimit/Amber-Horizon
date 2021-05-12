@@ -68,6 +68,20 @@ public class PlayerUI : MonoBehaviour {
         image.fillAmount = 0;
     }
 
+    private IEnumerator AnimateHealthChipAway(float time, float healthFraction)
+    {
+        Debug.Log("PlayerUI, start of AnimaeteHealthChipAway");
+        float end = Time.time + time;
+
+        while (Time.time < end)
+        {
+            healthBarChipAway.fillAmount -= Time.deltaTime / time;
+            yield return null;
+        }
+
+        healthBarChipAway.fillAmount = healthFraction;
+    }
+
     private void DisplayInteractText(InteractTriggerEnterEvent trigger) {
         interactText.text = trigger.UIMessage;
     }
@@ -109,25 +123,14 @@ public class PlayerUI : MonoBehaviour {
 
         healthBar.fillAmount = healthFraction;
 
-        if (healthBarChipAway.fillAmount < healthFraction)
+        if (healthBarChipAway.fillAmount > healthFraction)
         {
-            Debug.Log("In PlayerUI, ChnageHealthUI. lerping ChipAway");
-            float timerDelay = 1.2f;
-            float end = Time.time + timerDelay;
-
-            while (Time.time < end)
-            {
-                healthBarChipAway.fillAmount += Time.deltaTime / timerDelay;
-                yield return null;
-            }
-
-            healthBarChipAway.fillAmount = healthFraction;
+            //lerp the healthBarChipAway
+            StartCoroutine(AnimateHealthChipAway(1.5f, healthFraction));
 
         }
-        //lerp the healthBarChipAway
 
-        healthBackground.Invoke(() => ChangeColor(0), 1.5f);
-
+        healthBackground.Invoke(() => ChangeColor(0), 2.0f);
 
     }
 
