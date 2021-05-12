@@ -20,6 +20,7 @@ namespace EventCallbacks
         }
         public static void UnregisterListener(Action<EventType> listener)
         {
+            RegisterType();
             typeEventListeners[typeof(EventType)] -= listener;
         }
 

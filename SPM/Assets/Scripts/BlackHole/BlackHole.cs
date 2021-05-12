@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BlackHole : MonoBehaviour
+public class BlackHole : PoolObject
 {
     public Vector3 velocity { set; get; }
     [Header("LayerMasks")]
@@ -19,17 +19,15 @@ public class BlackHole : MonoBehaviour
     private float terminalDistance = 0.5f;    
     private float maxGravitationalPullTemp;  
     private Animator animator;
+
+    private int spawnID = Animator.StringToHash("Spawn");
+    private int despawnID = Animator.StringToHash("Despawn");
     
     private void Awake() {
         maxGravitationalPullTemp = gravitationalPull;
 
         centerColl = GetComponent<BoxCollider>();
         animator = GetComponent<Animator>();
-
-        animator.SetTrigger("Spawn");        
-        this.Invoke(() => {
-            animator.SetTrigger("Despawn");
-        }, Lifetime);
     }
 
     void Update() 
@@ -95,12 +93,21 @@ public class BlackHole : MonoBehaviour
     }
 
 
-    //Kallas från animation events? Bör förtydligas
-    private void Die() => Destroy(gameObject);
+    //Kallas frï¿½n animation events? Bï¿½r fï¿½rtydligas
+    private void Die() => gameObject.SetActive(false);
     private void TurnOnGravitationPull() => gravitationalPull = maxGravitationalPullTemp;
 
     private void StartParticleEffect() {
         GetComponentInChildren<ParticleSystem>().Play();
     }
-    
+
+    public override void Initialize(Vector3 position, Quaternion rotation) {
+        base.Initialize(position, rotation);
+        useGravity = true;
+        animator.SetTrigger(spawnID);        
+       
+        this.Invoke(() => {
+            animator.SetTrigger(despawnID);
+        }, Lifetime);
+    }
 }

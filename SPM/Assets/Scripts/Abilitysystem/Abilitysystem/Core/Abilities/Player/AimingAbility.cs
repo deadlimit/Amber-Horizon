@@ -70,10 +70,10 @@ public class AimingAbility : GameplayAbility
             cursorTransform.position = launchPointTransform.position + camRay.direction * maxDistance;
         }
     }
-    public void FireBlackHole() 
-    {
-        BlackHole obj = Instantiate(bh, launchPoint.gameObject.transform.position, Quaternion.identity);
-        obj.velocity = vo;
+    public void FireBlackHole() {
+        GameObject blackHole = ObjectPooler.Instance.Spawn("BlackHole", launchPointTransform.position, Quaternion.identity);
+        //BlackHole obj = Instantiate(bh, launchPoint.gameObject.transform.position, Quaternion.identity);
+        blackHole.GetComponent<BlackHole>().velocity = vo;
     }
 
     void DrawArc(Vector3 vo, Vector3 finalPos)
