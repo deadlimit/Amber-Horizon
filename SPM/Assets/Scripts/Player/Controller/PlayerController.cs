@@ -26,12 +26,12 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector] public Vector3 force;
     [HideInInspector] public Vector3 bhVelocity;
-    [HideInInspector] public GameplayAbilitySystem abilitySystem { get; private set; }
-    [HideInInspector] public PhysicsComponent physics { get; private set; }
+    public GameplayAbilitySystem abilitySystem { get; private set; }
+    public PhysicsComponent physics { get; private set; }
+    public Animator animator { get; private set; }
 
 
     private Vector3 input;
-    private Animator animator;
     private bool jump;
     private Transform cameraTransform;
     private LineRenderer lr;
