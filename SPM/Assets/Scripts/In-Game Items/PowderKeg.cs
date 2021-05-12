@@ -5,14 +5,14 @@ using EventCallbacks;
 
 public class PowderKeg : MonoBehaviour
 {
-    public GameObject explosion;
+    public GameObject explosionVFX;
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             EventSystem<ExplosionEvent>.FireEvent(new ExplosionEvent(transform.position));
-            Instantiate(explosion, transform.position, transform.rotation);
+            Instantiate(explosionVFX, transform.position, transform.rotation);
             Destroy(gameObject);
         }
     }

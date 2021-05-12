@@ -124,10 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b1703563620f174f9521cc0ce707175, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionMask:
-    serializedVersion: 2
-    m_Bits: 256
-  explosion: {fileID: 8710301720422447588, guid: f02e0410e7e3de1458d45d3bf70d5448, type: 3}
+  explosionVFX: {fileID: 8710301720422447588, guid: f02e0410e7e3de1458d45d3bf70d5448, type: 3}
 --- !u!114 &4000695297888609609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,15 +137,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79eac077e0d2403b8c4a5a103ba3aa5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  velocity: {x: 0, y: 0, z: 0}
   collisionMask:
     serializedVersion: 2
     m_Bits: 64
-  velocityMagnitude: 0
-  smallNumber: 0.1
-  velocity: {x: 0, y: 0, z: 0}
+  maxSpeed: 0
   gravity: 10
   skinWidth: 0.05
-  maxSpeed: 0
+  inputThreshold: 0.1
+  gravityModifier: 1
   staticFrictionCoefficient: 0.5
   kineticFrictionCoefficient: 0.35
   airResistance: 0.35
