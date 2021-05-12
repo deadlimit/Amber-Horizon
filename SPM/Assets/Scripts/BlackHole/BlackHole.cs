@@ -1,44 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BlackHole : PoolObject
+public class BlackHole : MonoBehaviour
 {
-    public LayerMask physicsLayerMask;
-    public LayerMask collisionMask;
-    public float GravitationalPull;
-    public float gravity = 10f;
-    public Vector3 velocity;
-    public float airResistance = 0f;
-    
-    public Transform center;
-    
-    SphereCollider coll;
-    public BoxCollider centerColl;
-
+    public Vector3 velocity { set; get; }
+    [Header("LayerMasks")]
+    [SerializeField] private LayerMask physicsLayerMask;
+    [SerializeField] private LayerMask collisionMask;
+       
+    [Header("Properties")]
+    [SerializeField] private float gravitationalPull;
+    [SerializeField] private float effectRadius;
+    [SerializeField] private float Lifetime;
+    [SerializeField] private GameObject sphereEffect;    
+    [SerializeField] private float gravity;
+      
+    private BoxCollider centerColl;
     private bool useGravity = true;
-    private float terminalDistance = 0.5f;
-    
-    private float gravitationalPull;
-
-    public float Lifetime;
-    
+    private float terminalDistance = 0.5f;    
+    private float maxGravitationalPullTemp;  
     private Animator animator;
     
-    // Update is called once per frame
-    void Update() {
-        
-        GravitationDrag();
-        
-        velocity *= Mathf.Pow(airResistance, Time.deltaTime);
-        transform.position += velocity * Time.deltaTime;
+    private void Awake() {
+        maxGravitationalPullTemp = gravitationalPull;
+
+        centerColl = GetComponent<BoxCollider>();
+        animator = GetComponent<Animator>();
+
+        animator.SetTrigger("Spawn");        
+        this.Invoke(() => {
+            animator.SetTrigger("Despawn");
+        }, Lifetime);
+    }
+
+    void Update() 
+    {       
+        GravitationDrag();        
+    }
+    private void FixedUpdate()
+    {
+        transform.position += (velocity * Time.fixedDeltaTime);
     }
     private void GravitationDrag() {
         
-        Collider[] hitcoll = Physics.OverlapSphere(transform.position, coll.radius, physicsLayerMask);
+        Collider[] hitcoll = Physics.OverlapSphere(transform.position, effectRadius, physicsLayerMask);
         
         foreach (Collider collider in hitcoll) {
-            
+            Debug.Log(collider.gameObject +"hit");
             PhysicsComponent physicsComponent = collider.GetComponent<PhysicsComponent>();   
 
             if (physicsComponent) {
@@ -55,8 +62,7 @@ public class BlackHole : PoolObject
             if (blackHoleBehaviour != null) 
             {
                 blackHoleBehaviour?.BlackHoleBehaviour(this);
-            }
-            
+            }           
         }
         
         if (useGravity)
@@ -65,39 +71,37 @@ public class BlackHole : PoolObject
             Physics.OverlapBox(transform.position, centerColl.size / 2, Quaternion.identity, collisionMask);
             if (boxHitColl.Length > 0)
             {
-                velocity = Vector3.zero;
-                useGravity = false;
+                DisableGravity();
             }
-            
-            velocity += Vector3.down * Time.deltaTime * gravity;
+            else
+                ApplyGravity();           
         }
-        
-        velocity *= Mathf.Pow(airResistance, Time.deltaTime);
-        transform.position += velocity * Time.deltaTime;
+    }
+    private void ApplyGravity()
+    {
+        velocity += Vector3.down * Time.deltaTime * gravity;
+    }
+    private void DisableGravity()
+    {
+        velocity = Vector3.zero;
+        useGravity = false;
+    }
+    public float GetGravity()
+    {
+        return gravity;
+    }
+    public float GetGravitationalPull()
+    {
+        return gravitationalPull;
     }
 
-    private void Die() => gameObject.SetActive(false);
-    private void TurnOnGravitationPull() => GravitationalPull = gravitationalPull;
+
+    //Kallas från animation events? Bör förtydligas
+    private void Die() => Destroy(gameObject);
+    private void TurnOnGravitationPull() => gravitationalPull = maxGravitationalPullTemp;
 
     private void StartParticleEffect() {
         GetComponentInChildren<ParticleSystem>().Play();
     }
-
-    public override void Initialize(Vector3 position, Quaternion rotation) {
-
-        base.Initialize(position, rotation);
-        
-        gravitationalPull = GravitationalPull;
-        GravitationalPull = 0;
-        
-        coll = GetComponent<SphereCollider>();
-        centerColl = GetComponent<BoxCollider>();
-        animator = GetComponent<Animator>();
-
-        animator.SetTrigger("Spawn");
-        
-        this.Invoke(() => {
-            animator.SetTrigger("Despawn");
-        }, Lifetime);
-    }
+    
 }

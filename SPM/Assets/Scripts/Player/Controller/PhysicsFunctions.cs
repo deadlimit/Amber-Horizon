@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class General
+public static class PhysicsFunctions
 {
     public static Vector2 NormalForce(Vector2 velocity, Vector2 normal)
     {

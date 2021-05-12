@@ -51,7 +51,7 @@ public class PlayerPhysics : MonoBehaviour
             velocity += -normalHit.normal * (normalHit.distance - skinWidth);
 
             //hör applicerar vi "stopp"-kraften från ytan vi kolliderar med
-            Vector3 normalForce = General.NormalForce3D(velocity, normalHit.normal);
+            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, normalHit.normal);
             velocity += normalForce;
             ApplyFriction(normalForce);
         }
@@ -74,8 +74,8 @@ public class PlayerPhysics : MonoBehaviour
 
                     Vector3 separationVector = separationDirection * hitDistance;
                     transform.position += separationVector + separationVector.normalized * skinWidth;
-                    velocity += General.NormalForce3D(velocity, separationVector.normalized);
-                    ApplyFriction(General.NormalForce3D(velocity, separationVector.normalized));
+                    velocity += PhysicsFunctions.NormalForce3D(velocity, separationVector.normalized);
+                    ApplyFriction(PhysicsFunctions.NormalForce3D(velocity, separationVector.normalized));
                 }
             }
         }
@@ -127,9 +127,9 @@ public class PlayerPhysics : MonoBehaviour
 
     public void BlackHoleGravity(BlackHole bh) 
     {
-        bhGrav = bh.GravitationalPull * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
+        bhGrav = bh.GetGravitationalPull() * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.deltaTime;
         velocity += bhGrav;
-        ApplyFriction(General.NormalForce3D(velocity, bh.transform.position - transform.position));
+        ApplyFriction(PhysicsFunctions.NormalForce3D(velocity, bh.transform.position - transform.position));
         bhGrav = Vector3.zero;
     }
     public void StopVelocity() 
