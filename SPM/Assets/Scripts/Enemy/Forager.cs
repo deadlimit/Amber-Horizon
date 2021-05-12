@@ -9,7 +9,10 @@ public class Forager : Enemy {
     //funderar på att göra range lite olika för varje forager? typ värde mellan 10 och 15 eller något, 
     //så klumpar dom inte ihop sig riktigt på samma sätt
     public float range {get; private set;} = 12f;
-    
+
+    private new void Awake() {
+        base.Awake();
+    }
     private new void Update()
     {
         base.Update();       
