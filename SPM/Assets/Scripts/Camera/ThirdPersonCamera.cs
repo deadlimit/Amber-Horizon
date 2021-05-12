@@ -59,8 +59,7 @@ public class ThirdPersonCamera : MonoBehaviour {
     private void OnDisable() {
         EventSystem<NewCameraFocus>.UnregisterListener(SwitchToFocusBehaviour);
     }
-
-
+    
     void LateUpdate() {
         
         currentCameraBehaviour.MovementBehaviour();
