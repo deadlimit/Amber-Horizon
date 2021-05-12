@@ -7,10 +7,12 @@ using UnityEngine.UI;
 
 public class TransitOverviewController : MonoBehaviour {
 
-    public GameObject TransitButton;
-    public float WaitUntilButtonSpawn;
-    private List<GameObject> activeButtons = new List<GameObject>();
-
+    [SerializeField] private GameObject transitButton;
+    [SerializeField] private float waitUntilButtonSpawn;
+    [SerializeField] private Canvas UI; 
+    private readonly List<GameObject> activeButtons = new List<GameObject>();
+    
+    
     private Coroutine spawnButtons;
     
     private void OnEnable() {
@@ -23,21 +25,20 @@ public class TransitOverviewController : MonoBehaviour {
         EventSystem<ExitTransitViewEvent>.UnregisterListener(ExitView);
     }
     
-    
     private void TransitView(EnterTransitViewEvent viewEvent) {
-        spawnButtons = StartCoroutine(SpawnButtons(viewEvent.TransitUnits, viewEvent.ActivatedTransitUnit));
+        spawnButtons = StartCoroutine(SpawnButtons(viewEvent.TransitCameraFocusInfo));
     }
 
-    private IEnumerator SpawnButtons(HashSet<TransitUnit> buttons, TransitUnit activatedTransitUnit) {
+    private IEnumerator SpawnButtons(TransitCameraFocusInfo focusInfo) {
         
-        yield return new WaitForSeconds(WaitUntilButtonSpawn);
-
-        foreach (TransitUnit transitUnit in buttons) {
-            GameObject button = Instantiate(TransitButton, Camera.main.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, gameObject.transform);
+        yield return new WaitForSeconds(waitUntilButtonSpawn);
+        
+        foreach (TransitUnit transitUnit in focusInfo.TransitUnits) {
+            GameObject button = Instantiate(transitButton, Camera.main.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, UI.transform);
             
             TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
 
-            if (transitUnit == activatedTransitUnit) {
+            if (transitUnit == focusInfo.ActivatedTransitUnit) {
                 buttonText.text = "You are here";
                 buttonText.GetComponentInParent<Image>().color = Color.green;
             }
@@ -66,7 +67,6 @@ public class TransitOverviewController : MonoBehaviour {
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        
     }
     
     

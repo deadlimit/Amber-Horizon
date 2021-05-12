@@ -30,8 +30,12 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Target = GameObject.FindGameObjectWithTag("Player").transform;
         originPosition = transform.position;
     }
-
-    private void Start() {
+    private void OnDisable()
+    {
+        PlayerReviveListener.enemyList.Remove(this);
+    }
+    protected void Start() {
+        PlayerReviveListener.enemyList.Add(this); 
         AbilitySystem = GetComponent<GameplayAbilitySystem>();
     }
 
@@ -52,7 +56,6 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         {
             if(e.gameObject.GetComponent<Enemy>().stateMachine.currentState.GetType() == typeof(EnemyProximityState))
             {
-                Debug.Log("EnemySeen Success");
                 return true;
             }
         }
@@ -71,5 +74,12 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Animator.SetTrigger("HitByExplosion");
 
 
+    }
+    public void ResetPosition()
+    {
+        Pathfinder.agent.ResetPath();
+        transform.position = originPosition;
+       //Pathfinder.agent.nextPosition = originPosition;
+        Debug.Log(gameObject + "position set to: " + originPosition);
     }
 }
