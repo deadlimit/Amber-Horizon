@@ -6,13 +6,24 @@ public class Destructor : Enemy {
         base.Start();
         stateMachine.ChangeState<DestructorPatrolState>();
     }
+    public override void ResetPosition()
+    {
+        base.ResetPosition();
+        stateMachine.ChangeState<DestructorResetState>();
+    }
     private new void Update() {
         base.Update();
         
         stateMachine.RunUpdate();
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.black;
+        if (Pathfinder == null || !Pathfinder.agent.hasPath) return;
+        Gizmos.DrawLine(transform.position, Pathfinder.agent.destination);
+        Gizmos.DrawWireSphere(Pathfinder.agent.destination, .5f);
 
     }
-
     public override void ApplyExplosion(GameObject explosionInstance, float blastPower)
     {
         stateMachine.ChangeState<DestructorDeathState>();
