@@ -41,9 +41,6 @@ public class PlayerAnimation : MonoBehaviour {
         float xAxis = Input.GetAxis("Horizontal");
         animator.SetFloat("VelocityX", xAxis);
         animator.SetFloat("VelocityZ", zAxis);
-
-        if (Input.GetKeyDown(KeyCode.Tab))
-            animator.SetBool("ShowKey", !animator.GetBool("ShowKey"));
     }
 
     //Används i en animationstrigger
@@ -77,8 +74,10 @@ public class PlayerAnimation : MonoBehaviour {
         animator.SetTrigger("PlayerDeath");
     }
 
+    //Called by AnimationEvent "PlayerDeath"
     private void OnDeathAnimationDone() {
-        EventSystem<PlayerReviveEvent>.FireEvent(null);
+        PlayerReviveEvent pre = new PlayerReviveEvent(this.gameObject);
+        EventSystem<PlayerReviveEvent>.FireEvent(pre);
         animator.SetTrigger("PlayerRevive");
     }
 
