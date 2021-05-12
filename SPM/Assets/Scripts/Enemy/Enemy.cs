@@ -54,7 +54,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Collider [] enemies = Physics.OverlapSphere(transform.position, radius, EnemyMask);
         foreach(Collider e in enemies)
         {
-            if(e.gameObject.GetComponent<Enemy>().stateMachine.CurrentState.GetType() == typeof(EnemyProximityState))
+            if(e.gameObject.GetComponent<Forager>()?.stateMachine.CurrentState.GetType() == typeof(EnemyProximityState))
             {
                 return true;
             }

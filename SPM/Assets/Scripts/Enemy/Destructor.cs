@@ -8,8 +8,8 @@ public class Destructor : Enemy {
     }
     public override void ResetPosition()
     {
-        base.ResetPosition();
         stateMachine.ChangeState<DestructorResetState>();
+        base.ResetPosition();
     }
     private new void Update() {
         base.Update();

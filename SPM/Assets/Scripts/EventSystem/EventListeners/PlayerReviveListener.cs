@@ -10,9 +10,9 @@ public class PlayerReviveListener : MonoBehaviour
 
     public void PlayerRevive(PlayerReviveEvent pre)
     {
-        ResetEnemyPositions();
         pre.player.animator.StopPlayback();
         Checkpoint.ActiveCheckPoint.ResetPlayerPosition();
+        ResetEnemyPositions();
         pre.player.RestoreHealth();
 
         GameObject fadeUI = GameObject.Find("FadeToBlack");
