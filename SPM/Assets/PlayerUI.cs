@@ -10,10 +10,9 @@ public class PlayerUI : MonoBehaviour {
     [SerializeField] private Image dashCooldownImage;
     [SerializeField] private Image blackholeCooldownImage;
     [SerializeField] private TextMeshProUGUI interactText;
-    [SerializeField] private Image sliderBackground, sliderFill;
+    [SerializeField] private Image healthBackground, healthBarChipAway, healthBar;
     [SerializeField] private AudioClip UIMessageSFX;
     
-    private Slider healthSlider;
     private PlayerController player;
     
     private void Start() {
@@ -25,7 +24,6 @@ public class PlayerUI : MonoBehaviour {
         EventSystem<DisplayUIMessage>.RegisterListener(DisplayMessageOnUI);
 
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        healthSlider = GetComponentInChildren<Slider>();
 
         ChangeColor(0);
 
@@ -33,14 +31,18 @@ public class PlayerUI : MonoBehaviour {
 
     private void ChangeColor(float value) {
         
-        Color trans = sliderFill.color;
+        Color trans = healthBar.color;
         trans.a = value;
-        sliderFill.color = trans;
-        Color trans1 = sliderBackground.color;
+        healthBar.color = trans;
+        Color trans1 = healthBackground.color;
         trans1.a = value;
-        sliderBackground.color = trans1;
-        
+        healthBackground.color = trans1;
+
+        Color trans2 = healthBarChipAway.color;
+        trans2.a = value;
+        healthBarChipAway.color = trans2;
     }
+
     private void OnDisable() {
         EventSystem<AbilityUsed>.UnregisterListener(StartAbilityCooldown);
         EventSystem<InteractTriggerExitEvent>.UnregisterListener(ClearUIMessage);
@@ -92,20 +94,41 @@ public class PlayerUI : MonoBehaviour {
     }
 
     private void ChangeHealthUI(PlayerHitEvent playerHitEvent) {
-        sliderBackground = GameObject.FindGameObjectWithTag("BackgroundTag").GetComponent<Image>();
-        sliderFill = GameObject.FindGameObjectWithTag("FillTag").GetComponent<Image>();
+        //healthBackground = GameObject.FindGameObjectWithTag("BackgroundTag").GetComponent<Image>();
+        //healthBar = GameObject.FindGameObjectWithTag("FillTag").GetComponent<Image>();
         ChangeColor(255);
 
         float currentHealth = player.GetPlayerHealth();
         
+        //4 is the max health. btw
         if(currentHealth < 1 )
         {
             currentHealth = 4;
         }
-        healthSlider.value = currentHealth;
+        float healthFraction = currentHealth / 4;
 
-        sliderBackground.Invoke(() => ChangeColor(0), 1.5f);
-        
+        healthBar.fillAmount = healthFraction;
+
+        if (healthBarChipAway.fillAmount < healthFraction)
+        {
+            Debug.Log("In PlayerUI, ChnageHealthUI. lerping ChipAway");
+            float timerDelay = 1.2f;
+            float end = Time.time + timerDelay;
+
+            while (Time.time < end)
+            {
+                healthBarChipAway.fillAmount += Time.deltaTime / timerDelay;
+                yield return null;
+            }
+
+            healthBarChipAway.fillAmount = healthFraction;
+
+        }
+        //lerp the healthBarChipAway
+
+        healthBackground.Invoke(() => ChangeColor(0), 1.5f);
+
+
     }
 
     private void RestoreHealthUI(CheckPointActivatedEvent checkPointActivatedEvent)
