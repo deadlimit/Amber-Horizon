@@ -3,7 +3,8 @@ using EventCallbacks;
 using UnityEngine;
 
 public class Bullet : PoolObject {
-    
+
+    [SerializeField] private float activeTime;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private GameplayEffect effect;
     [SerializeField] private LayerMask hitLayer;
@@ -21,12 +22,21 @@ public class Bullet : PoolObject {
         
         if (((1 << other.gameObject.layer) & hitLayer) != 0)
         {
-            GameplayAbilitySystem playerAbilitySystem = other.gameObject.GetComponent<GameplayAbilitySystem>();
-            playerAbilitySystem.ApplyEffectToSelf(effect);
             EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, effect));
         }
         
         gameObject.SetActive(false);
     }
+
+    public override void Initialize(Vector3 position, Quaternion rotation) {
+        base.Initialize(position, rotation);
+        
+        this.Invoke(() => gameObject.SetActive(false), activeTime);
+        
+        activeRigidbody.velocity = Vector3.zero;
+        activeRigidbody.centerOfMass = Vector3.zero;
+    }
+    
+    
     
 }
