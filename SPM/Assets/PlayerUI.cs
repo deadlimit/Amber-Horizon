@@ -129,6 +129,10 @@ public class PlayerUI : MonoBehaviour {
             StartCoroutine(AnimateHealthChipAway(1.5f, healthFraction));
 
         }
+        else
+        {
+            healthBarChipAway.fillAmount = 1.0f;
+        }
 
         healthBackground.Invoke(() => ChangeColor(0), 2.0f);
 
@@ -137,6 +141,7 @@ public class PlayerUI : MonoBehaviour {
     private void RestoreHealthUI(CheckPointActivatedEvent checkPointActivatedEvent)
     {
         ChangeHealthUI(null);
+        
     }
 
 }
