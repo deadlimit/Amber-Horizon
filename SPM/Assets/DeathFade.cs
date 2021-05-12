@@ -15,14 +15,12 @@ public class DeathFade : MonoBehaviour
 
     public IEnumerator FadeOut(bool fadeOut = true, int fadeSpeed = 1)
     {
-        print("Yep");
         Color uiColor = ui.GetComponent<Image>().color;
         float fadeAmount;
         if (fadeOut)
         {
             while (ui.GetComponent<Image>().color.a < 1)
             {
-                print("Hmm");
                 fadeAmount = uiColor.a + (fadeSpeed * Time.deltaTime);
 
                 uiColor = new Color(uiColor.r, uiColor.g, uiColor.b, fadeAmount);
