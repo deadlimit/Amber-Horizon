@@ -20,7 +20,7 @@ public class PlayerUI : MonoBehaviour {
         EventSystem<InteractTriggerEnterEvent>.RegisterListener(DisplayInteractText);
         EventSystem<InteractTriggerExitEvent>.RegisterListener(ClearUIMessage);
         EventSystem<PlayerHitEvent>.RegisterListener(ChangeHealthUI);
-        EventSystem<CheckPointActivatedEvent>.RegisterListener(RestoreHealthUI);
+        EventSystem<PlayerReviveEvent>.RegisterListener(RestoreHealthUI);
         EventSystem<DisplayUIMessage>.RegisterListener(DisplayMessageOnUI);
 
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
@@ -73,7 +73,7 @@ public class PlayerUI : MonoBehaviour {
         Debug.Log("PlayerUI, start of AnimaeteHealthChipAway");
         float end = Time.time + time;
 
-        while (Time.time < end)
+        while (Time.time < end && healthBarChipAway.fillAmount > healthFraction)
         {
             healthBarChipAway.fillAmount -= Time.deltaTime / time;
             yield return null;
@@ -114,6 +114,7 @@ public class PlayerUI : MonoBehaviour {
 
         float currentHealth = player.GetPlayerHealth();
         
+        //only set health when checkpoint.
         //4 is the max health. btw
         if(currentHealth < 1 )
         {
@@ -138,7 +139,7 @@ public class PlayerUI : MonoBehaviour {
 
     }
 
-    private void RestoreHealthUI(CheckPointActivatedEvent checkPointActivatedEvent)
+    private void RestoreHealthUI(PlayerReviveEvent playerReviveEvent)
     {
         ChangeHealthUI(null);
         
