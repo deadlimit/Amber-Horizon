@@ -179,6 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894f3c619c272e2438dd8df9e03026d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectCallbackPairs: []
 --- !u!114 &1504784523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,15 +238,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79eac077e0d2403b8c4a5a103ba3aa5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  velocity: {x: 0, y: 0, z: 0}
   collisionMask:
     serializedVersion: 2
     m_Bits: 64
-  velocityMagnitude: 0
-  smallNumber: 0.1
-  velocity: {x: 0, y: 0, z: 0}
+  maxSpeed: 0
   gravity: 14
   skinWidth: 0.05
-  maxSpeed: 0
+  inputThreshold: 0.1
+  gravityModifier: 1
   staticFrictionCoefficient: 0.5
   kineticFrictionCoefficient: 0.35
   airResistance: 0.35
@@ -271,14 +272,13 @@ MonoBehaviour:
   groundCheckMask:
     serializedVersion: 2
     m_Bits: 0
+  groundCheckDistance: 0.05
   states:
   - {fileID: 11400000, guid: eb050f581a2120f4aacea0b20dd0ab74, type: 2}
   - {fileID: 11400000, guid: 7ef2ef659fd70e94089613119db7671a, type: 2}
   - {fileID: 11400000, guid: 260658f9bea97144d9bdd78b881f4e67, type: 2}
-  groundCheckDistance: 0.05
   force: {x: 0, y: 0, z: 0}
   bhVelocity: {x: 0, y: 0, z: 0}
-  airborne: 0
 --- !u!1 &768987082205471989
 GameObject:
   m_ObjectHideFlags: 0
@@ -2105,9 +2105,9 @@ MonoBehaviour:
   dashCooldownImage: {fileID: 4397064078770893016}
   blackholeCooldownImage: {fileID: 5714916351834734061}
   interactText: {fileID: 7166953804834990818}
-  UIMessageSFX: {fileID: 0}
   sliderBackground: {fileID: 0}
   sliderFill: {fileID: 0}
+  UIMessageSFX: {fileID: 0}
 --- !u!1 &4809434165163511491
 GameObject:
   m_ObjectHideFlags: 0
