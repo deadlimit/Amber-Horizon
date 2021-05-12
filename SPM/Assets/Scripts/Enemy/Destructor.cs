@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class Destructor : Enemy {
     
-    private void Start() {
+    protected new void Start() {
+        base.Start();
         stateMachine.ChangeState<DestructorPatrolState>();
     }
-    
     private new void Update() {
         base.Update();
         

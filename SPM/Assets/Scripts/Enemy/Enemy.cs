@@ -34,7 +34,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     {
         PlayerReviveListener.enemyList.Remove(this);
     }
-    private void Start() {
+    protected void Start() {
         PlayerReviveListener.enemyList.Add(this); 
         AbilitySystem = GetComponent<GameplayAbilitySystem>();
     }
