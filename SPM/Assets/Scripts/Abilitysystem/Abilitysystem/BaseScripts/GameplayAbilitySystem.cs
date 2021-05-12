@@ -58,6 +58,7 @@ namespace AbilitySystem
 
             if (Effect.Attribute != null)
             {
+                Debug.Log("Try apply attribute change" + Effect.Attribute);
                 TryApplyAttributeChange(Effect.Attribute.GetType(), Effect.Value);
                 retur = true;
             }
@@ -113,14 +114,15 @@ namespace AbilitySystem
                         Value = ((Func<float, float>)Calc)(Value);
                     }
                 }
-                
+
+                Debug.Log("ModifyAttrValue: " + Attribute + ", " + Value);
                 ModifyAttributeValue(Attribute, Value);
 
                 //vad gör denna? Inget finns i OnAttributeChanged?
                 //OnAttributeChanged[Attribute]?.Invoke(AttributeSet[Attribute]);
             }
             else
-                Debug.LogError(Attribute + " not found in " + this.gameObject);
+                Debug.Log(Attribute + " not found in " + this.gameObject);
         }
 
         private void ModifyAttributeValue(Type Attribute, float Value)
@@ -136,6 +138,7 @@ namespace AbilitySystem
                         AttributeSet[Attribute] = gaSet.Value;                      
                 }
             }
+            Debug.Log(Attribute + " efter ApplyAttributeChange:" + AttributeSet[Attribute]);
         }
 
         public void GrantAbility(GameplayAbility Ability) {

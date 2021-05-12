@@ -50,7 +50,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Collider [] enemies = Physics.OverlapSphere(transform.position, radius, EnemyMask);
         foreach(Collider e in enemies)
         {
-            if(e.gameObject.GetComponent<Enemy>().stateMachine.CurrentState.GetType() == typeof(EnemyProximityState))
+            if(e.gameObject.GetComponent<Enemy>().stateMachine.currentState.GetType() == typeof(EnemyProximityState))
             {
                 Debug.Log("EnemySeen Success");
                 return true;
@@ -60,7 +60,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     }
     
     
-    public virtual void BlackHoleBehaviour(BlackHole blackHole) { }
+    public virtual void BlackHoleBehaviour(BlackHole blackHole) { Debug.Log("hello");}
 
     public virtual void ApplyExplosion(GameObject explosionInstance, float blastPower)
     {

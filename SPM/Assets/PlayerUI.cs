@@ -7,14 +7,16 @@ using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour {
 
-    [SerializeField] private Image dashCooldownImage;
-    [SerializeField] private Image blackholeCooldownImage;
-    [SerializeField] private TextMeshProUGUI interactText;
-    [SerializeField] private Image sliderBackground, sliderFill;
-    [SerializeField] private AudioClip UIMessageSFX;
+    public Image dashCooldownImage;
+    public Image blackholeCooldownImage;
+    public TextMeshProUGUI interactText;
+
+    public AudioClip UIMessageSFX;
     
     private Slider healthSlider;
-    private PlayerController player;
+    private PlayerController pc;
+
+    public Image sliderBackground, sliderFill;
     
     private void Start() {
         EventSystem<AbilityUsed>.RegisterListener(StartAbilityCooldown);
@@ -24,7 +26,7 @@ public class PlayerUI : MonoBehaviour {
         EventSystem<CheckPointActivatedEvent>.RegisterListener(RestoreHealthUI);
         EventSystem<DisplayUIMessage>.RegisterListener(DisplayMessageOnUI);
 
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        pc = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         healthSlider = GetComponentInChildren<Slider>();
 
         ChangeColor(0);
@@ -96,8 +98,8 @@ public class PlayerUI : MonoBehaviour {
         sliderFill = GameObject.FindGameObjectWithTag("FillTag").GetComponent<Image>();
         ChangeColor(255);
 
-        float currentHealth = player.GetPlayerHealth();
-        
+        float currentHealth = pc.GetPlayerHealth();
+        Debug.Log("reached ChangeHealthUI");
         if(currentHealth < 1 )
         {
             currentHealth = 4;

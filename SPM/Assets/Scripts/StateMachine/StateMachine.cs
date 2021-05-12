@@ -6,7 +6,7 @@ using EventCallbacks;
 public class StateMachine
 {
     private Dictionary<Type, State> instantiatedStates = new Dictionary<Type, State>();
-    public State CurrentState { get; private set; }
+    public State currentState;
 
     public StateMachine(object owner, State[] states) 
     {
@@ -18,28 +18,39 @@ public class StateMachine
             instantiated.Initialize(this, owner);
             instantiatedStates.Add(state.GetType(), instantiated);
             
-            if (!CurrentState)
-                CurrentState = instantiated;
+            if (!currentState)
+                currentState = instantiated;
         }
-        CurrentState.Enter();
         
     }
     public void RunUpdate() 
     {
-        CurrentState?.RunUpdate();
+        currentState?.RunUpdate();
     }
     public void ChangeState<T>() where T : State {
 
         if (instantiatedStates.ContainsKey(typeof(T)))
         {
             State instance = instantiatedStates[typeof(T)];
-            CurrentState?.Exit();
-            CurrentState = instance;
-            CurrentState.Enter();
+            currentState?.Exit();
+            currentState = instance;
+            currentState.Enter();
         }
         else
             Debug.Log(typeof(T) + "not found");
     }
     
+    public void ChangeState<T>(EventInfo eventInfo) where T : State {
+
+        if (instantiatedStates.ContainsKey(typeof(T)))
+        {
+            State instance = instantiatedStates[typeof(T)];
+            currentState?.Exit();
+            currentState = instance;
+            currentState.Enter(eventInfo);
+        }
+        else
+            Debug.Log(typeof(T) + "not found");
+    }
 }
  

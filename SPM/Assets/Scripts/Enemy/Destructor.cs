@@ -1,6 +1,8 @@
 using UnityEngine;
 
 public class Destructor : Enemy {
+
+    public TextMesh text;
     
     private void Start() {
         stateMachine.ChangeState<DestructorPatrolState>();
@@ -10,6 +12,7 @@ public class Destructor : Enemy {
         base.Update();
         
         stateMachine.RunUpdate();
+        text.text = stateMachine.currentState.ToString();
 
     }
 

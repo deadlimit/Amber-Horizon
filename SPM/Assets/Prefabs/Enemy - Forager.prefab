@@ -1268,6 +1268,7 @@ GameObject:
   - component: {fileID: 4469862759675896384}
   - component: {fileID: 4469862759675896386}
   - component: {fileID: 4469862759675896385}
+  - component: {fileID: 8822923542465144384}
   - component: {fileID: 6779590072770284603}
   m_Layer: 8
   m_Name: Enemy - Forager
@@ -1360,7 +1361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d45e3d4781cc5348a8db4e4855306ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outerRing: 17
+  outerRing: 15
   innerRing: 4
   PlayerMask:
     serializedVersion: 2
@@ -1390,6 +1391,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e33420389a796fe4a88f50ff02ebbe7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8822923542465144384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4469862759675896390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37474d6275a4ea34dac749a7457120b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartingAbilities:
+  - {fileID: 11400000, guid: 7864f190a7de227428b2f01d15c55cc8, type: 2}
+  StartingEffects: []
+  AttributeSet: []
 --- !u!54 &6779590072770284603
 Rigidbody:
   m_ObjectHideFlags: 0

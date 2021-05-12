@@ -1,28 +1,28 @@
-using System.Runtime.InteropServices;
 using EventCallbacks;
 using UnityEngine;
 
 
-public class DefaultCameraState : CameraBaseState
+public class DefaultCameraState : State
 {
-   /* [SerializeField] private LayerMask CollisionMask;
-    [SerializeField] private Vector3 TargetOffset;
+    public LayerMask CollisionMask;
     public float CameraSpeed;
- 
-
-    
+    public float MouseSensitivity = 1f;
+    private Vector3 playerPos;
+    private ThirdPersonCamera camera;
+    private GameObject target;
+    private  float rotationX;
+    private float rotationY;
+    public Vector3 TargetOffset;
     private Vector3 offset;
+    public SphereCollider collider { get; private set; }
+    
     
     protected override void Initialize() {
-        base.Initialize();
+        camera = (ThirdPersonCamera)base.owner;
+        collider = camera.GetComponent<SphereCollider>();
+        target = GameObject.FindGameObjectWithTag("CameraDefaultTarget");
         EventSystem<EnterTransitViewEvent>.RegisterListener(ChangeToBirdEyeView);
-        internalTargetReference = GameObject.FindGameObjectWithTag("CameraDefaultTarget").transform;
-    }
-
-    public override void Enter() {
-        Debug.Log("enter");
-        Target = internalTargetReference;
-        Offset = TargetOffset;
+        
     }
     public override void RunUpdate() 
     {
@@ -32,18 +32,18 @@ public class DefaultCameraState : CameraBaseState
         GetInput();
         CameraScroll();
         
-        offset = Camera.transform.rotation * Offset;
+        offset = camera.transform.rotation * TargetOffset;
         PlaceCamera();
 
         rotationX = Mathf.Clamp(rotationX, -40, 80);
-        Camera.main.transform.rotation = Quaternion.Euler(rotationX - 10, rotationY, 0);
+        camera.transform.rotation = Quaternion.Euler(rotationX - 10, rotationY, 0);
 
     }
     private void CameraScroll() 
     {
         //eventuellt ska dessa clampas
-        Offset.z += Input.mouseScrollDelta.y; 
-        Offset.z = Mathf.Clamp(TargetOffset.z, -6, -2);
+        TargetOffset.z += Input.mouseScrollDelta.y; 
+        TargetOffset.z = Mathf.Clamp(TargetOffset.z, -6, -2);
 
     }
     void GetInput()
@@ -53,21 +53,22 @@ public class DefaultCameraState : CameraBaseState
     }
     void PlaceCamera() {     
         RaycastHit hitInfo;
-        
-        if (Physics.SphereCast(Target.position, Collider.radius, offset.normalized, out hitInfo, offset.magnitude, CollisionMask)) {
+        playerPos = target.transform.position;
+
+
+        if (Physics.SphereCast(playerPos, collider.radius, offset.normalized, out hitInfo, offset.magnitude, CollisionMask)) {
 
             offset = hitInfo.distance * offset.normalized;
         }
         
         
-        CameraController.transform.position = Vector3.Lerp(CameraController.transform.position, Target.position + offset, CameraSpeed * Time.deltaTime);             
+        camera.transform.position = Vector3.Lerp(camera.transform.position, playerPos + offset, CameraSpeed * Time.deltaTime);             
     }
 
     private void ChangeToBirdEyeView(EnterTransitViewEvent viewEvent) {
-        Target = viewEvent.TransitCameraFocusInfo.NewFocusTarget;
-        Offset = viewEvent.TransitCameraFocusInfo.NewOffset;
+        stateMachine.ChangeState<CameraBirdView>();
     }
     
-    */
+    
     
 }

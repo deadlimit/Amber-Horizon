@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AbilityPickup : MonoBehaviour {
 
-    [SerializeField] private GameplayAbility ability;
+    public GameplayAbility ability;
 
     public void OnTriggerEnter(Collider other) {
         

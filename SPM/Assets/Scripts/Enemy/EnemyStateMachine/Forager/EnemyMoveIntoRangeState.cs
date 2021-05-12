@@ -13,6 +13,7 @@ public class EnemyMoveIntoRangeState : State
     public override void Enter()
     {
         forager.Pathfinder.agent.ResetPath();
+        Debug.Log(forager.gameObject + "moving towards target");
         forager.Pathfinder.agent.SetDestination(forager.Target.transform.position);
         forager.Pathfinder.agent.speed *= 2;
     }
@@ -26,5 +27,6 @@ public class EnemyMoveIntoRangeState : State
     public override void Exit()
     {
         forager.Pathfinder.agent.speed /= 2;
+        Debug.Log("leaving move into range state");
     }
 }

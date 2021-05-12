@@ -17,7 +17,7 @@ public class Health : MonoBehaviour {
         --hitsBeforeDeath;
 
         if (hitsBeforeDeath < 1) {
-            Checkpoint.ActiveCheckPoint.ResetPlayerPosition();
+            checkpointManager.ResetPlayerPosition();
             hitsBeforeDeath = hitsBeforeDeathDefault;
         }
     }

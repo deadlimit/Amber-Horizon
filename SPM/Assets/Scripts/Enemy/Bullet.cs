@@ -1,32 +1,42 @@
+using System;
 using AbilitySystem;
 using EventCallbacks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Bullet : PoolObject {
+public class Bullet : MonoBehaviour {
     
-    [SerializeField] private float bulletSpeed;
-    [SerializeField] private GameplayEffect effect;
-    [SerializeField] private LayerMask hitLayer;
+    public float bulletSpeed;
+    private Vector3 direction;
     private Rigidbody activeRigidbody;
+    private Forager parent;
+    private GameplayAbility ability;
     
-    private void Awake() {
+    public void Init(GameplayAbility ability, Forager parent) {
+        this.ability = ability;
+        this.parent = parent;
         activeRigidbody = GetComponent<Rigidbody>();
+        direction = parent.Target.transform.position - transform.position;
+
+        Destroy(gameObject, 3f);
     }
 
     private void Update() {
-        activeRigidbody.AddForce(transform.forward * bulletSpeed);
+        activeRigidbody.AddForce(direction.normalized * bulletSpeed);
     }
     
-    private void OnTriggerEnter(Collider other) {
-        
-        if (((1 << other.gameObject.layer) & hitLayer) != 0)
+    private void OnTriggerEnter(Collider other) 
+    {
+        if (other.gameObject.CompareTag("Player")) 
         {
             GameplayAbilitySystem playerAbilitySystem = other.gameObject.GetComponent<GameplayAbilitySystem>();
-            playerAbilitySystem.ApplyEffectToSelf(effect);
-            EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, effect));
+            parent.AbilitySystem.TryApplyEffectToOther(ability.AppliedEffect, playerAbilitySystem);
+
+            EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, ability));
         }
-        
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
+    
+    
     
 }

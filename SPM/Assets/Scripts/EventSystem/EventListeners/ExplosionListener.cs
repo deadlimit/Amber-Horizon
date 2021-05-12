@@ -4,6 +4,7 @@ using UnityEngine;
 using EventCallbacks;
 public class ExplosionListener : MonoBehaviour
 {
+    public GameObject explosion;
     private void OnEnable() => EventSystem<ExplosionEvent>.RegisterListener(Explosion);
     private void OnDisable() => EventSystem<ExplosionEvent>.UnregisterListener(Explosion);
 
@@ -11,6 +12,7 @@ public class ExplosionListener : MonoBehaviour
     //vill ju förstås använda object pooling här va
     private void Explosion (ExplosionEvent ee)
     {
-        ObjectPooler.Instance.Spawn("Explosion", ee.location, Quaternion.identity);
+        Instantiate(explosion, ee.location, Quaternion.identity);
+
     }
 }

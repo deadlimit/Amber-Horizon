@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Forager : Enemy {
 
-    [SerializeField] private GameObject Bullet;
+    public GameObject Bullet;
     [HideInInspector] public BlackHole activeBlackHole;
     
     //funderar på att göra range lite olika för varje forager? typ värde mellan 10 och 15 eller något, 
@@ -32,11 +32,13 @@ public class Forager : Enemy {
         stateMachine.ChangeState<EnemyDeathState>(); }
     
     public void Fire() {
-        ObjectPooler.Instance.Spawn("Bullet", transform.position + transform.forward + Vector3.up, Quaternion.LookRotation(Target.position - transform.position));
+        GameObject newBullet = Instantiate(Bullet, transform.position + transform.forward + Vector3.up, transform.rotation);
+        newBullet.GetComponent<Bullet>().Init(AbilitySystem.GetAbilityByTag(GameplayTags.AttackTag), this);
         Pathfinder.agent.isStopped = false;
     }
 
-    public override void ApplyExplosion(GameObject explosionInstance, float blastPower) {
+    public override void ApplyExplosion(GameObject explosionInstance, float blastPower)
+    {
         stateMachine.ChangeState<EnemyExplodedState>();
         base.ApplyExplosion(explosionInstance, blastPower);
     }

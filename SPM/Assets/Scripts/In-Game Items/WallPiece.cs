@@ -22,6 +22,7 @@ public class WallPiece : MonoBehaviour, IBlackHoleBehaviour  {
 
         physics.gravity = 0;
         activeCollider.enabled = false;
+        print("wall piece");
     }
 
     private void Update() {

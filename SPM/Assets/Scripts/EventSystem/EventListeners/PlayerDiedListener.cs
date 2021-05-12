@@ -20,7 +20,7 @@ public class PlayerDiedListener : MonoBehaviour
         Debug.Log("Player died");
         pde.player.GetComponent<Animator>().StopPlayback();
         pde.player.physics.velocity = Vector3.zero;
-        Checkpoint.ActiveCheckPoint.ResetPlayerPosition();
+        checkpointManager.ResetPlayerPosition();
         pde.player.RestoreHealth();
     }
 }

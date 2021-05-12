@@ -57,7 +57,7 @@ public class PhysicsComponent : MonoBehaviour
         ClampSpeed();
 
         //Silvertejpslösning för att inte få -Infinity eller NaN
-        if (float.IsNaN(velocity.x) == false && float.IsNegativeInfinity(velocity.x) == false && float.IsPositiveInfinity(velocity.x) == false  )
+        if (float.IsNaN(velocity.x) == false || float.IsNegativeInfinity(velocity.x) == false || float.IsPositiveInfinity(velocity.x) == false  )
             transform.position += velocity * Time.deltaTime;
         
         MoveOutOfGeometry();
@@ -76,7 +76,7 @@ public class PhysicsComponent : MonoBehaviour
     private void CheckForCollisions(int i)
     {
         RaycastHit hitInfo = collisionCaster.CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);
-        if (hitInfo.collider && hitInfo.collider.isTrigger == false)
+        if (hitInfo.collider)
         {
 
             RaycastHit normalHitInfo = collisionCaster.CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
