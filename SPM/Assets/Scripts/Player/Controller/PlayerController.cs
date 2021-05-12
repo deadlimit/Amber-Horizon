@@ -167,6 +167,9 @@ public class PlayerController : MonoBehaviour
         {
             abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag);
         }
+        
+        if(Input.GetKeyDown(KeyCode.H))
+            EventSystem<ResetCameraFocus>.FireEvent(null);
 
        
     }

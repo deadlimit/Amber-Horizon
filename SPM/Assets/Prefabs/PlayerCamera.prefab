@@ -59,8 +59,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 394540283807709410}
+  - component: {fileID: 933416539}
   m_Layer: 0
-  m_Name: FollowCamera
+  m_Name: FocusCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,6 +81,19 @@ Transform:
   m_Father: {fileID: 7884709247241317309}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &933416539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920794074493490491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b691be71229f42745a8b7f20df8635ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraSpeed: 5
 --- !u!1 &7884709247241317298
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,7 +162,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 8183
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -215,7 +229,8 @@ MonoBehaviour:
   cameraBehaviourPairs:
   - CameraType: 0
     behaviour: {fileID: 1036262254}
-  currentCameraBehaviour: {fileID: 1036262254}
+  - CameraType: 1
+    behaviour: {fileID: 933416539}
 --- !u!135 &7884709247241317304
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -9,20 +9,21 @@ public class TransitOverviewController : MonoBehaviour {
 
     [SerializeField] private GameObject transitButton;
     [SerializeField] private float waitUntilButtonSpawn;
-    [SerializeField] private Camera overviewCamera;
     private readonly List<GameObject> activeButtons = new List<GameObject>();
-    
+
+    [SerializeField] private Canvas canvas;
     
     private Coroutine spawnButtons;
-    
+    private RectTransform canvasRect;
     private void OnEnable() {
         EventSystem<EnterTransitViewEvent>.RegisterListener(TransitView);
-        EventSystem<ExitTransitViewEvent>.RegisterListener(ExitView);
+        EventSystem<ResetCameraFocus>.RegisterListener(ExitView);
+        canvasRect = canvas.GetComponent<RectTransform>();
     }
 
     private void OnDisable() {
         EventSystem<EnterTransitViewEvent>.UnregisterListener(TransitView);
-        EventSystem<ExitTransitViewEvent>.UnregisterListener(ExitView);
+        EventSystem<ResetCameraFocus>.UnregisterListener(ExitView);
     }
     
     private void TransitView(EnterTransitViewEvent viewEvent) {
@@ -34,7 +35,7 @@ public class TransitOverviewController : MonoBehaviour {
         yield return new WaitForSeconds(waitUntilButtonSpawn);
         
         foreach (TransitUnit transitUnit in viewEvent.TransitUnits) {
-            GameObject button = Instantiate(transitButton, overviewCamera.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, gameObject.transform);
+            GameObject button = Instantiate(transitButton, Camera.main.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, canvas.transform);
             
             TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
 
@@ -57,10 +58,10 @@ public class TransitOverviewController : MonoBehaviour {
 
     private void MovePlayer(TransitUnit transitUnit) {
         GameObject.FindGameObjectWithTag("Player").transform.position = transitUnit.AttachedCheckpoint.SpawnPosition;
-        EventSystem<ExitTransitViewEvent>.FireEvent(null);
+        EventSystem<ResetCameraFocus>.FireEvent(null);
     }
 
-    private void ExitView(ExitTransitViewEvent viewEvent) {
+    private void ExitView(ResetCameraFocus viewEvent) {
         StopCoroutine(spawnButtons);
         foreach (GameObject button in activeButtons)
             Destroy(button.gameObject);
@@ -68,7 +69,7 @@ public class TransitOverviewController : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-    
-    
+
+
 
 }

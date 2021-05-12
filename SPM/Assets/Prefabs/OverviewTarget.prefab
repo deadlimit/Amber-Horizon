@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7659753802372377732
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7659753802372377733}
+  - component: {fileID: 7659753802372377734}
+  m_Layer: 0
+  m_Name: OverviewTarget
+  m_TagString: TransitOverview
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7659753802372377733
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7659753802372377732}
+  m_LocalRotation: {x: -0.4765263, y: 0.51804364, z: -0.473393, w: -0.52957773}
+  m_LocalPosition: {x: 29.688784, y: 214.62779, z: -16.305723}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7659753802372377734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7659753802372377732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea6e8cd4a92fcdd4ab3d9397644a8ec7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transitButton: {fileID: 2086035005210039523, guid: 7933db60fbb71b54882f158992f896e2, type: 3}
+  waitUntilButtonSpawn: 2
+  canvas: {fileID: 0}

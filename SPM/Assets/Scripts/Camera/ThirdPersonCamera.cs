@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EventCallbacks;
+using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -12,7 +13,7 @@ public abstract class CameraBehaviour : MonoBehaviour {
     
     protected Transform CameraTransform { get; private set; }
     protected Transform Target;
-    protected Camera ActiveCamera;
+    public Camera ActiveCamera { get; private set; }
     protected SphereCollider Collider;
 
     private void Awake() {
@@ -59,9 +60,11 @@ public class ThirdPersonCamera : MonoBehaviour {
 
     private void OnEnable() {
         EventSystem<NewCameraFocus>.RegisterListener(SwitchToFocusBehaviour);
+        EventSystem<ResetCameraFocus>.RegisterListener(SwitchToFollowCamera);
     }
 
     private void OnDisable() {
+        EventSystem<ResetCameraFocus>.UnregisterListener(SwitchToFollowCamera);
         EventSystem<NewCameraFocus>.UnregisterListener(SwitchToFocusBehaviour);
     }
     
@@ -71,8 +74,14 @@ public class ThirdPersonCamera : MonoBehaviour {
         
     }
 
+    private void SwitchToFollowCamera(ResetCameraFocus focus) {
+        currentCameraBehaviour = cameraBehaviours[CameraBehaviourType.Follow];
+        currentCameraBehaviour.ActiveCamera.orthographic = false;
+    }
+    
     private void SwitchToFocusBehaviour(NewCameraFocus focusEvent) {
         currentCameraBehaviour = cameraBehaviours[CameraBehaviourType.Focus];
+        currentCameraBehaviour.ActiveCamera.orthographic = focusEvent.OrthographicView;
         currentCameraBehaviour.Init(focusEvent.Target);
     }
     

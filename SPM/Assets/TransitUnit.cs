@@ -8,19 +8,20 @@ public class TransitUnit : InteractableObject {
 
     private static HashSet<TransitUnit> activatedTransitUnits = new HashSet<TransitUnit>();
     
-    [SerializeField] private Transform target;
+    private Transform target;
     public Checkpoint AttachedCheckpoint { get; private set; }
     
     private Collider triggerCollider;
     
     private void OnEnable() {
-        EventSystem<ExitTransitViewEvent>.RegisterListener(EnableTriggers);
+        target = GameObject.FindGameObjectWithTag("TransitOverview").transform;
+        EventSystem<ResetCameraFocus>.RegisterListener(EnableTriggers);
         EventSystem<CheckPointActivatedEvent>.RegisterListener(ActivateTransitUnit);
         EventSystem<StartSceneTransitEvent>.RegisterListener(ClearTransitUnits);
     }
 
     private void OnDisable() {
-        EventSystem<ExitTransitViewEvent>.UnregisterListener(EnableTriggers);
+        EventSystem<ResetCameraFocus>.UnregisterListener(EnableTriggers);
         EventSystem<CheckPointActivatedEvent>.UnregisterListener(ActivateTransitUnit);
         EventSystem<StartSceneTransitEvent>.RegisterListener(ClearTransitUnits);
     }
@@ -30,7 +31,7 @@ public class TransitUnit : InteractableObject {
         AttachedCheckpoint = transform.parent.GetComponentInChildren<Checkpoint>();
     }
 
-    private void EnableTriggers(ExitTransitViewEvent viewEvent) {
+    private void EnableTriggers(ResetCameraFocus viewEvent) {
         triggerCollider.enabled = true;
     }
 
@@ -42,7 +43,7 @@ public class TransitUnit : InteractableObject {
         
         if (Input.GetKeyDown(KeyCode.F)) {
             
-            EventSystem<NewCameraFocus>.FireEvent(new NewCameraFocus(target.transform));
+            EventSystem<NewCameraFocus>.FireEvent(new NewCameraFocus(target.transform, true));
             EventSystem<EnterTransitViewEvent>.FireEvent(new EnterTransitViewEvent(activatedTransitUnits, this));
             triggerCollider.enabled = false;
         }
@@ -53,11 +54,8 @@ public class TransitUnit : InteractableObject {
     }
 
     private void ActivateTransitUnit(CheckPointActivatedEvent checkPointActivatedEvent) {
-        if (checkPointActivatedEvent.checkpoint.GetInstanceID().Equals(AttachedCheckpoint.GetInstanceID())) {
+        if (checkPointActivatedEvent.checkpoint.GetInstanceID().Equals(AttachedCheckpoint.GetInstanceID())) 
             activatedTransitUnits.Add(this);
-            print(activatedTransitUnits.Count);
-        }
-            
     }
 
     private void ClearTransitUnits(StartSceneTransitEvent transitEvent) {

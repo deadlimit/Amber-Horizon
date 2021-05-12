@@ -10,7 +10,6 @@ public class PlayerDiedListener : MonoBehaviour
     private void OnEnable()
     {
         EventSystem<PlayerDiedEvent>.RegisterListener(OnPlayerDeath);
-        checkpointManager = GameObject.FindGameObjectWithTag("CheckpointManager").GetComponent<CheckpointManager>();
     }
 
     private void OnDisable() => EventSystem<PlayerDiedEvent>.UnregisterListener(OnPlayerDeath);

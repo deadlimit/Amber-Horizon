@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using AbilitySystem;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 
 namespace EventCallbacks
@@ -96,9 +97,8 @@ namespace EventCallbacks
     
     public class EnterTransitViewEvent : EventInfo {
 
-        public HashSet<TransitUnit> TransitUnits;
-        public TransitUnit ActivatedTransitUnit;
-            
+        public readonly HashSet<TransitUnit> TransitUnits;
+        public readonly TransitUnit ActivatedTransitUnit;
         public EnterTransitViewEvent(HashSet<TransitUnit> transitUnits, TransitUnit activatedFrom) {
             TransitUnits = transitUnits;
             ActivatedTransitUnit = activatedFrom;
@@ -107,11 +107,14 @@ namespace EventCallbacks
 
     public class NewCameraFocus : EventInfo {
         public readonly Transform Target;
-
-        public NewCameraFocus(Transform target) {
+        public readonly bool OrthographicView;
+        public NewCameraFocus(Transform target, bool orhtographic) {
             Target = target;
+            OrthographicView = orhtographic;
         }
     }
+
+    public class ResetCameraFocus : EventInfo { }
     
     public class ExitTransitViewEvent : EventInfo {}
 
@@ -141,8 +144,6 @@ namespace EventCallbacks
             this.PlayUISFX = PlayUISFX;
         }
     }
-    
-    public class PlayerReviveEvent : EventInfo {}
     
 }
 

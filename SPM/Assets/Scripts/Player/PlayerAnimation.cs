@@ -78,7 +78,6 @@ public class PlayerAnimation : MonoBehaviour {
     }
 
     private void OnDeathAnimationDone() {
-        EventSystem<PlayerReviveEvent>.FireEvent(null);
         animator.SetTrigger("PlayerRevive");
     }
 
