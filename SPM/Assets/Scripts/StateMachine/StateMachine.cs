@@ -20,7 +20,9 @@ public class StateMachine
             
             if (!CurrentState)
                 CurrentState = instantiated;
-        }        
+        }
+        CurrentState.Enter();
+        
     }
     public void RunUpdate() 
     {

@@ -19,15 +19,14 @@ public class BlackHole : PoolObject
     private float terminalDistance = 0.5f;    
     private float maxGravitationalPullTemp;  
     private Animator animator;
-
-    private int spawnID = Animator.StringToHash("Spawn");
-    private int despawnID = Animator.StringToHash("Despawn");
     
     private void Awake() {
         maxGravitationalPullTemp = gravitationalPull;
 
         centerColl = GetComponent<BoxCollider>();
         animator = GetComponent<Animator>();
+
+
     }
 
     void Update() 
@@ -105,10 +104,13 @@ public class BlackHole : PoolObject
     public override void Initialize(Vector3 position, Quaternion rotation) {
         base.Initialize(position, rotation);
         useGravity = true;
-        animator.SetTrigger(spawnID);        
-       
+        Invoke("Die", 2);
+        /*animator.SetTrigger("Spawn");        
+        
+        
+        
         this.Invoke(() => {
-            animator.SetTrigger(despawnID);
-        }, Lifetime);
+            animator.SetTrigger("Despawn");
+        }, Lifetime);*/
     }
 }
