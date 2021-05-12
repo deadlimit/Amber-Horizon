@@ -108,18 +108,18 @@ public class PlayerUI : MonoBehaviour {
     }
 
     private void ChangeHealthUI(PlayerHitEvent playerHitEvent) {
-        //healthBackground = GameObject.FindGameObjectWithTag("BackgroundTag").GetComponent<Image>();
-        //healthBar = GameObject.FindGameObjectWithTag("FillTag").GetComponent<Image>();
-        ChangeColor(255);
-
         float currentHealth = player.GetPlayerHealth();
-        
-        //only set health when checkpoint.
-        //4 is the max health. btw
-        if(currentHealth < 1 )
+
+        //4 is the max health. and it doesnt show health bar on death
+        if (currentHealth < 1 )
         {
             currentHealth = 4;
         }
+        else
+        {
+            ChangeColor(255);
+        }
+
         float healthFraction = currentHealth / 4;
 
         healthBar.fillAmount = healthFraction;
