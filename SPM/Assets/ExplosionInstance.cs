@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExplosionInstance : MonoBehaviour
+public class ExplosionInstance : PoolObject
 {
     public SphereCollider coll;
     private float blastArea = 10;
@@ -20,7 +20,7 @@ public class ExplosionInstance : MonoBehaviour
             coll.radius = Mathf.Lerp(coll.radius, blastArea, Time.deltaTime * 5 );
             yield return null;
         }
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)

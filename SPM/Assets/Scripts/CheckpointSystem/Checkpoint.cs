@@ -1,55 +1,41 @@
 using System;
-using System.Collections.Generic;
 using EventCallbacks;
 using UnityEngine;
 
 [Serializable]
 public class Checkpoint : MonoBehaviour {
-
-    public static List<Checkpoint> activeCheckpoints = new List<Checkpoint>();
-    public static List<Checkpoint> activatedCheckpoints = new List<Checkpoint>();
+    public static Checkpoint ActiveCheckPoint { get; private set; }
     
-    public AudioClip activateAudioClip;
-
-    public int ID { get; set; }
-
-    public Vector3 SpawnPosition { get; set; }
+    private Transform player;
     
-    public Action<int> OnPlayerEnter;
-
-    public ParticleSystem activeIndicatorVFX;
-
-    [SerializeField]
-    private Color activeColor, inactiveColor;
-
-    private void OnEnable() => activeCheckpoints.Add(this);
-
-    private void OnDisable() => activeCheckpoints.Remove(this);
-
+    public Vector3 SpawnPosition { get; private set; }
+    
+    [SerializeField] private AudioClip activateAudioClip;
+    [SerializeField] private Color activeColor, inactiveColor;
+    [SerializeField] private ParticleSystem activeIndicatorVFX;
+    
     private void Awake() {
         SpawnPosition = transform.GetChild(0).transform.position;
     }
     
     private void OnTriggerEnter(Collider other) {
-        if (!other.CompareTag("Player")) return;
+        if (!other.CompareTag("Player") || ActiveCheckPoint == this) return;
+
+        if (player == null)
+            player = other.transform;
         
-        OnPlayerEnter?.Invoke(ID);
-        
-        EventSystem<CheckPointActivatedEvent>.FireEvent(new CheckPointActivatedEvent(activateAudioClip, ID));
+        EventSystem<CheckPointActivatedEvent>.FireEvent(new CheckPointActivatedEvent(this, activateAudioClip));
+        ActiveCheckPoint = this;
         EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("Checkpoint activated", 2, false));
-        activatedCheckpoints.Add(this);
         enabled = false;
     }
     
-
     public void ChangeParticleColor(bool isActive)
     {             
         //removes any active particles, so the color changes immediatly
         activeIndicatorVFX.Clear();
         if (isActive)
         {
-            Debug.Log("in Checkpoint ChangeParticleColor. is active.");
-
             var main = activeIndicatorVFX.main;
             main.startColor = activeColor;
 
@@ -59,11 +45,28 @@ public class Checkpoint : MonoBehaviour {
         }
         else 
         {
-            Debug.Log("in Checkpoint ChangeParticleColor. is not active.");
-            //activeIndicatorVFX.main.startColor = activeColor;
-
             var main = activeIndicatorVFX.main;
             main.startColor = inactiveColor;
         }
+    }
+    
+    private void UpdateCheckPoint(Checkpoint newCheckpoint) {
+        
+        Checkpoint point = newCheckpoint;
+        
+        //här sätts activecheckpoint till röd
+        ActiveCheckPoint.ChangeParticleColor(false);
+        if(ActiveCheckPoint)
+            ActiveCheckPoint.gameObject.SetActive(true);
+        
+        ActiveCheckPoint = point;
+        //här sätts den nya activecheckpoint till grön
+        ActiveCheckPoint.ChangeParticleColor(true);
+        
+        ActiveCheckPoint.gameObject.SetActive(false);
+    }
+    
+    public void ResetPlayerPosition() {
+        player.position = ActiveCheckPoint.SpawnPosition;
     }
 }
