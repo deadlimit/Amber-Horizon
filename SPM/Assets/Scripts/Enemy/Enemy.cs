@@ -72,14 +72,12 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Vector3 direction = (explosionPos - transform.position).normalized;
 
         Animator.SetTrigger("HitByExplosion");
-
-
     }
-    public void ResetPosition()
+
+    //Destructor must also change state to not instantly set destination towards player respawn, hence virtual
+    public virtual void ResetPosition()
     {
-        Pathfinder.agent.ResetPath();
         transform.position = originPosition;
-       //Pathfinder.agent.nextPosition = originPosition;
-        Debug.Log(gameObject + "position set to: " + originPosition);
+        Pathfinder.agent.ResetPath();
     }
 }
