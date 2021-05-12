@@ -18,7 +18,7 @@ public class Bullet : PoolObject {
         activeRigidbody.AddForce(transform.forward * bulletSpeed);
     }
     
-    private void OnTriggerEnter(Collider other) {
+    private void OnCollisionEnter(Collision other) {
         
         if (((1 << other.gameObject.layer) & hitLayer) != 0)
         {
@@ -31,10 +31,12 @@ public class Bullet : PoolObject {
     public override void Initialize(Vector3 position, Quaternion rotation) {
         base.Initialize(position, rotation);
         
-        this.Invoke(() => gameObject.SetActive(false), activeTime);
-        
-        activeRigidbody.velocity = Vector3.zero;
-        activeRigidbody.centerOfMass = Vector3.zero;
+        this.Invoke(() => {
+            activeRigidbody.velocity = Vector3.zero;
+            activeRigidbody.centerOfMass = Vector3.zero;
+            activeRigidbody.angularVelocity = Vector3.zero;
+            gameObject.SetActive(false);
+        }, activeTime);
     }
     
     
