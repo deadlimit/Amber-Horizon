@@ -41,9 +41,6 @@ public class PlayerAnimation : MonoBehaviour {
         float xAxis = Input.GetAxis("Horizontal");
         animator.SetFloat("VelocityX", xAxis);
         animator.SetFloat("VelocityZ", zAxis);
-
-        if (Input.GetKeyDown(KeyCode.Tab))
-            animator.SetBool("ShowKey", !animator.GetBool("ShowKey"));
     }
 
     //Används i en animationstrigger

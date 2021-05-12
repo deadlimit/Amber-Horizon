@@ -25,12 +25,13 @@ public class PlayerController : MonoBehaviour
     private StateMachine stateMachine;
 
     [HideInInspector] public Vector3 force;
-    public Vector3 bhVelocity;
-    private Vector3 input;
+    [HideInInspector] public Vector3 bhVelocity;
+    [HideInInspector] public GameplayAbilitySystem abilitySystem { get; private set; }
+    [HideInInspector] public PhysicsComponent physics { get; private set; }
 
-    public GameplayAbilitySystem abilitySystem { get; private set; }
-    public PhysicsComponent physics { get; private set; }
-   
+
+    private Vector3 input;
+    private Animator animator;
     private bool jump;
     private Transform cameraTransform;
     private LineRenderer lr;
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour
         physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);       
         lr = GetComponent<LineRenderer>();
+        animator = GetComponent<Animator>();
 
         EventSystem<CheckPointActivatedEvent>.RegisterListener(CheckpointRestoreHealth);
     }
@@ -165,7 +167,25 @@ public class PlayerController : MonoBehaviour
             abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag);
         }
 
-       
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            ToggleLockedState();
+        }
+    }
+
+    private void ToggleLockedState()
+    {   //Could be placed inside state but i wanted to gather all the inputs, also considered calling an overridden method inside the states,
+        //but that would be bloat for all other uses of the state machine core
+        if (stateMachine.CurrentState.GetType() == typeof(GroundedState))
+        {
+            stateMachine.ChangeState<PlayerLockedState>();
+        }
+        else if (stateMachine.CurrentState.GetType() == typeof(PlayerLockedState))
+        {
+            stateMachine.ChangeState<GroundedState>();
+        }
+
+        animator.SetBool("ShowKey", !animator.GetBool("ShowKey"));
     }
     private void FixedUpdate()
     {
