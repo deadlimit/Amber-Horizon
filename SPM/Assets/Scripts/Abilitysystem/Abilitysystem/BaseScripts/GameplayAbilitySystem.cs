@@ -133,7 +133,10 @@ namespace AbilitySystem
                 {
                     gaSet = set;
                     if (AttributeSet[Attribute] > gaSet.Value)
-                        AttributeSet[Attribute] = gaSet.Value;                      
+                        AttributeSet[Attribute] = gaSet.Value;
+                    if (AttributeSet[Attribute] < 0)
+                        AttributeSet[Attribute] = 0;
+
                 }
             }
         }
