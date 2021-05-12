@@ -22,7 +22,7 @@ public class DeathFade : MonoBehaviour
 
     }
 
-    public IEnumerator FadeOut(bool fadeOut = true, int fadeSpeed = 5)
+    public IEnumerator FadeOut(bool fadeOut = true, int fadeSpeed = 1)
     {
         Color uiColor = ui.GetComponent<Image>().color;
         float fadeAmount;
