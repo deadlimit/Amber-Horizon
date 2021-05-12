@@ -8710,6 +8710,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00863a133b0c3e947942cbe6dfaba6bc, type: 3}
+--- !u!223 &440826835 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 3534936566460619148, guid: 6638000673b74e647af58fccd97f114c, type: 3}
+  m_PrefabInstance: {fileID: 1356104693}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &444649978
 GameObject:
   m_ObjectHideFlags: 0
@@ -11341,6 +11346,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 574067272}
+  - component: {fileID: 574067273}
   m_Layer: 0
   m_Name: TransitOverview
   m_TagString: TransitOverview
@@ -11362,6 +11368,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 34
   m_LocalEulerAnglesHint: {x: 90, y: -66, z: 23}
+--- !u!114 &574067273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574067271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea6e8cd4a92fcdd4ab3d9397644a8ec7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transitButton: {fileID: 2086035005210039523, guid: 7933db60fbb71b54882f158992f896e2, type: 3}
+  waitUntilButtonSpawn: 2
+  UI: {fileID: 440826835}
 --- !u!1001 &574633936
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -18,7 +18,7 @@ public class Bullet : PoolObject {
         activeRigidbody.AddForce(transform.forward * bulletSpeed);
     }
     
-    private void OnTriggerEnter(Collider other) {
+    private void OnCollisionEnter(Collision other) {
         
         if (((1 << other.gameObject.layer) & hitLayer) != 0)
         {
@@ -35,6 +35,7 @@ public class Bullet : PoolObject {
         
         activeRigidbody.velocity = Vector3.zero;
         activeRigidbody.centerOfMass = Vector3.zero;
+        activeRigidbody.angularVelocity = Vector3.zero;
     }
     
     

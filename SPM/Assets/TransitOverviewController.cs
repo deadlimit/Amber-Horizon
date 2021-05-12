@@ -9,7 +9,7 @@ public class TransitOverviewController : MonoBehaviour {
 
     [SerializeField] private GameObject transitButton;
     [SerializeField] private float waitUntilButtonSpawn;
-    [SerializeField] private Canvas UI; 
+    [SerializeField] private Canvas UI;
     private readonly List<GameObject> activeButtons = new List<GameObject>();
     
     
@@ -17,12 +17,12 @@ public class TransitOverviewController : MonoBehaviour {
     
     private void OnEnable() {
         EventSystem<EnterTransitViewEvent>.RegisterListener(TransitView);
-        EventSystem<ExitTransitViewEvent>.RegisterListener(ExitView);
+        EventSystem<ResetCameraFocus>.RegisterListener(ExitView);
     }
 
     private void OnDisable() {
         EventSystem<EnterTransitViewEvent>.UnregisterListener(TransitView);
-        EventSystem<ExitTransitViewEvent>.UnregisterListener(ExitView);
+        EventSystem<ResetCameraFocus>.UnregisterListener(ExitView);
     }
     
     private void TransitView(EnterTransitViewEvent viewEvent) {
@@ -57,10 +57,10 @@ public class TransitOverviewController : MonoBehaviour {
 
     private void MovePlayer(TransitUnit transitUnit) {
         GameObject.FindGameObjectWithTag("Player").transform.position = transitUnit.AttachedCheckpoint.SpawnPosition;
-        EventSystem<ExitTransitViewEvent>.FireEvent(null);
+        EventSystem<ResetCameraFocus>.FireEvent(null);
     }
 
-    private void ExitView(ExitTransitViewEvent viewEvent) {
+    private void ExitView(ResetCameraFocus viewEvent) {
         StopCoroutine(spawnButtons);
         foreach (GameObject button in activeButtons)
             Destroy(button.gameObject);

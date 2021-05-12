@@ -54,10 +54,12 @@ public class ThirdPersonCamera : MonoBehaviour {
 
     private void OnEnable() {
         EventSystem<NewCameraFocus>.RegisterListener(SwitchToFocusBehaviour);
+        EventSystem<ResetCameraFocus>.RegisterListener(SwitchToFollowCamera);
     }
 
     private void OnDisable() {
         EventSystem<NewCameraFocus>.UnregisterListener(SwitchToFocusBehaviour);
+        EventSystem<ResetCameraFocus>.UnregisterListener(SwitchToFollowCamera);
     }
     
     void LateUpdate() {
@@ -65,6 +67,11 @@ public class ThirdPersonCamera : MonoBehaviour {
         currentCameraBehaviour.MovementBehaviour();
         
     }
+
+    private void SwitchToFollowCamera(ResetCameraFocus focus) {
+        currentCameraBehaviour = cameraBehaviours[CameraBehaviourType.Follow];
+    }
+    
 
     private void SwitchToFocusBehaviour(NewCameraFocus focusEvent) {
         currentCameraBehaviour = cameraBehaviours[CameraBehaviourType.Focus];

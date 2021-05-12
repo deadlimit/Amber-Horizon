@@ -1,3 +1,4 @@
+using EventCallbacks;
 using UnityEngine;
 
 public class FollowCamera : CameraBehaviour {
@@ -52,4 +53,5 @@ public class FollowCamera : CameraBehaviour {
             
         CameraTransform.position = Vector3.Lerp(ActiveCamera.transform.position, PlayerTarget.position + collisionOffset, cameraSpeed * Time.deltaTime);             
     }
+    
 }
