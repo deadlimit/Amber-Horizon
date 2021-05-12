@@ -15,6 +15,7 @@ public class TransitUnit : InteractableObject {
     private Collider triggerCollider;
     
     private void OnEnable() {
+        target = GameObject.FindGameObjectWithTag("TransitOverview").transform;
         EventSystem<ExitTransitViewEvent>.RegisterListener(EnableTriggers);
         EventSystem<CheckPointActivatedEvent>.RegisterListener(ActivateTransitUnit);
         EventSystem<StartSceneTransitEvent>.RegisterListener(ClearTransitUnits);
@@ -47,7 +48,7 @@ public class TransitUnit : InteractableObject {
             info.TransitUnits = activatedTransitUnits;
             info.ActivatedTransitUnit = this;
             
-            EventSystem<NewCameraFocus>.FireEvent(new NewCameraFocus(target.transform));
+            EventSystem<NewCameraFocus>.FireEvent(new NewCameraFocus(target.transform, true));
             EventSystem<EnterTransitViewEvent>.FireEvent(new EnterTransitViewEvent(info));
             triggerCollider.enabled = false;
         }
