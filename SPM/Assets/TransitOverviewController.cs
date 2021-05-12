@@ -10,6 +10,7 @@ public class TransitOverviewController : MonoBehaviour {
     [SerializeField] private GameObject transitButton;
     [SerializeField] private float waitUntilButtonSpawn;
     [SerializeField] private Canvas UI;
+    [SerializeField] private TextMeshProUGUI ExitInstructionText;
     private readonly List<GameObject> activeButtons = new List<GameObject>();
     
     
@@ -18,6 +19,7 @@ public class TransitOverviewController : MonoBehaviour {
     private void OnEnable() {
         EventSystem<EnterTransitViewEvent>.RegisterListener(TransitView);
         EventSystem<ResetCameraFocus>.RegisterListener(ExitView);
+        ExitInstructionText.gameObject.SetActive(false);
     }
 
     private void OnDisable() {
@@ -32,7 +34,7 @@ public class TransitOverviewController : MonoBehaviour {
     private IEnumerator SpawnButtons(TransitCameraFocusInfo focusInfo) {
         
         yield return new WaitForSeconds(waitUntilButtonSpawn);
-        
+        ExitInstructionText.gameObject.SetActive(true);
         foreach (TransitUnit transitUnit in focusInfo.TransitUnits) {
             GameObject button = Instantiate(transitButton, Camera.main.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, UI.transform);
             
@@ -67,6 +69,7 @@ public class TransitOverviewController : MonoBehaviour {
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        ExitInstructionText.gameObject.SetActive(false);
     }
     
     

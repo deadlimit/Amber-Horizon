@@ -31,11 +31,12 @@ public class Bullet : PoolObject {
     public override void Initialize(Vector3 position, Quaternion rotation) {
         base.Initialize(position, rotation);
         
-        this.Invoke(() => gameObject.SetActive(false), activeTime);
-        
-        activeRigidbody.velocity = Vector3.zero;
-        activeRigidbody.centerOfMass = Vector3.zero;
-        activeRigidbody.angularVelocity = Vector3.zero;
+        this.Invoke(() => {
+            activeRigidbody.velocity = Vector3.zero;
+            activeRigidbody.centerOfMass = Vector3.zero;
+            activeRigidbody.angularVelocity = Vector3.zero;
+            gameObject.SetActive(false);
+        }, activeTime);
     }
     
     
