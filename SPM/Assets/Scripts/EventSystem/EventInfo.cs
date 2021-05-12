@@ -141,7 +141,14 @@ namespace EventCallbacks
         }
     }
     
-    public class PlayerReviveEvent : EventInfo {}
+    public class PlayerReviveEvent : EventInfo 
+    {
+        public PlayerController player { get; }
+        public PlayerReviveEvent(GameObject player)
+        {
+            this.player = player.GetComponent<PlayerController>();
+        }
+    }
     
 }
 
