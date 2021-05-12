@@ -6,7 +6,7 @@ using EventCallbacks;
 public class PlayerDiedListener : MonoBehaviour
 {
     CheckpointManager checkpointManager;
-    Animator playerAnim;
+
     private void OnEnable()
     {
         EventSystem<PlayerDiedEvent>.RegisterListener(OnPlayerDeath);
@@ -19,8 +19,8 @@ public class PlayerDiedListener : MonoBehaviour
     {
         Debug.Log("Player died");
         pde.player.GetComponent<Animator>().StopPlayback();
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PhysicsComponent>().velocity = Vector3.zero;
-        checkpointManager.ResetPlayerPosition();
+        pde.player.physics.velocity = Vector3.zero;
+        Checkpoint.ActiveCheckPoint.ResetPlayerPosition();
         pde.player.RestoreHealth();
     }
 }

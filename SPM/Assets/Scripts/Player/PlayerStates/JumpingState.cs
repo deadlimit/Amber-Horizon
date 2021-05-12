@@ -25,10 +25,7 @@ public class JumpingState : State
             stateMachine.ChangeState<GroundedState>();
         }
 
-        if (Input.GetKeyDown(KeyCode.E)) 
-        {
-            player.abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
-        }
+
 
     }
     

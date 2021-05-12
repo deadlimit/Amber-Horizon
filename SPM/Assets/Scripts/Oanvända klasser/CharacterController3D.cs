@@ -11,7 +11,6 @@ public class CharacterController3D : MonoBehaviour {
     public float GroundCheckDistance;
     
     
-    
     private void Awake() {
         stateMachine = new StateMachine(this, States);
         ActiveCamera = Camera.main.transform;
