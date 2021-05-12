@@ -91,16 +91,17 @@ namespace EventCallbacks
     public class InteractTriggerExitEvent : EventInfo {}
 
     public struct TransitCameraFocusInfo {
-        public HashSet<TransitUnit> TransitUnits;
-        public TransitUnit ActivatedTransitUnit;
+
     }
     
     public class EnterTransitViewEvent : EventInfo {
 
-        public readonly TransitCameraFocusInfo TransitCameraFocusInfo;
+        public HashSet<TransitUnit> TransitUnits;
+        public TransitUnit ActivatedTransitUnit;
             
-        public EnterTransitViewEvent(TransitCameraFocusInfo transitCameraFocusInfo) {
-            TransitCameraFocusInfo = transitCameraFocusInfo;
+        public EnterTransitViewEvent(HashSet<TransitUnit> transitUnits, TransitUnit activatedFrom) {
+            TransitUnits = transitUnits;
+            ActivatedTransitUnit = activatedFrom;
         }
     }
 

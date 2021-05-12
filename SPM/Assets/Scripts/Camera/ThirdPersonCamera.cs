@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using EventCallbacks;
 using UnityEngine;
 
@@ -39,17 +40,21 @@ public enum CameraBehaviourType { Follow, Focus}
 public class ThirdPersonCamera : MonoBehaviour {
     
     [SerializeField] private List<CameraBehaviourPair> cameraBehaviourPairs;
-    [SerializeField] private CameraBehaviour currentCameraBehaviour;
     
+    private CameraBehaviour currentCameraBehaviour;
     private Dictionary<CameraBehaviourType, CameraBehaviour> cameraBehaviours = new Dictionary<CameraBehaviourType, CameraBehaviour>();
     
     private void Awake() {
-        currentCameraBehaviour.Init(transform);
+        
         Cursor.lockState = CursorLockMode.Locked;
-        
-        foreach(CameraBehaviourPair pair in cameraBehaviourPairs)
+
+        foreach (CameraBehaviourPair pair in cameraBehaviourPairs)
             cameraBehaviours.Add(pair.CameraType, pair.behaviour);
-        
+
+
+        currentCameraBehaviour = cameraBehaviourPairs.First().behaviour;
+        currentCameraBehaviour.Init(transform);
+
     }
 
     private void OnEnable() {

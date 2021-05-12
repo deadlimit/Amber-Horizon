@@ -7,8 +7,7 @@ using UnityEngine;
 public class TransitUnit : InteractableObject {
 
     private static HashSet<TransitUnit> activatedTransitUnits = new HashSet<TransitUnit>();
-
-    [SerializeField] private Vector3 newOffset;
+    
     [SerializeField] private Transform target;
     public Checkpoint AttachedCheckpoint { get; private set; }
     
@@ -42,13 +41,9 @@ public class TransitUnit : InteractableObject {
     protected override void InsideTrigger(GameObject entity) {
         
         if (Input.GetKeyDown(KeyCode.F)) {
-
-            TransitCameraFocusInfo info = new TransitCameraFocusInfo();
-            info.TransitUnits = activatedTransitUnits;
-            info.ActivatedTransitUnit = this;
             
             EventSystem<NewCameraFocus>.FireEvent(new NewCameraFocus(target.transform));
-            EventSystem<EnterTransitViewEvent>.FireEvent(new EnterTransitViewEvent(info));
+            EventSystem<EnterTransitViewEvent>.FireEvent(new EnterTransitViewEvent(activatedTransitUnits, this));
             triggerCollider.enabled = false;
         }
     }
@@ -58,8 +53,11 @@ public class TransitUnit : InteractableObject {
     }
 
     private void ActivateTransitUnit(CheckPointActivatedEvent checkPointActivatedEvent) {
-        if(checkPointActivatedEvent.checkpoint.GetInstanceID().Equals(AttachedCheckpoint.GetInstanceID()))
+        if (checkPointActivatedEvent.checkpoint.GetInstanceID().Equals(AttachedCheckpoint.GetInstanceID())) {
             activatedTransitUnits.Add(this);
+            print(activatedTransitUnits.Count);
+        }
+            
     }
 
     private void ClearTransitUnits(StartSceneTransitEvent transitEvent) {

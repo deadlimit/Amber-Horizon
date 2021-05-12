@@ -26,19 +26,19 @@ public class TransitOverviewController : MonoBehaviour {
     }
     
     private void TransitView(EnterTransitViewEvent viewEvent) {
-        spawnButtons = StartCoroutine(SpawnButtons(viewEvent.TransitCameraFocusInfo));
+        spawnButtons = StartCoroutine(SpawnButtons(viewEvent));
     }
 
-    private IEnumerator SpawnButtons(TransitCameraFocusInfo focusInfo) {
+    private IEnumerator SpawnButtons(EnterTransitViewEvent viewEvent) {
         
         yield return new WaitForSeconds(waitUntilButtonSpawn);
         
-        foreach (TransitUnit transitUnit in focusInfo.TransitUnits) {
+        foreach (TransitUnit transitUnit in viewEvent.TransitUnits) {
             GameObject button = Instantiate(transitButton, overviewCamera.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, gameObject.transform);
             
             TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
 
-            if (transitUnit == focusInfo.ActivatedTransitUnit) {
+            if (transitUnit == viewEvent.ActivatedTransitUnit) {
                 buttonText.text = "You are here";
                 buttonText.GetComponentInParent<Image>().color = Color.green;
             }
