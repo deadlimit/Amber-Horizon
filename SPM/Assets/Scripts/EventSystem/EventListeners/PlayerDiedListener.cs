@@ -12,5 +12,8 @@ public class PlayerDiedListener : MonoBehaviour
         pde.player.physics.velocity = Vector3.zero;
         //Checkpoint.ActiveCheckPoint.ResetPlayerPosition();
         //pde.player.RestoreHealth();
+
+        GameObject fadeUI = GameObject.Find("FadeToBlack");
+        StartCoroutine(fadeUI.GetComponent<DeathFade>().FadeOut());
     }
 }
