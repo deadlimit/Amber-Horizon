@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using EventCallbacks;
 using TMPro;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class KeyRotator : MonoBehaviour {
         text.text = string.Empty;
         showing = false;
     }
-
+    
     private void Start() {
         UpdateKeyText(null);
 
