@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class Bullet : PoolObject {
 
-    [SerializeField] private float activeTime;
-    [SerializeField] private float bulletSpeed;
-    [SerializeField] private GameplayEffect effect;
-    [SerializeField] private LayerMask hitLayer;
+    [SerializeField] private BulletData bulletData;
+    
     private Rigidbody activeRigidbody;
     
     private void Awake() {
@@ -15,14 +13,14 @@ public class Bullet : PoolObject {
     }
 
     private void Update() {
-        activeRigidbody.AddForce(transform.forward * bulletSpeed);
+        activeRigidbody.AddForce(transform.forward * bulletData.BulletSpeed);
     }
     
     private void OnCollisionEnter(Collision other) {
         
-        if (((1 << other.gameObject.layer) & hitLayer) != 0)
+        if (((1 << other.gameObject.layer) & bulletData.DamageLayer) != 0)
         {
-            EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, effect));
+            EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, bulletData.Effect));
         }
         
         gameObject.SetActive(false);
@@ -36,7 +34,7 @@ public class Bullet : PoolObject {
             activeRigidbody.centerOfMass = Vector3.zero;
             activeRigidbody.angularVelocity = Vector3.zero;
             gameObject.SetActive(false);
-        }, activeTime);
+        }, bulletData.ActiveTime);
     }
     
     

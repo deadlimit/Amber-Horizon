@@ -13,9 +13,6 @@ public class TransitOverviewController : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI ExitInstructionText;
     private readonly List<GameObject> activeButtons = new List<GameObject>();
     
-    
-    private Coroutine spawnButtons;
-    
     private void OnEnable() {
         EventSystem<EnterTransitViewEvent>.RegisterListener(TransitView);
         EventSystem<ResetCameraFocus>.RegisterListener(ExitView);
@@ -28,7 +25,7 @@ public class TransitOverviewController : MonoBehaviour {
     }
     
     private void TransitView(EnterTransitViewEvent viewEvent) {
-        spawnButtons = StartCoroutine(SpawnButtons(viewEvent.TransitCameraFocusInfo));
+        StartCoroutine(SpawnButtons(viewEvent.TransitCameraFocusInfo));
     }
 
     private IEnumerator SpawnButtons(TransitCameraFocusInfo focusInfo) {
@@ -63,7 +60,7 @@ public class TransitOverviewController : MonoBehaviour {
     }
 
     private void ExitView(ResetCameraFocus viewEvent) {
-        StopCoroutine(spawnButtons);
+        StopAllCoroutines();
         foreach (GameObject button in activeButtons)
             Destroy(button.gameObject);
 
