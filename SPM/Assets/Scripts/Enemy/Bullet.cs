@@ -5,6 +5,8 @@ using UnityEngine;
 public class Bullet : PoolObject {
 
     [SerializeField] private BulletData bulletData;
+
+    public ForceMode forceMode;
     
     private Rigidbody activeRigidbody;
     
@@ -12,8 +14,8 @@ public class Bullet : PoolObject {
         activeRigidbody = GetComponent<Rigidbody>();
     }
 
-    private void Update() {
-        activeRigidbody.AddForce(transform.forward * bulletData.BulletSpeed);
+    private void FixedUpdate() {
+        activeRigidbody.AddForce(transform.forward * bulletData.BulletSpeed, forceMode);
     }
     
     private void OnCollisionEnter(Collision other) {
@@ -22,21 +24,22 @@ public class Bullet : PoolObject {
         {
             EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, bulletData.Effect));
         }
-        
-        gameObject.SetActive(false);
+
+        ResetBullet();
     }
 
+
+    
     public override void Initialize(Vector3 position, Quaternion rotation) {
         base.Initialize(position, rotation);
-        
-        this.Invoke(() => {
-            activeRigidbody.velocity = Vector3.zero;
-            activeRigidbody.centerOfMass = Vector3.zero;
-            activeRigidbody.angularVelocity = Vector3.zero;
-            gameObject.SetActive(false);
-        }, bulletData.ActiveTime);
+        this.Invoke(ResetBullet, bulletData.ActiveTime);
     }
     
-    
+    private void ResetBullet() {
+        activeRigidbody.velocity = Vector3.zero;
+        activeRigidbody.angularVelocity = Vector3.zero;
+        activeRigidbody.ResetCenterOfMass();
+        gameObject.SetActive(false);
+    }
     
 }
