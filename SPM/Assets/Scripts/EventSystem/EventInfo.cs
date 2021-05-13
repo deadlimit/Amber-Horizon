@@ -113,6 +113,8 @@ namespace EventCallbacks
         }
     }
     
+    public class ResetCameraFocus : EventInfo {}
+    
     public class ExitTransitViewEvent : EventInfo {}
 
     public class SoundEffectEvent : EventInfo {

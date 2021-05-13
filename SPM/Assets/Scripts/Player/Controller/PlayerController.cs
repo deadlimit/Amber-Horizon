@@ -174,6 +174,9 @@ public class PlayerController : MonoBehaviour
         {
             ToggleLockedState();
         }
+        
+        if(Input.GetKeyDown(KeyCode.Escape))
+            EventSystem<ResetCameraFocus>.FireEvent(null);
     }
 
     private void ToggleLockedState()
