@@ -14,9 +14,6 @@ public class PlayerReviveListener : MonoBehaviour
         Checkpoint.ActiveCheckPoint.ResetPlayerPosition();
         ResetEnemyPositions();
         pre.player.RestoreHealth();
-
-        GameObject fadeUI = GameObject.Find("FadeToBlack");
-        StartCoroutine(fadeUI.GetComponent<DeathFade>().FadeOut(false));
     }
     private void ResetEnemyPositions()
     {

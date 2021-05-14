@@ -10,10 +10,10 @@ public class EnemyDeathState : State {
     }
 
     public override void Enter() {
+        forager.StopAllCoroutines();
         forager.Animator.SetTrigger("Die");
         forager.Pathfinder.agent.ResetPath();
         forager.Pathfinder.agent.isStopped = true;
-        forager.StopAllCoroutines();
     }
 
     public override void RunUpdate() {
