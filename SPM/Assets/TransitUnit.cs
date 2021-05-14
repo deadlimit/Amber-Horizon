@@ -7,8 +7,7 @@ using UnityEngine;
 public class TransitUnit : InteractableObject {
 
     private static HashSet<TransitUnit> activatedTransitUnits = new HashSet<TransitUnit>();
-
-    [SerializeField] private Vector3 newOffset;
+    
     [SerializeField] private Transform target;
     public Checkpoint AttachedCheckpoint { get; private set; }
     
@@ -16,13 +15,13 @@ public class TransitUnit : InteractableObject {
     
     private void OnEnable() {
         target = GameObject.FindGameObjectWithTag("TransitOverview").transform;
-        EventSystem<ExitTransitViewEvent>.RegisterListener(EnableTriggers);
+        EventSystem<ResetCameraFocus>.RegisterListener(EnableTriggers);
         EventSystem<CheckPointActivatedEvent>.RegisterListener(ActivateTransitUnit);
         EventSystem<StartSceneTransitEvent>.RegisterListener(ClearTransitUnits);
     }
 
     private void OnDisable() {
-        EventSystem<ExitTransitViewEvent>.UnregisterListener(EnableTriggers);
+        EventSystem<ResetCameraFocus>.UnregisterListener(EnableTriggers);
         EventSystem<CheckPointActivatedEvent>.UnregisterListener(ActivateTransitUnit);
         EventSystem<StartSceneTransitEvent>.RegisterListener(ClearTransitUnits);
     }
@@ -32,7 +31,7 @@ public class TransitUnit : InteractableObject {
         AttachedCheckpoint = transform.parent.GetComponentInChildren<Checkpoint>();
     }
 
-    private void EnableTriggers(ExitTransitViewEvent viewEvent) {
+    private void EnableTriggers(ResetCameraFocus viewEvent) {
         triggerCollider.enabled = true;
     }
 

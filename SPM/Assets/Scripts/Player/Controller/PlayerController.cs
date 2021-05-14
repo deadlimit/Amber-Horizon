@@ -25,12 +25,13 @@ public class PlayerController : MonoBehaviour
     private StateMachine stateMachine;
 
     [HideInInspector] public Vector3 force;
-    [HideInInspector] public Vector3 bhVelocity;
-    public GameplayAbilitySystem abilitySystem { get; private set; }
+
+    [SerializeField] private Transform keyLookAtTarget;
+    
+    private GameplayAbilitySystem abilitySystem;
     public PhysicsComponent physics { get; private set; }
     public Animator animator { get; private set; }
-
-
+    
     private Vector3 input;
     private bool jump;
     private Transform cameraTransform;
@@ -142,12 +143,14 @@ public class PlayerController : MonoBehaviour
     {
         jump = true;
     }
-    private void RotateTowardsCameraDirection() 
-    {
-            transform.localEulerAngles = new Vector3(
-            transform.localEulerAngles.x,
-            cameraTransform.transform.localEulerAngles.y, 
-            transform.localEulerAngles.z);
+    private void RotateTowardsCameraDirection() {
+        if (stateMachine.CurrentState.GetType() == typeof(PlayerLockedState))
+            return;
+        
+        transform.localEulerAngles = new Vector3(
+        transform.localEulerAngles.x,
+        cameraTransform.transform.localEulerAngles.y, 
+        transform.localEulerAngles.z);
     }
 
     void Update() {       
@@ -173,7 +176,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             ToggleLockedState();
+
         }
+        
+        if(Input.GetKeyDown(KeyCode.Escape))
+            EventSystem<ResetCameraFocus>.FireEvent(null);
     }
 
     private void ToggleLockedState()
@@ -181,10 +188,12 @@ public class PlayerController : MonoBehaviour
         //but that would be bloat for all other uses of the state machine core
         if (stateMachine.CurrentState.GetType() == typeof(GroundedState))
         {
+            EventSystem<NewCameraFocus>.FireEvent(new NewCameraFocus(keyLookAtTarget, false));
             stateMachine.ChangeState<PlayerLockedState>();
         }
         else if (stateMachine.CurrentState.GetType() == typeof(PlayerLockedState))
         {
+            EventSystem<ResetCameraFocus>.FireEvent(null);
             stateMachine.ChangeState<GroundedState>();
         }
 
