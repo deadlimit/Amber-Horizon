@@ -28,6 +28,7 @@ public class Checkpoint : MonoBehaviour {
         ActiveCheckPoint = this;
         EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("Checkpoint activated", 2, false));
         enabled = false;
+        ChangeParticleColor(true);  //Gör ändringen på färgen här
     }
     
     public void ChangeParticleColor(bool isActive)
