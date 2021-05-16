@@ -9,10 +9,8 @@ public class Patrol : BTNode
     public float speed = 5f;
     protected Vector3 destination;
     private float patrolRadius = 5f;
-    private BehaviourTree m_tree;
     public Patrol(object owner, BehaviourTree bt) : base(bt)
     {
-        m_tree = bt;
         destination = Vector3.zero;
         this.owner = (Forager)owner;
         SetPatrolPoint();
@@ -23,21 +21,19 @@ public class Patrol : BTNode
     }
     private void SetPatrolPoint()
     {
-        //lite noggrannare checks här, definitivt.
         destination = owner.Pathfinder.GetSamplePositionOnNavMesh(owner.transform.position, patrolRadius, 10);
-        Debug.Log("Destination: " + destination);
     }
 
     public override Status Evaluate()
     {
-        if (Vector3.Distance(m_tree.gameObject.transform.position, destination) < 1)
+        if (Vector3.Distance(bt.ownerTransform.position, destination) < 1)
         {
             SetPatrolPoint();
             return Status.BH_SUCCESS;
         }
         else
         {
-            m_tree.owner.Pathfinder.agent.SetDestination(destination);
+            bt.owner.Pathfinder.agent.SetDestination(destination);
             return Status.BH_RUNNING;
         }
 

@@ -8,7 +8,7 @@ public enum Status
 }
 public class BTNode
 { 
-    public BehaviourTree m_tree;
+    public BehaviourTree bt;
     public virtual void OnInitialize() { }
     public virtual Status Evaluate() 
     { 
@@ -18,9 +18,8 @@ public class BTNode
 
     public BTNode(BehaviourTree bt) 
     {
-        m_tree = bt;
+        this.bt = bt;
         m_status = Status.BH_INVALID;
-       // this.owner = (Forager)owner;
     }
     public Status Tick()
     {

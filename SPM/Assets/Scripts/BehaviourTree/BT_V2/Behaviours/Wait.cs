@@ -23,7 +23,6 @@ public class Wait : BTNode
         }
         else
         {
-            Debug.Log("Returning running from wait");
             count -= Time.deltaTime;
             return Status.BH_RUNNING;
         }

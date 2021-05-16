@@ -15,7 +15,7 @@ public class IsTargetNull : BTNode
     public override Status Evaluate()
     {
         object target;
-        m_tree.blackboard.TryGetValue("Target", out target);
+        bt.blackboard.TryGetValue("Target", out target);
         if (target == null)
         {
             Debug.Log("returning success");
@@ -23,7 +23,7 @@ public class IsTargetNull : BTNode
         }
         else
         {
-            Debug.Log("returning failure");
+            Debug.Log("returning failure" );
             return Status.BH_FAILURE;
         }
     }

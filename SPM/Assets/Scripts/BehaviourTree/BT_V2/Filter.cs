@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/*
+ * Filter är en sequence, med sitt condition som första barn -> 
+ * alltså kommer inga barn köras om inte det första (vårt condition) returnerar true,
+ * och det är så filtret fungerar. 
+ */
 public class Filter : Sequence
 {
     //detta är lagg, tar emot och skickar vidare lista för att kunna kompilera atm

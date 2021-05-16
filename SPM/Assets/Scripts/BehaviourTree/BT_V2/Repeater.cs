@@ -16,21 +16,6 @@ public class Repeater : Decorator
     }
 }
 
-/* kan man inte göra en for-loop med repeats istället?? 
- * Status Repeat::update() {
-while (true) {
- m_pChild->tick();
- if (m_pChild->getStatus() == BH_RUNNING) break;
- if (m_pChild->getStatus() == BH_FAILURE) return BH_FAILURE;
- if (++m_iCounter == m_iLimit) return BH_SUCCESS;
-}
-
-/*        for (int i = 0; i < repeats; i++)
-        {
-            m_child.Tick();
-            if (m_child.getStatus() == Status.BH_RUNNING)
-                break;
-            if (m_child.getStatus() == Status.BH_FAILURE)
-                return Status.BH_FAILURE;
-        }
-}*/
+/* 
+ * Går det att återanvända denna om man vill utföra ett visst beteende x antal gånger?  
+ */

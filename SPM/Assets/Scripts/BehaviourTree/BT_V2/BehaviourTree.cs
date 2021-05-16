@@ -5,9 +5,12 @@ using UnityEngine;
 public class BehaviourTree : MonoBehaviour
 {
     public Forager owner { get; private set; }
-    protected BTNode m_root;
+    public Transform ownerTransform { get; private set; }
+    private BTNode m_root;
+    [SerializeField] private LayerMask playerMask; 
     private bool startedBehaviour;
     private Coroutine behaviour;
+    
 
     public Dictionary<string, object> blackboard = new Dictionary<string, object>();
 
@@ -15,9 +18,10 @@ public class BehaviourTree : MonoBehaviour
     {
         Debug.Log("Behaviour tree skapat");
         this.owner = GetComponent<Forager>();
+        ownerTransform = owner.transform;
         Debug.Log("owner : " + owner);
         m_root = BehaviourTreeBuilder();
-        blackboard.Add("Target", null);
+        blackboard.Add("Target", new Vector3(29.96f, 0.1342f, 9.88f));
     }
     private void Update()
     {
@@ -31,19 +35,36 @@ public class BehaviourTree : MonoBehaviour
     private BTNode BehaviourTreeBuilder()
     {
         Debug.Log("Bygger BT");
-        Filter f = new Filter(new List<BTNode>
+        //NoTargetFilter, Patrol & Wait
+        Filter patrolSequence = new Filter(new List<BTNode>
                 {
                 new Patrol(owner, this),
                 new Wait(this, 4f)
                 }, this);
-        f.AddCondition(new IsTargetNull(this));
-        /* return new Sequence(new List<BTNode>
-         {
-             new SetPatrolPoint(owner, this), new MoveToPatrolPoint(owner ,this)
-         }, this);*/
-       return new Repeater(f,
-           
-           this);
+        patrolSequence.AddCondition(new IsTargetNull(this));
+
+
+
+        Filter investigateSequence = new Filter(
+            new List<BTNode>
+                {
+                   new Investigate(this)
+                }, 
+            this);
+        investigateSequence.AddCondition(new Inverter(this, (new IsTargetNull(this))));
+
+
+
+        //Selector Sub-Root Node
+        Selector RootSelector = new Selector(new List<BTNode>
+                {
+                investigateSequence,
+                new VisualProximityCheck(this),
+                patrolSequence
+                }, this);
+
+       //Repeater Root Node
+       return new Repeater(RootSelector, this);
 
     }
     private IEnumerator RunBehaviour()
@@ -56,5 +77,9 @@ public class BehaviourTree : MonoBehaviour
         }
 
         Debug.Log("Behaviour has finished with: " + status);
+    }
+    public LayerMask GetPlayerMask()
+    {
+        return playerMask;
     }
 }
