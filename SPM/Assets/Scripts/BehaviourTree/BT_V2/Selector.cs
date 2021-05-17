@@ -12,8 +12,10 @@ public class Selector : Composite
             Status s = child.Tick();
             if (s != Status.BH_FAILURE)
                 return s;
-            if (children.IndexOf(child) == children.Count)
+            if (children.IndexOf(child) == children.Count -1)
+            {
                 return Status.BH_FAILURE;
+            }
         }
 
         return Status.BH_INVALID; //Unexpected loop exit

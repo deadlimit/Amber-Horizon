@@ -26,12 +26,12 @@ public class Investigate : BTNode
             bt.blackboard["Target"] = null;
             return Status.BH_SUCCESS;
         }
-        /*
-         * Om path är invalid/NavAgent misslyckas
-         * else if
-         * 
-         * 
-         */
+        //Tar vi oss hit har det första if-statementet redan körts..? 
+        else if(bt.blackboard["Target"] == null)
+        {
+            return Status.BH_FAILURE;
+        }
+
         else
             return Status.BH_RUNNING;
     }

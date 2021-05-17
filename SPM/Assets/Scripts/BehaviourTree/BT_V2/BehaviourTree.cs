@@ -4,16 +4,35 @@ using UnityEngine;
 
 public class BehaviourTree : MonoBehaviour
 {
+    public class DataContainer<T>
+    {
+        private System.Type type;
+        private T value;
+        public DataContainer(System.Type type, T value)
+        {
+            this.type = type;
+            this.value = value; 
+        }
+        public System.Type GetContainerType()
+        {
+            return type;
+        }
+        public T GetContainerValue()
+        {
+            return value;
+        }
+    }
+    
     public Forager owner { get; private set; }
     public Transform ownerTransform { get; private set; }
     private BTNode m_root;
     [SerializeField] private LayerMask playerMask; 
     private bool startedBehaviour;
     private Coroutine behaviour;
-    
+
 
     public Dictionary<string, object> blackboard = new Dictionary<string, object>();
-
+   // public Dictionary<string, DataContainer<object>> blackboard = new Dictionary<string, DataContainer<object>>();
     private void Start()
     {
         Debug.Log("Behaviour tree skapat");
@@ -22,6 +41,7 @@ public class BehaviourTree : MonoBehaviour
         Debug.Log("owner : " + owner);
         m_root = BehaviourTreeBuilder();
         blackboard.Add("Target", new Vector3(29.96f, 0.1342f, 9.88f));
+        blackboard.Add("TargetTransform", null);
     }
     private void Update()
     {
@@ -31,6 +51,7 @@ public class BehaviourTree : MonoBehaviour
             startedBehaviour = true;
         }
         m_root.Tick();
+
     }
     private BTNode BehaviourTreeBuilder()
     {
@@ -43,28 +64,48 @@ public class BehaviourTree : MonoBehaviour
                 }, this);
         patrolSequence.AddCondition(new IsTargetNull(this));
 
-
-
-        Filter investigateSequence = new Filter(
-            new List<BTNode>
+        //Om target är null ska vi inte undersöka, därför inverter i condition
+        Filter investigateTarget = new Filter(new List<BTNode>
                 {
-                   new Investigate(this)
-                }, 
-            this);
-        investigateSequence.AddCondition(new Inverter(this, (new IsTargetNull(this))));
+                new Investigate(this)
+                }, this);
+        investigateTarget.AddCondition(new TargetNotNull(this));
 
-
+        //
+        Selector investigateSelector = new Selector(new List<BTNode>
+                {
+                investigateTarget,
+                new AudioProximityCheck(this),
+                }, this) ;
 
         //Selector Sub-Root Node
         Selector RootSelector = new Selector(new List<BTNode>
                 {
-                investigateSequence,
                 new VisualProximityCheck(this),
+                investigateSelector,
                 patrolSequence
                 }, this);
 
        //Repeater Root Node
        return new Repeater(RootSelector, this);
+
+        //Om vi saknar target, gör AudioProximityCheck
+        //Finns just nu ingen riktig audio, så det är bara en mindre radie
+       /* Filter ifTargetNullCheckAudible = new Filter(new List<BTNode>
+                {
+                 new Inverter(this, 
+                    new AudioProximityCheck(this))
+                }, this) ;
+        ifTargetNullCheckAudible.AddCondition(new IsTargetNull(this));
+
+
+        Selector alertSequence = new Selector(
+            new List<BTNode>
+                {
+                   ifTargetNullCheckAudible,
+                   new Investigate(this)
+                }, this);*/
+
 
     }
     private IEnumerator RunBehaviour()

@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class Sequence : Composite
 {
+    //borde denna assignas inuti evaluate? 
     private int currentNode = 0;
     public Sequence(List<BTNode> children, BehaviourTree bt) : base(children, bt) { }
     public override Status Evaluate()
     {
         //titta igenom varje barn om status på ett är RUNNING eller FAILURE, returnera det
-        //indexOf kräver att vi loopar varje varv, inte bra
         if(currentNode < children.Count)
         {
-
             Status s = children[currentNode].Tick();
             if (s == Status.BH_RUNNING)
                 return s;
