@@ -120,7 +120,8 @@ public class PlayerUI : MonoBehaviour {
             ChangeColor(255);
         }
 
-        float healthFraction = currentHealth / 4;
+        //this is a cheat solution until we figure out why it shows the player having more than they should
+        float healthFraction = currentHealth / 4 - 0.25f;
         Debug.Log("currentHealth: " + currentHealth + " healthFraction: " + healthFraction);
 
         healthBar.fillAmount = healthFraction;
