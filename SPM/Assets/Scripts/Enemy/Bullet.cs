@@ -9,7 +9,9 @@ public class Bullet : PoolObject {
     public ForceMode forceMode;
     
     private Rigidbody activeRigidbody;
-    
+
+    public GameObject hitVFX;
+
     private void Awake() {
         activeRigidbody = GetComponent<Rigidbody>();
     }
@@ -24,7 +26,7 @@ public class Bullet : PoolObject {
         {
             EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, bulletData.Effect));
         }
-
+        Instantiate(hitVFX, transform.position, transform.rotation);
         ResetBullet();
     }
 
