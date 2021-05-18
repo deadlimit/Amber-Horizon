@@ -24,14 +24,14 @@ public class VisualProximityCheck : BTNode
 
             //Ska inte kunna hamna här utan att playerTransform får ett värde, men det är inte direkt idiotsäkert heller
             //kolla in bitskift- grejen för lager, tack, hårdkodningen är ju fruktansvärd
-            if (Physics.Linecast(bt.ownerTransform.position, playerTransform.position, out var hitInfo, 7))
+            if (Physics.Linecast(bt.ownerTransform.position, playerTransform.position, out var hitInfo, (1 << bt.GetPlayerMask())))
             {
-                Debug.Log("Linecast Hit" + hitInfo.collider.gameObject);
-                Debug.Log(playerTransform.position);
+                //Om vi träffar något som inte är spelaren, så är siktlinjen bruten -> 
+                Debug.Log(hitInfo.collider.gameObject);
                 return Status.BH_FAILURE;
             }
-            Debug.Log("AI Detection Visual");
-            bt.blackboard["Target"] = playerTransform.position;
+            Debug.Log("AI Detection Visual"); 
+            bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(playerTransform);
             return Status.BH_SUCCESS;
         }
 

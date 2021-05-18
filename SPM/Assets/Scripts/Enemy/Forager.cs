@@ -5,6 +5,7 @@ using UnityEngine;
 public class Forager : Enemy  {
     
     public GameObject Bullet;
+    [SerializeField]private float range;
     
     [HideInInspector] public BlackHole activeBlackHole;
 
@@ -37,4 +38,6 @@ public class Forager : Enemy  {
         newBullet.GetComponent<Bullet>().Init(AbilitySystem.GetAbilityByTag(GameplayTags.AttackTag));
         Pathfinder.agent.isStopped = false;
     }
+
+    public float GetRange() { return range;  }
 }

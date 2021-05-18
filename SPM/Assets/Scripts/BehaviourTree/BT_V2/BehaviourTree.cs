@@ -4,25 +4,26 @@ using UnityEngine;
 
 public class BehaviourTree : MonoBehaviour
 {
-    public class DataContainer<T>
+    public class DataContainer { }
+    public class DataContainer<T> : DataContainer
     {
-        private System.Type type;
         private T value;
-        public DataContainer(System.Type type, T value)
+        public DataContainer(T value)
         {
-            this.type = type;
             this.value = value; 
         }
-        public System.Type GetContainerType()
-        {
-            return type;
-        }
-        public T GetContainerValue()
+
+        public T GetValue()
         {
             return value;
         }
+        public void SetValue(T newVal)
+        {
+            value = newVal;
+        }
     }
     
+    public Vector3 startPos { get; private set; }
     public Forager owner { get; private set; }
     public Transform ownerTransform { get; private set; }
     private BTNode m_root;
@@ -31,17 +32,22 @@ public class BehaviourTree : MonoBehaviour
     private Coroutine behaviour;
 
 
-    public Dictionary<string, object> blackboard = new Dictionary<string, object>();
-   // public Dictionary<string, DataContainer<object>> blackboard = new Dictionary<string, DataContainer<object>>();
+    //public Dictionary<string, object> blackboard = new Dictionary<string, object>();
+    public Dictionary<string, DataContainer> blackboard = new Dictionary<string, DataContainer>();
+    //Det här kräver hårdkodning i kastning när man hämtar värden
+    public DataContainer<T> GetBlackBoardValue<T>(string blackboardKey)
+    {
+        return (DataContainer<T>)blackboard[blackboardKey];
+    }
+
     private void Start()
     {
-        Debug.Log("Behaviour tree skapat");
         this.owner = GetComponent<Forager>();
         ownerTransform = owner.transform;
-        Debug.Log("owner : " + owner);
+        startPos = ownerTransform.position;
         m_root = BehaviourTreeBuilder();
-        blackboard.Add("Target", new Vector3(29.96f, 0.1342f, 9.88f));
-        blackboard.Add("TargetTransform", null);
+        blackboard.Add("Target", new DataContainer<Vector3>(new Vector3(29.96f, 0.1342f, 9.88f)));
+        blackboard.Add("TargetTransform", new DataContainer<Transform>(null));
     }
     private void Update()
     {
@@ -71,42 +77,44 @@ public class BehaviourTree : MonoBehaviour
                 }, this);
         investigateTarget.AddCondition(new TargetNotNull(this));
 
-        //
+        //Investigate & AudioCheck
         Selector investigateSelector = new Selector(new List<BTNode>
                 {
                 investigateTarget,
                 new AudioProximityCheck(this),
                 }, this) ;
 
+
+        //Om shoot != on cooldown && in range, shoot
+        Filter shootSequence = new Filter(new List<BTNode>
+        {
+           new Shoot(this)
+        }, this);
+        shootSequence.AddCondition(new ShootOnCooldown(this));
+        shootSequence.AddCondition(new Inverter(new TargetInRange(this), this));
+
+
+        //Target in range behöver ha barn? för att sedan i den hierarkin skapa en shootsequence
+        Filter targetVisible = new Filter(new List<BTNode>
+             {
+              shootSequence,
+              new MoveToTarget(this)
+             }, this) ;
+        targetVisible.AddCondition(new VisualProximityCheck(this));
+
+
+
+
         //Selector Sub-Root Node
         Selector RootSelector = new Selector(new List<BTNode>
                 {
-                new VisualProximityCheck(this),
+                targetVisible,
                 investigateSelector,
                 patrolSequence
                 }, this);
 
        //Repeater Root Node
        return new Repeater(RootSelector, this);
-
-        //Om vi saknar target, gör AudioProximityCheck
-        //Finns just nu ingen riktig audio, så det är bara en mindre radie
-       /* Filter ifTargetNullCheckAudible = new Filter(new List<BTNode>
-                {
-                 new Inverter(this, 
-                    new AudioProximityCheck(this))
-                }, this) ;
-        ifTargetNullCheckAudible.AddCondition(new IsTargetNull(this));
-
-
-        Selector alertSequence = new Selector(
-            new List<BTNode>
-                {
-                   ifTargetNullCheckAudible,
-                   new Investigate(this)
-                }, this);*/
-
-
     }
     private IEnumerator RunBehaviour()
     {

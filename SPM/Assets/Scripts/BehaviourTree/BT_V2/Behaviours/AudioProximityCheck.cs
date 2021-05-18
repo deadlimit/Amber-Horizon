@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AudioProximityCheck : BTNode
 {
-    private float hearingRange = 0f;
+    private float hearingRange = 10f;
     public AudioProximityCheck(BehaviourTree bt) : base(bt) {}
     public override void OnInitialize()
     {
@@ -19,8 +19,12 @@ public class AudioProximityCheck : BTNode
             foreach (Collider coll in arr)
             {
                 //foreach, men vi borde bara få ut en collider
-                //måste också här bestämma om target är ett GO eller en position... lutar åt position. 
-                bt.blackboard["Target"] = coll.transform.position;
+                //DataContainer "Target" är nullad, så här måste vi isåfall skapa en ny om den inte existerar (vilket den troligtvis inte gör) 
+                //det är skit men fungerar för nu
+                bt.GetBlackBoardValue<Vector3>("Target")?.SetValue(coll.transform.position);
+                
+                if(bt.blackboard["Target"] == null)
+                    bt.blackboard["Target"] = new BehaviourTree.DataContainer<Vector3>(coll.transform.position);
             }
             if (arr.Length > 1)
                 Debug.Log("Arr Length > 1!!");

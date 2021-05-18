@@ -13,12 +13,14 @@ public class Investigate : BTNode
     {
         Debug.Log("Investigate Init");
         //Osäker hämtning och skum kastning, hur städar vi detta? 
-        targetPos = (Vector3)bt.blackboard["Target"];
-        Debug.Assert(targetPos != Vector3.zero);
+        BehaviourTree.DataContainer<Vector3> targetContainer = bt.GetBlackBoardValue<Vector3>("Target");
+        if(targetContainer != null)
+            targetPos = targetContainer.GetValue();
         bt.owner.Pathfinder.agent.SetDestination(targetPos);
     }
     //bygger på att target inte är null
     //hårdkodat värde, var vill vi placera det? samma sak i Patrol-scriptet
+    //här nullar vi DataContainer
     public override Status Evaluate()
     {
         if (Vector3.Distance(bt.ownerTransform.position, targetPos) < 1)
@@ -26,7 +28,7 @@ public class Investigate : BTNode
             bt.blackboard["Target"] = null;
             return Status.BH_SUCCESS;
         }
-        //Tar vi oss hit har det första if-statementet redan körts..? 
+        //Tar vi oss hit har det första if-statementet redan körts
         else if(bt.blackboard["Target"] == null)
         {
             return Status.BH_FAILURE;

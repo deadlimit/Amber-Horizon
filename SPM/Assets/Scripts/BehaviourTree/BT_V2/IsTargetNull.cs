@@ -14,7 +14,7 @@ public class IsTargetNull : BTNode
 
     public override Status Evaluate()
     {
-        object target;
+        BehaviourTree.DataContainer target;
         bt.blackboard.TryGetValue("Target", out target);
         if (target == null)
         {
