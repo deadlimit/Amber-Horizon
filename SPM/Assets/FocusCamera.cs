@@ -7,6 +7,7 @@ public class FocusCamera : CameraBehaviour {
     public override void MovementBehaviour() {
         CameraTransform.transform.position = Vector3.Lerp(CameraTransform.transform.position, Target.transform.position, Time.deltaTime * cameraSpeed);
         CameraTransform.transform.rotation = Quaternion.Lerp(CameraTransform.transform.rotation, Target.transform.rotation, Time.deltaTime * cameraSpeed);
+        print(Target);
     }
     
 }

@@ -1,23 +1,54 @@
+using System;
 using System.Collections.Generic;
 using EventCallbacks;
 using UnityEngine;
 
+/// <summary>
+/// CameraBehaviour var egentligen en interface men interfaces kan inte serialiseras i inspektorn
+/// </summary>
+/// 
+public abstract class CameraBehaviour : MonoBehaviour {
+    
+    protected Transform CameraTransform { get; private set; }
+    protected Transform Target;
+    protected Camera ActiveCamera;
+    protected SphereCollider Collider;
+
+    private void Awake() {
+        ActiveCamera = Camera.main;
+        Collider = GetComponentInParent<SphereCollider>();
+        CameraTransform = transform.parent;
+    }
+    
+    public void Init(Transform newTarget) {
+        if (newTarget == null) return;
+        Target = newTarget;
+    }
+    
+    public abstract void MovementBehaviour();
+}
+
+[Serializable]
+public struct CameraBehaviourPair {
+    public CameraBehaviourType CameraType;
+    public CameraBehaviour behaviour;
+}
+
+public enum CameraBehaviourType { Follow, Focus}
 
 public class ThirdPersonCamera : MonoBehaviour {
     
     [SerializeField] private List<CameraBehaviourPair> cameraBehaviourPairs;
-    
-    private CameraBehaviour currentCameraBehaviour;
+    [SerializeField] private CameraBehaviour currentCameraBehaviour;
     
     private Dictionary<CameraBehaviourType, CameraBehaviour> cameraBehaviours = new Dictionary<CameraBehaviourType, CameraBehaviour>();
     
     private void Awake() {
-        currentCameraBehaviour = cameraBehaviourPairs[0].Behaviour;
         currentCameraBehaviour.Init(transform);
         Cursor.lockState = CursorLockMode.Locked;
         
         foreach(CameraBehaviourPair pair in cameraBehaviourPairs)
-            cameraBehaviours.Add(pair.CameraType, pair.Behaviour);
+            cameraBehaviours.Add(pair.CameraType, pair.behaviour);
         
     }
 
@@ -32,7 +63,9 @@ public class ThirdPersonCamera : MonoBehaviour {
     }
     
     void LateUpdate() {
+        
         currentCameraBehaviour.MovementBehaviour();
+        
     }
 
     private void SwitchToFollowCamera(ResetCameraFocus focus) {

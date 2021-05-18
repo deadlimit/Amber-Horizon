@@ -1,3 +1,4 @@
+using EventCallbacks;
 using UnityEngine;
 
 public class FollowCamera : CameraBehaviour {
@@ -7,15 +8,16 @@ public class FollowCamera : CameraBehaviour {
     [SerializeField] private Transform PlayerTarget;
     [SerializeField] private float MouseSensitivity;
     [SerializeField] private float cameraSpeed;
-    [SerializeField] private float minZoom;
-    [SerializeField] private float maxZoom;
-    
+    [SerializeField] private float minZoom = -6f;
+    [SerializeField] private float maxZoom = -2f;
     private Vector3 collisionOffset;
+    
     private Vector2 rotation;
     private RaycastHit hitInfo;
     
     private string xRotation = "Mouse X";
     private string yRotation = "Mouse Y";
+    
     
     public override void MovementBehaviour() {
         GetInput();
@@ -29,18 +31,19 @@ public class FollowCamera : CameraBehaviour {
     
     private void CameraScroll() 
     {
+        //eventuellt ska dessa clampas
         TargetOffset.z += Input.mouseScrollDelta.y; 
         TargetOffset.z = Mathf.Clamp(TargetOffset.z, minZoom, maxZoom);
 
     }
         
-    private void GetInput()
+    void GetInput()
     {
         rotation.x -= Input.GetAxisRaw(yRotation) * MouseSensitivity;
         rotation.y += Input.GetAxisRaw(xRotation) * MouseSensitivity;
     }
         
-    private void PlaceCamera() {     
+    void PlaceCamera() {     
             
             
         if (Physics.SphereCast(PlayerTarget.position, Collider.radius, collisionOffset.normalized, out hitInfo, collisionOffset.magnitude, collisionMask)) {
