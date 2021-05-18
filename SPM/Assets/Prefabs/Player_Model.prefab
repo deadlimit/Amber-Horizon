@@ -177,6 +177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 154323382751010068}
+  - component: {fileID: 4939621609248408304}
   - component: {fileID: 409543006023988580}
   - component: {fileID: 409543006023988601}
   - component: {fileID: 409543006023988600}
@@ -209,6 +210,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4939621609248408304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679925758882826158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1457f9d75d98001409ebc145986edbe7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Positions: []
 --- !u!136 &409543006023988580
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -353,7 +367,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7ef2ef659fd70e94089613119db7671a, type: 2}
   - {fileID: 11400000, guid: 260658f9bea97144d9bdd78b881f4e67, type: 2}
   force: {x: 0, y: 0, z: 0}
-  bhVelocity: {x: 0, y: 0, z: 0}
+  keyLookAtTarget: {fileID: 0}
 --- !u!1 &768987082205471989
 GameObject:
   m_ObjectHideFlags: 0
