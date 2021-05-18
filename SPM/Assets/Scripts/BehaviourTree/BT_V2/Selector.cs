@@ -11,7 +11,10 @@ public class Selector : Composite
         {
             Status s = child.Tick();
             if (s != Status.BH_FAILURE)
+            {
+                Debug.Log(s + "child: " + child);
                 return s;
+            }
             if (children.IndexOf(child) == children.Count -1)
             {
                 return Status.BH_FAILURE;

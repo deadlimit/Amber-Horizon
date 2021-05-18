@@ -48,6 +48,7 @@ public class BehaviourTree : MonoBehaviour
         m_root = BehaviourTreeBuilder();
         blackboard.Add("Target", new DataContainer<Vector3>(new Vector3(29.96f, 0.1342f, 9.88f)));
         blackboard.Add("TargetTransform", new DataContainer<Transform>(null));
+        blackboard.Add("LastSeenPosition", new DataContainer<Vector3>(Vector3.zero));
     }
     private void Update()
     {
@@ -77,38 +78,44 @@ public class BehaviourTree : MonoBehaviour
                 }, this);
         investigateTarget.AddCondition(new TargetNotNull(this));
 
+        
+
         //Investigate & AudioCheck
         Selector investigateSelector = new Selector(new List<BTNode>
                 {
                 investigateTarget,
+                new InvestigateLastSeen(this),
                 new AudioProximityCheck(this),
                 }, this) ;
 
 
-        //Om shoot != on cooldown && in range, shoot
-        Filter shootSequence = new Filter(new List<BTNode>
-        {
-           new Shoot(this)
-        }, this);
-        shootSequence.AddCondition(new ShootOnCooldown(this));
-        shootSequence.AddCondition(new Inverter(new TargetInRange(this), this));
+        Sequence shootSequence = new Sequence(new List<BTNode>
+            {
+            new TargetInRange(this),
+            new Shoot(this)
+            }, this) ;
 
-
-        //Target in range behöver ha barn? för att sedan i den hierarkin skapa en shootsequence
-        Filter targetVisible = new Filter(new List<BTNode>
+        //Hade kanske egentligen velat ha en selector med filter här, alternativet till det kanske 
+        //är att sätta en succeeder på shootSequence, och sedan utvädera avståndet inuti MoveToTarget, men då gör vi det två gånger istället, det blir dumt.
+        //Annars får det blir en förälder till targetvisible som är ett filter, och sedan är targetVisible själv en selector
+        Selector targetVisible = new Selector(new List<BTNode>
              {
               shootSequence,
               new MoveToTarget(this)
-             }, this) ;
-        targetVisible.AddCondition(new VisualProximityCheck(this));
-
-
+             }, this);
+       
+        //Filter innan targetVisible så att vi kan göra targetVisible til en Selector
+        Filter visualCheckFilter = new Filter(new List<BTNode>
+            {
+            targetVisible
+            }, this);
+        visualCheckFilter.AddCondition(new VisualProximityCheck(this));
 
 
         //Selector Sub-Root Node
         Selector RootSelector = new Selector(new List<BTNode>
                 {
-                targetVisible,
+                visualCheckFilter,
                 investigateSelector,
                 patrolSequence
                 }, this);

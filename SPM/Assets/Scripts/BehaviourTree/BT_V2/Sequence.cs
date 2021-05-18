@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Sequence : Composite
-{
-    //borde denna assignas inuti evaluate? 
+{ 
     private int currentNode = 0;
     public Sequence(List<BTNode> children, BehaviourTree bt) : base(children, bt) { }
     public override Status Evaluate()

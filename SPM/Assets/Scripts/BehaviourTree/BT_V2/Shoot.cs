@@ -13,6 +13,7 @@ public class Shoot : BTNode
         //Reset path så att agenten stannar när den ska skjuta
         Debug.Log("Shoot!!");
         bt.owner.Pathfinder.agent.ResetPath();
-        return base.Evaluate();
+        bt.owner.Fire(); 
+        return Status.BH_FAILURE;
     }
 }

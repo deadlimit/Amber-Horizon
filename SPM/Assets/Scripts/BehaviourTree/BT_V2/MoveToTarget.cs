@@ -15,6 +15,13 @@ public class MoveToTarget : BTNode
         bt.owner.Pathfinder.agent.ResetPath();
         bt.owner.Pathfinder.agent.SetDestination(playerTransform.position);
     }
-    
+    //Evaluate? 
+    //Tror att det inte är något som avbryter denna nu, så den ligger kvar här och returnerar aldrig någon typ av värde
+    public override Status Evaluate()
+    {
+        //placeholder
+        Debug.Log("Move to target returning failure");
+        return Status.BH_FAILURE;
+    }
 }
 

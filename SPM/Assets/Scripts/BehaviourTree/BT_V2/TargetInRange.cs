@@ -13,7 +13,6 @@ public class TargetInRange : BTNode
             return Status.BH_FAILURE;
         else
         {
-
             return Status.BH_SUCCESS;
         }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Investigate : BTNode
 {
     private Vector3 targetPos;
+    int frameCounter = 0; 
     public Investigate(BehaviourTree bt) : base(bt)
     {
     }
@@ -12,10 +13,11 @@ public class Investigate : BTNode
     public override void OnInitialize()
     {
         Debug.Log("Investigate Init");
+        //Dessa rader kan förenklas om vi inte vill kolla två olika blackboardvärden här (inkl. LastSeenPosition isåfall) 
         //Osäker hämtning och skum kastning, hur städar vi detta? 
         BehaviourTree.DataContainer<Vector3> targetContainer = bt.GetBlackBoardValue<Vector3>("Target");
-        if(targetContainer != null)
-            targetPos = targetContainer.GetValue();
+        targetPos = targetContainer.GetValue();
+
         bt.owner.Pathfinder.agent.SetDestination(targetPos);
     }
     //bygger på att target inte är null
@@ -23,6 +25,7 @@ public class Investigate : BTNode
     //här nullar vi DataContainer
     public override Status Evaluate()
     {
+        
         if (Vector3.Distance(bt.ownerTransform.position, targetPos) < 1)
         {
             bt.blackboard["Target"] = null;
@@ -36,5 +39,16 @@ public class Investigate : BTNode
 
         else
             return Status.BH_RUNNING;
+    }
+
+    private void FrameCountDebug()
+    {
+        if (frameCounter % 10 == 0)
+        {
+            Debug.Log("Investigating");
+            frameCounter = 0;
+        }
+        frameCounter++;
+
     }
 }
