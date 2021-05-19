@@ -17,39 +17,42 @@ public class Patrol : BTNode
     }
     public override void OnInitialize()
     {
+        destination = Vector3.zero;
         Debug.Log("Patrol init");
     }
-    private void SetPatrolPoint()
-    {
-        destination = owner.Pathfinder.GetSamplePositionOnNavMesh(owner.transform.position, patrolRadius, 10);
-    }
-
     public override Status Evaluate()
     {
-        if (Vector3.Distance(bt.ownerTransform.position, destination) < 1)
+        if (ReachedTarget() || destination.Equals(Vector3.zero))
         {
             SetPatrolPoint();
             return Status.BH_SUCCESS;
         }
         else
         {
-            bt.owner.Pathfinder.agent.SetDestination(destination);
             return Status.BH_RUNNING;
         }
-
-
-/*
-        Debug.Log("SPP eval");
-        if (owner.patrolPoint != Vector3.zero)
-        {
-            Debug.Log("PP not null, returnerar fail");
-            return Status.BH_FAILURE;
-        }
-        Debug.Log("Sätter PP");
-        owner.patrolPoint = owner.Pathfinder.GetSamplePositionOnNavMesh(owner.transform.position, patrolRadius, 100);
-        return Status.BH_SUCCESS;*/
+    }
+    private void SetPatrolPoint()
+    {
+        destination = owner.Pathfinder.GetSamplePositionOnNavMesh(bt.startPos, patrolRadius, 10);
+        bt.ownerAgent.SetDestination(destination);
     }
 
+    //Den här metoden behövs i alla metoder som utvärderar om navAgent är framme
+    private bool ReachedTarget()
+    {
+        if (!bt.owner.Pathfinder.agent.pathPending)
+        {
+            if (bt.owner.Pathfinder.agent.remainingDistance <= bt.owner.Pathfinder.agent.stoppingDistance)
+            {
+                if (!bt.owner.Pathfinder.agent.hasPath || bt.owner.Pathfinder.agent.velocity.sqrMagnitude == 0f)
+                {
+                    return true;
+                }
+            }
+        }
 
+        return false;
+    }
 
 }

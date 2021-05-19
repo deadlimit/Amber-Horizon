@@ -15,7 +15,7 @@ public abstract class Composite : BTNode
     {
         this.children = children;
     }
-    public Composite(List<BTNode> children, BehaviourTree bt, string name) : base(bt)
+    public Composite(List<BTNode> children, BehaviourTree bt, string name) : base(bt, name)
     {
         this.children = children;
         this.name = name;

@@ -71,7 +71,7 @@ public class BehaviourTree : MonoBehaviour
                 {
                 new Patrol(owner, this),
                 new Wait(this, 4f)
-                }, this);
+                }, this, "patrolSequence");
         patrolSequence.AddCondition(new IsTargetNull(this));
 
         //Condition hindrar Investigate från att printa sin OnInit, och if:s 
@@ -103,7 +103,7 @@ public class BehaviourTree : MonoBehaviour
             {
             new TargetInRange(this),
             new Shoot(this)
-            }, this) ;
+            }, this, "shootSequence") ;
 
         //Hade kanske egentligen velat ha en selector med filter här, alternativet till det kanske 
         //är att sätta en succeeder på shootSequence, och sedan utvädera avståndet inuti MoveToTarget, men då gör vi det två gånger istället, det blir dumt.

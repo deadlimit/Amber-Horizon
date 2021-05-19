@@ -23,6 +23,12 @@ public class BTNode
         this.bt = bt;
         m_status = Status.BH_INVALID;
     }
+    public BTNode(BehaviourTree bt, string name)
+    {
+        this.name = name;
+        this.bt = bt;
+        m_status = Status.BH_INVALID;
+    }
     public Status Tick()
     {
         if (m_status != Status.BH_RUNNING)

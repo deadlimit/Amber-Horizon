@@ -9,10 +9,7 @@ public class VisualProximityCheck : BTNode
    public VisualProximityCheck(BehaviourTree bt ) : base(bt)
     {
     }
-    public override void OnInitialize()
-    {
 
-    }
     public override Status Evaluate()
     {  
         //Vill troligtvis ha en offset så att synen går från huvudet? 
@@ -37,6 +34,7 @@ public class VisualProximityCheck : BTNode
            
             Debug.Log("AI Detection Visual"); 
             bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(playerTransform);
+            //Tidigare har set destination bara kallats i moveToTarget, men det kan ta en stund innan den når dit..? 
             lastKnownPlayerPosition = playerTransform.position;
             return Status.BH_SUCCESS;
         }

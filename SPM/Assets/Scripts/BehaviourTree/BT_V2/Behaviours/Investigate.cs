@@ -26,7 +26,7 @@ public class Investigate : BTNode
     public override Status Evaluate()
     {
 
-        if (Vector3.Distance(bt.ownerTransform.position, targetPos) < 2)
+        if (ReachedTarget())
         {
             Debug.Log("Blackboard 'Target' set to null ");
             bt.blackboard["Target"] = null;
@@ -42,7 +42,21 @@ public class Investigate : BTNode
             Debug.Log("Investigate running");
             return Status.BH_RUNNING;
     }
+    private bool ReachedTarget()
+    {
+        if (!bt.owner.Pathfinder.agent.pathPending)
+        {
+            if (bt.owner.Pathfinder.agent.remainingDistance <= bt.owner.Pathfinder.agent.stoppingDistance)
+            {
+                if (!bt.owner.Pathfinder.agent.hasPath || bt.owner.Pathfinder.agent.velocity.sqrMagnitude == 0f)
+                {
+                    return true;
+                }
+            }
+        }
 
+        return false;
+    }
     private void FrameCountDebug()
     {
         if (frameCounter % 10 == 0)
