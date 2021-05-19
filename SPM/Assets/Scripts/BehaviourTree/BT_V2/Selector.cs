@@ -5,6 +5,7 @@ using UnityEngine;
 public class Selector : Composite
 {
     public Selector(List<BTNode> children, BehaviourTree bt ) : base(children, bt) { }
+    public Selector(List<BTNode> children, BehaviourTree bt, string name) : base(children, bt, name) { }
     public override Status Evaluate()
     {
         foreach (BTNode child in children)
@@ -12,7 +13,7 @@ public class Selector : Composite
             Status s = child.Tick();
             if (s != Status.BH_FAILURE)
             {
-                Debug.Log(s + "child: " + child);
+                Debug.Log(name + "recieving: " +s + "child: " + child.name);
                 return s;
             }
             if (children.IndexOf(child) == children.Count -1)

@@ -8,6 +8,7 @@ public enum Status
 }
 public class BTNode
 { 
+    public string name { get; }
     public BehaviourTree bt;
     public virtual void OnInitialize() { }
     public virtual Status Evaluate() 
@@ -18,6 +19,7 @@ public class BTNode
 
     public BTNode(BehaviourTree bt) 
     {
+        name = "";
         this.bt = bt;
         m_status = Status.BH_INVALID;
     }

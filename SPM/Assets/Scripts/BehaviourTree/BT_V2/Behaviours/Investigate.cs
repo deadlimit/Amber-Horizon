@@ -25,19 +25,21 @@ public class Investigate : BTNode
     //här nullar vi DataContainer
     public override Status Evaluate()
     {
-        
-        if (Vector3.Distance(bt.ownerTransform.position, targetPos) < 1)
+
+        if (Vector3.Distance(bt.ownerTransform.position, targetPos) < 2)
         {
+            Debug.Log("Blackboard 'Target' set to null ");
             bt.blackboard["Target"] = null;
             return Status.BH_SUCCESS;
         }
         //Tar vi oss hit har det första if-statementet redan körts
-        else if(bt.blackboard["Target"] == null)
+        else if (bt.blackboard["Target"] == null)
         {
             return Status.BH_FAILURE;
         }
 
         else
+            Debug.Log("Investigate running");
             return Status.BH_RUNNING;
     }
 

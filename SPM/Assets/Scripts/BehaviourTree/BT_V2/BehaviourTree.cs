@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BehaviourTree : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class BehaviourTree : MonoBehaviour
     
     public Vector3 startPos { get; private set; }
     public Forager owner { get; private set; }
+    public NavMeshAgent ownerAgent { get; private set; }
     public Transform ownerTransform { get; private set; }
     private BTNode m_root;
     [SerializeField] private LayerMask playerMask; 
@@ -44,6 +46,7 @@ public class BehaviourTree : MonoBehaviour
     {
         this.owner = GetComponent<Forager>();
         ownerTransform = owner.transform;
+        ownerAgent = owner.Pathfinder.agent;
         startPos = ownerTransform.position;
         m_root = BehaviourTreeBuilder();
         blackboard.Add("Target", new DataContainer<Vector3>(new Vector3(29.96f, 0.1342f, 9.88f)));
@@ -71,22 +74,29 @@ public class BehaviourTree : MonoBehaviour
                 }, this);
         patrolSequence.AddCondition(new IsTargetNull(this));
 
-        //Om target är null ska vi inte undersöka, därför inverter i condition
+        //Condition hindrar Investigate från att printa sin OnInit, och if:s 
+        //faller igenom och returnerar running till top-branch, det är det som spökar
         Filter investigateTarget = new Filter(new List<BTNode>
                 {
                 new Investigate(this)
-                }, this);
+                }, this, "investigateTarget");
         investigateTarget.AddCondition(new TargetNotNull(this));
 
-        
+
+        //InvestigateLastSeen with filter
+        Filter investigateLastSeen = new Filter(new List<BTNode>
+            {
+            new InvestigateLastSeen(this)
+            }, this, "investigateLastSeen");
+        investigateLastSeen.AddCondition(new LastSeenPosition(this));
 
         //Investigate & AudioCheck
         Selector investigateSelector = new Selector(new List<BTNode>
                 {
+                investigateLastSeen,
                 investigateTarget,
-                new InvestigateLastSeen(this),
                 new AudioProximityCheck(this),
-                }, this) ;
+                }, this, "investigateSelector") ;
 
 
         Sequence shootSequence = new Sequence(new List<BTNode>
@@ -102,13 +112,13 @@ public class BehaviourTree : MonoBehaviour
              {
               shootSequence,
               new MoveToTarget(this)
-             }, this);
+             }, this, "targetVisible");
        
         //Filter innan targetVisible så att vi kan göra targetVisible til en Selector
         Filter visualCheckFilter = new Filter(new List<BTNode>
             {
             targetVisible
-            }, this);
+            }, this, "visualCheckFilter");
         visualCheckFilter.AddCondition(new VisualProximityCheck(this));
 
 
@@ -118,10 +128,26 @@ public class BehaviourTree : MonoBehaviour
                 visualCheckFilter,
                 investigateSelector,
                 patrolSequence
-                }, this);
+                }, this, "RootSelector");
 
-       //Repeater Root Node
-       return new Repeater(RootSelector, this);
+        //Repeater Root Node
+         return new Repeater(RootSelector, this);
+
+        //TEST SEQUENCE-------------------------------------------------
+        /*Filter testFilter = new Filter(new List<BTNode>
+            {
+            new STest1(this)
+            }, this);
+        testFilter.AddCondition(new TargetNotNull(this));
+
+        Selector testSelector = new Selector(new List<BTNode>
+            {
+            testFilter,
+            new STest2(this),
+            new STest3(this)
+            }, this);
+        return new Repeater(testSelector, this);*/
+        //-------------------------------------------------------------------
     }
     private IEnumerator RunBehaviour()
     {

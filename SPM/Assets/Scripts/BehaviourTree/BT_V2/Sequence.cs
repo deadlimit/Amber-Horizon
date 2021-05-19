@@ -6,6 +6,7 @@ public class Sequence : Composite
 { 
     private int currentNode = 0;
     public Sequence(List<BTNode> children, BehaviourTree bt) : base(children, bt) { }
+    public Sequence(List<BTNode> children, BehaviourTree bt, string name) : base(children, bt, name) { }
     public override Status Evaluate()
     {
         //titta igenom varje barn om status på ett är RUNNING eller FAILURE, returnera det

@@ -4,9 +4,14 @@ public class VisualProximityCheck : BTNode
 {
     private float visualRange = 20f;
     private Transform playerTransform;
-    private Vector3 lastKnownPlayerPosition;
+    private Vector3 lastKnownPlayerPosition = Vector3.zero;
+    private bool hasSeenPlayer; 
    public VisualProximityCheck(BehaviourTree bt ) : base(bt)
     {
+    }
+    public override void OnInitialize()
+    {
+
     }
     public override Status Evaluate()
     {  
@@ -14,6 +19,8 @@ public class VisualProximityCheck : BTNode
         Collider[] arr = Physics.OverlapSphere(bt.ownerTransform.position, visualRange, bt.GetPlayerMask());
         if (arr.Length > 0)
         {
+            hasSeenPlayer = true;
+
             foreach (Collider coll in arr)
             {
                 //foreach, men vi borde bara få ut en collider
@@ -31,15 +38,18 @@ public class VisualProximityCheck : BTNode
             Debug.Log("AI Detection Visual"); 
             bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(playerTransform);
             lastKnownPlayerPosition = playerTransform.position;
-            Debug.Log("LastKnownPosition: " + lastKnownPlayerPosition);
             return Status.BH_SUCCESS;
         }
+       
+        SetLastSeenPosition();
+
+
+
         //Vi sätter inte "Target" om spelaren går bakom en vägg, och koden från Linecast dupliceras här
         //bt.GetBlackBoardValue<Vector3>("LastSeenPosition").SetValue(lastKnownPlayerPosition);
         bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(null);
         Debug.Log("VisualProxCheck Returning Failure-----------------");
         return Status.BH_FAILURE;
-        Debug.Log("After return failure");
       
         //kolla riktning? 
     }
@@ -54,5 +64,18 @@ public class VisualProximityCheck : BTNode
             return true;
         }
         return false;
+    }
+
+    //Behöver inte ständigt uppdatera blackboardvärdet, reserverar det till LastKnownPosition blir relevant, 
+    //alltså när spelaren lämnar vision, default value är Vector3.zero
+    private void SetLastSeenPosition()
+    {
+        if (hasSeenPlayer)
+        {
+            bt.GetBlackBoardValue<Vector3>("LastSeenPosition").SetValue(lastKnownPlayerPosition);
+            Debug.Log("LastKnownPosition Set to: " + lastKnownPlayerPosition);
+            lastKnownPlayerPosition = Vector3.zero;
+            hasSeenPlayer = false;
+        }
     }
 }

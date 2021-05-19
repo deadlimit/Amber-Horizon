@@ -11,6 +11,7 @@ using UnityEngine;
 public class Filter : Sequence
 {
     public Filter(List<BTNode> children, BehaviourTree bt) : base(children, bt) { }
+    public Filter(List<BTNode> children, BehaviourTree bt, string name) : base(children, bt, name) { }
     public void AddCondition(BTNode condition) 
     {
         children.Insert(0, condition);
