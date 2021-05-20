@@ -5,17 +5,16 @@ using UnityEngine;
 public class Selector : Composite
 {
     BTNode condition;
-    public Selector(List<BTNode> children, BehaviourTree bt ) : base(children, bt) { }
-    public Selector(List<BTNode> children, BehaviourTree bt, string name) : base(children, bt, name) { }
+    public Selector(List<BTNode> children, BehaviourTree bt ) : base(children, bt) { condition = new DefaultCondition(bt); }
+    public Selector(List<BTNode> children, BehaviourTree bt, string name) : base(children, bt, name)  {condition = new DefaultCondition(bt);}
     public Selector(List<BTNode> children, BehaviourTree bt, string name, BTNode condition) : base(children, bt, name) 
     {
         this.condition = condition;
     }
     public override Status Evaluate()
     {
-        if(condition != null)
-            if (condition.Evaluate() == Status.BH_FAILURE)
-                 return Status.BH_FAILURE;
+        if (condition.Evaluate() == Status.BH_FAILURE)
+             return Status.BH_FAILURE;
 
         foreach (BTNode child in children)
         {

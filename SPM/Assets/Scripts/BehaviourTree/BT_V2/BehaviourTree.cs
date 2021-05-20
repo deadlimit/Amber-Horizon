@@ -92,6 +92,11 @@ public class BehaviourTree : MonoBehaviour
             new AudioProximityCheck(this),
             }, this, "investigateSelector") ;
 
+        Filter fleeFilter = new Filter(new List<BTNode>
+            {
+             new Teleport(this)
+            }, this, "fleeFilter");
+        fleeFilter.AddCondition(new TargetTooClose(this));
 
         Selector targetInRange = new Selector(new List<BTNode>
         {
@@ -105,6 +110,7 @@ public class BehaviourTree : MonoBehaviour
         //Annars får det blir en förälder till targetvisible som är ett filter, och sedan är targetVisible själv en selector
         Selector targetVisible = new Selector(new List<BTNode>
              {
+              fleeFilter,
               targetInRange,
               new MoveToTarget(this)
              }, this, "targetVisible", new VisualProximityCheck(this));      

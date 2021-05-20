@@ -5,12 +5,21 @@ using UnityEngine;
 public class Sequence : Composite
 { 
     private int currentNode = 0;
-    public Sequence(List<BTNode> children, BehaviourTree bt) : base(children, bt) { }
-    public Sequence(List<BTNode> children, BehaviourTree bt, string name) : base(children, bt, name) { }
+    private BTNode condition;
+    public Sequence(List<BTNode> children, BehaviourTree bt) : base(children, bt) { condition = new DefaultCondition(bt); }
+    //public Sequence(List<BTNode> children, BehaviourTree bt, string name) : base(children, bt, name) { condition = new DefaultCondition(bt); }
+    public Sequence(List<BTNode> children, BehaviourTree bt, string name, BTNode condition) : base(children, bt, name) 
+    { 
+        this.condition = condition;
+    }
     public override Status Evaluate()
     {
+        if (condition.Evaluate() == Status.BH_FAILURE)
+            return Status.BH_FAILURE;
+
+
         //titta igenom varje barn om status på ett är RUNNING eller FAILURE, returnera det
-        if(currentNode < children.Count)
+        if (currentNode < children.Count)
         {
             Status s = children[currentNode].Tick();
             if (s == Status.BH_RUNNING)

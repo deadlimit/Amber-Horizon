@@ -5,7 +5,12 @@ using AbilitySystem;
 
 public class Shoot : BTNode
 {
-    public Shoot(BehaviourTree bt) : base(bt) {    }
+    private float shootCD;
+    
+    public Shoot(BehaviourTree bt) : base(bt) 
+    {
+        shootCD = bt.owner.GetFireCooldown();
+    }
     public override Status Evaluate()
     {
         if (bt.timerNode.GetFireCooldown() > 0)
@@ -19,7 +24,7 @@ public class Shoot : BTNode
             Debug.Log("Shoot!");
             bt.ownerAgent.ResetPath();
             bt.owner.Fire();
-            bt.timerNode.SetFireCooldown(2f);
+            bt.timerNode.SetFireCooldown(shootCD);
             return Status.BH_SUCCESS;
         }
     }
