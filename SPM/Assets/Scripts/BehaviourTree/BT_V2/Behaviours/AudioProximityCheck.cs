@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class AudioProximityCheck : BTNode
 {
-    private float hearingRange = 10f;
+    private float hearingRange = 0f;
     public AudioProximityCheck(BehaviourTree bt) : base(bt) {}
     public override void OnInitialize()
     {
-        Debug.Log("AudioProximityCheck");
+
+        Debug.Log("AudioProximityCheck"); 
     }
     public override Status Evaluate()
     {

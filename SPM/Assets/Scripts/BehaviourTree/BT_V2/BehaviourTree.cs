@@ -28,10 +28,9 @@ public class BehaviourTree : MonoBehaviour
     public Forager owner { get; private set; }
     public NavMeshAgent ownerAgent { get; private set; }
     public Transform ownerTransform { get; private set; }
+    public AbilitySystem.GameplayAbilitySystem ownerGAS { get; private set; }
     private BTNode m_root;
     [SerializeField] private LayerMask playerMask; 
-    private bool startedBehaviour;
-    private Coroutine behaviour;
 
 
     //public Dictionary<string, object> blackboard = new Dictionary<string, object>();
@@ -45,6 +44,8 @@ public class BehaviourTree : MonoBehaviour
     private void Start()
     {
         this.owner = GetComponent<Forager>();
+        ownerGAS = owner.GetComponent<AbilitySystem.GameplayAbilitySystem>();
+        Debug.Assert(ownerGAS);
         ownerTransform = owner.transform;
         ownerAgent = owner.Pathfinder.agent;
         startPos = ownerTransform.position;
@@ -55,31 +56,25 @@ public class BehaviourTree : MonoBehaviour
     }
     private void Update()
     {
-        if(!startedBehaviour)
-        {
-            behaviour = StartCoroutine(RunBehaviour());
-            startedBehaviour = true;
-        }
         m_root.Tick();
-
     }
     private BTNode BehaviourTreeBuilder()
     {
         Debug.Log("Bygger BT");
         //NoTargetFilter, Patrol & Wait
         Filter patrolSequence = new Filter(new List<BTNode>
-                {
-                new Patrol(owner, this),
-                new Wait(this, 4f)
-                }, this, "patrolSequence");
+            {
+            new Patrol(owner, this),
+            new Wait(this, 4f)
+            }, this, "patrolSequence");
         patrolSequence.AddCondition(new IsTargetNull(this));
 
         //Condition hindrar Investigate från att printa sin OnInit, och if:s 
         //faller igenom och returnerar running till top-branch, det är det som spökar
         Filter investigateTarget = new Filter(new List<BTNode>
-                {
-                new Investigate(this)
-                }, this, "investigateTarget");
+            {
+            new Investigate(this)
+            }, this, "investigateTarget");
         investigateTarget.AddCondition(new TargetNotNull(this));
 
 
@@ -92,11 +87,11 @@ public class BehaviourTree : MonoBehaviour
 
         //Investigate & AudioCheck
         Selector investigateSelector = new Selector(new List<BTNode>
-                {
-                investigateLastSeen,
-                investigateTarget,
-                new AudioProximityCheck(this),
-                }, this, "investigateSelector") ;
+            {
+            investigateLastSeen,
+            investigateTarget,
+            new AudioProximityCheck(this),
+            }, this, "investigateSelector") ;
 
 
         Sequence shootSequence = new Sequence(new List<BTNode>
@@ -105,6 +100,14 @@ public class BehaviourTree : MonoBehaviour
             new Shoot(this)
             }, this, "shootSequence") ;
 
+        //hypotetiskt/*
+        /*Selector targetInRange = new Selector(new List<BTNode>
+            {
+            shootFilter,
+            reposition
+            }, this, "targetInRange");*/
+        //
+
         //Hade kanske egentligen velat ha en selector med filter här, alternativet till det kanske 
         //är att sätta en succeeder på shootSequence, och sedan utvädera avståndet inuti MoveToTarget, men då gör vi det två gånger istället, det blir dumt.
         //Annars får det blir en förälder till targetvisible som är ett filter, och sedan är targetVisible själv en selector
@@ -112,20 +115,13 @@ public class BehaviourTree : MonoBehaviour
              {
               shootSequence,
               new MoveToTarget(this)
-             }, this, "targetVisible");
-       
-        //Filter innan targetVisible så att vi kan göra targetVisible til en Selector
-        Filter visualCheckFilter = new Filter(new List<BTNode>
-            {
-            targetVisible
-            }, this, "visualCheckFilter");
-        visualCheckFilter.AddCondition(new VisualProximityCheck(this));
+             }, this, "targetVisible", new VisualProximityCheck(this));      
 
 
         //Selector Sub-Root Node
         Selector RootSelector = new Selector(new List<BTNode>
                 {
-                visualCheckFilter,
+                targetVisible,
                 investigateSelector,
                 patrolSequence
                 }, this, "RootSelector");

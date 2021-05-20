@@ -1,19 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AbilitySystem;
 
 public class Shoot : BTNode
 {
-    public Shoot(BehaviourTree bt) : base(bt)
-    {
-
-    }
+    public Shoot(BehaviourTree bt) : base(bt) {    }
     public override Status Evaluate()
     {
-        //Reset path så att agenten stannar när den ska skjuta
-        Debug.Log("Shoot!!");
-        bt.owner.Pathfinder.agent.ResetPath();
-        bt.owner.Fire(); 
+
+        bool b = bt.ownerGAS.TryActivateAbilityByTag(GameplayTags.AttackTag);
+        Debug.Log("TryActivate : " + b);
+        if (b)
+        {
+            bt.owner.Pathfinder.agent.ResetPath();
+            return Status.BH_SUCCESS;
+        }
         return Status.BH_FAILURE;
     }
 }
