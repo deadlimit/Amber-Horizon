@@ -82,9 +82,6 @@
             "m_Id": "7f27ce70c83d42a6bf8f401e597af3df"
         },
         {
-            "m_Id": "b367c25030e640a9a40c9097cd7dc1a8"
-        },
-        {
             "m_Id": "4f3b08ff2a03454d83b3209091b8f405"
         },
         {
@@ -124,7 +121,14 @@
             "m_Id": "30b163ffa2744c90937afda5ddf593ef"
         }
     ],
-    "m_GroupDatas": [],
+    "m_GroupDatas": [
+        {
+            "m_Id": "74874a8a31ad4b57a39af1391c0c607a"
+        },
+        {
+            "m_Id": "818a191c58a74a7ca94f1fd499b77efd"
+        }
+    ],
     "m_StickyNoteDatas": [],
     "m_Edges": [
         {
@@ -604,7 +608,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "1d62bf00a33d4e189363bca6630d0bc0",
     "m_Id": 0,
-    "m_DisplayName": "NoiseSpeed",
+    "m_DisplayName": "PulseSpeed",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -755,7 +759,7 @@
     "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
     "m_ObjectId": "2288a39c83b0435fa5fefb5f3063123d",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "818a191c58a74a7ca94f1fd499b77efd"
     },
     "m_Name": "Property",
     "m_DrawState": {
@@ -1321,10 +1325,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 186.39996337890626,
-            "y": -499.9999694824219,
-            "width": 120.79999542236328,
-            "height": 148.79998779296876
+            "x": 140.79995727539063,
+            "y": -408.7999572753906,
+            "width": 119.99999237060547,
+            "height": 148.7999725341797
         }
     },
     "m_Slots": [
@@ -1439,7 +1443,7 @@
     "m_Type": "UnityEditor.ShaderGraph.AddNode",
     "m_ObjectId": "55b891b56bd144c9b85edefa72ea7773",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "74874a8a31ad4b57a39af1391c0c607a"
     },
     "m_Name": "Add",
     "m_DrawState": {
@@ -1640,7 +1644,7 @@
     "m_Type": "UnityEditor.ShaderGraph.MultiplyNode",
     "m_ObjectId": "6800972c863f400dbbad8c78de514675",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "818a191c58a74a7ca94f1fd499b77efd"
     },
     "m_Name": "Multiply",
     "m_DrawState": {
@@ -1864,6 +1868,17 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.GroupData",
+    "m_ObjectId": "74874a8a31ad4b57a39af1391c0c607a",
+    "m_Title": "Movement",
+    "m_Position": {
+        "x": 10.0,
+        "y": 10.0
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.BlockNode",
     "m_ObjectId": "75af112a2cb84618816a59616433bd54",
     "m_Group": {
@@ -1900,7 +1915,7 @@
     "m_Type": "UnityEditor.ShaderGraph.MultiplyNode",
     "m_ObjectId": "75c75a871ec94286aa5bf3b524853c9a",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "818a191c58a74a7ca94f1fd499b77efd"
     },
     "m_Name": "Multiply",
     "m_DrawState": {
@@ -1938,7 +1953,7 @@
     "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
     "m_ObjectId": "76e9af94ee8d4878ba3376affc0d0016",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "818a191c58a74a7ca94f1fd499b77efd"
     },
     "m_Name": "Property",
     "m_DrawState": {
@@ -1973,7 +1988,7 @@
     "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
     "m_ObjectId": "7f27ce70c83d42a6bf8f401e597af3df",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "74874a8a31ad4b57a39af1391c0c607a"
     },
     "m_Name": "Property",
     "m_DrawState": {
@@ -2022,6 +2037,17 @@
         "y": 0.0
     },
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.GroupData",
+    "m_ObjectId": "818a191c58a74a7ca94f1fd499b77efd",
+    "m_Title": "Pulse effect",
+    "m_Position": {
+        "x": 10.0,
+        "y": 10.0
+    }
 }
 
 {
@@ -2145,7 +2171,7 @@
     "m_Guid": {
         "m_GuidSerialized": "0f44eafe-f3e9-4d38-9f5a-75b13bce4106"
     },
-    "m_Name": "NoiseScale",
+    "m_Name": "PulseScale",
     "m_DefaultReferenceName": "Vector1_909b112ebeea4946a5e13d7b7c0548eb",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -2166,7 +2192,7 @@
     "m_Type": "UnityEditor.ShaderGraph.UVNode",
     "m_ObjectId": "9207c3737c3e4e9d9efb4979addc2ae7",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "74874a8a31ad4b57a39af1391c0c607a"
     },
     "m_Name": "UV",
     "m_DrawState": {
@@ -2247,7 +2273,7 @@
     "m_Type": "UnityEditor.ShaderGraph.TimeNode",
     "m_ObjectId": "95f6e2624faf4785bcf6fdc2b0469220",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "74874a8a31ad4b57a39af1391c0c607a"
     },
     "m_Name": "Time",
     "m_DrawState": {
@@ -2313,10 +2339,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -115.89068603515625,
-            "y": -584.6243896484375,
-            "width": 0.0,
-            "height": 0.0
+            "x": -187.20001220703126,
+            "y": -334.39996337890627,
+            "width": 137.5999755859375,
+            "height": 33.60000228881836
         }
     },
     "m_Slots": [
@@ -2425,7 +2451,7 @@
     "m_Guid": {
         "m_GuidSerialized": "f1064c25-d664-44c5-8e9f-d2b218f59dec"
     },
-    "m_Name": "NoiseSpeed",
+    "m_Name": "PulseSpeed",
     "m_DefaultReferenceName": "Vector1_ab6ffb4850df429c9ca2227131dce8e3",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -2491,7 +2517,7 @@
     "m_Type": "UnityEditor.ShaderGraph.MultiplyNode",
     "m_ObjectId": "af6b2ae6b56747438cb90f45f8b398f4",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "74874a8a31ad4b57a39af1391c0c607a"
     },
     "m_Name": "Multiply",
     "m_DrawState": {
@@ -2529,7 +2555,7 @@
     "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
     "m_ObjectId": "b0cec3eed8754d4daada9e68032636b9",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "818a191c58a74a7ca94f1fd499b77efd"
     },
     "m_Name": "Property",
     "m_DrawState": {
@@ -2585,42 +2611,10 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.VertexColorNode",
-    "m_ObjectId": "b367c25030e640a9a40c9097cd7dc1a8",
-    "m_Group": {
-        "m_Id": ""
-    },
-    "m_Name": "Vertex Color",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": -433.5999755859375,
-            "y": -584.0,
-            "width": 207.99996948242188,
-            "height": 277.5999755859375
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "b427fe3254f944bc9ed57b1bb501adbf"
-        }
-    ],
-    "synonyms": [],
-    "m_Precision": 0,
-    "m_PreviewExpanded": true,
-    "m_PreviewMode": 2,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    }
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.TimeNode",
     "m_ObjectId": "b3c1b72f4c084ae48c272bc5e1e34adc",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "818a191c58a74a7ca94f1fd499b77efd"
     },
     "m_Name": "Time",
     "m_DrawState": {
@@ -2660,38 +2654,13 @@
 }
 
 {
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
-    "m_ObjectId": "b427fe3254f944bc9ed57b1bb501adbf",
-    "m_Id": 0,
-    "m_DisplayName": "Out",
-    "m_SlotType": 1,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Out",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0,
-        "w": 1.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_Labels": []
-}
-
-{
     "m_SGVersion": 1,
     "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
     "m_ObjectId": "b63d065b65764b1a9c428884403d44be",
     "m_Guid": {
         "m_GuidSerialized": "00242c39-56b2-415d-aecf-cfa5b2e21f17"
     },
-    "m_Name": "NoiseIntensity",
+    "m_Name": "PulseIntensity",
     "m_DefaultReferenceName": "Vector1_b63d065b65764b1a9c428884403d44be",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -2712,7 +2681,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "b670fabe59a54cd3ad1e17d092f28fa2",
     "m_Id": 0,
-    "m_DisplayName": "NoiseRatio",
+    "m_DisplayName": "PulseScale",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -3479,7 +3448,7 @@
     "m_Type": "UnityEditor.ShaderGraph.TilingAndOffsetNode",
     "m_ObjectId": "fac52ba66e494f67bbb3153478c33b64",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "818a191c58a74a7ca94f1fd499b77efd"
     },
     "m_Name": "Tiling And Offset",
     "m_DrawState": {
@@ -3544,7 +3513,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "fc2b1021c195459a946b2dfb3c63e44b",
     "m_Id": 0,
-    "m_DisplayName": "NoiseIntensity",
+    "m_DisplayName": "PulseIntensity",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -3622,7 +3591,7 @@
     "m_Type": "UnityEditor.ShaderGraph.NoiseNode",
     "m_ObjectId": "ff8440d2314e400d88b391dd75e4149b",
     "m_Group": {
-        "m_Id": ""
+        "m_Id": "818a191c58a74a7ca94f1fd499b77efd"
     },
     "m_Name": "Simple Noise",
     "m_DrawState": {
