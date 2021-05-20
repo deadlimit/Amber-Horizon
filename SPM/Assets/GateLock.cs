@@ -3,8 +3,9 @@ using UnityEngine;
 using EventCallbacks;
 public class GateLock : InteractableObject
 {
-    public static List<KeyFragment> keyList = new List<KeyFragment>();
-    public static List<KeyFragment> keysAcquired = new List<KeyFragment>();
+    public static readonly List<KeyFragment> KeyList = new List<KeyFragment>();
+    public static readonly List<KeyFragment> KeysAcquired = new List<KeyFragment>();
+    
     private BoxCollider interaction;
 
     [Header("Fuskknapp, sätt till true för att gaten ska öppna direkt (debug)")]
@@ -18,8 +19,8 @@ public class GateLock : InteractableObject
 
     private void Start() {
         if (OpenDoorWithoutKeys) {
-            keyList.Clear();
-            keysAcquired.Clear();
+            KeyList.Clear();
+            KeysAcquired.Clear();
             UnlockGateSequence();
         }
 
@@ -27,20 +28,20 @@ public class GateLock : InteractableObject
     
     private void KeyPickUp(KeyPickUpEvent kpue)
     {
-        if (keyList.Count == keysAcquired.Count)
+        if (KeyList.Count == KeysAcquired.Count)
         {
             interaction.enabled = true;
         }
     }
 
     protected override void EnterTrigger(string UIMessage) {
-        UIMessage = keyList.Count == keysAcquired.Count ? UIMessage : "Missing key fragments: " + (keyList.Count - keysAcquired.Count);
+        UIMessage = KeyList.Count == KeysAcquired.Count ? UIMessage : "Missing key fragments: " + (KeyList.Count - KeysAcquired.Count);
         EventSystem<InteractTriggerEnterEvent>.FireEvent(new InteractTriggerEnterEvent(UIMessage));
     }
 
     protected override void InsideTrigger(GameObject player) {
         
-        if (keysAcquired.Count == keyList.Count && Input.GetKeyDown(KeyCode.F)) {
+        if (KeysAcquired.Count == KeyList.Count && Input.GetKeyDown(KeyCode.F)) {
             UnlockGateSequence();
         }
     }

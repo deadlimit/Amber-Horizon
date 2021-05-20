@@ -3,6 +3,8 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using EGL = UnityEditor.EditorGUILayout;
 
+//TODO Gör en knapp för att spara positionen objektet befinner sig på
+
 [CustomEditor(typeof(ObjectRelocator))]
 public class ObjectRelocatorEditor : Editor {
 
