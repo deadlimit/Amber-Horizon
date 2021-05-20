@@ -115,6 +115,10 @@ namespace EventCallbacks
     
     public class ResetCameraFocus : EventInfo {}
     
+    public class LoadMainMenu : EventInfo {}
+    public class ExitMainMenu : EventInfo {}
+    
+    
     public class ExitTransitViewEvent : EventInfo {}
 
     public class SoundEffectEvent : EventInfo {

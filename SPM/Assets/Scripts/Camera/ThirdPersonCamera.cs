@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using EventCallbacks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class ThirdPersonCamera : MonoBehaviour {
@@ -13,6 +14,14 @@ public class ThirdPersonCamera : MonoBehaviour {
     
     private void Awake() {
         currentCameraBehaviour = cameraBehaviourPairs[0].Behaviour;
+        print(SceneManager.GetSceneByName("MainMenu").isLoaded);
+        
+        if (SceneManager.GetSceneByName("MainMenu").isLoaded) {
+            DisableCamera(null);
+        }
+        else
+            Cursor.lockState = CursorLockMode.Locked;
+            
         currentCameraBehaviour.Init(transform);
         Cursor.lockState = CursorLockMode.Locked;
         
@@ -24,17 +33,35 @@ public class ThirdPersonCamera : MonoBehaviour {
     private void OnEnable() {
         EventSystem<NewCameraFocus>.RegisterListener(SwitchToFocusBehaviour);
         EventSystem<ResetCameraFocus>.RegisterListener(SwitchToFollowCamera);
+        EventSystem<LoadMainMenu>.RegisterListener(DisableCamera);
+        EventSystem<ExitMainMenu>.RegisterListener(EnableCamera);
+        
+        
     }
 
     private void OnDisable() {
         EventSystem<NewCameraFocus>.UnregisterListener(SwitchToFocusBehaviour);
         EventSystem<ResetCameraFocus>.UnregisterListener(SwitchToFollowCamera);
+        EventSystem<LoadMainMenu>.UnregisterListener(DisableCamera);
+        EventSystem<ExitMainMenu>.UnregisterListener(EnableCamera);
     }
     
     void LateUpdate() {
-        currentCameraBehaviour.MovementBehaviour();
+        if(currentCameraBehaviour.enabled)
+            currentCameraBehaviour.MovementBehaviour();
     }
 
+    private void DisableCamera(LoadMainMenu menuLoad) {
+        currentCameraBehaviour.enabled = false;
+        print("false");
+    }
+
+    private void EnableCamera(ExitMainMenu exit) {
+        currentCameraBehaviour.enabled = true;
+        print("true ");
+
+    }
+    
     private void SwitchToFollowCamera(ResetCameraFocus focus) {
         currentCameraBehaviour = cameraBehaviours[CameraBehaviourType.Follow];
     }

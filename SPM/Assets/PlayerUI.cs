@@ -70,11 +70,9 @@ public class PlayerUI : MonoBehaviour {
 
     private IEnumerator AnimateHealthChipAway(float time, float healthFraction)
     {
-        Debug.Log("PlayerUI, start of AnimaeteHealthChipAway");
         float end = Time.time + time;
 
-        while (Time.time < end && healthBarChipAway.fillAmount > healthFraction)
-        {
+        while (Time.time < end && healthBarChipAway.fillAmount > healthFraction) {
             healthBarChipAway.fillAmount -= Time.deltaTime / time;
             yield return null;
         }
@@ -140,8 +138,7 @@ public class PlayerUI : MonoBehaviour {
 
     }
 
-    private void RestoreHealthUI(PlayerReviveEvent playerReviveEvent)
-    {
+    private void RestoreHealthUI(PlayerReviveEvent playerReviveEvent) {
         ChangeHealthUI(null);
         
     }
