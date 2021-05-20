@@ -4,6 +4,7 @@ using UnityEngine;
 public class Forager : Enemy {
 
     [SerializeField] private GameObject Bullet;
+    [SerializeField] private float fireCooldown;
     [HideInInspector] public BlackHole activeBlackHole;
     
     //funderar på att göra range lite olika för varje forager? typ värde mellan 10 och 15 eller något, 
@@ -13,7 +14,7 @@ public class Forager : Enemy {
     private new void Update()
     {
         base.Update();       
-        stateMachine?.RunUpdate();
+        //stateMachine?.RunUpdate();
     }
     
     private void OnDrawGizmos() {
@@ -37,4 +38,6 @@ public class Forager : Enemy {
         stateMachine.ChangeState<EnemyExplodedState>();
         base.ApplyExplosion(explosionInstance, blastPower);
     }
+
+    public float GetFireCooldown() { return fireCooldown; }
 }
