@@ -20,10 +20,9 @@ public class ThirdPersonCamera : MonoBehaviour {
             DisableCamera(null);
         }
         else
-            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.ActivateCursor(true, CursorLockMode.Confined);
             
         currentCameraBehaviour.Init(transform);
-        Cursor.lockState = CursorLockMode.Locked;
         
         foreach(CameraBehaviourPair pair in cameraBehaviourPairs)
             cameraBehaviours.Add(pair.CameraType, pair.Behaviour);
