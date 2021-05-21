@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class LastSeenPosition : BTNode
 {
-    BehaviourTree.DataContainer<Vector3> targetContainer;
+    Vector3 targetPos;
     public LastSeenPosition(BehaviourTree bt) : base(bt) { }
 
     public override void OnInitialize()
     {
-        targetContainer = bt.GetBlackBoardValue<Vector3>("LastSeenPosition");
     }
     public override Status Evaluate()
     {
-        if (targetContainer.GetValue().Equals(Vector3.zero))
+        targetPos = bt.GetBlackBoardValue<Vector3>("LastSeenPosition").GetValue();
+        Debug.Log("LastSeenPosition.cs, position: "+ targetPos);
+
+        if (targetPos.Equals(Vector3.zero))
+        {
+            Debug.Log("Last seen position is Vector3.zero");
             return Status.BH_FAILURE;
+        }
+
         return Status.BH_SUCCESS;
     }
 }

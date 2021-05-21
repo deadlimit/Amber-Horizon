@@ -7,10 +7,7 @@ public class IsTargetNull : BTNode
     //OBS!
     //den här behövs inte alls användas på lägre prio, om vi går dit har vi ju redan tittat på target!!
     //
-    public IsTargetNull(BehaviourTree bt) : base(bt)
-    {
-
-    }
+    public IsTargetNull(BehaviourTree bt) : base(bt) { }
 
     public override Status Evaluate()
     {

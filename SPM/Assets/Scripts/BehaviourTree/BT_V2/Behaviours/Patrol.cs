@@ -5,21 +5,14 @@ using UnityEngine;
 public class Patrol : BTNode
 {
     //No target, vad gör vi då, och vad klassas som att "Lyckas"? 
-    Forager owner;
     public float speed = 5f;
     protected Vector3 destination;
     private float patrolRadius = 5f;
-    public Patrol(object owner, BehaviourTree bt) : base(bt)
+    public Patrol(BehaviourTree bt) : base(bt)
     {
         destination = Vector3.zero;
-        this.owner = (Forager)owner;
-        SetPatrolPoint();
     }
-    public override void OnInitialize()
-    {
-        destination = Vector3.zero;
-        Debug.Log("Patrol init");
-    }
+
     public override Status Evaluate()
     {
         if (ReachedTarget() || destination.Equals(Vector3.zero))
@@ -34,7 +27,7 @@ public class Patrol : BTNode
     }
     private void SetPatrolPoint()
     {
-        destination = owner.Pathfinder.GetSamplePositionOnNavMesh(bt.startPos, patrolRadius, 10);
+        destination = bt.owner.Pathfinder.GetSamplePositionOnNavMesh(bt.startPos, patrolRadius, 10);
         bt.ownerAgent.SetDestination(destination);
     }
 

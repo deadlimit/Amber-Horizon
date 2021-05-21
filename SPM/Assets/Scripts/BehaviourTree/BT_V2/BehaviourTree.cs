@@ -28,15 +28,13 @@ public class BehaviourTree : MonoBehaviour
     public Forager owner { get; private set; }
     public NavMeshAgent ownerAgent { get; private set; }
     public Transform ownerTransform { get; private set; }
-    public TimerNode timerNode { get; private set; }
-   
+    public TimerNode timerNode { get; private set; }   
     private BTNode m_root;
-    [SerializeField] private LayerMask playerMask; 
+    private Teleport teleportNode;
 
 
-    //public Dictionary<string, object> blackboard = new Dictionary<string, object>();
+    //Det här kräver 'hårdkodning' i kastning när man hämtar värden
     public Dictionary<string, DataContainer> blackboard = new Dictionary<string, DataContainer>();
-    //Det här kräver hårdkodning i kastning när man hämtar värden
     public DataContainer<T> GetBlackBoardValue<T>(string blackboardKey)
     {
         return (DataContainer<T>)blackboard[blackboardKey];
@@ -48,10 +46,11 @@ public class BehaviourTree : MonoBehaviour
         ownerTransform = owner.transform;
         ownerAgent = owner.Pathfinder.agent;
         startPos = ownerTransform.position;
-        m_root = BehaviourTreeBuilder();
         blackboard.Add("Target", new DataContainer<Vector3>(new Vector3(29.96f, 0.1342f, 9.88f)));
         blackboard.Add("TargetTransform", new DataContainer<Transform>(null));
-        blackboard.Add("LastSeenPosition", new DataContainer<Vector3>(Vector3.zero));
+        blackboard.Add("LastSeenPosition", new DataContainer<Vector3>(new Vector3(0, 0, 0)));
+
+        m_root = BehaviourTreeBuilder();
     }
     private void Update()
     {
@@ -60,29 +59,27 @@ public class BehaviourTree : MonoBehaviour
     private BTNode BehaviourTreeBuilder()
     {
         Debug.Log("Bygger BT");
+        
         //NoTargetFilter, Patrol & Wait
-        Filter patrolSequence = new Filter(new List<BTNode>
+        Sequence patrolSequence = new Sequence(new List<BTNode>
             {
-            new Patrol(owner, this),
+            new Patrol(this),
             new Wait(this, 4f)
-            }, this, "patrolSequence");
-        patrolSequence.AddCondition(new IsTargetNull(this));
+            }, this, "patrolSequence", new IsTargetNull(this));
 
         //Condition hindrar Investigate från att printa sin OnInit, och if:s 
         //faller igenom och returnerar running till top-branch, det är det som spökar
-        Filter investigateTarget = new Filter(new List<BTNode>
+        Sequence investigateTarget = new Sequence(new List<BTNode>
             {
             new Investigate(this)
-            }, this, "investigateTarget");
-        investigateTarget.AddCondition(new TargetNotNull(this));
+            }, this, "investigateTarget", new TargetNotNull(this));
 
 
         //InvestigateLastSeen with filter
-        Filter investigateLastSeen = new Filter(new List<BTNode>
+        Sequence investigateLastSeen = new Sequence(new List<BTNode>
             {
             new InvestigateLastSeen(this)
-            }, this, "investigateLastSeen");
-        investigateLastSeen.AddCondition(new LastSeenPosition(this));
+            }, this, "investigateLastSeen", new LastSeenPosition(this));
 
         //Investigate & AudioCheck
         Selector investigateSelector = new Selector(new List<BTNode>
@@ -90,19 +87,21 @@ public class BehaviourTree : MonoBehaviour
             investigateLastSeen,
             investigateTarget,
             new AudioProximityCheck(this),
-            }, this, "investigateSelector") ;
+            }, this, "investigateSelector");
 
-        Filter fleeFilter = new Filter(new List<BTNode>
+        //Named teleport for calling a method on it from Animation event
+        teleportNode = new Teleport(this);
+        Sequence fleeSequence = new Sequence(new List<BTNode>
             {
-             new Teleport(this)
-            }, this, "fleeFilter");
-        fleeFilter.AddCondition(new TargetTooClose(this));
+             teleportNode
+            }, this, "fleeFilter", new TargetTooClose(this));
+
 
         Selector targetInRange = new Selector(new List<BTNode>
-        {
+            {
             new Shoot(this),
             new Reposition(this)
-        }, this, "shootOrReposition", new TargetInRange(this));
+            }, this, "shootOrReposition", new TargetInRange(this));
 
 
         //Hade kanske egentligen velat ha en selector med filter här, alternativet till det kanske 
@@ -110,15 +109,27 @@ public class BehaviourTree : MonoBehaviour
         //Annars får det blir en förälder till targetvisible som är ett filter, och sedan är targetVisible själv en selector
         Selector targetVisible = new Selector(new List<BTNode>
              {
-              fleeFilter,
+              fleeSequence,
               targetInRange,
               new MoveToTarget(this)
-             }, this, "targetVisible", new VisualProximityCheck(this));      
+             }, this, "targetVisible", new VisualProximityCheck(this));
 
+        Selector causeOfDeath = new Selector(new List<BTNode>
+            {
+            new KilledByBlackHole(this),
+            new KilledByExplosion(this),
+            }, this, "causeOfDeath");
+
+        Sequence deathSequence = new Sequence(new List<BTNode>
+            {
+            causeOfDeath,
+             new DestroyOwner(this)
+            }, this, "deathSequence", new AIDied(this));
 
         //Selector Sub-Root Node
         Selector RootSelector = new Selector(new List<BTNode>
                 {
+                deathSequence,
                 targetVisible,
                 investigateSelector,
                 patrolSequence
@@ -151,8 +162,9 @@ public class BehaviourTree : MonoBehaviour
         //-------------------------------------------------------------------
     }
 
-    public LayerMask GetPlayerMask()
+    //Called by animation event
+    public void TeleportFinished()
     {
-        return playerMask;
+        teleportNode.ExecuteTeleport();
     }
 }

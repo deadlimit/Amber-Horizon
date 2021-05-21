@@ -10,7 +10,8 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     public Transform Target { get; private set; }
     public CapsuleCollider Collider { get; private set; }
     public Vector3 originPosition { get; set; }
-    
+    public bool died { get; protected set; }
+
     public LayerMask PlayerMask;
     public LayerMask EnemyMask;
 
@@ -70,6 +71,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Vector3 explosionPos = explosionInstance.transform.position;
         float distance = Vector3.Distance(explosionPos, transform.position);
         Vector3 direction = (explosionPos - transform.position).normalized;
+        //Flytta position beroende på distance och direction? 
 
         Animator.SetTrigger("HitByExplosion");
     }
@@ -80,4 +82,6 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         transform.position = originPosition;
         Pathfinder.agent.ResetPath();
     }
+
+    public LayerMask GetPlayerMask() { return PlayerMask; }
 }

@@ -21,9 +21,10 @@ public class Shoot : BTNode
         }
         else
         {
+            
             Debug.Log("Shoot!");
             bt.ownerAgent.ResetPath();
-            bt.owner.Fire();
+            bt.owner.Fire(bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue());
             bt.timerNode.SetFireCooldown(shootCD);
             return Status.BH_SUCCESS;
         }

@@ -14,7 +14,7 @@ public class Sequence : Composite
     }
     public override Status Evaluate()
     {
-        if (condition.Evaluate() == Status.BH_FAILURE)
+        if (condition.Tick() == Status.BH_FAILURE)
             return Status.BH_FAILURE;
 
 
@@ -44,21 +44,6 @@ public class Sequence : Composite
         
         return Status.BH_SUCCESS;
 
-
-/*
-        foreach(BTNode child in children)
-        {
-            Status s = child.Tick();
-            if (s != Status.BH_SUCCESS)
-                return s;
-            if (children.IndexOf(child) == children.Count - 1)
-            {
-                Debug.Log("All children succeeded");
-                return Status.BH_SUCCESS;
-            }
-        }
-
-        return Status.BH_INVALID; //Unexpected loop exit*/
     }
 
 }

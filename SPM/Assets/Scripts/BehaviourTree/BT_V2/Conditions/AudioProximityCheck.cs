@@ -13,7 +13,7 @@ public class AudioProximityCheck : BTNode
     }
     public override Status Evaluate()
     {
-        Collider[] arr = Physics.OverlapSphere(bt.ownerTransform.position, hearingRange, bt.GetPlayerMask());
+        Collider[] arr = Physics.OverlapSphere(bt.ownerTransform.position, hearingRange, bt.owner.GetPlayerMask());
         if (arr.Length > 0)
         {
             Debug.Log("AI Detection Audio");

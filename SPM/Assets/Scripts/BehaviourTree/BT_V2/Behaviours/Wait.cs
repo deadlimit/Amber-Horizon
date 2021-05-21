@@ -26,8 +26,6 @@ public class Wait : BTNode
             count -= Time.deltaTime;
             return Status.BH_RUNNING;
         }
-        //något har vi blivit fel
-        return Status.BH_INVALID;
     }
 
 }
