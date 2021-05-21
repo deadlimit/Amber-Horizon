@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ObjectPooler : MonoBehaviour {
     
@@ -13,16 +12,15 @@ public class ObjectPooler : MonoBehaviour {
     }
 
     private static ObjectPooler instance;
-    
+
     public static ObjectPooler Instance => instance;
     
     public List<Pool> pools;
 
-    private Dictionary<string, Queue<PoolObject>> objectPools;
+    public Dictionary<string, Queue<PoolObject>> objectPools;
 
     private void Awake() {
         instance = this;
-        
     }
     
     public void Start() {
@@ -32,10 +30,9 @@ public class ObjectPooler : MonoBehaviour {
             Queue<PoolObject> objectPool = new Queue<PoolObject>();
 
             for(int i = 0; i < pool.size; i++) {
-                PoolObject poolObject = Instantiate(pool.prefab);
-                poolObject.InstantiateObjectInAdditiveScene(gameObject.scene);
-                poolObject.gameObject.SetActive(false);
-                objectPool.Enqueue(poolObject);
+                var go = Instantiate(pool.prefab);
+                go.gameObject.SetActive(false);
+                objectPool.Enqueue(go);
             }
 
             objectPools.Add(pool.tag, objectPool);
@@ -44,6 +41,7 @@ public class ObjectPooler : MonoBehaviour {
 
     public GameObject Spawn(string tag, Vector3 position, Quaternion rotation) {
         PoolObject objectToSpawn = objectPools[tag].Dequeue();
+        
         objectToSpawn.gameObject.SetActive(true);
         objectToSpawn.Initialize(position, rotation);
         objectPools[tag].Enqueue(objectToSpawn);

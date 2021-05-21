@@ -18,6 +18,7 @@ public class KeyRotator : MonoBehaviour {
     
     private void Start() {
         UpdateKeyText(null);
+
     }
 
     private void OnDisable()
@@ -25,8 +26,8 @@ public class KeyRotator : MonoBehaviour {
         EventSystem<KeyPickUpEvent>.UnregisterListener(UpdateKeyText);
     }
 
-    private void UpdateKeyText(KeyPickUpEvent keyEvent) {
-        keyText = GateLock.KeysAcquired.Count + "/" + GateLock.KeyList.Count + "\n" + "key fragments" + "\n" + "acquired";
+    private void UpdateKeyText(KeyPickUpEvent KeyEvent) {
+        keyText = GateLock.keysAcquired.Count + "/" + GateLock.keyList.Count + "\n" + "key fragments" + "\n" + "acquired";
     }
 
     
