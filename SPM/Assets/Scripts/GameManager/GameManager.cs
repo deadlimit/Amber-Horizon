@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour {
 
     private void Awake() {
         EventSystem<LoadMainMenu>.FireEvent(null);
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.ActivateCursor(true, CursorLockMode.Confined);
     }
 
     private void Start() {
@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour {
     
     public void OnStartGame(string sceneName) {
         characterAnimator.SetTrigger(startGameHash);
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.ActivateCursor(false, CursorLockMode.Locked);
         mainMenuButtonFader.buttons.Add(background);
         StartCoroutine(mainMenuButtonFader.FadeButtonsSequence(0));
         this.Invoke(() => {

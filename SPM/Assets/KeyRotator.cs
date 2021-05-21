@@ -26,7 +26,6 @@ public class KeyRotator : MonoBehaviour {
     }
 
     private void UpdateKeyText(KeyPickUpEvent keyEvent) {
-        print("KeyPickUpEvent");
         keyText = GateLock.KeysAcquired.Count + "/" + GateLock.KeyList.Count + "\n" + "key fragments" + "\n" + "acquired";
     }
 
