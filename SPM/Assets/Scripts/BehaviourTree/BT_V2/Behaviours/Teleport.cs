@@ -10,6 +10,7 @@ public class Teleport : BTNode
     private float distanceFromPlayer = 10f;
     private bool animationStarted;
     private bool teleportFinished;
+    private Transform playerTransform;
     public Teleport(BehaviourTree bt) : base(bt) { }
 
     public override Status Evaluate()
@@ -24,8 +25,9 @@ public class Teleport : BTNode
         }
 
         if(teleportFinished)
-        {          
+        {
             Debug.Log("Teleport Finished");
+            bt.ownerTransform.LookAt(playerTransform);
             teleportFinished = false;
             return Status.BH_SUCCESS;
         }
@@ -40,7 +42,9 @@ public class Teleport : BTNode
 
     private void CalculateTeleportPosition()
     {
-        teleportPosition = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue().position + new Vector3(
+        playerTransform = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
+
+        teleportPosition = playerTransform.position + new Vector3(
             Random.Range(-distanceFromPlayer, distanceFromPlayer),
             Random.Range(-distanceFromPlayer, distanceFromPlayer),
             Random.Range(-distanceFromPlayer, distanceFromPlayer));
@@ -53,6 +57,7 @@ public class Teleport : BTNode
         //På något sätt måste man också se till att AI:n inte skjuter för tidigt, vet inte om detta beror på dålig timer
         //men den verkar skjuta innan den dyker upp. Kan vara timern. (Det är nog timern)
         bt.owner.transform.position = teleportPosition;
+        bt.ownerTransform.LookAt(playerTransform);
         bt.ownerAgent.ResetPath();
         animationStarted = false;
         teleportFinished = true;

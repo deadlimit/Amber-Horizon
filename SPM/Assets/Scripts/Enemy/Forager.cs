@@ -8,9 +8,6 @@ public class Forager : Enemy {
     [SerializeField] private GameObject Bullet;
     [HideInInspector] public BlackHole activeBlackHole;
 
-
-    //Referens till BT kanske eg. ska ligga i Enemy, har inte kommit till destructor än så jag gör det här så länge
-    private BehaviourTree bt;
     //funderar på att göra range lite olika för varje forager? typ värde mellan 10 och 15 eller något, 
     //så klumpar dom inte ihop sig riktigt på samma sätt
     public float range { get; private set; } = 12f;
@@ -19,7 +16,6 @@ public class Forager : Enemy {
     private new void Awake()
     {
         base.Awake();
-        bt = GetComponent<BehaviourTree>(); 
     }
     private new void Update()
     {

@@ -26,7 +26,7 @@ public class VisualProximityCheck : BTNode
                 Debug.LogError("Player Collider Array Length > 1!!");
 
           
-            if (!PlayerInLineOfSight())
+            if (!PlayerInLineOfSight() || !PlayerInAngleOfSight())
                 return Status.BH_FAILURE;
 
             //if(angle)
@@ -78,5 +78,14 @@ public class VisualProximityCheck : BTNode
     private void ResetPatrolPoint()
     {
         bt.blackboard["Target"] = null;
+    }
+
+    private bool PlayerInAngleOfSight()
+    {
+        Vector3 forward = bt.ownerTransform.TransformDirection(Vector3.forward);
+        Vector3 angle = playerTransform.position - bt.ownerTransform.position;
+        if (Vector3.Dot(forward, angle) > 0)
+            return true;
+        return false;
     }
 }
