@@ -9,12 +9,12 @@ public class TransitUnit : InteractableObject {
     private static HashSet<TransitUnit> activatedTransitUnits = new HashSet<TransitUnit>();
     
     [SerializeField] private Transform target;
+    
     public Checkpoint AttachedCheckpoint { get; private set; }
     
     private Collider triggerCollider;
     
     private void OnEnable() {
-        target = GameObject.FindGameObjectWithTag("TransitOverview").transform;
         EventSystem<ResetCameraFocus>.RegisterListener(EnableTriggers);
         EventSystem<CheckPointActivatedEvent>.RegisterListener(ActivateTransitUnit);
         EventSystem<StartSceneTransitEvent>.RegisterListener(ClearTransitUnits);
