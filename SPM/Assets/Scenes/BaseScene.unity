@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &378895590 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1036262254, guid: 56e64c9d8fe463c4eb12e37e0e075a82, type: 3}
+  m_PrefabInstance: {fileID: 933416537}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e811eb395bf7fb4fba3dd27c44c55b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &558695637
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -130,6 +141,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 865115008, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
+      propertyPath: m_UseWorldSpace
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 625329921878023704, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: Positions.Array.size
       value: 2
@@ -188,7 +203,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5621853126853591548, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -22.8
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 5621853126853591548, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -196,7 +211,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5621853126853591548, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 123.6
+      value: -59.6
       objectReference: {fileID: 0}
     - target: {fileID: 5621853126853591548, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -228,6 +243,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
+--- !u!114 &685646091 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 125559428, guid: 56e64c9d8fe463c4eb12e37e0e075a82, type: 3}
+  m_PrefabInstance: {fileID: 933416537}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b691be71229f42745a8b7f20df8635ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &792068169 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3534936566460619145, guid: 6638000673b74e647af58fccd97f114c, type: 3}
@@ -268,6 +294,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7884709247241317308, guid: 56e64c9d8fe463c4eb12e37e0e075a82, type: 3}
+      propertyPath: cameraBehaviourPairs.Array.data[0].Behaviour
+      value: 
+      objectReference: {fileID: 378895590}
+    - target: {fileID: 7884709247241317308, guid: 56e64c9d8fe463c4eb12e37e0e075a82, type: 3}
+      propertyPath: cameraBehaviourPairs.Array.data[1].Behaviour
+      value: 
+      objectReference: {fileID: 685646091}
     - target: {fileID: 7884709247241317309, guid: 56e64c9d8fe463c4eb12e37e0e075a82, type: 3}
       propertyPath: m_RootOrder
       value: 0
