@@ -17323,6 +17323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {fileID: 528285598}
   DashEffect: {fileID: 1902499819835182591, guid: 0ab3cd30f7a211d42b886b86baae4d21, type: 3}
+  RingEffect: {fileID: 1693611013992926312, guid: 22abcab05ede2974bbb4b3a2bb01ceed, type: 3}
 --- !u!1 &838975231
 GameObject:
   m_ObjectHideFlags: 0
@@ -52454,6 +52455,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: VFX_Ring
       objectReference: {fileID: 0}
+    - target: {fileID: 1693611013992926312, guid: 22abcab05ede2974bbb4b3a2bb01ceed, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1693611013992926313, guid: 22abcab05ede2974bbb4b3a2bb01ceed, type: 3}
       propertyPath: m_RootOrder
       value: 48
@@ -52464,7 +52469,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1693611013992926313, guid: 22abcab05ede2974bbb4b3a2bb01ceed, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.14
+      value: 1.92
       objectReference: {fileID: 0}
     - target: {fileID: 1693611013992926313, guid: 22abcab05ede2974bbb4b3a2bb01ceed, type: 3}
       propertyPath: m_LocalPosition.z
@@ -52989,6 +52994,10 @@ PrefabInstance:
     - target: {fileID: 9089514561047978532, guid: db437d49afaed3c4c93147ce3d5db315, type: 3}
       propertyPath: m_Name
       value: AbilityPickup
+      objectReference: {fileID: 0}
+    - target: {fileID: 9089514561047978532, guid: db437d49afaed3c4c93147ce3d5db315, type: 3}
+      propertyPath: m_TagString
+      value: Pickup
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db437d49afaed3c4c93147ce3d5db315, type: 3}
