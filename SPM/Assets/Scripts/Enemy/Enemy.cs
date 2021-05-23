@@ -12,8 +12,8 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     public Vector3 originPosition { get; set; }
     public bool died { get; protected set; }
 
-    public LayerMask PlayerMask;
-    public LayerMask EnemyMask;
+    [SerializeField] private LayerMask playerMask;
+    [SerializeField] private LayerMask enemyMask;
 
     public GameplayAbilitySystem AbilitySystem { get; private set; }
     [SerializeField] private State[] states;
@@ -45,14 +45,14 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     }
     
     public bool ProximityCast(float radius) {
-        return Physics.OverlapSphere(transform.position, radius, PlayerMask).Length > 0;
+        return Physics.OverlapSphere(transform.position, radius, playerMask).Length > 0;
     }
    
     //Låter foragers "ge" andra foragers & destructors aggro, men 
     //destructors har ju inte proximityState så de kan inte göra det
     public bool EnemySeen(float radius)
     {
-        Collider [] enemies = Physics.OverlapSphere(transform.position, radius, EnemyMask);
+        Collider [] enemies = Physics.OverlapSphere(transform.position, radius, enemyMask);
         foreach(Collider e in enemies)
         {
             if(e.gameObject.GetComponent<Forager>()?.stateMachine.CurrentState.GetType() == typeof(EnemyProximityState))
@@ -83,5 +83,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Pathfinder.agent.ResetPath();
     }
 
-    public LayerMask GetPlayerMask() { return PlayerMask; }
+
+    public LayerMask GetPlayerMask() { return playerMask; }
+    public LayerMask EnemyMask { get => enemyMask; }
 }

@@ -49,6 +49,7 @@ public class BehaviourTree : MonoBehaviour
         blackboard.Add("Target", new DataContainer<Vector3>(new Vector3(29.96f, 0.1342f, 9.88f)));
         blackboard.Add("TargetTransform", new DataContainer<Transform>(null));
         blackboard.Add("LastSeenPosition", new DataContainer<Vector3>(new Vector3(0, 0, 0)));
+        blackboard.Add("HasCalledForHelp", new DataContainer<bool>(new bool()));
 
         m_root = BehaviourTreeBuilder();
     }
@@ -109,6 +110,7 @@ public class BehaviourTree : MonoBehaviour
         //Annars får det blir en förälder till targetvisible som är ett filter, och sedan är targetVisible själv en selector
         Selector targetVisible = new Selector(new List<BTNode>
              {
+              new AlertAllies(this),
               fleeSequence,
               targetInRange,
               new MoveToTarget(this)

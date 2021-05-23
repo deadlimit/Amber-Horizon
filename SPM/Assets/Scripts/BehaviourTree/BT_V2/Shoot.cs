@@ -15,16 +15,13 @@ public class Shoot : BTNode
     {
         if (bt.timerNode.GetFireCooldown() > 0)
         {
-
             Debug.Log("shoot on cooldown");
             return Status.BH_FAILURE;
         }
         else
         {
-            
-            Debug.Log("Shoot!");
             bt.ownerAgent.ResetPath();
-            bt.owner.Fire(bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue());
+            bt.owner.Animator.SetTrigger("Shoot");
             bt.timerNode.SetFireCooldown(shootCD);
             return Status.BH_SUCCESS;
         }

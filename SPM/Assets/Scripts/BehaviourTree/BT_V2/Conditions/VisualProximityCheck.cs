@@ -25,9 +25,12 @@ public class VisualProximityCheck : BTNode
             if (arr.Length > 1)
                 Debug.LogError("Player Collider Array Length > 1!!");
 
-          
+
             if (!PlayerInLineOfSight() || !PlayerInAngleOfSight())
+            {
+                bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(null);
                 return Status.BH_FAILURE;
+            }
 
             //if(angle)
 
@@ -42,6 +45,7 @@ public class VisualProximityCheck : BTNode
         else
         {
             SetLastSeenPosition();
+            bt.GetBlackBoardValue<bool>("HasCalledForHelp").SetValue(false);
 
             //Vi sätter inte "Target" om spelaren går bakom en vägg, och koden från Linecast dupliceras här
             bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(null);
@@ -55,8 +59,6 @@ public class VisualProximityCheck : BTNode
     {
         if (Physics.Linecast(bt.ownerTransform.position, playerTransform.position, out var hitInfo, (1 << bt.owner.GetPlayerMask())))
         {
-            //Om vi träffar något som inte är spelaren, så är siktlinjen bruten -> 
-            bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(null);
             return false;
         }
         return true;
@@ -80,6 +82,7 @@ public class VisualProximityCheck : BTNode
         bt.blackboard["Target"] = null;
     }
 
+    //TODO vinkeln ska nog inte vara så absolut
     private bool PlayerInAngleOfSight()
     {
         Vector3 forward = bt.ownerTransform.TransformDirection(Vector3.forward);
