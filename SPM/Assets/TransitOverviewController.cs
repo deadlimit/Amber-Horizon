@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using EventCallbacks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class TransitOverviewController : MonoBehaviour {
@@ -10,13 +11,13 @@ public class TransitOverviewController : MonoBehaviour {
     [SerializeField] private GameObject transitButton;
     [SerializeField] private float waitUntilButtonSpawn;
     [SerializeField] private Canvas UI;
-    [SerializeField] private TextMeshProUGUI ExitInstructionText;
+    [SerializeField] private TextMeshProUGUI exitInstructionText;
     private readonly List<GameObject> activeButtons = new List<GameObject>();
     
     private void OnEnable() {
         EventSystem<EnterTransitViewEvent>.RegisterListener(TransitView);
         EventSystem<ResetCameraFocus>.RegisterListener(ExitView);
-        ExitInstructionText.gameObject.SetActive(false);
+        exitInstructionText.gameObject.SetActive(false);
     }
 
     private void OnDisable() {
@@ -31,7 +32,7 @@ public class TransitOverviewController : MonoBehaviour {
     private IEnumerator SpawnButtons(TransitCameraFocusInfo focusInfo) {
         
         yield return new WaitForSeconds(waitUntilButtonSpawn);
-        ExitInstructionText.gameObject.SetActive(true);
+        exitInstructionText.gameObject.SetActive(true);
         foreach (TransitUnit transitUnit in focusInfo.TransitUnits) {
             GameObject button = Instantiate(transitButton, Camera.main.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, UI.transform);
             
@@ -50,12 +51,11 @@ public class TransitOverviewController : MonoBehaviour {
             activeButtons.Add(button);
         }
         
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.ActivateCursor(true, CursorLockMode.Confined);
     }
 
     private void MovePlayer(TransitUnit transitUnit) {
-        GameObject.FindGameObjectWithTag("Player").transform.position = transitUnit.AttachedCheckpoint.SpawnPosition;
+        FindObjectOfType<PlayerController>().transform.position = transitUnit.AttachedCheckpoint.SpawnPosition;
         EventSystem<ResetCameraFocus>.FireEvent(null);
     }
 
@@ -64,9 +64,8 @@ public class TransitOverviewController : MonoBehaviour {
         foreach (GameObject button in activeButtons)
             Destroy(button.gameObject);
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        ExitInstructionText.gameObject.SetActive(false);
+        Cursor.ActivateCursor(false, CursorLockMode.Locked);
+        exitInstructionText.gameObject.SetActive(false);
     }
     
     

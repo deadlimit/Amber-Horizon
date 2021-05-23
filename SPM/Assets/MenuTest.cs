@@ -37,7 +37,7 @@ public class MenuTest : MonoBehaviour
 
     private void PauseGame()
     {
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.ActivateCursor(true, CursorLockMode.Confined);
         menu.SetActive(true);
         Time.timeScale = 0;
         AudioListener.pause = true;
@@ -52,7 +52,7 @@ public class MenuTest : MonoBehaviour
 
     private void UnpauseGame()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.ActivateCursor(false, CursorLockMode.Locked);
         menu.SetActive(false);
         Time.timeScale = 1;
         AudioListener.pause = false;

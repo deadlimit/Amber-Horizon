@@ -7,7 +7,7 @@ namespace EventCallbacks
 {
     public class KeyListener : MonoBehaviour
     {
-        public static List<KeyFragment> keyList = new List<KeyFragment>();
+        private static List<KeyFragment> keyList = new List<KeyFragment>();
         private static List<KeyFragment> keysAcquired = new List<KeyFragment>();
         private BoxCollider interaction;
         public Text keyText; 
@@ -21,8 +21,6 @@ namespace EventCallbacks
 
         private void KeyPickUp(KeyPickUpEvent kpue)
         {
-
-
             if (keyList.Count <= 0)
             {
                 interaction.enabled = true;
@@ -31,16 +29,12 @@ namespace EventCallbacks
 
         private void OnTriggerEnter(Collider other)
         {
-            if(keyList.Count <= 0 && other.gameObject.tag == "Player")
+            if(keyList.Count <= 0 && other.gameObject.CompareTag("Player"))
             {
                 UnlockEvent ue = new UnlockEvent();
                 EventSystem<UnlockEvent>.FireEvent(ue);
             }
         }
-
-        private void SetKeyAmount()
-        {
-            
-        }
+        
     }
 }
