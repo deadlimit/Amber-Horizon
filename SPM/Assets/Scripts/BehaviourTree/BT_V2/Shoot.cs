@@ -9,7 +9,7 @@ public class Shoot : BTNode
     
     public Shoot(BehaviourTree bt) : base(bt) 
     {
-        shootCD = bt.owner.GetFireCooldown();
+        shootCD = bt.GetBlackBoardValue<float>("FireCooldown").GetValue();
     }
     public override Status Evaluate()
     {

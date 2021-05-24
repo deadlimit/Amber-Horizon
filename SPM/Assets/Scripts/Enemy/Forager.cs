@@ -66,6 +66,6 @@ public class Forager : Enemy {
         //also prevents large chain-pulls if that was ever to be possible with level design
         bt.GetBlackBoardValue<bool>("HasCalledForHelp").SetValue(true);
     }
-    public float GetFireCooldown() { return fireCooldown; }
+    public float FireCooldown { get=> fireCooldown; }
     public float FleeDistance { get => fleeDistance; }
 }

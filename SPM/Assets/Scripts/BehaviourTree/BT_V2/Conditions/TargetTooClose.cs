@@ -9,7 +9,7 @@ public class TargetTooClose : BTNode
 
     public override Status Evaluate()
     {
-        if (DistanceToPlayer() < bt.owner.FleeDistance)
+        if (DistanceToPlayer() < bt.GetBlackBoardValue<float>("FleeDistance").GetValue())
             return Status.BH_SUCCESS;
         else
             return Status.BH_FAILURE;

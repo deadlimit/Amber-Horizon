@@ -4,18 +4,26 @@ using UnityEngine;
 
 public class KilledByBlackHole : BTNode
 {
+    //NOTE!
+    //Forager specific node, casting to BTForager and accessing forager variables
+    //
     private float threshold = 0.05f;
     private float lerpSpeed = 0.8f;
-    private Transform bhTransform; 
-    public KilledByBlackHole(BehaviourTree bt) : base(bt) { }
+    private Transform bhTransform;
+    private BTForager foragerBT;
+    public KilledByBlackHole(BehaviourTree bt) : base(bt) 
+    {
+        foragerBT = (BTForager)bt;
+        Debug.Assert(foragerBT);
+    }
 
     public override Status Evaluate()
     {
-        if (!bt.owner.hitByBlackHole)
+        if (!foragerBT.forager.hitByBlackHole)
             return Status.BH_FAILURE;
         
         if (!bhTransform)
-            bhTransform = bt.owner.activeBlackHole.transform;
+            bhTransform = foragerBT.forager.activeBlackHole.transform;
 
         bt.owner.Animator.SetBool("Die", true);
         bt.ownerAgent.ResetPath();

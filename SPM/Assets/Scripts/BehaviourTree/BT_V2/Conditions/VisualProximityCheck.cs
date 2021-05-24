@@ -5,7 +5,8 @@ public class VisualProximityCheck : BTNode
     private float visualRange = 20f;
     private Transform playerTransform;
     private Vector3 lastKnownPlayerPosition;
-    private bool hasSeenPlayer; 
+    private bool hasSeenPlayer;
+    private float rangeRounding = 1f; 
    public VisualProximityCheck(BehaviourTree bt ) : base(bt){  }
 
     public override Status Evaluate()
@@ -18,7 +19,7 @@ public class VisualProximityCheck : BTNode
             Debug.Log("VisualRangeOriginTransform : " + visualRangeOrigin.gameObject);
             //Target already exists and is in range of detection, then dont bother with OverlapSphere
             if (Vector3.Distance(visualRangeOrigin.position,
-                bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue().position) < visualRange + 1)
+                bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue().position) < visualRange + rangeRounding)
             {
                 Debug.Log("Visual success from: " + bt.owner.gameObject);
                 return Status.BH_SUCCESS;
