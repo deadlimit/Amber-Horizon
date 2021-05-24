@@ -6,13 +6,30 @@ public class VisualProximityCheck : BTNode
     private Transform playerTransform;
     private Vector3 lastKnownPlayerPosition;
     private bool hasSeenPlayer; 
-   public VisualProximityCheck(BehaviourTree bt ) : base(bt)
-    {
-    }
+   public VisualProximityCheck(BehaviourTree bt ) : base(bt){  }
 
     public override Status Evaluate()
-    {  
-        //Vill troligtvis ha en offset så att synen går från huvudet? 
+    {
+        if (bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue() != null)
+        {   
+            //If AlerterTransform is set, this AI has been alerted by another and uses the Alerting AI:s position as origin for detection range
+            Transform visualRangeOrigin = bt.GetBlackBoardValue<Transform>("AlerterTransform").GetValue() != null ?
+                bt.GetBlackBoardValue<Transform>("AlerterTransform").GetValue() : bt.ownerTransform;
+            Debug.Log("VisualRangeOriginTransform : " + visualRangeOrigin.gameObject);
+            //Target already exists and is in range of detection, then dont bother with OverlapSphere
+            if (Vector3.Distance(visualRangeOrigin.position,
+                bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue().position) < visualRange + 1)
+            {
+                Debug.Log("Visual success from: " + bt.owner.gameObject);
+                return Status.BH_SUCCESS;
+            }
+            else
+                Debug.Log("Visual Not in range from: "+ bt.owner.gameObject);
+        }
+
+        //Considered using if-else if here but that would only save one call to OverlapSphere,
+        //and make the code a lot messier
+
         Collider[] arr = Physics.OverlapSphere(bt.ownerTransform.position, visualRange, bt.owner.GetPlayerMask());
         if (arr.Length > 0)
         {
@@ -26,33 +43,26 @@ public class VisualProximityCheck : BTNode
                 Debug.LogError("Player Collider Array Length > 1!!");
 
 
+            //"Target" is not assigned if line or angle of sight is broken, watch out for duplicate code here aswell
             if (!PlayerInLineOfSight() || !PlayerInAngleOfSight())
             {
                 bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(null);
                 return Status.BH_FAILURE;
             }
 
-            //if(angle)
-
-            Debug.Log("AI Detection Visual");
             ResetPatrolPoint();
             bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(playerTransform);
-            //Tidigare har set destination bara kallats i moveToTarget, men det kan ta en stund innan den når dit..? 
             lastKnownPlayerPosition = playerTransform.position;
-            Debug.Log("LKPP: " + lastKnownPlayerPosition);
             return Status.BH_SUCCESS;
         }
         else
         {
+            //No need to constantly update blackboard value, its only done when the player leaves the AI's visual detection
             SetLastSeenPosition();
-            bt.GetBlackBoardValue<bool>("HasCalledForHelp").SetValue(false);
-
-            //Vi sätter inte "Target" om spelaren går bakom en vägg, och koden från Linecast dupliceras här
-            bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(null);
-            Debug.Log("VisualProxCheck Returning Failure-----------------,");
+            //If visual detection has failed, reset the values of HasCalledForHelp, TargetTransform and AlerterTransform
+            ResetBlackboardValues();
             return Status.BH_FAILURE;
         }
-        //kolla riktning? 
     }
 
     private bool PlayerInLineOfSight()
@@ -64,15 +74,11 @@ public class VisualProximityCheck : BTNode
         return true;
     }
 
-    //Behöver inte ständigt uppdatera blackboardvärdet, reserverar det till LastKnownPosition blir relevant, 
-    //alltså när spelaren lämnar vision, default value är Vector3.zero
     private void SetLastSeenPosition()
     {
         if (hasSeenPlayer)
         {
             bt.GetBlackBoardValue<Vector3>("LastSeenPosition").SetValue(lastKnownPlayerPosition);
-            Debug.Log("LastSeenPosition Set to: " + lastKnownPlayerPosition);
-            Debug.Log("Setting last seen position" + lastKnownPlayerPosition);
             lastKnownPlayerPosition = Vector3.zero;
             hasSeenPlayer = false;
         }
@@ -82,7 +88,7 @@ public class VisualProximityCheck : BTNode
         bt.blackboard["Target"] = null;
     }
 
-    //TODO vinkeln ska nog inte vara så absolut
+    //TODO more forgiving angle
     private bool PlayerInAngleOfSight()
     {
         Vector3 forward = bt.ownerTransform.TransformDirection(Vector3.forward);
@@ -90,5 +96,11 @@ public class VisualProximityCheck : BTNode
         if (Vector3.Dot(forward, angle) > 0)
             return true;
         return false;
+    }
+    private void ResetBlackboardValues()
+    {
+        bt.GetBlackBoardValue<bool>("HasCalledForHelp").SetValue(false);
+        bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(null);
+        bt.GetBlackBoardValue<Transform>("AlerterTransform").SetValue(null);
     }
 }

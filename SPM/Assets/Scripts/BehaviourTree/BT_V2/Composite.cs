@@ -22,6 +22,5 @@ public abstract class Composite : BTNode
     }
     public override void OnInitialize()
     {
-        Debug.Log(name + " Called");
     }
 }

@@ -55,10 +55,16 @@ public class Forager : Enemy {
         base.ApplyExplosion(explosionInstance, blastPower);
     }
 
-    public void Alert(Transform playerTransform)
+    public void Alert(Transform playerTransform, Transform alerterTransform)
     {
         Debug.Log(gameObject + "Alerted");
+        Debug.Assert(playerTransform);
         bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(playerTransform);
+        bt.GetBlackBoardValue<Transform>("AlerterTransform").SetValue(alerterTransform);
+        
+        //Cannot call eachother and thereby fuck up the AlerterTransform-value
+        //also prevents large chain-pulls if that was ever to be possible with level design
+        bt.GetBlackBoardValue<bool>("HasCalledForHelp").SetValue(true);
     }
     public float GetFireCooldown() { return fireCooldown; }
     public float FleeDistance { get => fleeDistance; }

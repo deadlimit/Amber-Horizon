@@ -10,12 +10,8 @@ public class Repeater : Decorator
     }
     public override Status Evaluate()
     {
-        //Debug.Log("Child returned: " + m_child.Evaluate() + "from " + m_child);
         m_child.Evaluate();
         return Status.BH_RUNNING;
     }
 }
 
-/* 
- * Går det att återanvända denna om man vill utföra ett visst beteende x antal gånger?  
- */

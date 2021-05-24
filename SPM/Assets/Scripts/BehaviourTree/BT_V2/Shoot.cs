@@ -15,7 +15,6 @@ public class Shoot : BTNode
     {
         if (bt.timerNode.GetFireCooldown() > 0)
         {
-            Debug.Log("shoot on cooldown");
             return Status.BH_FAILURE;
         }
         else

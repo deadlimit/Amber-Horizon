@@ -46,7 +46,6 @@ public class MoveToTarget : BTNode
                 }
             }
         }
-
         return false;
     }
 

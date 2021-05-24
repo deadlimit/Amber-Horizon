@@ -20,6 +20,7 @@ public class BehaviourTree : MonoBehaviour
         }
         public void SetValue(T newVal)
         {
+            Debug.Log("val set to " + newVal);
             value = newVal;
         }
     }
@@ -33,7 +34,6 @@ public class BehaviourTree : MonoBehaviour
     private Teleport teleportNode;
 
 
-    //Det här kräver 'hårdkodning' i kastning när man hämtar värden
     public Dictionary<string, DataContainer> blackboard = new Dictionary<string, DataContainer>();
     public DataContainer<T> GetBlackBoardValue<T>(string blackboardKey)
     {
@@ -50,6 +50,7 @@ public class BehaviourTree : MonoBehaviour
         blackboard.Add("TargetTransform", new DataContainer<Transform>(null));
         blackboard.Add("LastSeenPosition", new DataContainer<Vector3>(new Vector3(0, 0, 0)));
         blackboard.Add("HasCalledForHelp", new DataContainer<bool>(new bool()));
+        blackboard.Add("AlerterTransform", new DataContainer<Transform>(null));
 
         m_root = BehaviourTreeBuilder();
     }

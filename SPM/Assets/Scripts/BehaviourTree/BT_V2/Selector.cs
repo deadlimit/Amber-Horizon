@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Selector : Composite
 {
-    BTNode condition;
+    private BTNode condition;
     public Selector(List<BTNode> children, BehaviourTree bt ) : base(children, bt) {}
     public Selector(List<BTNode> children, BehaviourTree bt, string name) : base(children, bt, name)  {}
     public Selector(List<BTNode> children, BehaviourTree bt, string name, BTNode condition) : base(children, bt, name) 
@@ -24,7 +24,6 @@ public class Selector : Composite
             Status s = child.Tick();
             if (s != Status.BH_FAILURE)
             {
-                Debug.Log(name + "recieving: " +s + "child: " + child.name);
                 return s;
             }
             if (children.IndexOf(child) == children.Count -1)

@@ -13,11 +13,9 @@ public class LastSeenPosition : BTNode
     public override Status Evaluate()
     {
         targetPos = bt.GetBlackBoardValue<Vector3>("LastSeenPosition").GetValue();
-        Debug.Log("LastSeenPosition.cs, position: "+ targetPos);
 
         if (targetPos.Equals(Vector3.zero))
         {
-            Debug.Log("Last seen position is Vector3.zero");
             return Status.BH_FAILURE;
         }
 

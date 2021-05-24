@@ -14,20 +14,17 @@ public class Inverter : Decorator
         {
             case Status.BH_FAILURE:
                 {
-                    Debug.Log("Inverted Value to: " + Status.BH_SUCCESS);
                     return Status.BH_SUCCESS;
                     
                 }
             case Status.BH_SUCCESS:
                 {
-                    Debug.Log("Inverted Value to: " + Status.BH_FAILURE);
                     return Status.BH_FAILURE;
                 }
             case Status.BH_RUNNING:
                 return Status.BH_RUNNING;
         }
-
-        Debug.LogError("Could not evaluate child");
-        return Status.BH_SUCCESS;
+        //Child could not be evaluated
+        return Status.BH_INVALID;
     }
 }

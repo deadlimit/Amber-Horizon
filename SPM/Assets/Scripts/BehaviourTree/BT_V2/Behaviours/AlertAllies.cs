@@ -12,10 +12,9 @@ public class AlertAllies : BTNode
         if (bt.GetBlackBoardValue<bool>("HasCalledForHelp").GetValue())
             return Status.BH_FAILURE;
 
-        Debug.Log("Alerting allies!");
-        AlertNearby();
         bt.GetBlackBoardValue<bool>("HasCalledForHelp").SetValue(true);
         playerTransform = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
+        AlertNearby();
         return Status.BH_SUCCESS;
     }
 
@@ -26,7 +25,7 @@ public class AlertAllies : BTNode
         {
             foreach (Collider coll in arr)
             {
-                coll.gameObject.GetComponent<Forager>().Alert(playerTransform);
+                coll.gameObject.GetComponent<Forager>().Alert(playerTransform, bt.ownerTransform);
             }
         }
     }

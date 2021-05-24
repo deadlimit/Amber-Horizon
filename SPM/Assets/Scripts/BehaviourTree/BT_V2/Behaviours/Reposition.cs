@@ -10,9 +10,7 @@ public class Reposition : BTNode
 
     public override void OnInitialize()
     {
-        //Sätt reposition-position.. på något sätt
         bt.ownerAgent.SetDestination(CalculateNewPosition());
-        base.OnInitialize();
     }
     public override Status Evaluate()
     {
@@ -40,12 +38,11 @@ public class Reposition : BTNode
         return false;
     }
 
+    //Preferably this position is calculated on the circumference of a circle, but thats not quick maths
+    // i have to learn trigonometry first
     private Vector3 CalculateNewPosition()
     {
         Vector3 newPos = bt.owner.Pathfinder.GetSamplePositionOnNavMesh(bt.ownerTransform.position, placeHolderOrigin, placeHolderMaxDist); 
-
-        //tänkte skriva en egen metod här, eventuellt en som följer omkretsen av en cirkel
-        //som utgår från spelaren, med forager range som diameter. Men trigonometri suger.
 
         return newPos;
     }

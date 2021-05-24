@@ -8,15 +8,12 @@ public class AudioProximityCheck : BTNode
     public AudioProximityCheck(BehaviourTree bt) : base(bt) {}
     public override void OnInitialize()
     {
-
-        Debug.Log("AudioProximityCheck"); 
     }
     public override Status Evaluate()
     {
         Collider[] arr = Physics.OverlapSphere(bt.ownerTransform.position, hearingRange, bt.owner.GetPlayerMask());
         if (arr.Length > 0)
         {
-            Debug.Log("AI Detection Audio");
             foreach (Collider coll in arr)
             {
                 //foreach, men vi borde bara få ut en collider
@@ -28,11 +25,10 @@ public class AudioProximityCheck : BTNode
                     bt.blackboard["Target"] = new BehaviourTree.DataContainer<Vector3>(coll.transform.position);
             }
             if (arr.Length > 1)
-                Debug.Log("Arr Length > 1!!");
+                Debug.LogError("Arr Length > 1!!");
 
             return Status.BH_SUCCESS;
         }
-        Debug.Log("Failure from audioProxCheck");
         return Status.BH_FAILURE;
     }
 }
