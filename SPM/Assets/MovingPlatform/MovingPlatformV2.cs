@@ -14,8 +14,7 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
     public float MovementSpeed;
     public float MaxMovementLengthBack;
     public float MaxMovementLengthFront;
-
-
+    
     private void Awake() {
         physics = GetComponent<PhysicsComponent>();
         maxBack = transform.position + -transform.forward * MaxMovementLengthBack;
@@ -24,19 +23,17 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
 
         frontDistance = Vector3.Distance(startPos, maxFront);
         backDistance = Vector3.Distance(startPos, maxBack);
-        
     }
 
     public void Update() {
         Debug.DrawLine(transform.position,  maxFront, Color.red);
         Debug.DrawLine(transform.position,  maxBack, Color.green);
-
-        //physics.ApplyAirResistance();
+        
         PreventOutOfBounds();
     }
     
     public void BlackHoleBehaviour(BlackHole blackhole) {
-
+            
         Vector3 blackHoleVector3 = (blackhole.transform.position - transform.position).normalized;
 
         float dotProduct = Vector3.Dot(transform.forward, blackHoleVector3);
@@ -59,6 +56,10 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
     }
 
     private void PreventOutOfBounds() {
+        
+        if(Vector3.Distance(transform.position, maxFront) < .1f || Vector3.Distance(transform.position, maxBack) < .1f)
+            physics.velocity = Vector3.zero;
+        
         if (physics.velocity.magnitude < 0.1)
             physics.velocity = Vector3.zero;
     }
