@@ -27,7 +27,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Rigidbody = GetComponent<Rigidbody>();
         Collider = GetComponent<CapsuleCollider>();
         Pathfinder = GetComponent<AIPathfinder>();
-        Target = GameObject.FindGameObjectWithTag("Player").transform;
+        Target = FindObjectOfType<PlayerController>().transform;
         originPosition = transform.position;
     }
     private void OnDisable()
