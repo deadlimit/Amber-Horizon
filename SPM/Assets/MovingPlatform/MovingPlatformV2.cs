@@ -60,7 +60,7 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
         if(Vector3.Distance(transform.position, maxFront) < .1f || Vector3.Distance(transform.position, maxBack) < .1f)
             physics.velocity = Vector3.zero;
         
-        if (physics.velocity.magnitude < 0.1)
+        if (physics.velocity.magnitude < 0.1f)
             physics.velocity = Vector3.zero;
     }
 
