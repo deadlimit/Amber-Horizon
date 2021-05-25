@@ -21,6 +21,7 @@ namespace EventCallbacks
         public readonly GameplayEffect appliedEffect;
         public readonly PlayerController player;
         public PlayerHitEvent(Transform culprit, GameplayEffect appliedEffect, PlayerController player) {
+            Debug.Log(culprit);
             this.culprit = culprit;
             this.appliedEffect = appliedEffect;
             this.player = player;
