@@ -43,9 +43,6 @@ public class ObjectPooler : MonoBehaviour {
     
             objectPools.Add(pool.tag, objectPool);
         }
-     
-        foreach(string s in objectPools.Keys)
-            Debug.Log(s + "\n");
         
     }
 

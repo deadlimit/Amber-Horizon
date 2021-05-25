@@ -27,7 +27,7 @@ public class SceneLoader : MonoBehaviour {
     private static void LoadLevel2() {
         UnloadCurrentScenes();
         SetNewActiveScene(LoadScene("BaseScene", OpenSceneMode.Single));
-        LoadScene("Level 1", OpenSceneMode.Additive);
+        LoadScene("Level 2", OpenSceneMode.Additive);
         LoadScene("ProjectileScene", OpenSceneMode.Additive);
         UnloadPreviousActiveScene();
     }
