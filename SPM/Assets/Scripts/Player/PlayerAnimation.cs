@@ -49,9 +49,8 @@ public class PlayerAnimation : MonoBehaviour {
     }
 
     private void OnPlayerHit(PlayerHitEvent playerHitEvent) {
-        Debug.Log(playerHitEvent.appliedEffect);
         if (hitAnimationCallbacks.ContainsKey(playerHitEvent.appliedEffect) == false) return;
-        
+            
         hitAnimationCallbacks[playerHitEvent.appliedEffect].Invoke(playerHitEvent.culprit);
     }
 
@@ -77,7 +76,7 @@ public class PlayerAnimation : MonoBehaviour {
 
     //Called by AnimationEvent "PlayerDeath"
     private void OnDeathAnimationDone() {
-        PlayerReviveEvent pre = new PlayerReviveEvent(gameObject);
+        PlayerReviveEvent pre = new PlayerReviveEvent(this.gameObject);
         EventSystem<PlayerReviveEvent>.FireEvent(pre);
         animator.SetTrigger("PlayerRevive");
     }

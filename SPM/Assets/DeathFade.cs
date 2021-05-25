@@ -39,6 +39,7 @@ public class DeathFade : MonoBehaviour {
         
         if (fadeOut)
         {
+            Debug.LogWarning("Fade out");
             while (imageColor.color.a <= 1)
             {
                 fadeAmount = uiColor.a + (fadeSpeed * Time.deltaTime);
@@ -50,6 +51,7 @@ public class DeathFade : MonoBehaviour {
         }
         else
         {
+            Debug.LogWarning("Fade in");
             while (imageColor.color.a >= 0)
             {
                 fadeAmount = uiColor.a - (fadeSpeed * Time.deltaTime);

@@ -217,6 +217,7 @@ public class PlayerController : MonoBehaviour
     public void RestoreHealth()
     {
         abilitySystem.TryActivateAbilityByTag(GameplayTags.HealthRestoreTag);
+        Debug.Log("reached RestoreHealth, in PlayerCOntroller");
     }
     public float GetMaxSpeed()
     {
