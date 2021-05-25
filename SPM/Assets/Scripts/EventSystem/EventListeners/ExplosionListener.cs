@@ -8,7 +8,7 @@ public class ExplosionListener : MonoBehaviour
     private void OnDisable() => EventSystem<ExplosionEvent>.UnregisterListener(Explosion);
 
 
-    //vill ju fï¿½rstï¿½s anvï¿½nda object pooling hï¿½r va
+    //vill ju förstås använda object pooling här va
     private void Explosion (ExplosionEvent ee)
     {
         ObjectPooler.Instance.Spawn("Explosion", ee.location, Quaternion.identity);

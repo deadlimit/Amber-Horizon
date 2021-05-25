@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VFX_Destroyer : PoolObject
+public class VFX_Destroyer : MonoBehaviour
 {
 
     public float timer = 5;
@@ -14,6 +14,7 @@ public class VFX_Destroyer : PoolObject
 
         if(time > timer)
             Destroy(this.gameObject);
-        
+
+
     }
 }

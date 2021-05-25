@@ -25,9 +25,6 @@ public class ObjectPooler : MonoBehaviour {
         
     }
     
-    /// <summary>
-    /// InstantiateObjectInAdditiveScene flyttar spawnade objekt till scenen objectpool-objektet finns i. Ligger nu i en egen scen, kanske inte behövs längre...
-    /// </summary>
     public void Start() {
         objectPools = new Dictionary<string, Queue<PoolObject>>();
 
@@ -40,24 +37,12 @@ public class ObjectPooler : MonoBehaviour {
                 poolObject.gameObject.SetActive(false);
                 objectPool.Enqueue(poolObject);
             }
-    
+
             objectPools.Add(pool.tag, objectPool);
         }
-     
-        foreach(string s in objectPools.Keys)
-            Debug.Log(s + "\n");
-        
     }
 
     public GameObject Spawn(string tag, Vector3 position, Quaternion rotation) {
-
-        if (!objectPools.ContainsKey(tag)) {
-            Debug.Log("Objectpool doesnt contain tag: " + tag + "\n");
-           
-            foreach(string s in objectPools.Keys)
-                Debug.Log(s + "\n");
-        }
-        
         PoolObject objectToSpawn = objectPools[tag].Dequeue();
         objectToSpawn.gameObject.SetActive(true);
         objectToSpawn.Initialize(position, rotation);
