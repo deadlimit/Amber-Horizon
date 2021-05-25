@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UIElements;
 using EGL = UnityEditor.EditorGUILayout;
 
 //TODO Gör en knapp för att spara positionen objektet befinner sig på
@@ -8,143 +9,186 @@ using EGL = UnityEditor.EditorGUILayout;
 [CustomEditor(typeof(ObjectRelocator))]
 public class ObjectRelocatorEditor : Editor {
 
-    private ObjectRelocator currentTarget;
-    
-    private SerializedObject owner;
-    private SerializedProperty relocationList;
+    /*private ObjectRelocator currentTarget;
 
-    private Color defaultBackgroundColor;
+    private VisualElement rootElement;
+    private VisualTreeAsset visualTree;
     
+    private Color defaultBackgroundColor;
+
+    private SerializedProperty positionList;
     private void OnEnable() {
         currentTarget = target as ObjectRelocator;
-        owner = new SerializedObject(target);
-        relocationList = owner.FindProperty("Positions");
-        defaultBackgroundColor = GUI.backgroundColor;
+
+        positionList = serializedObject.FindProperty("Positions");
+        
+        rootElement = new VisualElement();
+
+        visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/ObjectRelocatorUXML.uxml");
+        
+        StyleSheet uss = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Editor/ObjectRelocator.uss");
+        
+        rootElement.styleSheets.Add(uss);
     }
 
-    public override void OnInspectorGUI() {
-        
-        EGL.LabelField("Size: " + relocationList.arraySize, CreateGUIStyle(18, Color.red, TextAnchor.UpperCenter));
-        InsertSpace(1);
-        if (GUILayout.Button("Draw lines to positions"))
-            DrawLinesToPosition();
-        
-        InsertSpace(1);
-        
-        for (int i = 0; i < relocationList.arraySize; i++) {
-            
-            EGL.LabelField("Position: " + (i + 1), CreateGUIStyle(12, Color.green, TextAnchor.MiddleCenter));
-            InsertSpace(1);
-            
-            SerializedProperty listIndex = relocationList.GetArrayElementAtIndex(i);
-            
-            
-            SerializedProperty description = listIndex.FindPropertyRelative("Description");
-            SerializedProperty useGameObjectAsPosition = listIndex.FindPropertyRelative("UseGameObjectAsPosition");
-            
-            SerializedProperty vectorPosition = listIndex.FindPropertyRelative("WorldPosition");
-            SerializedProperty transformPosition = listIndex.FindPropertyRelative("TransformPosition");
-            
-            EGL.PropertyField(description);
-            EGL.PropertyField(useGameObjectAsPosition);
+    public override VisualElement CreateInspectorGUI() {
 
-            EGL.BeginHorizontal();
-            
-            if (useGameObjectAsPosition.boolValue)
-                transformPosition.objectReferenceValue = EGL.ObjectField("Transform Position: ", transformPosition.objectReferenceValue, typeof(Transform), true);
-            else 
-                EGL.PropertyField(vectorPosition);
-            
-            
-            
-            if (GUILayout.Button("Clear")) {
-                if(useGameObjectAsPosition.boolValue)
-                    transformPosition.objectReferenceValue = null;
-                else
-                    vectorPosition.vector3Value = Vector3.zero;
-                
-            }
-            
-            EGL.EndHorizontal();
+        var root = rootElement;
+        root.Clear();
 
-            EGL.BeginHorizontal();
+        visualTree.CloneTree(root);
+        
+        TextField description = root.Q<TextField>("Description");
+        Toggle transformAsPosition = root.Q<Toggle>("TransformAsPosition");
+        
+        Debug.Log(serializedObject.targetObject);
+
+        for (int i = 0; i < positionList.arraySize; i++) {
+            SerializedProperty currentIndex = positionList.GetArrayElementAtIndex(i);
             
-            if (GUILayout.Button("Move here")) {
-                Vector3 newPosition = useGameObjectAsPosition.boolValue ? (transformPosition.objectReferenceValue as Transform).position : vectorPosition.vector3Value;
-                
-                currentTarget.MoveToPosition(newPosition);
-            }
-            
-            GUI.backgroundColor = Color.red;
-            if (GUILayout.Button("Remove from list")) {
-                
-                transformPosition.objectReferenceValue = null;
-                vectorPosition.vector3Value = Vector3.zero;
-                relocationList.DeleteArrayElementAtIndex(i);
-            }
-                
-            
-            GUI.backgroundColor = defaultBackgroundColor;
-            EGL.EndHorizontal();
-            InsertSpace(2); 
-            
+            description.BindProperty( currentIndex.FindPropertyRelative("Description"));
+            transformAsPosition.BindProperty( currentIndex.FindPropertyRelative("UseGameObjectAsPosition"));
         }
         
-        #region Knappar
-        GUILayout.BeginHorizontal();
-
-        if (GUILayout.Button("Add new position"))
-            currentTarget.Positions.Add(new ObjectRelocator.RelocatorContext());
-        if (GUILayout.Button("Clear list"))
-            currentTarget.Positions.Clear();
-        
-        
-        GUILayout.EndHorizontal();
-        #endregion
-        owner.ApplyModifiedProperties();
-        owner.Update();
-
-        if (GUI.changed)
-            EditorUtility.SetDirty(target);
-
-
+        return root;
     }
 
-    private void InsertSpace(int spaces) {
-        for(int i = 0; i < spaces; i++)
-            EGL.Space();
-    }
+    /*
+   
+   private void OnEnable() {
+       currentTarget = target as ObjectRelocator;
+       owner = new SerializedObject(target);
+       relocationList = owner.FindProperty("Positions");
+       defaultBackgroundColor = GUI.backgroundColor;
+   }
 
-    private GUIStyle CreateGUIStyle(int fontSize, Color color, TextAnchor alignment) {
-        GUIStyle newGUIStyle = new GUIStyle();
-        newGUIStyle.fontSize = fontSize;
-        newGUIStyle.normal.textColor = color;
-        newGUIStyle.alignment = alignment;
-        newGUIStyle.richText = true;
-        return newGUIStyle;
-    }
+   
+  
+   public override void OnInspectorGUI() {
+       
+       EGL.LabelField("Size: " + relocationList.arraySize, CreateGUIStyle(18, Color.red, TextAnchor.UpperCenter));
+       InsertSpace(1);
+       if (GUILayout.Button("Draw lines to positions"))
+           DrawLinesToPosition();
+       
+       InsertSpace(1);
+       
+       for (int i = 0; i < relocationList.arraySize; i++) {
+           
+           EGL.LabelField("Position: " + (i + 1), CreateGUIStyle(12, Color.green, TextAnchor.MiddleCenter));
+           InsertSpace(1);
+           
+           SerializedProperty listIndex = relocationList.GetArrayElementAtIndex(i);
+           
+           
+           SerializedProperty description = listIndex.FindPropertyRelative("Description");
+           SerializedProperty useGameObjectAsPosition = listIndex.FindPropertyRelative("UseGameObjectAsPosition");
+           
+           SerializedProperty vectorPosition = listIndex.FindPropertyRelative("WorldPosition");
+           SerializedProperty transformPosition = listIndex.FindPropertyRelative("TransformPosition");
+           
+           EGL.PropertyField(description);
+           EGL.PropertyField(useGameObjectAsPosition);
 
-    private void DrawLinesToPosition() {
-        Vector3 start = currentTarget.transform.position;
-        for (int i = 0; i < relocationList.arraySize; i++) {
-            SerializedProperty listIndex = relocationList.GetArrayElementAtIndex(i);
-            bool objectAsPosition = listIndex.FindPropertyRelative("UseGameObjectAsPosition").boolValue;
-            Vector3 end = Vector3.zero;
+           EGL.BeginHorizontal();
+           
+           if (useGameObjectAsPosition.boolValue)
+               transformPosition.objectReferenceValue = EGL.ObjectField("Transform Position: ", transformPosition.objectReferenceValue, typeof(Transform), true);
+           else 
+               EGL.PropertyField(vectorPosition);
+           
+           
+           
+           if (GUILayout.Button("Clear")) {
+               if(useGameObjectAsPosition.boolValue)
+                   transformPosition.objectReferenceValue = null;
+               else
+                   vectorPosition.vector3Value = Vector3.zero;
+               
+           }
+           
+           EGL.EndHorizontal();
 
-            if (objectAsPosition) {
-                Transform transform = listIndex.FindPropertyRelative("TransformPosition").objectReferenceValue as Transform;
-                if (transform != null)
-                    end = transform.position;
-                else {
-                    Debug.LogWarning("Object reference slot is null in GameObject with name: <color=red>" + currentTarget + "</color>");
-                }
-            }
-                
-            else
-                end = listIndex.FindPropertyRelative("WorldPosition").vector3Value;
+           EGL.BeginHorizontal();
+           
+           if (GUILayout.Button("Move here")) {
+               Vector3 newPosition = useGameObjectAsPosition.boolValue ? (transformPosition.objectReferenceValue as Transform).position : vectorPosition.vector3Value;
+               
+               currentTarget.MoveToPosition(newPosition);
+           }
+           
+           GUI.backgroundColor = Color.red;
+           if (GUILayout.Button("Remove from list")) {
+               
+               transformPosition.objectReferenceValue = null;
+               vectorPosition.vector3Value = Vector3.zero;
+               relocationList.DeleteArrayElementAtIndex(i);
+           }
+               
+           
+           GUI.backgroundColor = defaultBackgroundColor;
+           EGL.EndHorizontal();
+           InsertSpace(2); 
+           
+       }
+       
+       #region Knappar
+       GUILayout.BeginHorizontal();
 
-            Debug.DrawLine(start, end, Color.red, 5);
+       if (GUILayout.Button("Add new position"))
+           currentTarget.Positions.Add(new ObjectRelocator.RelocatorContext());
+       if (GUILayout.Button("Clear list"))
+           currentTarget.Positions.Clear();
+       
+       
+       GUILayout.EndHorizontal();
+       #endregion
+       owner.ApplyModifiedProperties();
+       owner.Update();
 
-        }
-    }
+       if (GUI.changed)
+           EditorUtility.SetDirty(target);
+
+
+   }
+
+   private void InsertSpace(int spaces) {
+       for(int i = 0; i < spaces; i++)
+           EGL.Space();
+   }
+
+   private GUIStyle CreateGUIStyle(int fontSize, Color color, TextAnchor alignment) {
+       GUIStyle newGUIStyle = new GUIStyle();
+       newGUIStyle.fontSize = fontSize;
+       newGUIStyle.normal.textColor = color;
+       newGUIStyle.alignment = alignment;
+       newGUIStyle.richText = true;
+       return newGUIStyle;
+   }
+
+   private void DrawLinesToPosition() {
+       Vector3 start = currentTarget.transform.position;
+       for (int i = 0; i < relocationList.arraySize; i++) {
+           SerializedProperty listIndex = relocationList.GetArrayElementAtIndex(i);
+           bool objectAsPosition = listIndex.FindPropertyRelative("UseGameObjectAsPosition").boolValue;
+           Vector3 end = Vector3.zero;
+
+           if (objectAsPosition) {
+               Transform transform = listIndex.FindPropertyRelative("TransformPosition").objectReferenceValue as Transform;
+               if (transform != null)
+                   end = transform.position;
+               else {
+                   Debug.LogWarning("Object reference slot is null in GameObject with name: <color=red>" + currentTarget + "</color>");
+               }
+           }
+               
+           else
+               end = listIndex.FindPropertyRelative("WorldPosition").vector3Value;
+
+           Debug.DrawLine(start, end, Color.red, 5);
+
+       }
+   }
+   
+   */
 }

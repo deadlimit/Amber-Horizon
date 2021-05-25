@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="/Assets/Index.uss" />
+    <ui:VisualElement style="height: 10%;">
+        <ui:Label text="Object Relocator" display-tooltip-when-elided="true" style="font-size: 24px; -unity-text-align: upper-center; flex-grow: 1; cursor: initial; border-left-color: rgb(79, 132, 174); border-right-color: rgb(79, 132, 174); border-top-color: rgb(79, 132, 174); border-bottom-color: rgb(79, 132, 174); border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="Buttons" class="container" style="height: auto; flex-direction: row;">
+        <ui:Button text="Add new position" display-tooltip-when-elided="true" name="Add" style="flex-grow: 1;" />
+        <ui:Button text="Clear list" display-tooltip-when-elided="true" name="Clear" style="flex-grow: 1;" />
+    </ui:VisualElement>
+</ui:UXML>
