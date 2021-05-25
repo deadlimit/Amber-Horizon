@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -11,31 +10,31 @@ public class SceneLoader : MonoBehaviour {
     [MenuItem("Load scenes/Load Main Menu")]
     private static void LoadMainMenu() {
         UnloadCurrentScenes();
-        SetNewActiveScene(LoadScene("MainMenu"));
+        SetNewActiveScene(LoadScene("MainMenu", OpenSceneMode.Single));
         UnloadPreviousActiveScene();
     }
    
     [MenuItem("Load scenes/Load Level 1")]
     private static void LoadLevel1() {
         UnloadCurrentScenes();
-        SetNewActiveScene(LoadScene("BaseScene"));
-        LoadScene("Level 1");
-        LoadScene("ProjectileScene");
+        SetNewActiveScene(LoadScene("BaseScene", OpenSceneMode.Single));
+        LoadScene("Level 1", OpenSceneMode.Additive);
+        LoadScene("ProjectileScene", OpenSceneMode.Additive);
         UnloadPreviousActiveScene();
     }
 
     [MenuItem("Load scenes/Load Level 2")]
     private static void LoadLevel2() {
         UnloadCurrentScenes();
-        SetNewActiveScene(LoadScene("BaseScene"));
-        LoadScene("Level 2");
-        LoadScene("ProjectileScene");
+        SetNewActiveScene(LoadScene("BaseScene", OpenSceneMode.Single));
+        LoadScene("Level 1", OpenSceneMode.Additive);
+        LoadScene("ProjectileScene", OpenSceneMode.Additive);
         UnloadPreviousActiveScene();
     }
 
     
-    private static Scene LoadScene(string sceneName) {
-        return EditorSceneManager.OpenScene("Assets/Scenes/ActiveScenes/" + sceneName + ".unity", OpenSceneMode.Additive);
+    private static Scene LoadScene(string sceneName, OpenSceneMode mode) {
+        return EditorSceneManager.OpenScene("Assets/Scenes/ActiveScenes/" + sceneName + ".unity", mode);
     }
 
     private static void UnloadCurrentScenes() {

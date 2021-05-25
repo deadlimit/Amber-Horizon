@@ -12,6 +12,7 @@ public class TransitOverviewController : MonoBehaviour {
     [SerializeField] private float waitUntilButtonSpawn;
     [SerializeField] private Canvas UI;
     [SerializeField] private TextMeshProUGUI exitInstructionText;
+    
     private readonly List<GameObject> activeButtons = new List<GameObject>();
     
     private void OnEnable() {

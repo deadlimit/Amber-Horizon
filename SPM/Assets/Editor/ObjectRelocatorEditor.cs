@@ -9,7 +9,7 @@ using EGL = UnityEditor.EditorGUILayout;
 [CustomEditor(typeof(ObjectRelocator))]
 public class ObjectRelocatorEditor : Editor {
 
-    private ObjectRelocator currentTarget;
+    /*private ObjectRelocator currentTarget;
 
     private VisualElement rootElement;
     private VisualTreeAsset visualTree;

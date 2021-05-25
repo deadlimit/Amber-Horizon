@@ -44,22 +44,13 @@ public class MenuController : MonoBehaviour {
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(baseSceneName));
         
         yield return StartCoroutine(LoadSceneAdditive(startGameSceneName));
-
-        yield return StartCoroutine(LerpCamera());
-        
+        EventSystem<ReturnPlayerControl>.FireEvent(null);
         yield return SceneManager.UnloadSceneAsync(currentSceneName);
+        
+        
+        
         Resources.UnloadUnusedAssets();
     }
 
-    private IEnumerator LerpCamera() {
-        while (Vector3.Distance(camera.transform.position, Camera.main.transform.position) > .3f) {
-            camera.transform.position = Vector3.Lerp(camera.transform.position, Camera.main.transform.position, Time.deltaTime);
-            camera.transform.rotation = Quaternion.Lerp(camera.transform.rotation, Camera.main.transform.rotation, Time.deltaTime * 2);
-            yield return null;
-        }
-
-        EventSystem<ReturnPlayerControl>.FireEvent(null);
-
-    }
     
 }
