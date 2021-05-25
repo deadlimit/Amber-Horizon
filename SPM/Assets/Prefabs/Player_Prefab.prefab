@@ -41,7 +41,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 64e6ac6be0c46c049b2d82aa5148c4a7, type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -244,7 +244,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 64e6ac6be0c46c049b2d82aa5148c4a7, type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
@@ -484,31 +484,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 28.223
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.16
+      value: 4.37
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.637
+      value: -43.54
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9968708
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.07904813
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -516,7 +516,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 9.068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 154323382751010068, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -633,6 +633,34 @@ PrefabInstance:
     - target: {fileID: 3557640080611394734, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: sliderBackground
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4939621609248408304, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
+      propertyPath: Positions.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4939621609248408304, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
+      propertyPath: Positions.Array.data[0].Description
+      value: Start
+      objectReference: {fileID: 0}
+    - target: {fileID: 4939621609248408304, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
+      propertyPath: Positions.Array.data[1].Description
+      value: End
+      objectReference: {fileID: 0}
+    - target: {fileID: 4939621609248408304, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
+      propertyPath: Positions.Array.data[0].WorldPosition.x
+      value: 13.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 4939621609248408304, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
+      propertyPath: Positions.Array.data[0].WorldPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4939621609248408304, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
+      propertyPath: Positions.Array.data[0].WorldPosition.z
+      value: -197.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 4939621609248408304, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
+      propertyPath: Positions.Array.data[1].UseGameObjectAsPosition
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5100685486501699046, guid: b0b3300b95a8b1e408a07e38e4bb7835, type: 3}
       propertyPath: m_TagString

@@ -14,15 +14,9 @@ public class ThirdPersonCamera : MonoBehaviour {
     
     private void Awake() {
         currentCameraBehaviour = cameraBehaviourPairs[0].Behaviour;
-        print(SceneManager.GetSceneByName("MainMenu").isLoaded);
         
-        if (SceneManager.GetSceneByName("MainMenu").isLoaded) {
-            DisableCamera(null);
-        }
-        else
-            Cursor.ActivateCursor(true, CursorLockMode.Confined);
-            
         currentCameraBehaviour.Init(transform);
+        Cursor.ActivateCursor(false, CursorLockMode.Locked);
         
         foreach(CameraBehaviourPair pair in cameraBehaviourPairs)
             cameraBehaviours.Add(pair.CameraType, pair.Behaviour);
@@ -32,33 +26,16 @@ public class ThirdPersonCamera : MonoBehaviour {
     private void OnEnable() {
         EventSystem<NewCameraFocus>.RegisterListener(SwitchToFocusBehaviour);
         EventSystem<ResetCameraFocus>.RegisterListener(SwitchToFollowCamera);
-        EventSystem<LoadMainMenu>.RegisterListener(DisableCamera);
-        EventSystem<ExitMainMenu>.RegisterListener(EnableCamera);
-        
-        
     }
 
     private void OnDisable() {
         EventSystem<NewCameraFocus>.UnregisterListener(SwitchToFocusBehaviour);
         EventSystem<ResetCameraFocus>.UnregisterListener(SwitchToFollowCamera);
-        EventSystem<LoadMainMenu>.UnregisterListener(DisableCamera);
-        EventSystem<ExitMainMenu>.UnregisterListener(EnableCamera);
     }
     
     void LateUpdate() {
         if(currentCameraBehaviour.enabled)
             currentCameraBehaviour.MovementBehaviour();
-    }
-
-    private void DisableCamera(LoadMainMenu menuLoad) {
-        currentCameraBehaviour.enabled = false;
-        print("false");
-    }
-
-    private void EnableCamera(ExitMainMenu exit) {
-        currentCameraBehaviour.enabled = true;
-        print("true ");
-
     }
     
     private void SwitchToFollowCamera(ResetCameraFocus focus) {
