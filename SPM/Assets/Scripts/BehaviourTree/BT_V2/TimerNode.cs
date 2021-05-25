@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class TimerNode : BTNode
 {
-    private float fireCooldown;
+    private float attackCooldown;
     public TimerNode(BehaviourTree bt) : base(bt) { }
     public override Status Evaluate()
     {
-        if(fireCooldown > 0)
-            fireCooldown -= Time.deltaTime;
+        if(attackCooldown > 0)
+            attackCooldown -= Time.deltaTime;
 
         return Status.BH_SUCCESS;
     }
 
-    public void SetFireCooldown(float val) {  fireCooldown = val; }
-    public float GetFireCooldown() {return fireCooldown ; }
+    public void SetAttackCooldown(float val) {  attackCooldown = val; }
+    public float GetAttackCooldown() {return attackCooldown ; }
 }

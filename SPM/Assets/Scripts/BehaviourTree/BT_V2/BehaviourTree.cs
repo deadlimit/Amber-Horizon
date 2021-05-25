@@ -48,7 +48,7 @@ public class BehaviourTree : MonoBehaviour
         ownerAgent = owner.Pathfinder.agent;
         startPos = ownerTransform.position;
 
-        blackboard.Add("Target", new DataContainer<Vector3>(new Vector3(29.96f, 0.1342f, 9.88f)));
+        blackboard.Add("Target", null);
         blackboard.Add("TargetTransform", new DataContainer<Transform>(null));
         blackboard.Add("LastSeenPosition", new DataContainer<Vector3>(new Vector3(0, 0, 0)));
         blackboard.Add("HasCalledForHelp", new DataContainer<bool>(new bool()));

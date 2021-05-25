@@ -18,7 +18,7 @@ public class EnemyMoveIntoRangeState : State
     }
     public override void RunUpdate()
     {
-        if (Vector3.Distance(forager.Target.transform.position, forager.transform.position) < forager.range)
+        if (Vector3.Distance(forager.Target.transform.position, forager.transform.position) < forager.AttackRange)
             stateMachine.ChangeState<EnemyProximityState>();
 
         forager.transform.LookAt(forager.Target);

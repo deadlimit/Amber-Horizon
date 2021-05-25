@@ -25,7 +25,7 @@ public class EnemyProximityState : State {
         //Om denna är true är spelaren innanför den inre sfären
         if(forager.ProximityCast(forager.innerRing)) forager.stateMachine.ChangeState<EnemyTeleportState>();
         
-        if (Vector3.Distance(forager.transform.position, forager.Target.transform.position) > forager.range)
+        if (Vector3.Distance(forager.transform.position, forager.Target.transform.position) > forager.AttackRange)
         {
             stateMachine.ChangeState<EnemyMoveIntoRangeState>();
         }

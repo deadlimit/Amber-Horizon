@@ -14,7 +14,7 @@ public class Destructor : Enemy {
     private new void Update() {
         base.Update();
         
-        stateMachine.RunUpdate();
+       // stateMachine.RunUpdate();
     }
     private void OnDrawGizmos()
     {

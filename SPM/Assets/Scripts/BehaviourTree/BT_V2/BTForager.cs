@@ -13,7 +13,6 @@ public class BTForager : BehaviourTree
         forager = (Forager)owner;
 
         //Forager specific values
-        blackboard.Add("Range", new DataContainer<float>(forager.range));
         blackboard.Add("FleeDistance", new DataContainer<float>(forager.FleeDistance));
         blackboard.Add("FireCooldown", new DataContainer<float>(forager.FireCooldown));
 
@@ -29,28 +28,25 @@ public class BTForager : BehaviourTree
     {
         Debug.Log("Bygger BT");
 
-        //NoTargetFilter, Patrol & Wait
+        //Patrol-------------------------------------------------------------------------
         Sequence patrolSequence = new Sequence(new List<BTNode>
             {
             new Patrol(this),
             new Wait(this, 4f)
             }, this, "patrolSequence", new IsTargetNull(this));
 
-        //Condition hindrar Investigate från att printa sin OnInit, och if:s 
-        //faller igenom och returnerar running till top-branch, det är det som spökar
+
+        //Investigate------------------------------------------------------------------
         Sequence investigateTarget = new Sequence(new List<BTNode>
             {
             new Investigate(this)
             }, this, "investigateTarget", new TargetNotNull(this));
 
-
-        //InvestigateLastSeen with filter
         Sequence investigateLastSeen = new Sequence(new List<BTNode>
             {
             new InvestigateLastSeen(this)
             }, this, "investigateLastSeen", new LastSeenPosition(this));
 
-        //Investigate & AudioCheck
         Selector investigateSelector = new Selector(new List<BTNode>
             {
             investigateLastSeen,
@@ -58,6 +54,7 @@ public class BTForager : BehaviourTree
             new AudioProximityCheck(this),
             }, this, "investigateSelector");
 
+        //Flee-------------------------------------------------------------------------
         //Named teleport for calling a method on it from Animation event
         teleportNode = new Teleport(this);
         Sequence fleeSequence = new Sequence(new List<BTNode>
@@ -65,17 +62,13 @@ public class BTForager : BehaviourTree
              teleportNode
             }, this, "fleeFilter", new TargetTooClose(this));
 
-
+        //Target visible/in range------------------------------------------------------
         Selector targetInRange = new Selector(new List<BTNode>
             {
             new Shoot(this),
             new Reposition(this)
             }, this, "shootOrReposition", new TargetInRange(this));
 
-
-        //Hade kanske egentligen velat ha en selector med filter här, alternativet till det kanske 
-        //är att sätta en succeeder på shootSequence, och sedan utvädera avståndet inuti MoveToTarget, men då gör vi det två gånger istället, det blir dumt.
-        //Annars får det blir en förälder till targetvisible som är ett filter, och sedan är targetVisible själv en selector
         Selector targetVisible = new Selector(new List<BTNode>
              {
               new AlertAllies(this),
@@ -84,6 +77,7 @@ public class BTForager : BehaviourTree
               new MoveToTarget(this)
              }, this, "targetVisible", new VisualProximityCheck(this));
 
+        //AI Death---------------------------------------------------------------------------
         Selector causeOfDeath = new Selector(new List<BTNode>
             {
             new KilledByBlackHole(this),
@@ -96,7 +90,7 @@ public class BTForager : BehaviourTree
              new DestroyOwner(this)
             }, this, "deathSequence", new AIDied(this));
 
-        //Selector Sub-Root Node
+        //Root Selector--------------------------------------------------------------------
         Selector RootSelector = new Selector(new List<BTNode>
                 {
                 deathSequence,
@@ -105,14 +99,15 @@ public class BTForager : BehaviourTree
                 patrolSequence
                 }, this, "RootSelector");
 
+        //Parallel node for independent timer execution-------------------------------
         timerNode = new TimerNode(this);
-
         Parallel rootParallel = new Parallel(new List<BTNode>
             {
             timerNode,
             RootSelector
             }, this, "rootParallel");
-        //Repeater Root Node
+       
+        //Repeater Root Node----------------------------------------------------------
         return new Repeater(rootParallel, this);
 
         //TEST SEQUENCE-------------------------------------------------

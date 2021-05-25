@@ -13,7 +13,7 @@ public class Shoot : BTNode
     }
     public override Status Evaluate()
     {
-        if (bt.timerNode.GetFireCooldown() > 0)
+        if (bt.timerNode.GetAttackCooldown() > 0)
         {
             return Status.BH_FAILURE;
         }
@@ -21,7 +21,7 @@ public class Shoot : BTNode
         {
             bt.ownerAgent.ResetPath();
             bt.owner.Animator.SetTrigger("Shoot");
-            bt.timerNode.SetFireCooldown(shootCD);
+            bt.timerNode.SetAttackCooldown(shootCD);
             return Status.BH_SUCCESS;
         }
     }

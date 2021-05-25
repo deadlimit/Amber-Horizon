@@ -17,6 +17,7 @@ public class VisualProximityCheck : BTNode
             Transform visualRangeOrigin = bt.GetBlackBoardValue<Transform>("AlerterTransform").GetValue() != null ?
                 bt.GetBlackBoardValue<Transform>("AlerterTransform").GetValue() : bt.ownerTransform;
             Debug.Log("VisualRangeOriginTransform : " + visualRangeOrigin.gameObject);
+
             //Target already exists and is in range of detection, then dont bother with OverlapSphere
             if (Vector3.Distance(visualRangeOrigin.position,
                 bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue().position) < visualRange + rangeRounding)

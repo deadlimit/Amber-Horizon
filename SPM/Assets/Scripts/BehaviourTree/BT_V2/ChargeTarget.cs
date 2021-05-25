@@ -2,20 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveToTarget : BTNode
+public class ChargeTarget : BTNode
 {
     Transform playerTransform;
     int frameCounter = 0;
-   public MoveToTarget(BehaviourTree bt) : base(bt)
-    {
+    public ChargeTarget(BehaviourTree bt) : base(bt){ }
 
-    }
     public override void OnInitialize()
     {
         playerTransform = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
+        Debug.Log("Charge Target init");
+        //Speed = Charge/attack speed
     }
-    
-
     public override Status Evaluate()
     {
         UpdateTargetPosition();
@@ -28,9 +26,12 @@ public class MoveToTarget : BTNode
         else if (Vector3.Distance(bt.ownerTransform.position, playerTransform.position) >= bt.owner.VisualRange)
             return Status.BH_FAILURE;
         else
+        {
+            Debug.Log("charge target running");
             return Status.BH_RUNNING;
-
+        }
     }
+
     private bool ReachedTarget()
     {
         if (!bt.owner.Pathfinder.agent.pathPending)
@@ -45,8 +46,6 @@ public class MoveToTarget : BTNode
         }
         return false;
     }
-
-    //Sätt destination var tionde frame
     private void UpdateTargetPosition()
     {
         if (frameCounter % 20 == 0)
@@ -57,4 +56,3 @@ public class MoveToTarget : BTNode
         else frameCounter++;
     }
 }
-

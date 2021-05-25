@@ -25,7 +25,7 @@ public class AlertAllies : BTNode
         {
             foreach (Collider coll in arr)
             {
-                coll.gameObject.GetComponent<Forager>().Alert(playerTransform, bt.ownerTransform);
+                coll.gameObject.GetComponent<Enemy>().Alert(playerTransform, bt.ownerTransform);
             }
         }
     }
