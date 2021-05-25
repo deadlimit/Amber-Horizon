@@ -15,8 +15,7 @@ public class ObjectRelocator : MonoBehaviour {
     }
 
     public List<RelocatorContext> Positions = new List<RelocatorContext>();
-
-
+    
     public void MoveToPosition(Vector3 position) {
         transform.position = position;
     }
