@@ -12,7 +12,6 @@ public class SceneLoader : MonoBehaviour {
     private static void LoadMainMenu() {
         UnloadCurrentScenes();
         SetNewActiveScene(LoadScene("MainMenu"));
-        LoadScene("ProjectileScene");
         UnloadPreviousActiveScene();
     }
    
