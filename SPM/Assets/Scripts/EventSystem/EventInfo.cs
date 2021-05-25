@@ -159,5 +159,7 @@ namespace EventCallbacks
         }
     }
     
+    public class ReturnPlayerControl : EventInfo {}
+    
 }
 

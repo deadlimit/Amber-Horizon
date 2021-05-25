@@ -1,6 +1,7 @@
 using System;
 using AbilitySystem;
 using EventCallbacks;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 
@@ -42,6 +43,10 @@ public class PlayerController : MonoBehaviour
     {
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PhysicsComponent>();
+
+        float gravity = physics.gravity;
+        physics.gravity = 0;
+        this.Invoke(() => physics.gravity = gravity, 2);
         stateMachine = new StateMachine(this, states);       
         lr = GetComponent<LineRenderer>();
         animator = GetComponent<Animator>();

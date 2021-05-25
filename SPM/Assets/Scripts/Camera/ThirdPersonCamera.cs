@@ -14,13 +14,8 @@ public class ThirdPersonCamera : MonoBehaviour {
     
     private void Awake() {
         currentCameraBehaviour = cameraBehaviourPairs[0].Behaviour;
-        print(SceneManager.GetSceneByName("MainMenu").isLoaded);
-        
-        if (SceneManager.GetSceneByName("MainMenu").isLoaded) {
-            DisableCamera(null);
-        }
-        else
-            Cursor.ActivateCursor(true, CursorLockMode.Confined);
+
+        Cursor.ActivateCursor(false, CursorLockMode.Locked);
             
         currentCameraBehaviour.Init(transform);
         
