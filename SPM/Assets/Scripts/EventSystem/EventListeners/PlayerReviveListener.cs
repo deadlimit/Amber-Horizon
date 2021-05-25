@@ -19,7 +19,6 @@ public class PlayerReviveListener : MonoBehaviour
     {
         foreach(Enemy e in enemyList)
         {
-            Debug.Log(e.gameObject);
             e.ResetPosition();
         }
     }
