@@ -17,7 +17,7 @@ public class VisualProximityCheck : BTNode
         
         if (TargetTransformExists())
         {
-            SetSpeedAndLastKnowPosition();
+            SetSpeedAndLastKnownPosition();
             return Status.BH_SUCCESS;
         }
 
@@ -46,7 +46,7 @@ public class VisualProximityCheck : BTNode
 
             ResetPatrolPoint();
             bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(playerTransform);
-            SetSpeedAndLastKnowPosition();
+            SetSpeedAndLastKnownPosition();
 
             return Status.BH_SUCCESS;
         }
@@ -120,8 +120,11 @@ public class VisualProximityCheck : BTNode
         return false;
     }
 
-    private void SetSpeedAndLastKnowPosition()
+    private void SetSpeedAndLastKnownPosition()
     {
+        if (!playerTransform)
+            playerTransform = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
+
         lastKnownPlayerPosition = playerTransform.position;
         bt.ownerAgent.speed = bt.owner.MovementSpeedAttack;
     }

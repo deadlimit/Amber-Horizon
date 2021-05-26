@@ -14,12 +14,10 @@ public class IsTargetNull : BTNode
         bt.blackboard.TryGetValue("Target", out BehaviourTree.DataContainer target);
         if (target == null)
         {
-            Debug.Log("returning success");
             return Status.BH_SUCCESS;
         }
         else
         {
-            Debug.Log("returning failure" );
             return Status.BH_FAILURE;
         }
     }

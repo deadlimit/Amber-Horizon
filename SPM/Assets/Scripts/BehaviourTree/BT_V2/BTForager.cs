@@ -7,7 +7,7 @@ public class BTForager : BehaviourTree
     private Teleport teleportNode;
     public Forager forager { get; private set; }
 
-    private void Start()
+    private new void Start()
     {
         base.Start();
         forager = (Forager)owner;
@@ -26,8 +26,6 @@ public class BTForager : BehaviourTree
 
     private BTNode BehaviourTreeBuilder()
     {
-        Debug.Log("Bygger BT");
-
         //Patrol-------------------------------------------------------------------------
         Sequence patrolSequence = new Sequence(new List<BTNode>
             {

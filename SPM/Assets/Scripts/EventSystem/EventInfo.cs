@@ -20,10 +20,9 @@ namespace EventCallbacks
         public readonly Transform culprit;
         public readonly GameplayEffect appliedEffect;
         public readonly PlayerController player;
-        public PlayerHitEvent(Transform culprit, GameplayEffect appliedEffect, PlayerController player) {
+        public PlayerHitEvent(Transform culprit, GameplayEffect appliedEffect) {
             this.culprit = culprit;
             this.appliedEffect = appliedEffect;
-            this.player = player;
         }
     }
 
