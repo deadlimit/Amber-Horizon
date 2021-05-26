@@ -19,7 +19,7 @@ public class EnemyDeathState : State {
     public override void RunUpdate() {
         
         if (forager.activeBlackHole != null) {
-            //Debug.Log("die");
+
             forager.transform.LookAt(forager.activeBlackHole.transform);
 
             forager.transform.position = Vector3.Lerp(forager.transform.position, forager.activeBlackHole.transform.position, Time.deltaTime);
@@ -27,8 +27,7 @@ public class EnemyDeathState : State {
             forager.transform.localScale = Vector3.Lerp(forager.transform.localScale, Vector3.zero, Time.deltaTime);
         }
         
-        Destroy(forager.gameObject, 2.5f);
-            
+        Destroy(forager.gameObject, 2.5f);            
     }      
     
 }
