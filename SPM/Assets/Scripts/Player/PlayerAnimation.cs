@@ -8,8 +8,6 @@ public class PlayerAnimation : MonoBehaviour {
 
     private Animator animator; 
     private PhysicsComponent physics;
-    private PlayerController playerController;
-    private float oldMaxSpeed;
 
     //Lista i inspektorn så man kan tilldela animationscallbacks till PlayerHitEvent-effekter.
     public List<AnimationEffectPair> effectCallbackPairs;
@@ -17,7 +15,6 @@ public class PlayerAnimation : MonoBehaviour {
     private Dictionary<GameplayEffect, UnityEvent<Transform>> hitAnimationCallbacks = new Dictionary<GameplayEffect, UnityEvent<Transform>>();
     
     private void Awake() {
-        playerController = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         physics = GetComponent<PhysicsComponent>();
 
@@ -48,8 +45,7 @@ public class PlayerAnimation : MonoBehaviour {
 
     //Används i en animationstrigger
     public void ReturnPlayerControl() {
-        playerController.enabled = true;
-        //physics.maxSpeed = oldMaxSpeed;
+        GetComponent<PlayerController>().enabled = true;
     }
 
     private void OnPlayerHit(PlayerHitEvent playerHitEvent) {
@@ -61,37 +57,29 @@ public class PlayerAnimation : MonoBehaviour {
 
     public void OnDestructorHit(Transform culprit) {
 
-       
-
         transform.LookAt(culprit);
         Vector3 rotation = transform.rotation.eulerAngles;
         rotation.x = 0;
         rotation.z = 0;
         transform.rotation = Quaternion.Euler(rotation);
 
-        //Only to be used if player position is actually moved when hit by destructor, right now its not so its commented out
-        /*oldMaxSpeed = physics.maxSpeed;
-        physics.maxSpeed = 200;*/
-
-
+        float oldMaxSpeed = physics.maxSpeed;
+        physics.maxSpeed = 200;
         physics.AddForce(-transform.forward * 10);
         animator.SetTrigger("PunchHit");
-        playerController.enabled = false;
-
+        GetComponent<PlayerController>().enabled = false;
+        this.Invoke(() => physics.maxSpeed = oldMaxSpeed, 1);
     }
 
     private void OnPlayerDied(PlayerDiedEvent playerDiedEvent) {
-        playerController.enabled = false;
         animator.SetTrigger("PlayerDeath");
     }
 
     //Called by AnimationEvent "PlayerDeath"
     private void OnDeathAnimationDone() {
-        Debug.Log("OnDeathAnimationDone Called");
         PlayerReviveEvent pre = new PlayerReviveEvent(gameObject);
         EventSystem<PlayerReviveEvent>.FireEvent(pre);
         animator.SetTrigger("PlayerRevive");
-        ReturnPlayerControl();
     }
 
     public void OnForagerHit(Transform culprit) {

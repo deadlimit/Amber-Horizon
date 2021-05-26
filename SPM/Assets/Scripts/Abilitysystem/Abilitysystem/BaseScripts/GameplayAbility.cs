@@ -9,13 +9,11 @@ namespace AbilitySystem
         public GameplayEffect AppliedEffect;
         public GameplayEffect Cost;
         public GameplayEffect Cooldown;
-        public AudioClip soundEffect;
 
         public List<GameplayTag> BlockedByTags = new List<GameplayTag>();
         public List<GameplayTag> RequiredTags = new List<GameplayTag>();
 
         public abstract void Activate(GameplayAbilitySystem Owner);
-        
         public void Commit(GameplayAbilitySystem Owner)
         {
             if (Cost.Attribute != null)
