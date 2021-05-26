@@ -74,7 +74,6 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Animator.SetTrigger("HitByExplosion");
     }
 
-    //Destructor must also change state to not instantly set destination towards player respawn, hence virtual
     public virtual void ResetPosition()
     {
         transform.position = originPosition;
