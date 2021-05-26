@@ -1,6 +1,7 @@
 using System.Collections;
 using EventCallbacks;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
 
@@ -9,7 +10,8 @@ public class SceneTransit : MonoBehaviour {
     public string NewSceneName;
 
     [SerializeField] private Animator GateLevelOne;
-    [SerializeField] private BoxCollider trigger;
+    [SerializeField] private PlayableDirector cinematic;    
+    private BoxCollider trigger;
     private static readonly int CloseGateHash = Animator.StringToHash("CloseGate");
     private static readonly int OpenGateHash = Animator.StringToHash("OpenGate");
 
@@ -29,9 +31,9 @@ public class SceneTransit : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        GateLevelOne.SetTrigger(CloseGateHash);
+        cinematic.Play();
         trigger.enabled = false;
-        StartCoroutine(LoadNewScene());
+    //    StartCoroutine(LoadNewScene());
         
     }
 
