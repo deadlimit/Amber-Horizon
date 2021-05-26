@@ -1,14 +1,16 @@
 using UnityEngine;
 
 public class Destructor : Enemy {
-    
+
+    [SerializeField]private GameObject attackCollider;
+    public bool hitPlayer { get; set; }
     protected new void Start() {
         base.Start();
-        stateMachine.ChangeState<DestructorPatrolState>();
+        //stateMachine.ChangeState<DestructorPatrolState>();
     }
     public override void ResetPosition()
     {
-        stateMachine.ChangeState<DestructorResetState>();
+        //stateMachine.ChangeState<DestructorResetState>();
         base.ResetPosition();
     }
     private new void Update() {
@@ -29,5 +31,6 @@ public class Destructor : Enemy {
         stateMachine.ChangeState<DestructorDeathState>();
         base.ApplyExplosion(explosionInstance, blastPower);
     }
+
     
 }

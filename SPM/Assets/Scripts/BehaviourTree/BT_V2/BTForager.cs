@@ -32,7 +32,7 @@ public class BTForager : BehaviourTree
         Sequence patrolSequence = new Sequence(new List<BTNode>
             {
             new Patrol(this),
-            new Wait(this, 4f)
+            new Wait(this, maxWaitTime)
             }, this, "patrolSequence", new IsTargetNull(this));
 
 

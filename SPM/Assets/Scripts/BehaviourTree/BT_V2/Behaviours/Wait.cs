@@ -4,26 +4,25 @@ using UnityEngine;
 
 public class Wait : BTNode
 {
+    float maxWaitTime;
     float seconds;
-    float count;
-    public Wait(BehaviourTree bt, float seconds) : base(bt)
+    public Wait(BehaviourTree bt, float maxWaitTime) : base(bt)
     {
-        this.seconds = seconds; 
+        this.maxWaitTime = maxWaitTime; 
     }
     public override void OnInitialize()
     {
-        count = seconds; 
+        seconds = Random.Range(1.5f,  maxWaitTime); 
     }
     public override Status Evaluate()
     {
-        if (count <= 0)
+        if (seconds <= 0)
         {
-            Debug.Log("Returning success from wait");
             return Status.BH_SUCCESS;
         }
         else
         {
-            count -= Time.deltaTime;
+            seconds -= Time.deltaTime;
             return Status.BH_RUNNING;
         }
     }

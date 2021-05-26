@@ -1269,6 +1269,7 @@ GameObject:
   - component: {fileID: 4469862759675896386}
   - component: {fileID: 4469862759675896385}
   - component: {fileID: 6779590072770284603}
+  - component: {fileID: 3108263064726186165}
   m_Layer: 8
   m_Name: Enemy - Forager
   m_TagString: Untagged
@@ -1336,7 +1337,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 2
+  m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 360
@@ -1360,12 +1361,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d45e3d4781cc5348a8db4e4855306ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackRange: 12
+  visualRange: 20
   outerRing: 17
   innerRing: 4
-  PlayerMask:
+  playerMask:
     serializedVersion: 2
     m_Bits: 128
-  EnemyMask:
+  enemyMask:
     serializedVersion: 2
     m_Bits: 256
   states:
@@ -1376,6 +1379,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e177d870be8e4a04eab92addc6e5cf4f, type: 2}
   - {fileID: 11400000, guid: bae6b54f58ebd934cb5d306f9b3944b8, type: 2}
   - {fileID: 11400000, guid: b6cf26a5aa9735347b95f497d7b25666, type: 2}
+  fleeDistance: 4
+  fireCooldown: 2
   Bullet: {fileID: 4744137218730177727, guid: 00aed5def02963b4196f8289f8197e10, type: 3}
   activeBlackHole: {fileID: 0}
 --- !u!114 &4469862759675896385
@@ -1406,6 +1411,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &3108263064726186165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4469862759675896390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 785ea35d5d9104e488026d4f8635a6ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4479024915855545912
 GameObject:
   m_ObjectHideFlags: 0

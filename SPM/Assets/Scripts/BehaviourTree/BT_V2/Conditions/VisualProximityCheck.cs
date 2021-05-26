@@ -11,6 +11,8 @@ public class VisualProximityCheck : BTNode
 
     public override Status Evaluate()
     {
+        //If TargetTransform already exists we dont want to perform overlapSphere, this block also contains logic for if the AI was alerted to the player by
+        //another AI, effectively letting secondary AI threat use the Alerting AI:s position as origin for the Distance check
         if (bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue() != null)
         {   
             //If AlerterTransform is set, this AI has been alerted by another and uses the Alerting AI:s position as origin for detection range
@@ -25,8 +27,6 @@ public class VisualProximityCheck : BTNode
                 Debug.Log("Visual success from: " + bt.owner.gameObject);
                 return Status.BH_SUCCESS;
             }
-            else
-                Debug.Log("Visual Not in range from: "+ bt.owner.gameObject);
         }
 
         //Considered using if-else if here but that would only save one call to OverlapSphere,
@@ -55,6 +55,8 @@ public class VisualProximityCheck : BTNode
             ResetPatrolPoint();
             bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(playerTransform);
             lastKnownPlayerPosition = playerTransform.position;
+            
+
             return Status.BH_SUCCESS;
         }
         else
@@ -63,6 +65,7 @@ public class VisualProximityCheck : BTNode
             SetLastSeenPosition();
             //If visual detection has failed, reset the values of HasCalledForHelp, TargetTransform and AlerterTransform
             ResetBlackboardValues();
+
             return Status.BH_FAILURE;
         }
     }

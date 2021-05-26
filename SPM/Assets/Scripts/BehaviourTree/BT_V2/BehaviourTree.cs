@@ -20,7 +20,6 @@ public class BehaviourTree : MonoBehaviour
         }
         public void SetValue(T newVal)
         {
-            Debug.Log("val set to " + newVal);
             value = newVal;
         }
     }
@@ -29,7 +28,9 @@ public class BehaviourTree : MonoBehaviour
     public Enemy owner { get; private set; }
     public NavMeshAgent ownerAgent { get; private set; }
     public Transform ownerTransform { get; private set; }
-    public TimerNode timerNode { get; protected set; }  
+    public TimerNode timerNode { get; protected set; }
+    
+    [SerializeField] protected float maxWaitTime;
     
     protected BTNode m_root;
 

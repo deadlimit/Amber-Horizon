@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class TargetInRange : BTNode
 {
-    //Denna behöver vara en composite sen, för den ska ha barn
     public TargetInRange(BehaviourTree bt) : base(bt) {}
     public override void OnInitialize()
     {
+//        bt.owner.Animator.SetBool("PlayerInRange", false);
         Debug.Log("TargetInRange init");
     }
     public override Status Evaluate()
@@ -22,7 +22,7 @@ public class TargetInRange : BTNode
         }
         else
         {
-            Debug.Log("In range");
+            //Destructor PlayerInRange animator parameter i set in DestructorAttack node instead of here
             return Status.BH_SUCCESS;
         }
 

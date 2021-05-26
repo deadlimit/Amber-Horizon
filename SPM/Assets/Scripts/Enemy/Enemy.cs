@@ -19,7 +19,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     public Rigidbody Rigidbody { get; set; }
     public Animator Animator { get; private set; }
     public AIPathfinder Pathfinder { get; private set; }
-    public Transform Target { get; private set; }
+   // public Transform Target { get; private set; }
     public CapsuleCollider Collider { get; private set; }
 
     [SerializeField] private LayerMask playerMask;
@@ -39,7 +39,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Rigidbody = GetComponent<Rigidbody>();
         Collider = GetComponent<CapsuleCollider>();
         Pathfinder = GetComponent<AIPathfinder>();
-        Target = GameObject.FindGameObjectWithTag("Player").transform;
+        //Target = GameObject.FindGameObjectWithTag("Player").transform;
         originPosition = transform.position;
     }
     private void OnDisable()

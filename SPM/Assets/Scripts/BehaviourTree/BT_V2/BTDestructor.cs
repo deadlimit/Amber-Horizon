@@ -5,12 +5,15 @@ using UnityEngine;
 public class BTDestructor : BehaviourTree
 {
     public Destructor destructor { get; private set; }
-    private DestructorAttack destructorAttackNode; 
+    private DestructorAttack destructorAttackNode;
+    private DestructorPoint destructorPointNode;
     private new void Start()
     {
         base.Start();
         destructor = (Destructor)owner;
         destructorAttackNode = new DestructorAttack(this);
+        destructorPointNode = new DestructorPoint(this);
+        blackboard.Add("HasAlreadyPointed", new DataContainer<bool>(false));
         m_root = BehaviourTreeBuilder();
     }
     private void Update()
@@ -25,7 +28,7 @@ public class BTDestructor : BehaviourTree
         Sequence patrolSequence = new Sequence(new List<BTNode>
             {
             new Patrol(this),
-            new Wait(this, 4f)
+            new Wait(this, maxWaitTime)
             }, this, "patrolSequence", new IsTargetNull(this));
 
 
@@ -37,6 +40,7 @@ public class BTDestructor : BehaviourTree
 
         Selector investigateSelector = new Selector(new List<BTNode>
             {
+            new ResetValuesAfterVisualFail_Destructor(this),
             investigateLastSeen,
             }, this, "investigateSelector");
 
@@ -44,7 +48,7 @@ public class BTDestructor : BehaviourTree
         //Target Visible----------------------------------------------------------------------
         Sequence pointAndCharge = new Sequence(new List<BTNode>
             {
-             new DestructorPoint(this),
+            destructorPointNode,
              new ChargeTarget(this)
         }, this, "pointAndCharge", new DefaultCondition(this));
 
@@ -55,7 +59,7 @@ public class BTDestructor : BehaviourTree
 
         Selector targetVisible = new Selector(new List<BTNode>
              {
-              //new AlertAllies(this),
+              new SetValuesAfterVisual_Destructor(this),
               attack,
               pointAndCharge
              }, this, "targetVisible", new VisualProximityCheck(this));
@@ -94,9 +98,14 @@ public class BTDestructor : BehaviourTree
         return new Repeater(RootSelector, this);
     }
 
-    //Called by animation event in Destructor melee anim
+    //Called by animation event in Destructor melee animation
     public void AttackAnimationFinished()
     {
         destructorAttackNode.AttackAnimationFinished();
+    }
+    //Called by animation event in Destructor See Player animation
+    public void PointAnimationFinished()
+    {
+        destructorPointNode.PointAnimationFinished();
     }
 }
