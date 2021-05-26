@@ -158,22 +158,8 @@ namespace EventCallbacks
             this.player = player.GetComponent<PlayerController>();
         }
     }
-
-    public class StartHitAnimationEvent : EventInfo
-    {
-        public Transform culprit;
-        public GameplayEffect appliedEffect { get; }
-        public StartHitAnimationEvent(GameplayEffect appliedEffect, Transform culprit)
-        {
-            this.appliedEffect = appliedEffect;
-            this.culprit = culprit;
-        }
-    }
-
-
-    //Is this in use? 
+    
     public class ReturnPlayerControl : EventInfo {}
-
     
 }
 

@@ -5,37 +5,29 @@ public class PlayerHitListener : MonoBehaviour
 {
     AbilitySystem.GameplayAbilitySystem gas;
 
-    private bool isVulnerable;
+    private bool isVurnable;
     
     private void Start()
     {
         EventSystem<PlayerHitEvent>.RegisterListener(OnPlayerHit);
         gas = GetComponent<AbilitySystem.GameplayAbilitySystem>();
         Debug.Assert(gas);
-        isVulnerable = true;
+        isVurnable = true;
     }
     private void OnDisable() => EventSystem<PlayerHitEvent>.UnregisterListener(OnPlayerHit);
 
     private void OnPlayerHit(PlayerHitEvent phe) {
-        if (isVulnerable == false)
+        if (isVurnable == false)
             return;
-
-        StartHitAnimationEvent shae = new StartHitAnimationEvent(phe.appliedEffect, phe.culprit);
-        EventSystem<StartHitAnimationEvent>.FireEvent(shae);
-        isVulnerable = false;
+        
         gas.ApplyEffectToSelf(phe.appliedEffect);
         
-        //if player died from this attack
         if(gas.GetAttributeValue(typeof(HealthAttribute)) <= 0)
         {
             PlayerDiedEvent pde = new PlayerDiedEvent(gameObject);
+            isVurnable = false;
+            this.Invoke(() => isVurnable = true, 2);
             EventSystem<PlayerDiedEvent>.FireEvent(pde);
         }
-    }
-
-    //Called by animation event, which one?? 
-    public void SetPlayerVulnerable()
-    {
-        isVulnerable = true;
     }
 }

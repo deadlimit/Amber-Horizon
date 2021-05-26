@@ -8,8 +8,6 @@ public class GateLock : InteractableObject
     
     private BoxCollider interaction;
 
-    [SerializeField] private Gate frontGate;
-    
     [Header("Fuskknapp, sätt till true för att gaten ska öppna direkt (debug)")]
     [SerializeField] private bool OpenDoorWithoutKeys;
     
@@ -53,7 +51,8 @@ public class GateLock : InteractableObject
     }
 
     private void UnlockGateSequence() {
-        frontGate.OpenGate();
+        UnlockEvent ue = new UnlockEvent();
+        EventSystem<UnlockEvent>.FireEvent(ue);
         EventSystem<InteractTriggerExitEvent>.FireEvent(new InteractTriggerExitEvent());
         interaction.enabled = false;
         Destroy(this);
