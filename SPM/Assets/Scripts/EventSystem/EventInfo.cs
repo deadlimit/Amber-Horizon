@@ -19,9 +19,11 @@ namespace EventCallbacks
 
         public readonly Transform culprit;
         public readonly GameplayEffect appliedEffect;
-        public PlayerHitEvent(Transform culprit, GameplayEffect appliedEffect) {
+        public readonly PlayerController player;
+        public PlayerHitEvent(Transform culprit, GameplayEffect appliedEffect, PlayerController player) {
             this.culprit = culprit;
             this.appliedEffect = appliedEffect;
+            this.player = player;
         }
     }
 
@@ -115,6 +117,10 @@ namespace EventCallbacks
     
     public class ResetCameraFocus : EventInfo {}
     
+    public class LoadMainMenu : EventInfo {}
+    public class ExitMainMenu : EventInfo {}
+    
+    
     public class ExitTransitViewEvent : EventInfo {}
 
     public class SoundEffectEvent : EventInfo {
@@ -152,6 +158,8 @@ namespace EventCallbacks
             this.player = player.GetComponent<PlayerController>();
         }
     }
+    
+    public class ReturnPlayerControl : EventInfo {}
     
 }
 

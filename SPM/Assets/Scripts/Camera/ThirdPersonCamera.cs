@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using EventCallbacks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class ThirdPersonCamera : MonoBehaviour {
@@ -13,8 +14,9 @@ public class ThirdPersonCamera : MonoBehaviour {
     
     private void Awake() {
         currentCameraBehaviour = cameraBehaviourPairs[0].Behaviour;
+        
         currentCameraBehaviour.Init(transform);
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.ActivateCursor(false, CursorLockMode.Locked);
         
         foreach(CameraBehaviourPair pair in cameraBehaviourPairs)
             cameraBehaviours.Add(pair.CameraType, pair.Behaviour);
@@ -32,9 +34,10 @@ public class ThirdPersonCamera : MonoBehaviour {
     }
     
     void LateUpdate() {
-        currentCameraBehaviour.MovementBehaviour();
+        if(currentCameraBehaviour.enabled)
+            currentCameraBehaviour.MovementBehaviour();
     }
-
+    
     private void SwitchToFollowCamera(ResetCameraFocus focus) {
         currentCameraBehaviour = cameraBehaviours[CameraBehaviourType.Follow];
     }

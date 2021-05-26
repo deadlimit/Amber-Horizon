@@ -70,11 +70,9 @@ public class PlayerUI : MonoBehaviour {
 
     private IEnumerator AnimateHealthChipAway(float time, float healthFraction)
     {
-        Debug.Log("PlayerUI, start of AnimaeteHealthChipAway");
         float end = Time.time + time;
 
-        while (Time.time < end && healthBarChipAway.fillAmount > healthFraction)
-        {
+        while (Time.time < end && healthBarChipAway.fillAmount > healthFraction) {
             healthBarChipAway.fillAmount -= Time.deltaTime / time;
             yield return null;
         }
@@ -108,7 +106,7 @@ public class PlayerUI : MonoBehaviour {
     }
 
     private void ChangeHealthUI(PlayerHitEvent playerHitEvent) {
-        float currentHealth = player.GetPlayerHealth();
+        float currentHealth = playerHitEvent.player.GetPlayerHealth();
 
         //4 is the max health. and it doesnt show health bar on death
         if (currentHealth < 1 )
@@ -121,7 +119,6 @@ public class PlayerUI : MonoBehaviour {
         }
 
         float healthFraction = currentHealth / 4;
-        Debug.Log("currentHealth: " + currentHealth + " healthFraction: " + healthFraction);
 
         healthBar.fillAmount = healthFraction;
 
@@ -140,10 +137,8 @@ public class PlayerUI : MonoBehaviour {
 
     }
 
-    private void RestoreHealthUI(PlayerReviveEvent playerReviveEvent)
-    {
-        ChangeHealthUI(null);
-        
+    private void RestoreHealthUI(PlayerReviveEvent playerReviveEvent) {
+        ChangeHealthUI(new PlayerHitEvent(null, null, playerReviveEvent.player));
     }
 
 }

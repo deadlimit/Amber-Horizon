@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using EventCallbacks;
@@ -5,12 +6,15 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
     
     [SerializeField] private Animator characterAnimator;
     [SerializeField] private Animator cameraAnimator;
 
+    [SerializeField] private Image background;
+     
     [SerializeField] private MainMenuButtonFader mainMenuButtonFader;
     [SerializeField] private MainMenuButtonFader settingsButtonFader;
     [SerializeField] private Transform settingsPosition;
@@ -24,6 +28,11 @@ public class GameManager : MonoBehaviour {
     private readonly int movetoMainMenuHash = Animator.StringToHash("MoveToMainMenu");
 
 
+    private void Awake() {
+        EventSystem<LoadMainMenu>.FireEvent(null);
+        Cursor.ActivateCursor(true, CursorLockMode.Confined);
+    }
+
     private void Start() {
         mainMenuButtonFader.transform.SetAsLastSibling();
         StartCoroutine(mainMenuButtonFader.FadeButtonsSequence(1));
@@ -31,6 +40,13 @@ public class GameManager : MonoBehaviour {
     
     public void OnStartGame(string sceneName) {
         characterAnimator.SetTrigger(startGameHash);
+        Cursor.ActivateCursor(false, CursorLockMode.Locked);
+        mainMenuButtonFader.buttons.Add(background);
+        StartCoroutine(mainMenuButtonFader.FadeButtonsSequence(0));
+        this.Invoke(() => {
+            SceneManager.UnloadSceneAsync(sceneName);
+            EventSystem<ExitMainMenu>.FireEvent(null);
+        }, 1);
     }
     
     public void OnSettingsPressed() {

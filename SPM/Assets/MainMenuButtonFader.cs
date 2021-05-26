@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class MainMenuButtonFader : MonoBehaviour {
 
-    [SerializeField] private List<Image> buttons;
+    public List<Image> buttons;
     [SerializeField] private float fadeSpeed;
     
     public IEnumerator FadeButtonsSequence(float targetValue) {
+        StopAllCoroutines();
         foreach (Image button in buttons) {
             StartCoroutine(FadeButton(button, targetValue));
             yield return new WaitForSeconds(.2f);
