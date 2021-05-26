@@ -35,7 +35,7 @@ public class BTDestructor : BehaviourTree
         //Investigate------------------------------------------------------------------
         Sequence investigateLastSeen = new Sequence(new List<BTNode>
             {
-            new InvestigateLastSeen(this)
+            new Dest_InvestigateLastSeen(this)
             }, this, "investigateLastSeen", new LastSeenPosition(this));
 
         Selector investigateSelector = new Selector(new List<BTNode>

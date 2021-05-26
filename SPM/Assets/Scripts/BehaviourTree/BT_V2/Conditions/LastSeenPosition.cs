@@ -9,11 +9,11 @@ public class LastSeenPosition : BTNode
 
     public override void OnInitialize()
     {
+        targetPos = bt.GetBlackBoardValue<Vector3>("LastSeenPosition").GetValue();
+        Debug.Log("LastSeenPosition.cs targetPos: " + targetPos);
     }
     public override Status Evaluate()
     {
-        targetPos = bt.GetBlackBoardValue<Vector3>("LastSeenPosition").GetValue();
-
         if (targetPos.Equals(Vector3.zero))
         {
             return Status.BH_FAILURE;

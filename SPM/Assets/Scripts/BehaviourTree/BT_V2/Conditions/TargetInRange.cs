@@ -13,7 +13,7 @@ public class TargetInRange : BTNode
     public override Status Evaluate()
     {
         float distance = Vector3.Distance(bt.ownerTransform.position, bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue().position);
-        bt.owner.Animator.SetFloat("DistanceToTarget", distance);
+        //bt.owner.Animator.SetFloat("DistanceToTarget", distance);
 
         if (distance >= bt.owner.AttackRange)
         {

@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class Forager : Enemy {
 
+    [Header("Forager Variables")]
     [SerializeField] private float fleeDistance;
     [SerializeField] private float fireCooldown;
+    
     [SerializeField] private GameObject Bullet;
     [HideInInspector] public BlackHole activeBlackHole;
 

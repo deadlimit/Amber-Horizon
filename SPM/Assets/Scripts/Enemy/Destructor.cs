@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Destructor : Enemy {
 
-    [SerializeField]private GameObject attackCollider;
     public bool hitPlayer { get; set; }
     protected new void Start() {
         base.Start();

@@ -2,31 +2,23 @@ using UnityEngine;
 
 public class VisualProximityCheck : BTNode
 {
-    private float visualRange = 20f;
+    private float visualRange;
     private Transform playerTransform;
     private Vector3 lastKnownPlayerPosition;
     private bool hasSeenPlayer;
     private float rangeRounding = 1f; 
-   public VisualProximityCheck(BehaviourTree bt ) : base(bt){  }
+   public VisualProximityCheck(BehaviourTree bt ) : base(bt)
+    {
+        visualRange = bt.owner.VisualRange;
+    }
 
     public override Status Evaluate()
     {
-        //If TargetTransform already exists we dont want to perform overlapSphere, this block also contains logic for if the AI was alerted to the player by
-        //another AI, effectively letting secondary AI threat use the Alerting AI:s position as origin for the Distance check
-        if (bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue() != null)
-        {   
-            //If AlerterTransform is set, this AI has been alerted by another and uses the Alerting AI:s position as origin for detection range
-            Transform visualRangeOrigin = bt.GetBlackBoardValue<Transform>("AlerterTransform").GetValue() != null ?
-                bt.GetBlackBoardValue<Transform>("AlerterTransform").GetValue() : bt.ownerTransform;
-            Debug.Log("VisualRangeOriginTransform : " + visualRangeOrigin.gameObject);
-
-            //Target already exists and is in range of detection, then dont bother with OverlapSphere
-            if (Vector3.Distance(visualRangeOrigin.position,
-                bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue().position) < visualRange + rangeRounding)
-            {
-                Debug.Log("Visual success from: " + bt.owner.gameObject);
-                return Status.BH_SUCCESS;
-            }
+        
+        if (TargetTransformExists())
+        {
+            SetSpeedAndLastKnowPosition();
+            return Status.BH_SUCCESS;
         }
 
         //Considered using if-else if here but that would only save one call to OverlapSphere,
@@ -54,8 +46,7 @@ public class VisualProximityCheck : BTNode
 
             ResetPatrolPoint();
             bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(playerTransform);
-            lastKnownPlayerPosition = playerTransform.position;
-            
+            SetSpeedAndLastKnowPosition();
 
             return Status.BH_SUCCESS;
         }
@@ -107,5 +98,31 @@ public class VisualProximityCheck : BTNode
         bt.GetBlackBoardValue<bool>("HasCalledForHelp").SetValue(false);
         bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(null);
         bt.GetBlackBoardValue<Transform>("AlerterTransform").SetValue(null);
+    }
+
+    private bool TargetTransformExists()
+    {
+        //If TargetTransform already exists we dont want to perform overlapSphere, this block also contains logic for if the AI was alerted to the player by
+        //another AI, effectively letting secondary AI threat use the Alerting AI:s position as origin for the Distance check
+        if (bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue() != null)
+        {
+            //If AlerterTransform is set, this AI has been alerted by another and uses the Alerting AI:s position as origin for detection range
+            Transform visualRangeOrigin = bt.GetBlackBoardValue<Transform>("AlerterTransform").GetValue() != null ?
+                bt.GetBlackBoardValue<Transform>("AlerterTransform").GetValue() : bt.ownerTransform;
+
+            //Target already exists and is in range of detection, then dont bother with OverlapSphere
+            if (Vector3.Distance(visualRangeOrigin.position,
+                bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue().position) < visualRange + rangeRounding)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void SetSpeedAndLastKnowPosition()
+    {
+        lastKnownPlayerPosition = playerTransform.position;
+        bt.ownerAgent.speed = bt.owner.MovementSpeedAttack;
     }
 }

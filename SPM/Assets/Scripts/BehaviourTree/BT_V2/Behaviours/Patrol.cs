@@ -13,6 +13,10 @@ public class Patrol : BTNode
         destination = Vector3.zero;
     }
 
+    public override void OnInitialize()
+    {
+        bt.ownerAgent.speed = bt.owner.MovementSpeedDefault;
+    }
     public override Status Evaluate()
     {
         if (ReachedTarget() || destination.Equals(Vector3.zero))

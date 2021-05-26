@@ -30,8 +30,9 @@ public class BehaviourTree : MonoBehaviour
     public Transform ownerTransform { get; private set; }
     public TimerNode timerNode { get; protected set; }
     
-    [SerializeField] protected float maxWaitTime;
-    
+    public float maxWaitTime { get; private set; }
+    public float minWaitTime { get; private set; }
+
     protected BTNode m_root;
 
 
@@ -48,6 +49,10 @@ public class BehaviourTree : MonoBehaviour
         ownerTransform = owner.transform;
         ownerAgent = owner.Pathfinder.agent;
         startPos = ownerTransform.position;
+
+        ownerAgent.speed = owner.MovementSpeedDefault;
+        maxWaitTime = owner.MaxWaitTimeOnPatrol;
+        minWaitTime = owner.MinWaitTimeOnPatrol;
 
         blackboard.Add("Target", null);
         blackboard.Add("TargetTransform", new DataContainer<Transform>(null));

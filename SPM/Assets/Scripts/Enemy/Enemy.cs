@@ -3,9 +3,19 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
 
-    [Header("Generic enemy variables")]
+    [Header("Enemy variables")]
     [SerializeField] private float attackRange;
     [SerializeField] private float visualRange;
+    [SerializeField] private float movementSpeedAttack;
+    [SerializeField] private float movementSpeedDefault;
+    
+    [Header("Patrol")]
+    [SerializeField] private float maxWaitTimeOnPatrol;
+    [SerializeField] private float minWaitTimeOnPatrol;
+    
+    [Header("Layermasks")]
+    [SerializeField] private LayerMask playerMask;
+    [SerializeField] private LayerMask enemyMask;
 
     //TODO; replace names and accesibility of rings
     public float outerRing, innerRing;
@@ -14,32 +24,22 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     public Vector3 originPosition { get; set; }
     public bool died { get; protected set; }
 
-
     //Components
     public Rigidbody Rigidbody { get; set; }
     public Animator Animator { get; private set; }
     public AIPathfinder Pathfinder { get; private set; }
-   // public Transform Target { get; private set; }
     public CapsuleCollider Collider { get; private set; }
-
-    [SerializeField] private LayerMask playerMask;
-    [SerializeField] private LayerMask enemyMask;
-
-    [SerializeField] private State[] states;
     public StateMachine stateMachine { get; private set; }
-
     public GameplayAbilitySystem AbilitySystem { get; private set; }
 
     protected BehaviourTree bt;
 
     public void Awake() {
         bt = GetComponent<BehaviourTree>();
-        stateMachine = new StateMachine(this, states);
         Animator = GetComponent<Animator>();
         Rigidbody = GetComponent<Rigidbody>();
         Collider = GetComponent<CapsuleCollider>();
         Pathfinder = GetComponent<AIPathfinder>();
-        //Target = GameObject.FindGameObjectWithTag("Player").transform;
         originPosition = transform.position;
     }
     private void OnDisable()
@@ -104,8 +104,15 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     }
 
 
+
+    #region GETTERS
     public LayerMask GetPlayerMask() { return playerMask; }
     public LayerMask EnemyMask { get => enemyMask; }
     public float AttackRange { get => attackRange; }
     public float VisualRange { get => visualRange; }
+    public float MovementSpeedDefault { get => movementSpeedDefault; }
+    public float MovementSpeedAttack { get => movementSpeedAttack; }
+    public float MaxWaitTimeOnPatrol { get => maxWaitTimeOnPatrol; }
+    public float MinWaitTimeOnPatrol { get => minWaitTimeOnPatrol; }
+    #endregion
 }

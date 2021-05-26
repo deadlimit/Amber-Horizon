@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InvestigateLastSeen : BTNode
+public class Dest_InvestigateLastSeen : BTNode
 {
+    //Script is identical to InvestigateLastSeen but for the animator parameter that is set when succeeding
+    //Not quite sure this is the way i want to do things, but im experimenting
     private Vector3 targetPos; 
-    public InvestigateLastSeen(BehaviourTree bt) : base(bt) { }
+    public Dest_InvestigateLastSeen(BehaviourTree bt) : base(bt) { }
 
     public override void OnInitialize()
     {
@@ -23,10 +25,9 @@ public class InvestigateLastSeen : BTNode
         }
         if (ReachedTarget())
         {
+            bt.owner.Animator.SetBool("HasPositionToInvestigate", false);
             bt.GetBlackBoardValue<Vector3>("LastSeenPosition").SetValue(Vector3.zero);
         }
-
-
         return Status.BH_RUNNING;
     }
 
