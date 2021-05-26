@@ -19,7 +19,7 @@ public class DestructorAgressionsState : State {
     }
 
     public override void RunUpdate() {
-        destructor.transform.LookAt(destructor.Target);
+       // destructor.transform.LookAt(destructor.Target);
     }
 
     public override void Exit() {

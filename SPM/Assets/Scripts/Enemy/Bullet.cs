@@ -24,7 +24,7 @@ public class Bullet : PoolObject {
         
         if (((1 << other.gameObject.layer) & bulletData.DamageLayer) != 0)
         {
-            EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, bulletData.Effect, other.gameObject.GetComponent<PlayerController>()));
+            EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, bulletData.Effect));
         }
         Instantiate(hitVFX, transform.position, transform.rotation);
         ResetBullet();
