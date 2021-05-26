@@ -27,13 +27,13 @@ public class PlayerAnimation : MonoBehaviour {
     }
     
     private void OnEnable() {
-        EventSystem<PlayerHitEvent>.RegisterListener(OnPlayerHit);
+        EventSystem<StartHitAnimationEvent>.RegisterListener(StartHitAnimation);
         EventSystem<AbilityUsed>.RegisterListener(PlayDashAnimation);
         EventSystem<PlayerDiedEvent>.RegisterListener(OnPlayerDied);
     }
 
     private void OnDisable() {
-        EventSystem<PlayerHitEvent>.UnregisterListener(OnPlayerHit);
+        EventSystem<StartHitAnimationEvent>.UnregisterListener(StartHitAnimation);
         EventSystem<AbilityUsed>.UnregisterListener(PlayDashAnimation);
         EventSystem<PlayerDiedEvent>.UnregisterListener(OnPlayerDied);
 
@@ -52,11 +52,12 @@ public class PlayerAnimation : MonoBehaviour {
         //physics.maxSpeed = oldMaxSpeed;
     }
 
-    private void OnPlayerHit(PlayerHitEvent playerHitEvent) {
-        Debug.Log(playerHitEvent.appliedEffect);
-        if (hitAnimationCallbacks.ContainsKey(playerHitEvent.appliedEffect) == false) return;
+    //is "Culprit" needed here? Shouldnt we be able to populate the referenced dictionary by attack types? 
+    private void StartHitAnimation(StartHitAnimationEvent startHitAnimationEvent) {
+        Debug.Log(startHitAnimationEvent.appliedEffect);
+        if (hitAnimationCallbacks.ContainsKey(startHitAnimationEvent.appliedEffect) == false) return;
         
-        hitAnimationCallbacks[playerHitEvent.appliedEffect].Invoke(playerHitEvent.culprit);
+        hitAnimationCallbacks[startHitAnimationEvent.appliedEffect].Invoke(startHitAnimationEvent.culprit);
     }
 
     public void OnDestructorHit(Transform culprit) {
