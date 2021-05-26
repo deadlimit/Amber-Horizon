@@ -26,7 +26,7 @@ public class Bullet : PoolObject {
         {
             EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, bulletData.Effect));
         }
-        Instantiate(hitVFX, transform.position, transform.rotation);
+        ObjectPooler.Instance.Spawn("BulletHit", transform.position, transform.rotation);
         ResetBullet();
     }
 

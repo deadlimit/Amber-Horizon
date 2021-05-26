@@ -11,8 +11,6 @@ public class ChargeTarget : BTNode
     public override void OnInitialize()
     {
         playerTransform = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
-        Debug.Log("Charge Target init");
-        //Speed = Charge/attack speed
     }
     public override Status Evaluate()
     {
@@ -27,7 +25,6 @@ public class ChargeTarget : BTNode
             return Status.BH_FAILURE;
         else
         {
-            Debug.Log("charge target running");
             return Status.BH_RUNNING;
         }
     }
