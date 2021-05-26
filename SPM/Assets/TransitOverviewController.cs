@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using EventCallbacks;
 using TMPro;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class TransitOverviewController : MonoBehaviour {
     [SerializeField] private float waitUntilButtonSpawn;
     [SerializeField] private Canvas UI;
     [SerializeField] private TextMeshProUGUI exitInstructionText;
+    
     private readonly List<GameObject> activeButtons = new List<GameObject>();
     
     private void OnEnable() {
@@ -32,7 +34,10 @@ public class TransitOverviewController : MonoBehaviour {
     private IEnumerator SpawnButtons(TransitCameraFocusInfo focusInfo) {
         
         yield return new WaitForSeconds(waitUntilButtonSpawn);
+        
         exitInstructionText.gameObject.SetActive(true);
+        
+        //Verkar vilja instansiera transitknappar på units i level 1 när man är i level 2
         foreach (TransitUnit transitUnit in focusInfo.TransitUnits) {
             GameObject button = Instantiate(transitButton, Camera.main.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, UI.transform);
             

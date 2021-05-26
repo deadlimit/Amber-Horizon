@@ -31,16 +31,30 @@ public class SceneTransit : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        cinematic.Play();
         trigger.enabled = false;
-    //    StartCoroutine(LoadNewScene());
-        
+        GateLevelOne.SetTrigger(CloseGateHash);
+        StartCoroutine(NewSceneSequence());
     }
 
+    private IEnumerator NewSceneSequence() {
+        
+        yield return new WaitForSeconds((float)cinematic.duration);
+        
+        yield return StartCoroutine(LoadNewScene());
+        
+    }
+    
+    
     private IEnumerator LoadNewScene() {
-        
-        yield return SceneManager.UnloadSceneAsync("Level 1", UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
-        
+        yield return SceneManager.UnloadSceneAsync("Level 1");
         yield return SceneManager.LoadSceneAsync(NewSceneName, LoadSceneMode.Additive);
+        
+        EventSystem<NewLevelLoadedEvent>.FireEvent(null);
+        
+        cinematic.Stop();
+        FindObjectOfType<PlayerController>().enabled = true;
+        FindObjectOfType<ThirdPersonCamera>().enabled = true;
+        
+        
     }
 }

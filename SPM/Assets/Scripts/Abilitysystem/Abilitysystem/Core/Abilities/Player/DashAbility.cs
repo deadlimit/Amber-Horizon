@@ -31,7 +31,7 @@ public class DashAbility : GameplayAbility {
         float gravity = playerController.physics.gravity;
         
         playerController.physics.velocity = Vector3.zero;
-        playerController.physics.gravity = playerController.isGrounded() ? gravity * 3 : 0;
+        playerController.physics.gravity = playerController.IsGrounded() ? gravity * 3 : 0;
         playerController.physics.maxSpeed = dashLength;
 
         //förlåt för divison med DT, det är hemskt och beror på hur fixen med FPS-problemen är. Ska göra om allt senare.. om jag hinner.

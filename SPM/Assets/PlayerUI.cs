@@ -26,7 +26,6 @@ public class PlayerUI : MonoBehaviour {
         player = FindObjectOfType<PlayerController>();
 
         ChangeColor(0);
-        print(player);
     }
 
     private void ChangeColor(float value) {

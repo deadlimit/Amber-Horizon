@@ -12,7 +12,7 @@ public class GroundedState : State
     
     public override void RunUpdate()
     {
-        if(!player.isGrounded())
+        if(!player.IsGrounded())
             stateMachine.ChangeState<JumpingState>();
 
             Vector3 input =
@@ -25,7 +25,7 @@ public class GroundedState : State
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && player.isGrounded()) {
+        if (Input.GetKeyDown(KeyCode.Space) && player.IsGrounded()) {
             player.GetComponent<Animator>().SetTrigger("Jump");
             stateMachine.ChangeState<JumpingState>();
             player.SetJump();

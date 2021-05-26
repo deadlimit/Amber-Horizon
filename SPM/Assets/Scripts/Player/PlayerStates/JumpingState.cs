@@ -18,7 +18,7 @@ public class JumpingState : State
         Vector3.forward * Input.GetAxisRaw("Vertical");
         player.InputAirborne(input, true);
         
-        if (player.isGrounded()) 
+        if (player.IsGrounded()) 
         {
             stateMachine.ChangeState<GroundedState>();
         }
