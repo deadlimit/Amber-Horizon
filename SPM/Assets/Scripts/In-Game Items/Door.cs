@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
+    [SerializeField ] private BoxCollider collisionColl;
     private BoxCollider coll;
-    private BoxCollider collisionColl;
 
     private void Awake()
     {
         coll = GetComponent<BoxCollider>();
-        collisionColl = transform.GetChild(0).GetComponent<BoxCollider>();
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 7)
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            Debug.Log("Dörren öppnas med animation och borttagen collider");
             //animation
             collisionColl.enabled = false;
         }

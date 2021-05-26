@@ -101,7 +101,7 @@ public class LauncherBlackHole : MonoBehaviour
 
 
         float velXZ = displacementXZ / time;
-        float velY = displacementY / time + (0.5f * bh.gravity) * time;
+        float velY = displacementY / time + (0.5f * bh.GetGravity()) * time;
 
         Vector3 trajectory = distanceXZ * velXZ;
         trajectory.y = velY;
@@ -112,7 +112,7 @@ public class LauncherBlackHole : MonoBehaviour
     Vector3 CalculatePosInTime(Vector3 vo, float time) 
     {
         Vector3 result = launchPoint.transform.position + vo * time;
-        float speedY = (-0.5f * bh.gravity* (time * time)) + (vo.y * time) + launchPoint.transform.position.y;
+        float speedY = (-0.5f * bh.GetGravity() * (time * time)) + (vo.y * time) + launchPoint.transform.position.y;
 
         result.y = speedY;
         return result;

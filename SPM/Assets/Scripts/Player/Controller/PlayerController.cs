@@ -8,37 +8,43 @@ public class PlayerController : MonoBehaviour
 {
 
     [Header("Player Control")]
-    public float jumpHeight = 5f;
-    public float acceleration = 5f;
-    public float deceleration = 2f;
-    public float airControl = 0.2f;
-    public float maxSpeed = 5f;
-    public float turnRate = 4f;
-    public float retainedSpeedWhenTurning = 0.33f;
-    public LayerMask groundCheckMask;
+    [SerializeField] private float jumpHeight = 5f;
+    [SerializeField] private float acceleration = 5f;
+    [SerializeField] private float deceleration = 2f;
+    [SerializeField] private float airControl = 0.2f;
+    [SerializeField] private float maxSpeed = 5f;
+    [SerializeField] private float turnRate = 4f;
+    [SerializeField] private float retainedSpeedWhenTurning = 0.33f;
+    
+    [Header("GroundCheck")]
+    [SerializeField] private LayerMask groundCheckMask;
+    [SerializeField] private float groundCheckDistance = 0.05f;
+
     [Header("StateMachine")]
-    public State[] states;
+    [SerializeField] private State[] states;
     private StateMachine stateMachine;
-    private bool jump;
-    public float groundCheckDistance = 0.05f;
 
     [HideInInspector] public Vector3 force;
-    public Vector3 bhVelocity;
-    private Vector3 input;
+
+    [SerializeField] private Transform keyLookAtTarget;
+    
+    private GameplayAbilitySystem abilitySystem;
     public PhysicsComponent physics { get; private set; }
-    private Camera activeCamera;
-    public bool airborne;
+    public Animator animator { get; private set; }
+    
+    private Vector3 input;
+    private bool jump;
+    private Transform cameraTransform;
     private LineRenderer lr;
     private RaycastHit groundHitInfo;
-    public GameplayAbilitySystem abilitySystem { get; private set; }
     
     void Awake() 
     {
-
-        activeCamera = Camera.main;
+        cameraTransform = Camera.main.transform;
         physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);       
         lr = GetComponent<LineRenderer>();
+        animator = GetComponent<Animator>();
 
         EventSystem<CheckPointActivatedEvent>.RegisterListener(CheckpointRestoreHealth);
     }
@@ -49,6 +55,10 @@ public class PlayerController : MonoBehaviour
     public void InputGrounded(Vector3 inp) 
     {
         input = inp;
+        if (input.magnitude > 1f)
+        {
+            input.Normalize();
+        }
         PlayerDirection();
         
         if (input.magnitude < float.Epsilon)
@@ -57,16 +67,14 @@ public class PlayerController : MonoBehaviour
         }
         else
             Accelerate();
-        airborne = false;
     }
 
 
    public void InputAirborne(Vector3 inp, bool airborne) 
     {
-        input = inp * airControl;
+        input = inp.normalized * airControl;
         PlayerDirection();
         AccelerateAirborne();
-        airborne = true;
     }
     void Decelerate() 
     {
@@ -74,20 +82,32 @@ public class PlayerController : MonoBehaviour
 
         if (mp)
         {
-            Debug.Log("On moving platform");
-            force = deceleration * mp.GetVelocity().normalized * Time.deltaTime;
-            force += -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
+            //Debug.Log("On moving platform");
+
+            //Måste slå ut decelerationen så att plattformen får chans att påverka spelaren
+            //men det här är inte riktigt rätt - om man rör sig ett steg i sidled när plattformen är i rörelse
+            //skjutsas man med mer kraft än plattformen, och hamnar lite längre ut på den. 
+            //undrar vad den skillnaden kommer ifrån.
+
+            force = deceleration * mp.GetVelocity().normalized;
+            force += -deceleration * physics.GetXZMovement().normalized;
         }
         else
-            force = -deceleration * physics.GetXZMovement().normalized * Time.deltaTime;
+            force = -deceleration * physics.GetXZMovement().normalized;
         //Velocitys magnitud och riktning, multiplicerat med ett v�rde mellan 1 och 0, fast negativt
+        /*
+         *Frågan är om det faktiskt är en bättre idé att sköta plattformens påverkan på spelaren genom direkt positionsändring, istället för 
+         * att göra det genom velociteten. Tekniskt sett mindre korrekt, men de blir mindre sammankopplade på det sättet, och det svåra med deceleration 
+         * 
+         */
+
     }
-    void Accelerate()
+    private void Accelerate()
     {
         Vector3 inputXZ = new Vector3(input.x, 0, input.z);
         float dot = Vector3.Dot(inputXZ.normalized, physics.GetXZMovement().normalized);
         
-        force = input * Time.deltaTime * acceleration;
+        force = input * acceleration;
         /*
         om vi accelerar i en annan riktning vill vi egentligen bromsa f�rst
         skal�rprodukten anv�nds i multiplikation f�r att avg�ra hur mycket av decelerationen som ska
@@ -101,37 +121,43 @@ public class PlayerController : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + -((dot - 1) * turnRate * -physics.velocity.normalized) / 2, Color.red);
     }
 
-
     private void AccelerateAirborne()
     {
-        force = input * Time.deltaTime * acceleration;
+        force = input * acceleration;
     }
 
-    void PlayerDirection() 
+    private void PlayerDirection() 
     {
-        input = activeCamera.transform.rotation * input;
+        Vector3 temp = cameraTransform.rotation.eulerAngles;
+        temp.x = 0;
+        Quaternion camRotation = Quaternion.Euler(temp);
+
+        input = camRotation * input;
         input.y = 0;
-        RotateTowardsCameraDirection();
         input = input.magnitude * Vector3.ProjectOnPlane(input, physics.groundHitInfo.normal).normalized;
+        RotateTowardsCameraDirection();
 
     }
-    void Jump() { if (jump) { force.y += jumpHeight; jump = false; }  }
+    private void Jump() { if (jump) { force.y += jumpHeight / Time.fixedDeltaTime; jump = false; }  }
     public void SetJump()
     {
         jump = true;
     }
-    void RotateTowardsCameraDirection() 
-    {
-            transform.localEulerAngles = new Vector3(
-            transform.localEulerAngles.x, 
-            activeCamera.transform.localEulerAngles.y, 
-            transform.localEulerAngles.z);
+    private void RotateTowardsCameraDirection() {
+        if (stateMachine.CurrentState.GetType() == typeof(PlayerLockedState))
+            return;
+        
+        transform.localEulerAngles = new Vector3(
+        transform.localEulerAngles.x,
+        cameraTransform.transform.localEulerAngles.y, 
+        transform.localEulerAngles.z);
     }
 
-    void Update() {
-        
+    void Update() {       
         stateMachine.RunUpdate();
-        Jump();
+
+        if (Input.GetKeyDown(KeyCode.E))
+            abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
         
         if (Input.GetMouseButton(1))
         {
@@ -147,29 +173,54 @@ public class PlayerController : MonoBehaviour
             abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag);
         }
 
-        physics.AddForce(force);
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            ToggleLockedState();
+
+        }
+        
+        if(Input.GetKeyDown(KeyCode.Escape))
+            EventSystem<ResetCameraFocus>.FireEvent(null);
     }
 
-    public void RestoreHealth()
+    private void ToggleLockedState()
+    {   //Could be placed inside state but i wanted to gather all the inputs, also considered calling an overridden method inside the states,
+        //but that would be bloat for all other uses of the state machine core
+        if (stateMachine.CurrentState.GetType() == typeof(GroundedState))
+        {
+            EventSystem<NewCameraFocus>.FireEvent(new NewCameraFocus(keyLookAtTarget, false));
+            stateMachine.ChangeState<PlayerLockedState>();
+        }
+        else if (stateMachine.CurrentState.GetType() == typeof(PlayerLockedState))
+        {
+            EventSystem<ResetCameraFocus>.FireEvent(null);
+            stateMachine.ChangeState<GroundedState>();
+        }
+
+        animator.SetBool("ShowKey", !animator.GetBool("ShowKey"));
+    }
+    private void FixedUpdate()
     {
-        abilitySystem.TryActivateAbilityByTag(GameplayTags.HealthRestoreTag);
-        Debug.Log("reached RestoreHealth, in PlayerCOntroller");
+        Jump();
+        physics.AddForce(force);
+        force = Vector3.zero;
     }
-
+    public bool isGrounded() 
+    {        
+        Physics.Raycast(transform.position, Vector3.down, out groundHitInfo, groundCheckDistance, groundCheckMask);       
+        return groundHitInfo.collider;    
+    }
     private void CheckpointRestoreHealth(CheckPointActivatedEvent checkPointActivatedEvent)
     {
         RestoreHealth();
     }
-
-
-    public bool isGrounded() {
-        
-        Physics.Raycast(transform.position, Vector3.down, out groundHitInfo, groundCheckDistance, groundCheckMask);
-        
-        return groundHitInfo.collider;
-       
-        //groundHitInfo = collisionCaster.CastCollision(transform.position, Vector3.down, groundCheckDistance + skinWidth);
-     
+    public void RestoreHealth()
+    {
+        abilitySystem.TryActivateAbilityByTag(GameplayTags.HealthRestoreTag);
+    }
+    public float GetMaxSpeed()
+    {
+        return maxSpeed;
     }
     public float GetPlayerHealth()
     {

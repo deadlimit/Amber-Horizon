@@ -1,55 +1,58 @@
-using System;
-using System.Collections.Generic;
 using EventCallbacks;
 using UnityEngine;
 
-[Serializable]
 public class Checkpoint : MonoBehaviour {
 
-    public static List<Checkpoint> activeCheckpoints = new List<Checkpoint>();
-    public static List<Checkpoint> activatedCheckpoints = new List<Checkpoint>();
+    private static Checkpoint activeCheckpoint;
+    private static Transform player;
     
-    public AudioClip activateAudioClip;
-
-    public int ID { get; set; }
-
-    public Vector3 SpawnPosition { get; set; }
+    private BoxCollider trigger;
+    [SerializeField] private bool isStartingCheckpoint;
+    [SerializeField] private AudioClip activateAudioClip;
+    [SerializeField] private Color activeColor, inactiveColor;
+    [SerializeField] private ParticleSystem activeIndicatorVFX;
     
-    public Action<int> OnPlayerEnter;
-
-    public ParticleSystem activeIndicatorVFX;
-
-    [SerializeField]
-    private Color activeColor, inactiveColor;
-
-    private void OnEnable() => activeCheckpoints.Add(this);
-
-    private void OnDisable() => activeCheckpoints.Remove(this);
-
+    
+    
+    public Vector3 SpawnPosition { get; private set; }
+    
     private void Awake() {
         SpawnPosition = transform.GetChild(0).transform.position;
+        trigger = GetComponent<BoxCollider>();
+        player = FindObjectOfType<PlayerController>().transform;
+        
+        if (isStartingCheckpoint) {
+            if(activeCheckpoint != null)
+                Debug.LogWarning("More than one checkpoint chosen as starting checkpoint");
+            
+            activeCheckpoint = this;
+        }
+        
+            
     }
     
     private void OnTriggerEnter(Collider other) {
-        if (!other.CompareTag("Player")) return;
+        if (activeCheckpoint != null) 
+            activeCheckpoint.trigger.enabled = true;
         
-        OnPlayerEnter?.Invoke(ID);
+        activeCheckpoint = this;
+        activeCheckpoint.trigger.enabled = false;
         
-        EventSystem<CheckPointActivatedEvent>.FireEvent(new CheckPointActivatedEvent(activateAudioClip, ID));
+        EventSystem<CheckPointActivatedEvent>.FireEvent(new CheckPointActivatedEvent(this, activateAudioClip));
         EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("Checkpoint activated", 2, false));
-        activatedCheckpoints.Add(this);
-        enabled = false;
+        
+        ChangeParticleColor(true);
     }
     
+    
+    public static void RespawnAtActiveCheckpoint() => player.position = activeCheckpoint.SpawnPosition;
 
-    public void ChangeParticleColor(bool isActive)
+    private void ChangeParticleColor(bool isActive)
     {             
         //removes any active particles, so the color changes immediatly
         activeIndicatorVFX.Clear();
         if (isActive)
         {
-            Debug.Log("in Checkpoint ChangeParticleColor. is active.");
-
             var main = activeIndicatorVFX.main;
             main.startColor = activeColor;
 
@@ -59,11 +62,10 @@ public class Checkpoint : MonoBehaviour {
         }
         else 
         {
-            Debug.Log("in Checkpoint ChangeParticleColor. is not active.");
-            //activeIndicatorVFX.main.startColor = activeColor;
-
             var main = activeIndicatorVFX.main;
             main.startColor = inactiveColor;
         }
     }
+    
+    
 }

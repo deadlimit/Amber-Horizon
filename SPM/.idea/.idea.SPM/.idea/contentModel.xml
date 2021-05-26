@@ -13,22 +13,31 @@
           <e p="PlayerPhysics.cs" t="Include" />
         </e>
         <e p="AudioController.cs" t="Include" />
+        <e p="DeathFade.cs" t="Include" />
         <e p="Editor" t="Include">
+          <e p="$ReplaceSelection.cs" t="Include" />
           <e p="FindMissingScripts.cs" t="Include" />
+          <e p="ObjectRelocatorEditor.cs" t="Include" />
         </e>
         <e p="EventPanel.cs" t="Include" />
         <e p="ExplosionInstance.cs" t="Include" />
+        <e p="FocusCamera.cs" t="Include" />
+        <e p="FollowCamera.cs" t="Include" />
         <e p="Gate.cs" t="Include" />
         <e p="GateLock.cs" t="Include" />
         <e p="KeyRotator.cs" t="Include" />
         <e p="LowerablePillar.cs" t="Include" />
+        <e p="MainMenuButtonFader.cs" t="Include" />
+        <e p="MainMenuCamera.cs" t="Include" />
         <e p="Material" t="Include">
+          <e p="Cursor.cs" t="Include" />
           <e p="Others" t="Include">
             <e p="PBR Ground Materials #1 [Dirt&amp; Grass]" t="Include">
               <e p="Documentation.txt" t="Include" />
             </e>
           </e>
         </e>
+        <e p="MenuTest.cs" t="Include" />
         <e p="MovingPlatform" t="Include">
           <e p="IBlackHoleBehaviour.cs" t="Include" />
           <e p="MovingPlatformV2.cs" t="Include" />
@@ -56,15 +65,14 @@
                     <e p="Destructor" t="Include">
                       <e p="FistPunch.cs" t="Include" />
                     </e>
-                    <e p="Forager" t="Include">
-                      <e p="EnemyShoot.cs" t="Include" />
-                    </e>
                   </e>
                   <e p="Player" t="Include">
                     <e p="AimingAbility.cs" t="Include" />
                     <e p="BlackHoleAbility.cs" t="Include" />
                     <e p="DashAbility.cs" t="Include" />
                     <e p="HealthRestoreAbility.cs" t="Include" />
+                    <e p="LaunchPoint.cs" t="Include" />
+                    <e p="NewDash.cs" t="Include" />
                   </e>
                 </e>
                 <e p="Attributes" t="Include">
@@ -88,11 +96,15 @@
               </e>
             </e>
           </e>
+          <e p="AnimationEffectPair.cs" t="Include" />
           <e p="BlackHole" t="Include">
             <e p="BlackHole.cs" t="Include" />
             <e p="LauncherBlackHole.cs" t="Include" />
+            <e p="PC_V3.cs" t="Include" />
           </e>
           <e p="Camera" t="Include">
+            <e p="CameraBaseState.cs" t="Include" />
+            <e p="CameraBehaviour.cs" t="Include" />
             <e p="CameraBirdView.cs" t="Include" />
             <e p="CameraFocusState.cs" t="Include" />
             <e p="ThirdPersonCamera.cs" t="Include" />
@@ -129,6 +141,7 @@
                 <e p="EnemyMoveIntoRangeState.cs" t="Include" />
                 <e p="EnemyPatrolState.cs" t="Include" />
                 <e p="EnemyProximityState.cs" t="Include" />
+                <e p="EnemyResetPosition.cs" t="Include" />
                 <e p="EnemyTeleportState.cs" t="Include" />
               </e>
               <e p="Timer.cs" t="Include" />
@@ -142,15 +155,20 @@
               <e p="KeyListener.cs" t="Include" />
               <e p="PlayerDiedListener.cs" t="Include" />
               <e p="PlayerHitListener.cs" t="Include" />
+              <e p="PlayerReviveListener.cs" t="Include" />
               <e p="UnlockListener.cs" t="Include" />
             </e>
             <e p="EventSystem.cs" t="Include" />
             <e p="Spawner.cs" t="Include" />
           </e>
+          <e p="Extensions" t="Include">
+            <e p="Extensions.cs" t="Include" />
+          </e>
           <e p="GameManager" t="Include">
             <e p="GameManager.cs" t="Include" />
             <e p="GameVariables.cs" t="Include" />
           </e>
+          <e p="ICameraBehaviour.cs" t="Include" />
           <e p="IEventPanelInteract.cs" t="Include" />
           <e p="In-Game Items" t="Include">
             <e p="AbilityPickup.cs" t="Include" />
@@ -158,28 +176,34 @@
             <e p="Door.cs" t="Include" />
             <e p="KeyFragment.cs" t="Include" />
             <e p="PowderKeg.cs" t="Include" />
+            <e p="UITextTrigger.cs" t="Include" />
             <e p="WallPiece.cs" t="Include" />
           </e>
           <e p="InteractableObject.cs" t="Include" />
-          <e p="JonathansKontroller" t="Include">
-            <e p="BoxCaster.cs" t="Include" />
-            <e p="CapsuleCaster.cs" t="Include" />
-            <e p="CharacterController3D.cs" t="Include" />
-            <e p="CollisionCaster.cs" t="Include" />
-            <e p="CustomPhysics.cs" t="Include" />
-            <e p="CustomPhysics3D.cs" t="Include" />
-            <e p="MeshCaster.cs" t="Include" />
-            <e p="SphereCaster.cs" t="Include" />
-          </e>
           <e p="Killzone.cs" t="Include" />
-          <e p="ObjectPooling" t="Include">
-            <e p="ObjectPool.cs" t="Include" />
+          <e p="Oanvända klasser" t="Include">
+            <e p="CharacterController3D.cs" t="Include" />
+            <e p="JonathansKontroller" t="Include">
+              <e p="BoxCaster.cs" t="Include" />
+              <e p="CapsuleCaster.cs" t="Include" />
+              <e p="CollisionCaster.cs" t="Include" />
+              <e p="CustomPhysics.cs" t="Include" />
+              <e p="CustomPhysics3D.cs" t="Include" />
+              <e p="MeshCaster.cs" t="Include" />
+              <e p="SphereCaster.cs" t="Include" />
+            </e>
           </e>
+          <e p="ObjectPooling" t="Include">
+            <e p="ObjectPooler.cs" t="Include" />
+            <e p="PoolObject.cs" t="Include" />
+          </e>
+          <e p="ObjectRelocator.cs" t="Include" />
           <e p="PhysicsComponent.cs" t="Include" />
           <e p="Player" t="Include">
+            <e p="AimCursor.cs" t="Include" />
             <e p="Controller" t="Include">
               <e p="Controller3D.cs" t="Include" />
-              <e p="General.cs" t="Include" />
+              <e p="PhysicsFunctions.cs" t="Include" />
               <e p="PlayerController.cs" t="Include" />
             </e>
             <e p="Health.cs" t="Include" />
@@ -188,6 +212,13 @@
               <e p="FallingState.cs" t="Include" />
               <e p="GroundedState.cs" t="Include" />
               <e p="JumpingState.cs" t="Include" />
+              <e p="PlayerLockedState.cs" t="Include" />
+            </e>
+          </e>
+          <e p="ScriptableData" t="Include">
+            <e p="DataScripts" t="Include">
+              <e p="BulletData.cs" t="Include" />
+              <e p="KeyFragmentData.cs" t="Include" />
             </e>
           </e>
           <e p="SlowMotionController.cs" t="Include" />
@@ -200,6 +231,7 @@
             <e p="CustomInvoke.cs" t="Include" />
           </e>
         </e>
+        <e p="SetVolume.cs" t="Include" />
         <e p="SoundController.cs" t="Include" />
         <e p="TextMesh Pro" t="Include">
           <e p="Fonts" t="Include">
@@ -234,6 +266,7 @@
         </e>
         <e p="TransitOverviewController.cs" t="Include" />
         <e p="TransitUnit.cs" t="Include" />
+        <e p="VFX_Destroyer.cs" t="Include" />
       </e>
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />

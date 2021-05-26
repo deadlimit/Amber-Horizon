@@ -13,6 +13,7 @@ public class DestructorDeathState : State
     }
     public override void Enter()
     {
+        destructor.StopAllCoroutines();
         destructor.Pathfinder.agent.enabled = false;
         Destroy(destructor.gameObject, 3f);
     }

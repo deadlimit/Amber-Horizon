@@ -13,6 +13,7 @@ public class DynamicFoley : MonoBehaviour
     public AudioClip plattformSound;
     public AudioClip jumpSound;
     public AudioClip dashSound;
+    public AudioClip dieSound;
 
     private string colliderType;
 
@@ -92,5 +93,10 @@ public class DynamicFoley : MonoBehaviour
     private void PlayDashSound()
     {
         m_AudioSource[1].PlayOneShot(dashSound);
+    }
+
+    private void PlayDieSound()
+    {
+        m_AudioSource[0].PlayOneShot(dieSound);
     }
 }

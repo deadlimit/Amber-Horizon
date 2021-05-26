@@ -1,42 +1,47 @@
-using System;
 using AbilitySystem;
 using EventCallbacks;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class Bullet : MonoBehaviour {
+public class Bullet : PoolObject {
+
+    [SerializeField] private BulletData bulletData;
+
+    public ForceMode forceMode;
     
-    public float bulletSpeed;
-    private Vector3 direction;
     private Rigidbody activeRigidbody;
-    private Forager parent;
-    private GameplayAbility ability;
-    
-    public void Init(GameplayAbility ability, Forager parent) {
-        this.ability = ability;
-        this.parent = parent;
+
+    public GameObject hitVFX;
+
+    private void Awake() {
         activeRigidbody = GetComponent<Rigidbody>();
-        direction = parent.Target.transform.position - transform.position;
-
-        Destroy(gameObject, 3f);
     }
 
-    private void Update() {
-        activeRigidbody.AddForce(direction.normalized * bulletSpeed);
+    private void FixedUpdate() {
+        activeRigidbody.AddForce(transform.forward * bulletData.BulletSpeed, forceMode);
     }
     
-    private void OnTriggerEnter(Collider other) 
-    {
-        if (other.gameObject.CompareTag("Player")) 
+    private void OnCollisionEnter(Collision other) {
+        
+        if (((1 << other.gameObject.layer) & bulletData.DamageLayer) != 0)
         {
-            GameplayAbilitySystem playerAbilitySystem = other.gameObject.GetComponent<GameplayAbilitySystem>();
-            parent.AbilitySystem.TryApplyEffectToOther(ability.AppliedEffect, playerAbilitySystem);
-
-            EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, ability));
+            EventSystem<PlayerHitEvent>.FireEvent(new PlayerHitEvent(transform, bulletData.Effect, other.gameObject.GetComponent<PlayerController>()));
         }
-        Destroy(gameObject);
+        Instantiate(hitVFX, transform.position, transform.rotation);
+        ResetBullet();
+    }
+
+
+    
+    public override void Initialize(Vector3 position, Quaternion rotation) {
+        base.Initialize(position, rotation);
+        this.Invoke(ResetBullet, bulletData.ActiveTime);
     }
     
-    
+    private void ResetBullet() {
+        activeRigidbody.velocity = Vector3.zero;
+        activeRigidbody.angularVelocity = Vector3.zero;
+        activeRigidbody.ResetCenterOfMass();
+        gameObject.SetActive(false);
+    }
     
 }

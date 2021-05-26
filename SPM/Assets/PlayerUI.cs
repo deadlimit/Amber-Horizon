@@ -7,27 +7,23 @@ using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour {
 
-    public Image dashCooldownImage;
-    public Image blackholeCooldownImage;
-    public TextMeshProUGUI interactText;
-
-    public AudioClip UIMessageSFX;
+    [SerializeField] private Image dashCooldownImage;
+    [SerializeField] private Image blackholeCooldownImage;
+    [SerializeField] private TextMeshProUGUI interactText;
+    [SerializeField] private Image healthBackground, healthBarChipAway, healthBar;
+    [SerializeField] private AudioClip UIMessageSFX;
     
-    private Slider healthSlider;
-    private PlayerController pc;
-
-    public Image sliderBackground, sliderFill;
+    private PlayerController player;
     
     private void Start() {
         EventSystem<AbilityUsed>.RegisterListener(StartAbilityCooldown);
         EventSystem<InteractTriggerEnterEvent>.RegisterListener(DisplayInteractText);
         EventSystem<InteractTriggerExitEvent>.RegisterListener(ClearUIMessage);
         EventSystem<PlayerHitEvent>.RegisterListener(ChangeHealthUI);
-        EventSystem<CheckPointActivatedEvent>.RegisterListener(RestoreHealthUI);
+        EventSystem<PlayerReviveEvent>.RegisterListener(RestoreHealthUI);
         EventSystem<DisplayUIMessage>.RegisterListener(DisplayMessageOnUI);
 
-        pc = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        healthSlider = GetComponentInChildren<Slider>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 
         ChangeColor(0);
 
@@ -35,14 +31,18 @@ public class PlayerUI : MonoBehaviour {
 
     private void ChangeColor(float value) {
         
-        Color trans = sliderFill.color;
+        Color trans = healthBar.color;
         trans.a = value;
-        sliderFill.color = trans;
-        Color trans1 = sliderBackground.color;
+        healthBar.color = trans;
+        Color trans1 = healthBackground.color;
         trans1.a = value;
-        sliderBackground.color = trans1;
-        
+        healthBackground.color = trans1;
+
+        Color trans2 = healthBarChipAway.color;
+        trans2.a = value;
+        healthBarChipAway.color = trans2;
     }
+
     private void OnDisable() {
         EventSystem<AbilityUsed>.UnregisterListener(StartAbilityCooldown);
         EventSystem<InteractTriggerExitEvent>.UnregisterListener(ClearUIMessage);
@@ -66,6 +66,18 @@ public class PlayerUI : MonoBehaviour {
         }
         
         image.fillAmount = 0;
+    }
+
+    private IEnumerator AnimateHealthChipAway(float time, float healthFraction)
+    {
+        float end = Time.time + time;
+
+        while (Time.time < end && healthBarChipAway.fillAmount > healthFraction) {
+            healthBarChipAway.fillAmount -= Time.deltaTime / time;
+            yield return null;
+        }
+
+        healthBarChipAway.fillAmount = healthFraction;
     }
 
     private void DisplayInteractText(InteractTriggerEnterEvent trigger) {
@@ -94,25 +106,39 @@ public class PlayerUI : MonoBehaviour {
     }
 
     private void ChangeHealthUI(PlayerHitEvent playerHitEvent) {
-        sliderBackground = GameObject.FindGameObjectWithTag("BackgroundTag").GetComponent<Image>();
-        sliderFill = GameObject.FindGameObjectWithTag("FillTag").GetComponent<Image>();
-        ChangeColor(255);
+        float currentHealth = playerHitEvent.player.GetPlayerHealth();
 
-        float currentHealth = pc.GetPlayerHealth();
-        Debug.Log("reached ChangeHealthUI");
-        if(currentHealth < 1 )
+        //4 is the max health. and it doesnt show health bar on death
+        if (currentHealth < 1 )
         {
             currentHealth = 4;
         }
-        healthSlider.value = currentHealth;
+        else
+        {
+            ChangeColor(255);
+        }
 
-        sliderBackground.Invoke(() => ChangeColor(0), 1.5f);
-        
+        float healthFraction = currentHealth / 4;
+
+        healthBar.fillAmount = healthFraction;
+
+        if (healthBarChipAway.fillAmount > healthFraction)
+        {
+            //lerp the healthBarChipAway
+            StartCoroutine(AnimateHealthChipAway(1.5f, healthFraction));
+
+        }
+        else
+        {
+            healthBarChipAway.fillAmount = 1.0f;
+        }
+
+        healthBackground.Invoke(() => ChangeColor(0), 2.0f);
+
     }
 
-    private void RestoreHealthUI(CheckPointActivatedEvent checkPointActivatedEvent)
-    {
-        ChangeHealthUI(null);
+    private void RestoreHealthUI(PlayerReviveEvent playerReviveEvent) {
+        ChangeHealthUI(new PlayerHitEvent(null, null, playerReviveEvent.player));
     }
 
 }

@@ -30,8 +30,12 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Target = GameObject.FindGameObjectWithTag("Player").transform;
         originPosition = transform.position;
     }
-
-    private void Start() {
+    private void OnDisable()
+    {
+        PlayerReviveListener.enemyList.Remove(this);
+    }
+    protected void Start() {
+        PlayerReviveListener.enemyList.Add(this); 
         AbilitySystem = GetComponent<GameplayAbilitySystem>();
     }
 
@@ -50,9 +54,8 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Collider [] enemies = Physics.OverlapSphere(transform.position, radius, EnemyMask);
         foreach(Collider e in enemies)
         {
-            if(e.gameObject.GetComponent<Enemy>().stateMachine.currentState.GetType() == typeof(EnemyProximityState))
+            if(e.gameObject.GetComponent<Forager>()?.stateMachine.CurrentState.GetType() == typeof(EnemyProximityState))
             {
-                Debug.Log("EnemySeen Success");
                 return true;
             }
         }
@@ -60,7 +63,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     }
     
     
-    public virtual void BlackHoleBehaviour(BlackHole blackHole) { Debug.Log("hello");}
+    public virtual void BlackHoleBehaviour(BlackHole blackHole) { }
 
     public virtual void ApplyExplosion(GameObject explosionInstance, float blastPower)
     {
@@ -69,7 +72,12 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Vector3 direction = (explosionPos - transform.position).normalized;
 
         Animator.SetTrigger("HitByExplosion");
+    }
 
-
+    //Destructor must also change state to not instantly set destination towards player respawn, hence virtual
+    public virtual void ResetPosition()
+    {
+        transform.position = originPosition;
+        Pathfinder.agent.ResetPath();
     }
 }

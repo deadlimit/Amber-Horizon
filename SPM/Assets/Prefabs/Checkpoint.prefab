@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 566374475}
   - component: {fileID: 566374476}
-  m_Layer: 6
+  m_Layer: 12
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 1096637198}
   - component: {fileID: 1096637200}
   - component: {fileID: 1096637199}
-  m_Layer: 6
+  m_Layer: 12
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5025,7 +5025,7 @@ GameObject:
   - component: {fileID: 2146800889}
   - component: {fileID: 2146800890}
   - component: {fileID: 2146800891}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Transit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5056,7 +5056,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.8
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -5073,6 +5073,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UIMessage: Press F to enter transit view
+  newOffset: {x: 0, y: 0, z: 0}
+  target: {fileID: 0}
 --- !u!1 &1509433715564973766
 GameObject:
   m_ObjectHideFlags: 0
@@ -5082,7 +5084,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5796026812323074696}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: SpawnPosition
   m_TagString: RespawnPosition
   m_Icon: {fileID: 0}
@@ -5118,7 +5120,7 @@ GameObject:
   - component: {fileID: 2606977847105526676}
   - component: {fileID: 1199902423832250814}
   - component: {fileID: 628228447821469448}
-  m_Layer: 6
+  m_Layer: 12
   m_Name: Checkpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5257,7 +5259,7 @@ GameObject:
   - component: {fileID: 3609905798153997329}
   - component: {fileID: 6111565005574034665}
   - component: {fileID: 4304287587347348617}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Logic
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
@@ -5292,9 +5294,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activateAudioClip: {fileID: 8300000, guid: efbb0a7e3967bc6498928896f8d76da5, type: 3}
-  activeIndicatorVFX: {fileID: 1096637200}
   activeColor: {r: 0.18360949, g: 0.7075472, b: 0.15619436, a: 1}
   inactiveColor: {r: 0.8509804, g: 0.12156863, b: 0.119615495, a: 1}
+  activeIndicatorVFX: {fileID: 1096637200}
 --- !u!65 &4304287587347348617
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5306,5 +5308,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.8281064, y: 2.921955, z: 44.374546}
-  m_Center: {x: -0.26133603, y: 1.1690431, z: 12.630552}
+  m_Size: {x: 13.767399, y: 2.921955, z: 8.187057}
+  m_Center: {x: -3.2358675, y: 1.1690431, z: 2.6916075}

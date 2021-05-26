@@ -12,35 +12,24 @@ namespace EventCallbacks
         public string EventDescription; 
     }
     
-
     public class KeyPickUpEvent : EventInfo { }
     public class UnlockEvent : EventInfo { }
 
-    public class CameraFocusEvent : EventInfo {
-
-        public readonly Transform newFocusTarget;
-
-        public CameraFocusEvent(Transform newTarget) {
-            newFocusTarget = newTarget;
-        }
-        
-    }
-
     public class PlayerHitEvent : EventInfo {
 
-        public readonly Transform enemyTransform;
-        public readonly GameplayAbility ability;
- 
-        public PlayerHitEvent(Transform enemyTransform, GameplayAbility ability) {
-            this.enemyTransform = enemyTransform;
-            this.ability = ability;
+        public readonly Transform culprit;
+        public readonly GameplayEffect appliedEffect;
+        public readonly PlayerController player;
+        public PlayerHitEvent(Transform culprit, GameplayEffect appliedEffect, PlayerController player) {
+            this.culprit = culprit;
+            this.appliedEffect = appliedEffect;
+            this.player = player;
         }
-
     }
 
     public class AbilityUsed : EventInfo {
         public readonly GameplayAbility ability;
-
+        
         public AbilityUsed(GameplayAbility gameplayAbility) {
             ability = gameplayAbility;
         }
@@ -85,11 +74,12 @@ namespace EventCallbacks
     }
 
     public class CheckPointActivatedEvent : EventInfo {
+        public readonly Checkpoint checkpoint;
         public readonly AudioClip audio;
-        public readonly int ID;
-        public CheckPointActivatedEvent(AudioClip audio, int ID) {
+        public CheckPointActivatedEvent(Checkpoint checkpoint, AudioClip audio) {
+            this.checkpoint = checkpoint;
             this.audio = audio;
-            this.ID = ID;
+            
         }
     }
 
@@ -102,14 +92,34 @@ namespace EventCallbacks
     }
     public class InteractTriggerExitEvent : EventInfo {}
 
+    public struct TransitCameraFocusInfo {
+        public HashSet<TransitUnit> TransitUnits;
+        public TransitUnit ActivatedTransitUnit;
+    }
+    
     public class EnterTransitViewEvent : EventInfo {
-        public readonly HashSet<TransitUnit> TransitUnits;
-        public readonly TransitUnit ActivatedTransitUnit;
-        public EnterTransitViewEvent(HashSet<TransitUnit> transitUnits, TransitUnit ActivatedTransitUnit) {
-            TransitUnits = transitUnits;
-            this.ActivatedTransitUnit = ActivatedTransitUnit;
+
+        public readonly TransitCameraFocusInfo TransitCameraFocusInfo;
+            
+        public EnterTransitViewEvent(TransitCameraFocusInfo transitCameraFocusInfo) {
+            TransitCameraFocusInfo = transitCameraFocusInfo;
         }
     }
+
+    public class NewCameraFocus : EventInfo {
+        public readonly Transform Target;
+        public readonly bool IsOrthographic;
+        public NewCameraFocus(Transform target, bool isOrthographic) {
+            Target = target;
+            IsOrthographic = isOrthographic;
+        }
+    }
+    
+    public class ResetCameraFocus : EventInfo {}
+    
+    public class LoadMainMenu : EventInfo {}
+    public class ExitMainMenu : EventInfo {}
+    
     
     public class ExitTransitViewEvent : EventInfo {}
 
@@ -139,6 +149,17 @@ namespace EventCallbacks
             this.PlayUISFX = PlayUISFX;
         }
     }
+    
+    public class PlayerReviveEvent : EventInfo 
+    {
+        public PlayerController player { get; }
+        public PlayerReviveEvent(GameObject player)
+        {
+            this.player = player.GetComponent<PlayerController>();
+        }
+    }
+    
+    public class ReturnPlayerControl : EventInfo {}
     
 }
 

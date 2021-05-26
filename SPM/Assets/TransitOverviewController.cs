@@ -3,41 +3,42 @@ using System.Collections.Generic;
 using EventCallbacks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class TransitOverviewController : MonoBehaviour {
 
-    public GameObject TransitButton;
-    public float WaitUntilButtonSpawn;
-    private List<GameObject> activeButtons = new List<GameObject>();
-
-    private Coroutine spawnButtons;
+    [SerializeField] private GameObject transitButton;
+    [SerializeField] private float waitUntilButtonSpawn;
+    [SerializeField] private Canvas UI;
+    [SerializeField] private TextMeshProUGUI exitInstructionText;
+    private readonly List<GameObject> activeButtons = new List<GameObject>();
     
     private void OnEnable() {
         EventSystem<EnterTransitViewEvent>.RegisterListener(TransitView);
-        EventSystem<ExitTransitViewEvent>.RegisterListener(ExitView);
+        EventSystem<ResetCameraFocus>.RegisterListener(ExitView);
+        exitInstructionText.gameObject.SetActive(false);
     }
 
     private void OnDisable() {
         EventSystem<EnterTransitViewEvent>.UnregisterListener(TransitView);
-        EventSystem<ExitTransitViewEvent>.UnregisterListener(ExitView);
+        EventSystem<ResetCameraFocus>.UnregisterListener(ExitView);
     }
-    
     
     private void TransitView(EnterTransitViewEvent viewEvent) {
-        spawnButtons = StartCoroutine(SpawnButtons(viewEvent.TransitUnits, viewEvent.ActivatedTransitUnit));
+        StartCoroutine(SpawnButtons(viewEvent.TransitCameraFocusInfo));
     }
 
-    private IEnumerator SpawnButtons(HashSet<TransitUnit> buttons, TransitUnit activatedTransitUnit) {
+    private IEnumerator SpawnButtons(TransitCameraFocusInfo focusInfo) {
         
-        yield return new WaitForSeconds(WaitUntilButtonSpawn);
-
-        foreach (TransitUnit transitUnit in buttons) {
-            GameObject button = Instantiate(TransitButton, Camera.main.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, gameObject.transform);
+        yield return new WaitForSeconds(waitUntilButtonSpawn);
+        exitInstructionText.gameObject.SetActive(true);
+        foreach (TransitUnit transitUnit in focusInfo.TransitUnits) {
+            GameObject button = Instantiate(transitButton, Camera.main.WorldToScreenPoint(transitUnit.transform.position), Quaternion.identity, UI.transform);
             
             TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
 
-            if (transitUnit == activatedTransitUnit) {
+            if (transitUnit == focusInfo.ActivatedTransitUnit) {
                 buttonText.text = "You are here";
                 buttonText.GetComponentInParent<Image>().color = Color.green;
             }
@@ -50,23 +51,21 @@ public class TransitOverviewController : MonoBehaviour {
             activeButtons.Add(button);
         }
         
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.ActivateCursor(true, CursorLockMode.Confined);
     }
 
     private void MovePlayer(TransitUnit transitUnit) {
-        GameObject.FindGameObjectWithTag("Player").transform.position = transitUnit.AttachedCheckpoint.SpawnPosition;
-        EventSystem<ExitTransitViewEvent>.FireEvent(null);
+        FindObjectOfType<PlayerController>().transform.position = transitUnit.AttachedCheckpoint.SpawnPosition;
+        EventSystem<ResetCameraFocus>.FireEvent(null);
     }
 
-    private void ExitView(ExitTransitViewEvent viewEvent) {
-        StopCoroutine(spawnButtons);
+    private void ExitView(ResetCameraFocus viewEvent) {
+        StopAllCoroutines();
         foreach (GameObject button in activeButtons)
             Destroy(button.gameObject);
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        
+        Cursor.ActivateCursor(false, CursorLockMode.Locked);
+        exitInstructionText.gameObject.SetActive(false);
     }
     
     
