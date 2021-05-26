@@ -56,7 +56,7 @@ public class PlayerAnimation : MonoBehaviour {
     }
 
     public void OnDestructorHit(Transform culprit) {
-
+        
         transform.LookAt(culprit);
         Vector3 rotation = transform.rotation.eulerAngles;
         rotation.x = 0;
