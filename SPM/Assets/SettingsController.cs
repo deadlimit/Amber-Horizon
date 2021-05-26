@@ -12,7 +12,7 @@ public class SettingsController : MonoBehaviour {
     [SerializeField] private TMP_Dropdown displayModeList;
 
     private string[] chosenResolution;
-        
+    
     private void Awake() {
         volumeSlider.onValueChanged.AddListener(UpdateMaserVolume);
         resolutionList.onValueChanged.AddListener(ChangeResolution);
@@ -20,7 +20,6 @@ public class SettingsController : MonoBehaviour {
         chosenResolution = new string[2];
         
         AutoDetectScreenResolution();
-        
     }
     
     private void UpdateMaserVolume(float newValue) {
@@ -28,16 +27,11 @@ public class SettingsController : MonoBehaviour {
     }
 
     private void ChangeResolution(int index) {
-
-        if (!resolutionList.options[index].text.Contains("x")) {
-            AutoDetectScreenResolution();
-            return;
-        }
         
         chosenResolution = resolutionList.options[index].text.Split('x');
         
-        int width = Int32.Parse(chosenResolution[0]);
-        int height = Int32.Parse(chosenResolution[1]);
+        int width = int.Parse(chosenResolution[0]);
+        int height = int.Parse(chosenResolution[1]);
 
         Settings.Resolution resolution;
 
@@ -45,24 +39,26 @@ public class SettingsController : MonoBehaviour {
         resolution.Height = height;
 
         settings.Resolution = resolution;
+        
     }
 
     private void ChangeDisplayMode(int index) {
         string choice = displayModeList.options[index].text;
-        
-        switch (choice) {
-            case "Fullscreen":
-                Screen.fullScreen = true;
-                break;
-            case "Windowed":
-                Screen.fullScreen = false;
-                break;
-            
-        }
+
+        Screen.fullScreen = choice switch {
+            "Fullscreen" => true,
+            "Windowed" => false,
+            _ => Screen.fullScreen
+        };
     }
 
-    public void AutoDetectScreenResolution() {
-        resolutionList.value = resolutionList.options.FindIndex(resolutionOption => resolutionOption.text == $"{Screen.currentResolution.width}x{Screen.currentResolution.height}");
+    private void AutoDetectScreenResolution() {
+        resolutionList.value = resolutionList.options.FindIndex(resolutionOption => resolutionOption.text.Equals($"{Screen.currentResolution.width}x{Screen.currentResolution.height}"));
+        ChangeResolution(resolutionList.value);
+    }
+
+    public static void Quit() {
+        Application.Quit();
     }
     
 }
