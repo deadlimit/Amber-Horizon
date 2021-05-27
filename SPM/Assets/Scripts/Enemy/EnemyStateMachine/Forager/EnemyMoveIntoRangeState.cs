@@ -13,15 +13,15 @@ public class EnemyMoveIntoRangeState : State
     public override void Enter()
     {
         forager.Pathfinder.agent.ResetPath();
-        forager.Pathfinder.agent.SetDestination(forager.Target.transform.position);
+        //forager.Pathfinder.agent.SetDestination(forager.Target.transform.position);
         forager.Pathfinder.agent.speed *= 2;
     }
     public override void RunUpdate()
     {
-        if (Vector3.Distance(forager.Target.transform.position, forager.transform.position) < forager.range)
+        /*if (Vector3.Distance(forager.Target.transform.position, forager.transform.position) < forager.AttackRange)
             stateMachine.ChangeState<EnemyProximityState>();
 
-        forager.transform.LookAt(forager.Target);
+        forager.transform.LookAt(forager.Target);*/
     }
     public override void Exit()
     {

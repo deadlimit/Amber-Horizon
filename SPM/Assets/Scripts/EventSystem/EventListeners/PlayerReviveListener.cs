@@ -10,7 +10,7 @@ public class PlayerReviveListener : MonoBehaviour
 
     public void PlayerRevive(PlayerReviveEvent pre)
     {
-        pre.player.animator.StopPlayback();
+        //pre.player.animator.StopPlayback();
         Checkpoint.RespawnAtActiveCheckpoint();
         ResetEnemyPositions();
         pre.player.RestoreHealth();
