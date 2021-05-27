@@ -47,13 +47,13 @@ public class SceneLoader : MonoBehaviour {
             if(currentScene == previousActiveScene)
                 continue;
             
-            EditorSceneManager.CloseScene(currentScene, false);
+            EditorSceneManager.CloseScene(currentScene, true);
         }
 
     }
 
     private static void UnloadPreviousActiveScene() {
-        EditorSceneManager.CloseScene(previousActiveScene, false);
+        EditorSceneManager.CloseScene(previousActiveScene, true);
     }
     private static void SetNewActiveScene(Scene scene) {
         EditorSceneManager.SetActiveScene(scene);

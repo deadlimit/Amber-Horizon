@@ -1,21 +1,20 @@
 using UnityEngine;
 
 public class Destructor : Enemy {
-
-    public bool hitPlayer { get; set; }
+    
     protected new void Start() {
         base.Start();
-        //stateMachine.ChangeState<DestructorPatrolState>();
+        stateMachine.ChangeState<DestructorPatrolState>();
     }
     public override void ResetPosition()
     {
-        //stateMachine.ChangeState<DestructorResetState>();
+        stateMachine.ChangeState<DestructorResetState>();
         base.ResetPosition();
     }
     private new void Update() {
         base.Update();
         
-       // stateMachine.RunUpdate();
+        stateMachine.RunUpdate();
     }
     private void OnDrawGizmos()
     {
@@ -29,6 +28,5 @@ public class Destructor : Enemy {
     {
         base.ApplyExplosion(explosionInstance, blastPower);
     }
-
     
 }

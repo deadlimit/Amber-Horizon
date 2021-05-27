@@ -16,7 +16,7 @@ public class EnemyTeleportState : State {
         forager.Animator.SetTrigger("Teleport");
 
 
-       /* Vector3 randomPosition = forager.Target.transform.position + new Vector3(
+        Vector3 randomPosition = forager.Target.transform.position + new Vector3(
             Random.Range(-distanceFromPlayer, distanceFromPlayer),
             Random.Range(-distanceFromPlayer, distanceFromPlayer),
             Random.Range(-distanceFromPlayer, distanceFromPlayer));
@@ -24,6 +24,6 @@ public class EnemyTeleportState : State {
         forager.Invoke(() => {
             forager.transform.position = randomPosition;
             forager.stateMachine.ChangeState<EnemyProximityState>();
-        }, .2f);*/
+        }, .2f);
     }
 }
