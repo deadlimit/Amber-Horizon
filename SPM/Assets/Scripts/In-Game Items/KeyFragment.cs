@@ -15,12 +15,16 @@ public class KeyFragment : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        GateLock.KeysAcquired.Add(this);
-        KeyPickUpEvent kpue = new KeyPickUpEvent();
-        EventSystem<KeyPickUpEvent>.FireEvent(kpue);
-        EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("Key fragment acquired", 2, true));
+        if(other.CompareTag("Player")) 
+        {
+            GateLock.KeysAcquired.Add(this);
+            KeyPickUpEvent kpue = new KeyPickUpEvent();
+            EventSystem<KeyPickUpEvent>.FireEvent(kpue);
+            EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("Key fragment acquired", 2, true));
+
+            Destroy(gameObject);
+        }
         
-        Destroy(gameObject);
     }
 }
 

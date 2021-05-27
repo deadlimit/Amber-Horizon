@@ -106,7 +106,7 @@ public class PlayerUI : MonoBehaviour {
     }
 
     private void ChangeHealthUI(PlayerHitEvent playerHitEvent) {
-        float currentHealth = playerHitEvent.player.GetPlayerHealth();
+        float currentHealth = player.GetPlayerHealth();
 
         //4 is the max health. and it doesnt show health bar on death
         if (currentHealth < 1 )
@@ -138,7 +138,7 @@ public class PlayerUI : MonoBehaviour {
     }
 
     private void RestoreHealthUI(PlayerReviveEvent playerReviveEvent) {
-        ChangeHealthUI(new PlayerHitEvent(null, null, playerReviveEvent.player));
+        ChangeHealthUI(new PlayerHitEvent(null, null));
     }
 
 }
