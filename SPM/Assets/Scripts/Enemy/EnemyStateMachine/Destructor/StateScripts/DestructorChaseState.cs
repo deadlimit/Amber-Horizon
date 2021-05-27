@@ -20,19 +20,19 @@ public class DestructorChaseState : State {
 
     public override void RunUpdate() {
         
-        if (Vector3.Distance(destructor.originPosition, destructor.transform.position) > maxDistanceFromOrigin) /*||
+        if (Vector3.Distance(destructor.originPosition, destructor.transform.position) > maxDistanceFromOrigin ||
             Vector3.Distance(destructor.transform.position, destructor.Target.position) > PlayerToFarAway ||
-            !destructor.Pathfinder.agent.SetDestination(destructor.Target.position))*/
+            !destructor.Pathfinder.agent.SetDestination(destructor.Target.position))
         {
             destructor.stateMachine.ChangeState<DestructorResetState>();
         }
 
-       /* destructor.Pathfinder.agent.SetDestination(destructor.Target.position);
+        destructor.Pathfinder.agent.SetDestination(destructor.Target.position);
         destructor.transform.LookAt(destructor.Target);
 
               
         if(Vector3.Distance(destructor.transform.position, destructor.Target.position) < minimumDistanceBeforeMelee)
-            destructor.stateMachine.ChangeState<DestructorMeleeState>();*/
+            destructor.stateMachine.ChangeState<DestructorMeleeState>();
     }
 
     public override void Exit() {

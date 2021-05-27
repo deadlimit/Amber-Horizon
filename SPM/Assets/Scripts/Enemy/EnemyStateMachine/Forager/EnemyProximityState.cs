@@ -19,13 +19,13 @@ public class EnemyProximityState : State {
 
     public override void RunUpdate() 
     {
-       /* if(Vector3.Distance(forager.transform.position, forager.Target.transform.position) > dropAggroDistance)
-            stateMachine.ChangeState<EnemyPatrolState>();   */    
+        if(Vector3.Distance(forager.transform.position, forager.Target.transform.position) > dropAggroDistance)
+            stateMachine.ChangeState<EnemyPatrolState>();       
         
         //Om denna är true är spelaren innanför den inre sfären
         if(forager.ProximityCast(forager.innerRing)) forager.stateMachine.ChangeState<EnemyTeleportState>();
         
-       /* if (Vector3.Distance(forager.transform.position, forager.Target.transform.position) > forager.AttackRange)
+        if (Vector3.Distance(forager.transform.position, forager.Target.transform.position) > forager.range)
         {
             stateMachine.ChangeState<EnemyMoveIntoRangeState>();
         }
@@ -38,7 +38,7 @@ public class EnemyProximityState : State {
 
         }
         
-        forager.transform.LookAt(forager.Target);*/
+        forager.transform.LookAt(forager.Target);
     
     }
 
