@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using EventCallbacks;
 
@@ -7,8 +9,12 @@ public class Gate : MonoBehaviour
     private void OnEnable() 
     {
         animator = GetComponent<Animator>();
+        EventSystem<UnlockEvent>.RegisterListener(DoorUnlocked);
     }
-    public void OpenGate() {
+    private void OnDisable() => EventSystem<UnlockEvent>.UnregisterListener(DoorUnlocked);
+
+    private void DoorUnlocked(UnlockEvent ue)
+    {
         animator.SetTrigger("OpenGate");
 
         ParticleSystem[] systems = GetComponentsInChildren<ParticleSystem>();
