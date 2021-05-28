@@ -104,15 +104,6 @@ namespace EventCallbacks
             TransitCameraFocusInfo = transitCameraFocusInfo;
         }
     }
-
-    public class NewCameraFocus : EventInfo {
-        public readonly Transform Target;
-        public readonly bool IsOrthographic;
-        public NewCameraFocus(Transform target, bool isOrthographic) {
-            Target = target;
-            IsOrthographic = isOrthographic;
-        }
-    }
     
     public class ResetCameraFocus : EventInfo {}
     
@@ -137,7 +128,7 @@ namespace EventCallbacks
             this.duration = duration;
         }
     }
-
+    
     public class DisplayUIMessage : EventInfo {
         public readonly string UIMessage;
         public readonly float duration;
@@ -173,6 +164,6 @@ namespace EventCallbacks
     //Is this in use? 
     public class ReturnPlayerControl : EventInfo {}
 
-    
+    public class NewLevelLoadedEvent : EventInfo {}
 }
 

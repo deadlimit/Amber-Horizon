@@ -30,8 +30,7 @@ public class DynamicFoley : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
+        
         if (Physics.Raycast(transform.position, Vector3.down, out hit))
         {
             if (hit.collider != null)

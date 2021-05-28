@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     [Header("GroundCheck")]
     [SerializeField] private LayerMask groundCheckMask;
     [SerializeField] private float groundCheckDistance = 0.05f;
+    private BoxCollider groundCheckBox;
 
     [Header("StateMachine")]
     [SerializeField] private State[] states;
@@ -45,7 +46,7 @@ public class PlayerController : MonoBehaviour
         stateMachine = new StateMachine(this, states);       
         lr = GetComponent<LineRenderer>();
         animator = GetComponent<Animator>();
-
+        groundCheckBox = GetComponent<BoxCollider>();
         EventSystem<CheckPointActivatedEvent>.RegisterListener(CheckpointRestoreHealth);
     }
 
@@ -188,7 +189,6 @@ public class PlayerController : MonoBehaviour
         //but that would be bloat for all other uses of the state machine core
         if (stateMachine.CurrentState.GetType() == typeof(GroundedState))
         {
-            EventSystem<NewCameraFocus>.FireEvent(new NewCameraFocus(keyLookAtTarget, false));
             stateMachine.ChangeState<PlayerLockedState>();
         }
         else if (stateMachine.CurrentState.GetType() == typeof(PlayerLockedState))
@@ -205,9 +205,18 @@ public class PlayerController : MonoBehaviour
         physics.AddForce(force);
         force = Vector3.zero;
     }
-    public bool isGrounded() 
-    {        
-        Physics.Raycast(transform.position, Vector3.down, out groundHitInfo, groundCheckDistance, groundCheckMask);       
+    
+    /// <summary>
+    /// Boxcast to get a little thickness to the groundcheck so as to not get stuck in crevasses or similar geometry. 
+    /// </summary>
+    /// <returns></returns>
+    public bool IsGrounded() {
+        
+        Physics.BoxCast(transform.position + Vector3.up, groundCheckBox.size, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask);
+        
+        //Old groundcheck, kept in case the boxcast misbehaves. 
+        //Physics.Raycast(transform.position, Vector3.down, out groundHitInfo, groundCheckDistance, groundCheckMask);       
+
         return groundHitInfo.collider;    
     }
     private void CheckpointRestoreHealth(CheckPointActivatedEvent checkPointActivatedEvent)
