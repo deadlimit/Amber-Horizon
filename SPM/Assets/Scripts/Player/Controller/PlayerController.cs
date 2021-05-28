@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
         stateMachine = new StateMachine(this, states);       
         lr = GetComponent<LineRenderer>();
         animator = GetComponent<Animator>();
-        groundCheckBox = GetComponent<BoxCollider>();
+        groundCheckBox = GetComponentInChildren<BoxCollider>();
         EventSystem<CheckPointActivatedEvent>.RegisterListener(CheckpointRestoreHealth);
     }
 
