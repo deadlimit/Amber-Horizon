@@ -22,7 +22,7 @@ public class PlayerHitListener : MonoBehaviour
 
         StartHitAnimationEvent shae = new StartHitAnimationEvent(phe.appliedEffect, phe.culprit);
         EventSystem<StartHitAnimationEvent>.FireEvent(shae);
-        isVulnerable = false;
+
         gas.ApplyEffectToSelf(phe.appliedEffect);
         
         //if player died from this attack
@@ -33,9 +33,16 @@ public class PlayerHitListener : MonoBehaviour
         }
     }
 
-    //Called by animation event, which one?? 
+
+    //Called by animation event PlayerDeath & Stand Up
     public void SetPlayerVulnerable()
     {
         isVulnerable = true;
+    }
+    //Called by animation event PlayerDeath & FlyBack
+    //
+    public void SetPlayerInvulnerable()
+    {
+        isVulnerable = false;
     }
 }
