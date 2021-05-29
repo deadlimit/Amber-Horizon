@@ -16,6 +16,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     [Header("Layermasks")]
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private LayerMask enemyMask;
+    [SerializeField] private LayerMask lineOfSightMask;
 
     //TODO; replace names and accesibility of rings
     public float outerRing, innerRing;
@@ -96,7 +97,6 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
         Animator.SetTrigger("HitByExplosion");
     }
 
-    //Destructor must also change state to not instantly set destination towards player respawn, hence virtual
     public virtual void ResetPosition()
     {
         transform.position = originPosition;
@@ -108,6 +108,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     #region GETTERS
     public LayerMask GetPlayerMask() { return playerMask; }
     public LayerMask EnemyMask { get => enemyMask; }
+    public LayerMask LineOfSightMask { get => lineOfSightMask; }
     public float AttackRange { get => attackRange; }
     public float VisualRange { get => visualRange; }
     public float MovementSpeedDefault { get => movementSpeedDefault; }

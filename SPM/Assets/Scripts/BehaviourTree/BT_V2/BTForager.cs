@@ -5,6 +5,7 @@ using UnityEngine;
 public class BTForager : BehaviourTree
 {
     private Teleport teleportNode;
+    private Shoot shootNode;
     public Forager forager { get; private set; }
 
     private new void Start()
@@ -61,9 +62,10 @@ public class BTForager : BehaviourTree
             }, this, "fleeFilter", new TargetTooClose(this));
 
         //Target visible/in range------------------------------------------------------
+        shootNode = new Shoot(this);
         Selector targetInRange = new Selector(new List<BTNode>
             {
-            new Shoot(this),
+            shootNode,
             new Reposition(this)
             }, this, "shootOrReposition", new TargetInRange(this));
 
@@ -129,5 +131,10 @@ public class BTForager : BehaviourTree
     public void TeleportFinished()
     {
         teleportNode.ExecuteTeleport();
+    }
+
+    public void ShootAnimationFinished()
+    {
+        shootNode.ShootAnimationFinished();
     }
 }

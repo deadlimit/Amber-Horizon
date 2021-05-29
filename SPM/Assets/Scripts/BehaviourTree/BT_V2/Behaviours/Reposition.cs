@@ -4,21 +4,32 @@ using UnityEngine;
 
 public class Reposition : BTNode
 {
-    private float placeHolderOrigin = 1;
-    private float placeHolderMaxDist = 3f; 
-    public Reposition(BehaviourTree bt) : base(bt) { }
+    private float maxAngle = 22.5f; 
+    private Transform playerTransform;
+    private BTForager foragerBT;
+    public Reposition(BehaviourTree bt) : base(bt) 
+    {
+
+        foragerBT = (BTForager)bt;
+        Debug.Assert(foragerBT);
+        maxAngle = foragerBT.forager.MaxRepositionAngle;
+    }
 
     public override void OnInitialize()
     {
+        playerTransform = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
         bt.ownerAgent.SetDestination(CalculateNewPosition());
+        Debug.Log("Reposition Init");
+
     }
     public override Status Evaluate()
     {
         if (ReachedTarget())
             return Status.BH_SUCCESS;
+
         else
         {
-            bt.ownerTransform.LookAt(bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue());
+            bt.ownerTransform.LookAt(playerTransform);
             return Status.BH_RUNNING;
         }
     }
@@ -38,12 +49,16 @@ public class Reposition : BTNode
         return false;
     }
 
-    //Preferably this position is calculated on the circumference of a circle, but thats not quick maths
-    // i have to learn trigonometry first
     private Vector3 CalculateNewPosition()
     {
-        Vector3 newPos = bt.owner.Pathfinder.GetSamplePositionOnNavMesh(bt.ownerTransform.position, placeHolderOrigin, placeHolderMaxDist); 
+        float angle = Random.Range(-maxAngle, maxAngle);
 
-        return newPos;
+        //To more precisely control the distance from player, the subtraction could be normalized, and then multiplied 
+        // by a "radius"  factor or similar, but i havent yet seen the need for that. 
+         Vector3 direction = bt.ownerTransform.position - playerTransform.position;
+         Vector3 modifiedDirection = Quaternion.AngleAxis(angle, Vector3.up) * direction;
+      
+        return modifiedDirection + playerTransform.position;
+
     }
 }

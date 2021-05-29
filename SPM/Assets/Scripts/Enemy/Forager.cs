@@ -6,6 +6,7 @@ public class Forager : Enemy {
     [Header("Forager Variables")]
     [SerializeField] private float fleeDistance;
     [SerializeField] private float fireCooldown;
+    [SerializeField] private float maxRepositionAngle;
     
     [SerializeField] private GameObject Bullet;
     [HideInInspector] public BlackHole activeBlackHole;
@@ -45,6 +46,7 @@ public class Forager : Enemy {
 
     public void Fire() {
         Transform target = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
+        transform.LookAt(target);
         ObjectPooler.Instance.Spawn("Bullet", transform.position + transform.forward + Vector3.up, Quaternion.LookRotation(target.position - transform.position));
         Pathfinder.agent.isStopped = false;
     }
@@ -57,4 +59,5 @@ public class Forager : Enemy {
   
     public float FireCooldown { get=> fireCooldown; }
     public float FleeDistance { get => fleeDistance; }
+    public float MaxRepositionAngle { get => maxRepositionAngle; }
 }

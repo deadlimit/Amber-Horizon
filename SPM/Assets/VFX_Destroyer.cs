@@ -13,7 +13,7 @@ public class VFX_Destroyer : PoolObject
         time += Time.deltaTime;
 
         if(time > timer)
-            Destroy(this.gameObject);
+            gameObject.SetActive(false);
 
 
     }

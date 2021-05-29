@@ -104,15 +104,6 @@ namespace EventCallbacks
             TransitCameraFocusInfo = transitCameraFocusInfo;
         }
     }
-
-    public class NewCameraFocus : EventInfo {
-        public readonly Transform Target;
-        public readonly bool IsOrthographic;
-        public NewCameraFocus(Transform target, bool isOrthographic) {
-            Target = target;
-            IsOrthographic = isOrthographic;
-        }
-    }
     
     public class ResetCameraFocus : EventInfo {}
     
@@ -137,7 +128,7 @@ namespace EventCallbacks
             this.duration = duration;
         }
     }
-
+    
     public class DisplayUIMessage : EventInfo {
         public readonly string UIMessage;
         public readonly float duration;
@@ -157,8 +148,22 @@ namespace EventCallbacks
             this.player = player.GetComponent<PlayerController>();
         }
     }
-    
+
+    public class StartHitAnimationEvent : EventInfo
+    {
+        public Transform culprit;
+        public GameplayEffect appliedEffect { get; }
+        public StartHitAnimationEvent(GameplayEffect appliedEffect, Transform culprit)
+        {
+            this.appliedEffect = appliedEffect;
+            this.culprit = culprit;
+        }
+    }
+
+
+    //Is this in use? 
     public class ReturnPlayerControl : EventInfo {}
-    
+
+    public class NewLevelLoadedEvent : EventInfo {}
 }
 

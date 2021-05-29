@@ -22,7 +22,6 @@ public class BTDestructor : BehaviourTree
     }
     private BTNode BehaviourTreeBuilder()
     {
-        Debug.Log("Bygger BT");
 
         //Patrol----------------------------------------------------------------------
         Sequence patrolSequence = new Sequence(new List<BTNode>
