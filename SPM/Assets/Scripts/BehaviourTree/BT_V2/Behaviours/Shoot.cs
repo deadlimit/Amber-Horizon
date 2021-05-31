@@ -14,23 +14,19 @@ public class Shoot : BTNode
         shootCD = bt.GetBlackBoardValue<float>("FireCooldown").GetValue();
         playerTransform = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
     }
-    public override void OnInitialize()
-    {
-        Debug.Log("Shoot init");
-    }
     public override Status Evaluate()
     {
         if (bt.timerNode.GetAttackCooldown() > 0)
         {
             return Status.BH_FAILURE;
         }
-       
 
         if (animationFinished)
         {
-            //bt.ownerAgent.isStopped = false;
             animationFinished = false;
             animationStarted = false;
+            bt.ownerAgent.enabled = true; 
+
             bt.timerNode.SetAttackCooldown(shootCD);
             Debug.Log("Shoot finished SUCCESS");
             return Status.BH_SUCCESS;
@@ -38,13 +34,11 @@ public class Shoot : BTNode
 
         // I guess this is the type of code you would place in OnInitialize, the problem with in this specific case of course,
         //is that shoot cd is checked inside of the node, and that would let the animation and cd start despite not actually being off cooldown
-        //
         if (!animationStarted)
         {
             animationStarted = true;
-            //bt.ownerAgent.ResetPath();
+            LockAgent();
             bt.owner.Animator.SetTrigger("Shoot");
-            bt.ownerTransform.LookAt(playerTransform);
         }
        
         Debug.Log("Shoot running..");
@@ -59,5 +53,16 @@ public class Shoot : BTNode
     public void ShootAnimationFinished()
     {
         animationFinished = true;
+    }
+
+    private void LockAgent()
+    {
+        //Seems like temporarily disabling the agent is the only thing actually needed, will leave the other 
+        //lines in for now, so it'll be easier to remember this stuff if a new problem arises
+        bt.ownerAgent.enabled = false;
+
+        /*bt.owner.Animator.StopPlayback();
+        bt.ownerAgent.ResetPath();*/
+        //bt.ownerTransform.LookAt(playerTransform);
     }
 }
