@@ -8,18 +8,20 @@ public class Shoot : BTNode
     private float shootCD;
     private bool animationFinished;
     private bool animationStarted;
-    private Transform playerTransform;
+    //private Transform playerTransform;
     public Shoot(BehaviourTree bt) : base(bt) 
     {
         shootCD = bt.GetBlackBoardValue<float>("FireCooldown").GetValue();
-        playerTransform = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
+       // playerTransform = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
     }
+
     public override Status Evaluate()
     {
         if (bt.timerNode.GetAttackCooldown() > 0)
         {
             return Status.BH_FAILURE;
         }
+        bt.ownerAgent.ResetPath();
 
         if (animationFinished)
         {
@@ -28,7 +30,6 @@ public class Shoot : BTNode
             bt.ownerAgent.enabled = true; 
 
             bt.timerNode.SetAttackCooldown(shootCD);
-            Debug.Log("Shoot finished SUCCESS");
             return Status.BH_SUCCESS;
         }
 
@@ -41,7 +42,6 @@ public class Shoot : BTNode
             bt.owner.Animator.SetTrigger("Shoot");
         }
        
-        Debug.Log("Shoot running..");
         return Status.BH_RUNNING;
 
 
@@ -59,10 +59,13 @@ public class Shoot : BTNode
     {
         //Seems like temporarily disabling the agent is the only thing actually needed, will leave the other 
         //lines in for now, so it'll be easier to remember this stuff if a new problem arises
+
+        //agent is enabled again in TargetInRange if the shoot animation can not finish properly - 
+        //and again inside Teleport's ExecuteTeleport, in case the player triggers this behaviour, interrupting the shoot-animation
+        bt.ownerAgent.ResetPath();
         bt.ownerAgent.enabled = false;
 
         /*bt.owner.Animator.StopPlayback();
-        bt.ownerAgent.ResetPath();*/
-        //bt.ownerTransform.LookAt(playerTransform);
+        bt.ownerTransform.LookAt(playerTransform);*/
     }
 }
