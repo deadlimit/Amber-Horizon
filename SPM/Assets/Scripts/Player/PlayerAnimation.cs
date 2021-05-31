@@ -96,7 +96,7 @@ public class PlayerAnimation : MonoBehaviour {
     }
 
     public void OnForagerHit(Transform culprit) {
-        print("forager hit you");
+        //print("forager hit you");
     }
 
     private void PlayDashAnimation(AbilityUsed ability) {
