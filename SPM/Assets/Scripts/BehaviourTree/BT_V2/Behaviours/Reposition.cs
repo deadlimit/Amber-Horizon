@@ -18,17 +18,21 @@ public class Reposition : BTNode
     public override void OnInitialize()
     {
         playerTransform = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
-        bt.ownerAgent.SetDestination(CalculateNewPosition());
         Debug.Log("Reposition Init");
 
     }
     public override Status Evaluate()
     {
         if (ReachedTarget())
+        {
+            bt.ownerAgent.SetDestination(CalculateNewPosition());
+            Debug.Log("Reposition SUCCESS");
             return Status.BH_SUCCESS;
+        }
 
         else
-        {
+        {       
+            Debug.Log("Reposition running");
             bt.ownerTransform.LookAt(playerTransform);
             return Status.BH_RUNNING;
         }
