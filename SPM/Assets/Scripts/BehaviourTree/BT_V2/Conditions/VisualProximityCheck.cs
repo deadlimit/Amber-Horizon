@@ -6,10 +6,12 @@ public class VisualProximityCheck : BTNode
     private Transform playerTransform;
     private Vector3 lastKnownPlayerPosition;
     private bool hasSeenPlayer;
-    private float rangeRounding = 1f; 
+    private float rangeRounding = 1f;
+    private Vector3 offsetVector;
    public VisualProximityCheck(BehaviourTree bt ) : base(bt)
     {
         visualRange = bt.owner.VisualRange;
+        offsetVector = new Vector3(0, bt.owner.Collider.height, 0);
     }
 
     public override Status Evaluate()
@@ -61,12 +63,17 @@ public class VisualProximityCheck : BTNode
         }
     }
 
+    //this took a really weird turn, seems like the documentation and "layers to ignore" parameter doesnt actually do what it says,
+    //at this point i might aswell use a regular raycast but meh
     private bool PlayerInLineOfSight()
     {
-        if (Physics.Linecast(bt.ownerTransform.position, playerTransform.position, out var hitInfo, (1 << bt.owner.GetPlayerMask())))
+        Debug.Log("Player in line of sight called"); 
+        if (Physics.Linecast(bt.ownerTransform.position, playerTransform.position, out var hitInfo, bt.owner.LineOfSightMask))
         {
+            //Debug.Log(bt.owner.gameObject + " linecast hit: " + hitInfo.collider);
             return false;
         }
+        //Debug.Log("Linecast hit nothing");
         return true;
     }
 

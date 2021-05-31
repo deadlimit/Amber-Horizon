@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Teleport : BTNode
 {
-    //Var ska variabler som den här lagras? Man vill ha tillgång i inspectorn förstås, men det blir lite märkligt
-    //att fylla på med 100 variabler i Forager själv.
+
     Vector3 teleportPosition;
     private float distanceFromPlayer = 10f;
     private bool animationStarted;
@@ -51,11 +50,6 @@ public class Teleport : BTNode
     }
     public void ExecuteTeleport()
     {
-        //Vill nog att ett animationsevent styr det här, inte en timer, det kommer bli mycket mer exakt
-        //isåfall en metod som sätter dessa saker och kanske en extra bool som styr returen av Status
-
-        //På något sätt måste man också se till att AI:n inte skjuter för tidigt, vet inte om detta beror på dålig timer
-        //men den verkar skjuta innan den dyker upp. Kan vara timern. (Det är nog timern)
         bt.owner.transform.position = teleportPosition;
         bt.ownerTransform.LookAt(playerTransform);
         bt.ownerAgent.ResetPath();
