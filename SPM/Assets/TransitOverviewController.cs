@@ -19,12 +19,14 @@ public class TransitOverviewController : MonoBehaviour {
     private void OnEnable() {
         EventSystem<EnterTransitViewEvent>.RegisterListener(TransitView);
         EventSystem<ResetCameraFocus>.RegisterListener(ExitView);
+ 
         exitInstructionText.gameObject.SetActive(false);
     }
 
     private void OnDisable() {
         EventSystem<EnterTransitViewEvent>.UnregisterListener(TransitView);
         EventSystem<ResetCameraFocus>.UnregisterListener(ExitView);
+ 
     }
     
     private void TransitView(EnterTransitViewEvent viewEvent) {
@@ -72,7 +74,6 @@ public class TransitOverviewController : MonoBehaviour {
         Cursor.ActivateCursor(false, CursorLockMode.Locked);
         exitInstructionText.gameObject.SetActive(false);
     }
-    
     
 
 }

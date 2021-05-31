@@ -31,8 +31,8 @@ namespace EventCallbacks
         {
             if(keyList.Count <= 0 && other.gameObject.CompareTag("Player"))
             {
-                UnlockEvent ue = new UnlockEvent();
-                EventSystem<UnlockEvent>.FireEvent(ue);
+                //UnlockEvent ue = new UnlockEvent();
+              //  EventSystem<UnlockEvent>.FireEvent(ue);
             }
         }
         
