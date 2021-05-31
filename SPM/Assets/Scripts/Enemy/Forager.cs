@@ -7,7 +7,9 @@ public class Forager : Enemy {
     [SerializeField] private float fleeDistance;
     [SerializeField] private float fireCooldown;
     [SerializeField] private float maxRepositionAngle;
-    
+
+    public GameObject VFXPosition;
+    public GameObject MuzzleVFX;
     [SerializeField] private GameObject Bullet;
     [HideInInspector] public BlackHole activeBlackHole;
 
@@ -49,6 +51,7 @@ public class Forager : Enemy {
         transform.LookAt(target);
         ObjectPooler.Instance.Spawn("Bullet", transform.position + transform.forward + Vector3.up, Quaternion.LookRotation(target.position - transform.position));
         Pathfinder.agent.isStopped = false;
+        Instantiate(MuzzleVFX, VFXPosition.transform.position, VFXPosition.transform.rotation, transform);
     }
 
     public override void ApplyExplosion(GameObject explosionInstance, float blastPower) {
