@@ -21,12 +21,13 @@ public class KilledByBlackHole : BTNode
     {
         if (!foragerBT.forager.hitByBlackHole)
             return Status.BH_FAILURE;
-        
-        if (!bhTransform)
-            bhTransform = foragerBT.forager.activeBlackHole.transform;
 
-        bt.owner.Animator.SetBool("Die", true);
-        bt.ownerAgent.ResetPath();
+        if (!bhTransform)
+        {
+            StartDeath();
+            bhTransform = foragerBT.forager.activeBlackHole.transform;
+        }
+
         bt.ownerTransform.LookAt(bhTransform.transform);
         bt.owner.transform.position = Vector3.Lerp(bt.ownerTransform.position, bhTransform.position, Time.deltaTime * lerpSpeed);
         bt.ownerTransform.localScale = Vector3.Lerp(bt.ownerTransform.localScale, Vector3.zero, Time.deltaTime * lerpSpeed);
@@ -35,5 +36,11 @@ public class KilledByBlackHole : BTNode
             return Status.BH_SUCCESS;
 
         return Status.BH_RUNNING;
+    }
+
+    private void StartDeath()
+    {
+        bt.ownerAgent.enabled = false;
+        bt.owner.Animator.SetBool("Die", true);
     }
 }
