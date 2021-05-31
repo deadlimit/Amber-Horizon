@@ -12,9 +12,7 @@ public class TargetInRange : BTNode
         bt.ownerAgent.enabled = true;
         if (distance >= bt.owner.AttackRange)
         {
-            bt.ownerAgent.ResetPath();
-            Debug.Log("Target in Rnage FAILURE");
-            Debug.Log("Distance to player: " + distance);          
+            bt.ownerAgent.ResetPath();        
             return Status.BH_FAILURE;
         }
         else

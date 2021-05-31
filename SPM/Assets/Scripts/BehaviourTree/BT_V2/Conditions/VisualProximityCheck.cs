@@ -2,14 +2,18 @@ using UnityEngine;
 
 public class VisualProximityCheck : BTNode
 {
-    private float visualRange;
     private Transform playerTransform;
     private Vector3 lastKnownPlayerPosition;
+    private Vector3 offsetVector;
     private bool hasSeenPlayer;
     private float rangeRounding = 1f;
-    private Vector3 offsetVector;
+    private float visualRange;
 
-    private Status cachedReturnValue;
+    //Saving resources
+    private int frameCounter;
+    private int nthFrames = 33;
+    private Status cachedValue = Status.BH_FAILURE;
+
    public VisualProximityCheck(BehaviourTree bt ) : base(bt)
     {
         visualRange = bt.owner.VisualRange;
@@ -18,7 +22,14 @@ public class VisualProximityCheck : BTNode
 
     public override Status Evaluate()
     {
-        
+        frameCounter++;
+
+        if (frameCounter % nthFrames != 0)
+        {
+            return cachedValue;
+        }
+        frameCounter = 0;
+
 
         if (TargetTransformExists())
         {
@@ -45,7 +56,9 @@ public class VisualProximityCheck : BTNode
             //"Target" is not assigned if line or angle of sight is broken, watch out for duplicate code here aswell
             if (!PlayerInLineOfSight() || !PlayerInAngleOfSight())
             {
-                bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(null);
+                SetLastSeenPosition();
+                ResetBlackboardValues();
+                cachedValue = Status.BH_FAILURE;
                 return Status.BH_FAILURE;
             }
 
@@ -61,7 +74,7 @@ public class VisualProximityCheck : BTNode
             SetLastSeenPosition();
             //If visual detection has failed, reset the values of HasCalledForHelp, TargetTransform and AlerterTransform
             ResetBlackboardValues();
-
+            cachedValue = Status.BH_FAILURE;
             return Status.BH_FAILURE;
         }
     }
@@ -136,5 +149,7 @@ public class VisualProximityCheck : BTNode
 
         lastKnownPlayerPosition = playerTransform.position;
         bt.ownerAgent.speed = bt.owner.MovementSpeedAttack;
+
+        cachedValue = Status.BH_SUCCESS;
     }
 }

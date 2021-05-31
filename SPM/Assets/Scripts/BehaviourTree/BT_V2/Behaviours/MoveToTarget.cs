@@ -44,7 +44,7 @@ public class MoveToTarget : BTNode
         return false;
     }
 
-    //Sätt destination var tionde frame
+    //SÃ¤tt destination var tionde frame
     private void UpdateTargetPosition()
     {
         if (frameCounter % 10 == 0)
