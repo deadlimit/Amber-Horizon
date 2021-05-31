@@ -9,12 +9,14 @@ public class Gate : MonoBehaviour {
     
     private static readonly int Open = Animator.StringToHash("Open");
     private static readonly int Close = Animator.StringToHash("Close");
-
+    
     [SerializeField] private ParticleSystem horizontalDust, verticalDust;
+
+    private AudioSource audioSource;
     
     public void OnEnable() {
         animator = GetComponent<Animator>();
-        
+        audioSource = GetComponent<AudioSource>();
         EventSystem<UnlockEvent>.RegisterListener(DoorUnlocked);
     }
     private void OnDisable() => EventSystem<UnlockEvent>.UnregisterListener(DoorUnlocked);
@@ -23,11 +25,7 @@ public class Gate : MonoBehaviour {
         if (unlockEvent.ID != ID) return;
         
         animator.SetTrigger(Open);
-        GetComponent<AudioSource>()?.Play();
-        ParticleSystem[] systems = GetComponentsInChildren<ParticleSystem>();
-        
-        foreach(ParticleSystem system in systems)
-            system.Play();
+        PlayDustEffect();
         
     }
 
@@ -39,4 +37,11 @@ public class Gate : MonoBehaviour {
         verticalDust.Play();
     }
 
+    private void PlaySFX(AudioClip sfx) {
+        if(audioSource.isPlaying)
+            audioSource.Stop();
+        
+        audioSource.PlayOneShot(sfx);
+    }
+    
 }
