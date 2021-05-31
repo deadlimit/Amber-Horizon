@@ -48,7 +48,6 @@ public class Forager : Enemy {
         Transform target = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
         transform.LookAt(target);
         ObjectPooler.Instance.Spawn("Bullet", transform.position + transform.forward + Vector3.up, Quaternion.LookRotation(target.position - transform.position));
-        Pathfinder.agent.isStopped = false;
     }
 
     public override void ApplyExplosion(GameObject explosionInstance, float blastPower) {

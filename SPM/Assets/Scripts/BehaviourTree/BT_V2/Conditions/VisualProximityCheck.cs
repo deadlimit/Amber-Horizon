@@ -8,6 +8,8 @@ public class VisualProximityCheck : BTNode
     private bool hasSeenPlayer;
     private float rangeRounding = 1f;
     private Vector3 offsetVector;
+
+    private Status cachedReturnValue;
    public VisualProximityCheck(BehaviourTree bt ) : base(bt)
     {
         visualRange = bt.owner.VisualRange;
@@ -17,6 +19,7 @@ public class VisualProximityCheck : BTNode
     public override Status Evaluate()
     {
         
+
         if (TargetTransformExists())
         {
             SetSpeedAndLastKnownPosition();
@@ -67,10 +70,9 @@ public class VisualProximityCheck : BTNode
     //at this point i might aswell use a regular raycast but meh
     private bool PlayerInLineOfSight()
     {
-        Debug.Log("Player in line of sight called"); 
-        if (Physics.Linecast(bt.ownerTransform.position, playerTransform.position, out var hitInfo, bt.owner.LineOfSightMask))
+        if (Physics.Linecast(bt.ownerTransform.position + offsetVector, playerTransform.position + offsetVector, out var hitInfo, bt.owner.LineOfSightMask))
         {
-            //Debug.Log(bt.owner.gameObject + " linecast hit: " + hitInfo.collider);
+            Debug.Log(bt.owner.gameObject + " linecast hit: " + hitInfo.collider);
             return false;
         }
         //Debug.Log("Linecast hit nothing");

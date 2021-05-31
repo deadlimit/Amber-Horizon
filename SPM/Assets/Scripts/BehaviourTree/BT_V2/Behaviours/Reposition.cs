@@ -9,7 +9,6 @@ public class Reposition : BTNode
     private BTForager foragerBT;
     public Reposition(BehaviourTree bt) : base(bt) 
     {
-
         foragerBT = (BTForager)bt;
         Debug.Assert(foragerBT);
         maxAngle = foragerBT.forager.MaxRepositionAngle;
@@ -17,18 +16,25 @@ public class Reposition : BTNode
 
     public override void OnInitialize()
     {
+        bt.ownerAgent.enabled = true;
+        bt.ownerAgent.ResetPath();
         playerTransform = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
         bt.ownerAgent.SetDestination(CalculateNewPosition());
-        Debug.Log("Reposition Init");
-
     }
     public override Status Evaluate()
     {
+        //This check is needed because the tree is practically locked while the AI is trying to fire,
+        //and if the Fire fails after some time, the player may have moved out of range already.
+        //this is an obvious flaw in how the tree is built right now, since TargetInRange already checks the distance
         if (ReachedTarget())
+        {
+            Debug.Log("Reposition success");
             return Status.BH_SUCCESS;
+        }
 
         else
         {
+            //Debug.Log("Reposition running");
             bt.ownerTransform.LookAt(playerTransform);
             return Status.BH_RUNNING;
         }
