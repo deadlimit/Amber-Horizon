@@ -3,8 +3,6 @@ using EventCallbacks;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
-
 
 public class SceneTransit : MonoBehaviour {
 
