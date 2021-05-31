@@ -17,13 +17,14 @@ public class TransitUnit : InteractableObject {
     private void OnEnable() {
         EventSystem<ResetCameraFocus>.RegisterListener(EnableTriggers);
         EventSystem<CheckPointActivatedEvent>.RegisterListener(ActivateTransitUnit);
-        EventSystem<StartSceneTransitEvent>.RegisterListener(ClearTransitUnits);
+        EventSystem<NewLevelLoadedEvent>.RegisterListener(ClearTransitUnits);
+        
     }
 
     private void OnDisable() {
         EventSystem<ResetCameraFocus>.UnregisterListener(EnableTriggers);
         EventSystem<CheckPointActivatedEvent>.UnregisterListener(ActivateTransitUnit);
-        EventSystem<StartSceneTransitEvent>.RegisterListener(ClearTransitUnits);
+        EventSystem<NewLevelLoadedEvent>.UnregisterListener(ClearTransitUnits);
     }
 
     private void Awake() {
@@ -42,11 +43,9 @@ public class TransitUnit : InteractableObject {
     protected override void InsideTrigger(GameObject entity) {
         
         if (Input.GetKeyDown(KeyCode.F)) {
-            
-            TransitCameraFocusInfo info = new TransitCameraFocusInfo();
-            info.TransitUnits = activatedTransitUnits;
-            info.ActivatedTransitUnit = this;
-            
+
+            TransitCameraFocusInfo info = new TransitCameraFocusInfo {TransitUnits = activatedTransitUnits, ActivatedTransitUnit = this};
+
             EventSystem<EnterTransitViewEvent>.FireEvent(new EnterTransitViewEvent(info));
             triggerCollider.enabled = false;
         }
@@ -61,7 +60,7 @@ public class TransitUnit : InteractableObject {
             activatedTransitUnits.Add(this);
     }
 
-    private void ClearTransitUnits(StartSceneTransitEvent transitEvent) {
+    private void ClearTransitUnits(NewLevelLoadedEvent transitEvent) {
         activatedTransitUnits.Clear();
     }
 }

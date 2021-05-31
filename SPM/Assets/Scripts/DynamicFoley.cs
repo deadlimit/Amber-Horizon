@@ -46,21 +46,7 @@ public class DynamicFoley : MonoBehaviour
             }
         }
     }
-
-    /*private void OnCollisionEnter(Collision col)
-    {
-        SurfaceColliderType act = col.gameObject.GetComponent<Collider>().gameObject.GetComponent<SurfaceColliderType>();
-     
-        if (act)
-        {
-            colliderType = act.gameObject.GetComponent<SurfaceColliderType>().GetTerrainType();
-            Debug.Log("colliderType = " + colliderType);
-        }
-
-
-    }*/
-
-
+    
     private void PlayDynamicFootstep(int foot_number)
     {
         if (AudioSettings.dspTime < time + filterTime)

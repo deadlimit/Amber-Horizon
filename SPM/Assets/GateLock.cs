@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using EventCallbacks;
@@ -5,6 +6,8 @@ public class GateLock : InteractableObject
 {
     public static readonly List<KeyFragment> KeyList = new List<KeyFragment>();
     public static readonly List<KeyFragment> KeysAcquired = new List<KeyFragment>();
+    
+    public Action UnlockDoor { get; private set; }
     
     private BoxCollider interaction;
 
@@ -16,13 +19,13 @@ public class GateLock : InteractableObject
         interaction = GetComponent<BoxCollider>();
     }
     private void OnDisable() => EventSystem<KeyPickUpEvent>.UnregisterListener(KeyPickUp);
-
+    
     private void Start() {
-        if (OpenDoorWithoutKeys) {
-            KeyList.Clear();
-            KeysAcquired.Clear();
-            UnlockGateSequence();
-        }
+        if (!OpenDoorWithoutKeys) return;
+        
+        KeyList.Clear();
+        KeysAcquired.Clear();
+        UnlockGateSequence();
 
     }
     

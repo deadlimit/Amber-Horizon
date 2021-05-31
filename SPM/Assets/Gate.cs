@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using EventCallbacks;
 
 public class Gate : MonoBehaviour
 {   
-    Animator animator;
-    private void OnEnable() 
-    {
+    private Animator animator;
+    private static readonly int Open = Animator.StringToHash("Open");
+
+    [SerializeField] private ParticleSystem horizontalDust, verticalDust;
+    
+    public void OnEnable() {
         animator = GetComponent<Animator>();
         EventSystem<UnlockEvent>.RegisterListener(DoorUnlocked);
     }
@@ -15,7 +16,7 @@ public class Gate : MonoBehaviour
 
     private void DoorUnlocked(UnlockEvent ue)
     {
-        animator.SetTrigger("OpenGate");
+        animator.SetBool(Open, true);
 
         ParticleSystem[] systems = GetComponentsInChildren<ParticleSystem>();
         
@@ -24,5 +25,12 @@ public class Gate : MonoBehaviour
         
     }
 
+    //Called in animation event
+    private void PlayDustEffect() {
+        horizontalDust.Stop();
+        verticalDust.Stop(); 
+        horizontalDust.Play();
+        verticalDust.Play();
+    }
 
 }

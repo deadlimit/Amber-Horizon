@@ -3,17 +3,19 @@ using EventCallbacks;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 
 public class SceneTransit : MonoBehaviour {
 
     public string NewSceneName;
 
-    [SerializeField] private Animator GateLevelOne;
-    [SerializeField] private PlayableDirector cinematic;    
+    [FormerlySerializedAs("GateLevelOne")] [SerializeField] private Animator FrontGate;
+    [SerializeField] private PlayableDirector cinematic;   
+    
     private BoxCollider trigger;
-    private static readonly int CloseGateHash = Animator.StringToHash("CloseGate");
-    private static readonly int OpenGateHash = Animator.StringToHash("OpenGate");
+    
+    private static readonly int OpenHash = Animator.StringToHash("Open");
 
     private void Awake() => trigger = GetComponent<BoxCollider>();
     
@@ -26,13 +28,12 @@ public class SceneTransit : MonoBehaviour {
     }
 
     private void OpenFrontGate(UnlockEvent unlockEvent) {
-        GateLevelOne.SetTrigger(OpenGateHash);
-
+        FrontGate.SetBool(OpenHash, true);
     }
 
     private void OnTriggerEnter(Collider other) {
         trigger.enabled = false;
-        GateLevelOne.SetTrigger(CloseGateHash);
+        FrontGate.SetBool(OpenHash, false);
         StartCoroutine(NewSceneSequence());
     }
 
@@ -43,7 +44,6 @@ public class SceneTransit : MonoBehaviour {
         yield return StartCoroutine(LoadNewScene());
         
     }
-    
     
     private IEnumerator LoadNewScene() {
         yield return SceneManager.UnloadSceneAsync("Level 1");
