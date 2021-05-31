@@ -46,7 +46,7 @@ public class MenuTest : MonoBehaviour
         GameObject playerObj = GameObject.FindWithTag("Player");
         playerObj.GetComponent<PlayerController>().enabled = false;
 
-        GameObject camObj = GameObject.FindWithTag("MainCamera");
+        GameObject camObj = GameObject.Find("PlayerCamera");
         camObj.GetComponent<ThirdPersonCamera>().enabled = false;
     }
 
@@ -61,7 +61,7 @@ public class MenuTest : MonoBehaviour
         GameObject playerObj = GameObject.FindWithTag("Player");
         playerObj.GetComponent<PlayerController>().enabled = true;
 
-        GameObject camObj = GameObject.FindWithTag("MainCamera");
+        GameObject camObj = GameObject.Find("PlayerCamera");
         camObj.GetComponent<ThirdPersonCamera>().enabled = true;
 
     }
