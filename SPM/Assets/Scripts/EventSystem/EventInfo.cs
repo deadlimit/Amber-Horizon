@@ -13,7 +13,14 @@ namespace EventCallbacks
     }
     
     public class KeyPickUpEvent : EventInfo { }
-    public class UnlockEvent : EventInfo { }
+
+    public class UnlockEvent : EventInfo {
+        public readonly int ID;
+
+        public UnlockEvent(int doorID) {
+            ID = doorID;
+        }
+    }
 
     public class PlayerHitEvent : EventInfo {
 

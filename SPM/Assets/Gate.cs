@@ -1,10 +1,13 @@
 using UnityEngine;
 using EventCallbacks;
 
-public class Gate : MonoBehaviour
-{   
+public class Gate : MonoBehaviour {
+    
+    public int ID;
+    
     private Animator animator;
     private static readonly int Open = Animator.StringToHash("Open");
+    private static readonly int Close = Animator.StringToHash("Close");
 
     [SerializeField] private ParticleSystem horizontalDust, verticalDust;
     
@@ -14,9 +17,10 @@ public class Gate : MonoBehaviour
     }
     private void OnDisable() => EventSystem<UnlockEvent>.UnregisterListener(DoorUnlocked);
 
-    private void DoorUnlocked(UnlockEvent ue)
-    {
-        animator.SetBool(Open, true);
+    private void DoorUnlocked(UnlockEvent unlockEvent) {
+        if (unlockEvent.ID != ID) return;
+        
+        animator.SetTrigger(Open);
 
         ParticleSystem[] systems = GetComponentsInChildren<ParticleSystem>();
         

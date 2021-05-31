@@ -10,12 +10,13 @@ public class SceneTransit : MonoBehaviour {
 
     public string NewSceneName;
 
-    [FormerlySerializedAs("GateLevelOne")] [SerializeField] private Animator FrontGate;
+    [SerializeField] private Animator FrontGate;
     [SerializeField] private PlayableDirector cinematic;   
     
     private BoxCollider trigger;
     
     private static readonly int OpenHash = Animator.StringToHash("Open");
+    private static readonly int CloseHash = Animator.StringToHash("Close");
 
     private void Awake() => trigger = GetComponent<BoxCollider>();
     
@@ -28,12 +29,12 @@ public class SceneTransit : MonoBehaviour {
     }
 
     private void OpenFrontGate(UnlockEvent unlockEvent) {
-        FrontGate.SetBool(OpenHash, true);
+        FrontGate.SetTrigger(OpenHash);
     }
 
     private void OnTriggerEnter(Collider other) {
         trigger.enabled = false;
-        FrontGate.SetBool(OpenHash, false);
+        FrontGate.SetTrigger(CloseHash);
         StartCoroutine(NewSceneSequence());
     }
 

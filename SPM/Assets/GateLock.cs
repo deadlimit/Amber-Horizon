@@ -6,8 +6,8 @@ public class GateLock : InteractableObject
 {
     public static readonly List<KeyFragment> KeyList = new List<KeyFragment>();
     public static readonly List<KeyFragment> KeysAcquired = new List<KeyFragment>();
-    
-    public Action UnlockDoor { get; private set; }
+
+    [SerializeField] private int doorIDToOpen;
     
     private BoxCollider interaction;
 
@@ -54,7 +54,7 @@ public class GateLock : InteractableObject
     }
 
     private void UnlockGateSequence() {
-        UnlockEvent ue = new UnlockEvent();
+        UnlockEvent ue = new UnlockEvent(doorIDToOpen);
         EventSystem<UnlockEvent>.FireEvent(ue);
         EventSystem<InteractTriggerExitEvent>.FireEvent(new InteractTriggerExitEvent());
         interaction.enabled = false;
