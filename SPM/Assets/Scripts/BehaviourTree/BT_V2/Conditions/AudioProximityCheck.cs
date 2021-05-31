@@ -4,13 +4,27 @@ using UnityEngine;
 
 public class AudioProximityCheck : BTNode
 {
-    private float hearingRange = 0f;
+
+    private float hearingRange = 8f;
+
+    //Saving resources
+    private Status cachedValue = Status.BH_FAILURE;
+    private int frameCounter;
+    private int nthFrames = 10;
     public AudioProximityCheck(BehaviourTree bt) : base(bt) {}
-    public override void OnInitialize()
-    {
-    }
+
     public override Status Evaluate()
     {
+        frameCounter++;
+
+        if (frameCounter % nthFrames != 0)
+        {
+            return cachedValue;
+        }
+        frameCounter = 0;
+
+
+
         Collider[] arr = Physics.OverlapSphere(bt.ownerTransform.position, hearingRange, bt.owner.GetPlayerMask());
         if (arr.Length > 0)
         {
@@ -26,9 +40,11 @@ public class AudioProximityCheck : BTNode
             }
             if (arr.Length > 1)
                 Debug.LogError("Arr Length > 1!!");
-
+            
+            cachedValue = Status.BH_SUCCESS;
             return Status.BH_SUCCESS;
         }
+        cachedValue = Status.BH_FAILURE;
         return Status.BH_FAILURE;
     }
 }

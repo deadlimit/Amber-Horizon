@@ -28,7 +28,6 @@ public class Reposition : BTNode
         //this is an obvious flaw in how the tree is built right now, since TargetInRange already checks the distance
         if (ReachedTarget())
         {
-            Debug.Log("Reposition success");
             return Status.BH_SUCCESS;
         }
 

@@ -11,7 +11,6 @@ public class Investigate : BTNode
 
     public override void OnInitialize()
     {
-        Debug.Log("Investigate Init");
         
         if (bt.GetBlackBoardValue<Vector3>("Target") != null)
             bt.owner.Pathfinder.agent.SetDestination(targetPos);
@@ -22,7 +21,6 @@ public class Investigate : BTNode
 
         if (ReachedTarget())
         {
-            Debug.Log("Blackboard 'Target' set to null ");
             bt.blackboard["Target"] = null;
             return Status.BH_SUCCESS;
         }
@@ -33,7 +31,6 @@ public class Investigate : BTNode
         }
 
         else
-            Debug.Log("Investigate running");
             return Status.BH_RUNNING;
     }
     private bool ReachedTarget()
