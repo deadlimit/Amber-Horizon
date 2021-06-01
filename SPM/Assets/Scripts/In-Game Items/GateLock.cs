@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using EventCallbacks;
@@ -12,19 +13,26 @@ public class GateLock : InteractableObject
 
     [Header("Fuskknapp, sätt till true för att gaten ska öppna direkt (debug)")]
     [SerializeField] private bool OpenDoorWithoutKeys;
-    
+
     private void OnEnable() {
         EventSystem<KeyPickUpEvent>.RegisterListener(KeyPickUp);
-        interaction = GetComponent<BoxCollider>();
-        
+        EventSystem<NewLevelLoadedEvent>.RegisterListener(ResetKeys);
     }
-    private void OnDisable() => EventSystem<KeyPickUpEvent>.UnregisterListener(KeyPickUp);
+
+    private void OnDisable() {
+        EventSystem<KeyPickUpEvent>.UnregisterListener(KeyPickUp);
+        EventSystem<NewLevelLoadedEvent>.UnregisterListener(ResetKeys);
+    } 
     
     private void Start() {
+        interaction = GetComponent<BoxCollider>();
+        print(KeyList.Count);
+        print(KeysAcquired.Count);
+        
         if (!OpenDoorWithoutKeys) return;
         
-        KeyList.Clear();
-        KeysAcquired.Clear();
+        ResetKeys(null);
+
         UnlockGateSequence();
 
     }
@@ -64,6 +72,10 @@ public class GateLock : InteractableObject
     protected virtual void FireUnlockSequence() {
         UnlockGateSequence();
     }
-    
+
+    private static void ResetKeys(NewLevelLoadedEvent loadedEvent) {
+        KeyList.Clear();
+        KeysAcquired.Clear();
+    }
 }
 
