@@ -167,38 +167,19 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonUp(1))
         {
-            abilitySystem.TryDeactivateAbilityByTag(GameplayTags.AimingTag);
+            DeactivateAim();
         }
         if (Input.GetMouseButton(0))
         {
             abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag);
         }
 
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            ToggleLockedState();
-
-        }
         
         if(Input.GetKeyDown(KeyCode.Escape))
             EventSystem<ResetCameraFocus>.FireEvent(null);
     }
 
-    private void ToggleLockedState()
-    {   //Could be placed inside state but i wanted to gather all the inputs, also considered calling an overridden method inside the states,
-        //but that would be bloat for all other uses of the state machine core
-        if (stateMachine.CurrentState.GetType() == typeof(GroundedState))
-        {
-            stateMachine.ChangeState<PlayerLockedState>();
-        }
-        else if (stateMachine.CurrentState.GetType() == typeof(PlayerLockedState))
-        {
-            EventSystem<ResetCameraFocus>.FireEvent(null);
-            stateMachine.ChangeState<GroundedState>();
-        }
 
-        animator.SetBool("ShowKey", !animator.GetBool("ShowKey"));
-    }
     private void FixedUpdate()
     {
         Jump();
@@ -234,5 +215,9 @@ public class PlayerController : MonoBehaviour
     public float GetPlayerHealth()
     {
         return (float)abilitySystem.GetAttributeValue(typeof(HealthAttribute));
+    }
+    public void DeactivateAim()
+    {
+        abilitySystem.TryDeactivateAbilityByTag(GameplayTags.AimingTag);
     }
 }
