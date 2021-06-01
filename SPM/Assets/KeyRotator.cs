@@ -33,6 +33,7 @@ public class KeyRotator : MonoBehaviour {
 
     private void ResetKeyText(NewLevelLoadedEvent newLevelLoadedEvent) {
         UpdateKeyText(null);
+        print("update text");
     }
     
     private void Update() {
