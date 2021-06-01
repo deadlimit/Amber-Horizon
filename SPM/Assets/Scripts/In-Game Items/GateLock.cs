@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using EventCallbacks;
 public class GateLock : InteractableObject
 {
-    public static readonly List<KeyFragment> KeyList = new List<KeyFragment>();
-    public static readonly List<KeyFragment> KeysAcquired = new List<KeyFragment>();
+    public static List<KeyFragment> KeyList = new List<KeyFragment>();
+    public static List<KeyFragment> KeysAcquired = new List<KeyFragment>();
     
     [SerializeField] private int doorIDToOpen;
     
@@ -18,7 +17,7 @@ public class GateLock : InteractableObject
         EventSystem<KeyPickUpEvent>.RegisterListener(KeyPickUp);
         EventSystem<NewLevelLoadedEvent>.RegisterListener(ResetKeys);
     }
-
+    
     private void OnDisable() {
         EventSystem<KeyPickUpEvent>.UnregisterListener(KeyPickUp);
         EventSystem<NewLevelLoadedEvent>.UnregisterListener(ResetKeys);
@@ -26,11 +25,9 @@ public class GateLock : InteractableObject
     
     private void Start() {
         interaction = GetComponent<BoxCollider>();
-        
+        ResetKeys(null);
         if (!OpenDoorWithoutKeys) return;
         
-        ResetKeys(null);
-
         UnlockGateSequence();
 
     }
@@ -71,9 +68,18 @@ public class GateLock : InteractableObject
         UnlockGateSequence();
     }
 
-    private static void ResetKeys(NewLevelLoadedEvent loadedEvent) {
+    private void ResetKeys(NewLevelLoadedEvent loadedEvent) {
+        
         KeyList.Clear();
         KeysAcquired.Clear();
+
+        
+        KeyFragment[] keys = FindObjectsOfType<KeyFragment>();
+        
+        foreach(KeyFragment key in keys)
+            KeyList.Add(key);
+        EventSystem<KeyPickUpEvent>.FireEvent(null);
+        Debug.Log("Keylist: " + KeyList.Count, gameObject);
     }
 }
 
