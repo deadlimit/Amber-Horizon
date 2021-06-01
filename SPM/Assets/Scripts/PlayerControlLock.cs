@@ -17,21 +17,20 @@ public class PlayerControlLock : MonoBehaviour {
         }
             
         
-        EventSystem<ReturnPlayerControl>.RegisterListener(EnableControl);
+        EventSystem<ActivatePlayerControl>.RegisterListener(EnableControl);
         StartCoroutine(EnableScripts(false));
     }
 
     private void OnEnable() {
-        EventSystem<ReturnPlayerControl>.RegisterListener(EnableControl);
+        EventSystem<ActivatePlayerControl>.RegisterListener(EnableControl);
     }
 
     private void OnDisable() {
-        EventSystem<ReturnPlayerControl>.UnregisterListener(EnableControl);
+        EventSystem<ActivatePlayerControl>.UnregisterListener(EnableControl);
     }
     
-    private void EnableControl(ReturnPlayerControl control) {
-        Debug.Log("Enable controls");
-        StartCoroutine(EnableScripts(true));
+    private void EnableControl(ActivatePlayerControl control) {
+        StartCoroutine(EnableScripts(control.Activate));
     }
     
     private IEnumerator EnableScripts (bool value) {

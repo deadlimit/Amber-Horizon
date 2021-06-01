@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using EventCallbacks;
@@ -6,10 +5,10 @@ public class GateLock : InteractableObject
 {
     public static readonly List<KeyFragment> KeyList = new List<KeyFragment>();
     public static readonly List<KeyFragment> KeysAcquired = new List<KeyFragment>();
-
+    
     [SerializeField] private int doorIDToOpen;
     
-    private BoxCollider interaction;
+    protected BoxCollider interaction { get; private set; }
 
     [Header("Fuskknapp, sätt till true för att gaten ska öppna direkt (debug)")]
     [SerializeField] private bool OpenDoorWithoutKeys;
@@ -17,6 +16,7 @@ public class GateLock : InteractableObject
     private void OnEnable() {
         EventSystem<KeyPickUpEvent>.RegisterListener(KeyPickUp);
         interaction = GetComponent<BoxCollider>();
+        
     }
     private void OnDisable() => EventSystem<KeyPickUpEvent>.UnregisterListener(KeyPickUp);
     
@@ -36,7 +36,7 @@ public class GateLock : InteractableObject
             interaction.enabled = true;
         }
     }
-
+    
     protected override void EnterTrigger(string UIMessage) {
         UIMessage = KeyList.Count == KeysAcquired.Count ? UIMessage : "Missing key fragments: " + (KeyList.Count - KeysAcquired.Count);
         EventSystem<InteractTriggerEnterEvent>.FireEvent(new InteractTriggerEnterEvent(UIMessage));
@@ -45,7 +45,7 @@ public class GateLock : InteractableObject
     protected override void InsideTrigger(GameObject player) {
         
         if (KeysAcquired.Count == KeyList.Count && Input.GetKeyDown(KeyCode.F)) {
-            UnlockGateSequence();
+            FireUnlockSequence();
         }
     }
 
@@ -60,7 +60,10 @@ public class GateLock : InteractableObject
         interaction.enabled = false;
         Destroy(this);
     }
-    
 
+    protected virtual void FireUnlockSequence() {
+        UnlockGateSequence();
+    }
+    
 }
 
