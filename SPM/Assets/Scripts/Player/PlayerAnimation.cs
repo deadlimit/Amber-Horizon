@@ -84,6 +84,7 @@ public class PlayerAnimation : MonoBehaviour {
     private void OnPlayerDied(PlayerDiedEvent playerDiedEvent) {
         playerController.enabled = false;
         animator.SetTrigger("PlayerDeath");
+        playerController.DeactivateAim();
     }
 
     //Called by AnimationEvent "PlayerDeath"

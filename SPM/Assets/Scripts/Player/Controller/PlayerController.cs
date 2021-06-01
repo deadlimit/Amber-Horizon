@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonUp(1))
         {
-            abilitySystem.TryDeactivateAbilityByTag(GameplayTags.AimingTag);
+            DeactivateAim();
         }
         if (Input.GetMouseButton(0))
         {
@@ -215,5 +215,9 @@ public class PlayerController : MonoBehaviour
     public float GetPlayerHealth()
     {
         return (float)abilitySystem.GetAttributeValue(typeof(HealthAttribute));
+    }
+    public void DeactivateAim()
+    {
+        abilitySystem.TryDeactivateAbilityByTag(GameplayTags.AimingTag);
     }
 }
