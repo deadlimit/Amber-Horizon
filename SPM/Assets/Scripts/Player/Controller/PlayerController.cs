@@ -36,15 +36,14 @@ public class PlayerController : MonoBehaviour
     private Vector3 input;
     private bool jump;
     private Transform cameraTransform;
-    private LineRenderer lr;
     private RaycastHit groundHitInfo;
+    private bool wasGrounded; 
     
     void Awake() 
     {
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);       
-        lr = GetComponent<LineRenderer>();
         animator = GetComponent<Animator>();
         groundCheckBox = GetComponentInChildren<BoxCollider>();
         EventSystem<CheckPointActivatedEvent>.RegisterListener(CheckpointRestoreHealth);
@@ -157,8 +156,11 @@ public class PlayerController : MonoBehaviour
     void Update() {       
         stateMachine.RunUpdate();
 
-        if (Input.GetKeyDown(KeyCode.E))
-            abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
+        if (Input.GetKeyDown(KeyCode.E) && wasGrounded)
+        {
+            if (abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag))
+                wasGrounded = false; 
+        }
         
         if (Input.GetMouseButton(1))
         {
@@ -192,8 +194,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public bool IsGrounded() {
-        
-        Physics.BoxCast(transform.position + Vector3.up, groundCheckBox.size, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask);
+        //wasGrounded used to prohibit consecutive dashes without touching ground
+
+        if (Physics.BoxCast(transform.position + Vector3.up, groundCheckBox.size, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask))
+            wasGrounded = true;
         
         //Old groundcheck, kept in case the boxcast misbehaves. 
         //Physics.Raycast(transform.position, Vector3.down, out groundHitInfo, groundCheckDistance, groundCheckMask);       
