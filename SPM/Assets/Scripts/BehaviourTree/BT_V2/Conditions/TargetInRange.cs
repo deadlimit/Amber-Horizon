@@ -9,10 +9,10 @@ public class TargetInRange : BTNode
     public override Status Evaluate()
     {
         float distance = Vector3.Distance(bt.ownerTransform.position, bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue().position);
-        //bt.owner.Animator.SetFloat("DistanceToTarget", distance);
-
+        bt.ownerAgent.enabled = true;
         if (distance >= bt.owner.AttackRange)
         {
+            bt.ownerAgent.ResetPath();        
             return Status.BH_FAILURE;
         }
         else

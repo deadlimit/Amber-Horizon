@@ -19,7 +19,7 @@ public abstract class Enemy : MonoBehaviour, IBlackHoleBehaviour {
     [SerializeField] private LayerMask lineOfSightMask;
 
     //TODO; replace names and accesibility of rings
-    public float outerRing, innerRing;
+    [HideInInspector]public float outerRing, innerRing;
 
     
     public Vector3 originPosition { get; set; }

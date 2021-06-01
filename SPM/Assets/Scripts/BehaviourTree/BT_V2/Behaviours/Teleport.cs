@@ -36,20 +36,25 @@ public class Teleport : BTNode
         }
     }
 
-    //Egentligen vill vi se till att positionen som räknas ut inte riskerar att befinna sig för nära spelaren
-    //det är inte bara korkat, det blir krångligare att styra beteendet då också
 
+    //Somehow we would like to make sure to teleport position is not too close to the player, because this results in another teleport
+    //immediately, and that feels pretty dumb
     private void CalculateTeleportPosition()
     {
+        //GetSamplePositionOnNavMesh would work except for the fact that we want to base the position
+        //on the players location, and that method (right now) does not take a transform argument
+        //the problem now is that y-position could end up NOT being on the navmesh
         playerTransform = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
 
         teleportPosition = playerTransform.position + new Vector3(
             Random.Range(-distanceFromPlayer, distanceFromPlayer),
-            Random.Range(-distanceFromPlayer, distanceFromPlayer),
+            bt.ownerTransform.position.y,
             Random.Range(-distanceFromPlayer, distanceFromPlayer));
     }
     public void ExecuteTeleport()
     {
+        bt.ownerAgent.enabled = true;
+
         bt.owner.transform.position = teleportPosition;
         bt.ownerTransform.LookAt(playerTransform);
         bt.ownerAgent.ResetPath();

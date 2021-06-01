@@ -54,7 +54,7 @@ public class PlayerAnimation : MonoBehaviour {
 
     //is "Culprit" needed here? Shouldnt we be able to populate the referenced dictionary by attack types? 
     private void StartHitAnimation(StartHitAnimationEvent startHitAnimationEvent) {
-        Debug.Log(startHitAnimationEvent.appliedEffect);
+        //Debug.Log(startHitAnimationEvent.appliedEffect);
         if (hitAnimationCallbacks.ContainsKey(startHitAnimationEvent.appliedEffect) == false) return;
         
         hitAnimationCallbacks[startHitAnimationEvent.appliedEffect].Invoke(startHitAnimationEvent.culprit);
@@ -96,7 +96,7 @@ public class PlayerAnimation : MonoBehaviour {
     }
 
     public void OnForagerHit(Transform culprit) {
-        print("forager hit you");
+        //print("forager hit you");
     }
 
     private void PlayDashAnimation(AbilityUsed ability) {

@@ -2,12 +2,18 @@ using UnityEngine;
 
 public class VisualProximityCheck : BTNode
 {
-    private float visualRange;
     private Transform playerTransform;
     private Vector3 lastKnownPlayerPosition;
+    private Vector3 offsetVector;
     private bool hasSeenPlayer;
     private float rangeRounding = 1f;
-    private Vector3 offsetVector;
+    private float visualRange;
+
+    //Saving resources
+    private int frameCounter;
+    private int nthFrames = 33;
+    private Status cachedValue = Status.BH_FAILURE;
+
    public VisualProximityCheck(BehaviourTree bt ) : base(bt)
     {
         visualRange = bt.owner.VisualRange;
@@ -16,7 +22,15 @@ public class VisualProximityCheck : BTNode
 
     public override Status Evaluate()
     {
-        
+        frameCounter++;
+
+        if (frameCounter % nthFrames != 0)
+        {
+            return cachedValue;
+        }
+        frameCounter = 0;
+
+
         if (TargetTransformExists())
         {
             SetSpeedAndLastKnownPosition();
@@ -42,7 +56,9 @@ public class VisualProximityCheck : BTNode
             //"Target" is not assigned if line or angle of sight is broken, watch out for duplicate code here aswell
             if (!PlayerInLineOfSight() || !PlayerInAngleOfSight())
             {
-                bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(null);
+                SetLastSeenPosition();
+                ResetBlackboardValues();
+                cachedValue = Status.BH_FAILURE;
                 return Status.BH_FAILURE;
             }
 
@@ -58,7 +74,7 @@ public class VisualProximityCheck : BTNode
             SetLastSeenPosition();
             //If visual detection has failed, reset the values of HasCalledForHelp, TargetTransform and AlerterTransform
             ResetBlackboardValues();
-
+            cachedValue = Status.BH_FAILURE;
             return Status.BH_FAILURE;
         }
     }
@@ -67,10 +83,9 @@ public class VisualProximityCheck : BTNode
     //at this point i might aswell use a regular raycast but meh
     private bool PlayerInLineOfSight()
     {
-        Debug.Log("Player in line of sight called"); 
-        if (Physics.Linecast(bt.ownerTransform.position, playerTransform.position, out var hitInfo, bt.owner.LineOfSightMask))
+        if (Physics.Linecast(bt.ownerTransform.position + offsetVector, playerTransform.position + offsetVector, out var hitInfo, bt.owner.LineOfSightMask))
         {
-            //Debug.Log(bt.owner.gameObject + " linecast hit: " + hitInfo.collider);
+            Debug.Log(bt.owner.gameObject + " linecast hit: " + hitInfo.collider);
             return false;
         }
         //Debug.Log("Linecast hit nothing");
@@ -134,5 +149,7 @@ public class VisualProximityCheck : BTNode
 
         lastKnownPlayerPosition = playerTransform.position;
         bt.ownerAgent.speed = bt.owner.MovementSpeedAttack;
+
+        cachedValue = Status.BH_SUCCESS;
     }
 }
