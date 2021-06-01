@@ -7,17 +7,20 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
     private Vector3 maxBack;
     private Vector3 maxFront;
     private Vector3 startPos;
+    private Transform thisTransform;
 
     private float frontDistance;
     private float backDistance;
 
-    public float MovementSpeed;
-    public float MaxMovementLengthBack;
-    public float MaxMovementLengthFront;
+
+    [SerializeField] private float MovementSpeed;
+    [SerializeField] private float MaxMovementLengthBack;
+    [SerializeField] private float MaxMovementLengthFront;
 
 
     private void Awake() {
         physics = GetComponent<PhysicsComponent>();
+        thisTransform = GetComponent<Transform>();
         maxBack = transform.position + -transform.forward * MaxMovementLengthBack;
         maxFront = transform.position + transform.forward * MaxMovementLengthFront;
         startPos = transform.position;
@@ -30,9 +33,9 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
     public void Update() {
         Debug.DrawLine(transform.position,  maxFront, Color.red);
         Debug.DrawLine(transform.position,  maxBack, Color.green);
+        ClampPosition();
 
-        //physics.ApplyAirResistance();
-        PreventOutOfBounds();
+        CheckBelowStoppingSpeed();
     }
     
     public void BlackHoleBehaviour(BlackHole blackhole) {
@@ -58,10 +61,15 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
         physics.velocity  = (movementDirection * multiplier);
     }
 
-    private void PreventOutOfBounds() {
+    private void CheckBelowStoppingSpeed() {
         if (physics.velocity.magnitude < 0.1)
             physics.velocity = Vector3.zero;
     }
 
     public Vector3 GetVelocity() { return physics.velocity; }
+    private void ClampPosition()
+    {
+        Mathf.Clamp(thisTransform.position.x, startPos.x + maxBack.x, startPos.x + maxFront.x);
+        Mathf.Clamp(thisTransform.position.z, startPos.z + maxBack.z, startPos.z + maxFront.z);
+    }
 }
