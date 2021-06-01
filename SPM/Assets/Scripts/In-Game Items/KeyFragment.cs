@@ -4,11 +4,6 @@ public class KeyFragment : MonoBehaviour {
     
     [SerializeField] private KeyFragmentData keyFragmentData;
     
-    private void OnEnable()
-    {
-        GateLock.KeyList.Add(this);
-    }
-    
     private void Update() {
         transform.position = new Vector3(transform.position.x, transform.position.y - Mathf.Sin(keyFragmentData.BobSpeed * Time.time) * keyFragmentData.BobAmount, transform.position.z);
     }
