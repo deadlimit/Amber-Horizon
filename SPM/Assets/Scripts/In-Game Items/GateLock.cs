@@ -72,7 +72,6 @@ public class GateLock : InteractableObject
         
         KeyList.Clear();
         KeysAcquired.Clear();
-
         
         KeyFragment[] keys = FindObjectsOfType<KeyFragment>();
         
