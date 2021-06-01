@@ -26,6 +26,8 @@ public class GateLock : InteractableObject
     
     private void Start() {
         interaction = GetComponent<BoxCollider>();
+        print(KeyList.Count);
+        print(KeysAcquired.Count);
         
         if (!OpenDoorWithoutKeys) return;
         
