@@ -89,7 +89,6 @@ public class PlayerAnimation : MonoBehaviour {
 
     //Called by AnimationEvent "PlayerDeath"
     private void OnDeathAnimationDone() {
-        Debug.Log("OnDeathAnimationDone Called");
         PlayerReviveEvent pre = new PlayerReviveEvent(gameObject);
         EventSystem<PlayerReviveEvent>.FireEvent(pre);
         animator.SetTrigger("PlayerRevive");

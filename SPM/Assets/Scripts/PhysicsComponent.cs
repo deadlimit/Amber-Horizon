@@ -86,7 +86,7 @@ public class PhysicsComponent : MonoBehaviour
             velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
             velocity += normalForce;
 
-            if (hitInfo.collider.GetComponent<MovingPlatformV2>())
+            if (hitInfo.collider.TryGetComponent<MovingPlatformV2>(out var platform))
             {
                 HandleMovingPlatform(hitInfo, normalForce);
             }
@@ -145,7 +145,6 @@ public class PhysicsComponent : MonoBehaviour
         if (gravity == 0)
             return;
 
-        Debug.Log( gameObject + "BlackHoleGravity");
         bhGrav = bh.GetGravitationalPull() * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.fixedDeltaTime;
         velocity += bhGrav;
         ApplyFriction(PhysicsFunctions.NormalForce3D(velocity, bh.transform.position - transform.position));
