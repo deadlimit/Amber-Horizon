@@ -5,6 +5,12 @@ using UnityEngine.Playables;
 public class EndGameGatePanel : GateLock {
 
     [SerializeField] private PlayableDirector cinematic;
+
+    private void Start() {
+        if (!OpenDoorWithoutKeys) return;
+        
+        FireUnlockSequence();
+    }
     
     protected override void FireUnlockSequence() {
         

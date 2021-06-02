@@ -57,7 +57,7 @@ namespace EventCallbacks
         }
 
         public static void UnregisterAllListeners() {
-            Debug.Log(typeEventListeners.GetHashCode());
+            typeEventListeners.Clear();
         }
     }
 }

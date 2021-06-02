@@ -1,26 +1,28 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using EventCallbacks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerControlLock : MonoBehaviour {
-
-    [SerializeField] private List<MonoBehaviour> scripts;
-
+    
     private void Awake() {
-        StartCoroutine(EnableScripts(false));
+        EnableScripts(false);
         EventSystem<ActivatePlayerControl>.RegisterListener(EnableControl);
     }
 
-    private IEnumerator Start() {
+    private void Start() {
+        
+        StartCoroutine(WaitUntilSceneLoad());
+    }
+
+    private IEnumerator WaitUntilSceneLoad() {
         while (!SceneManager.GetSceneByName("Level 1").isLoaded)
             yield return null;
         
-        StartCoroutine(EnableScripts(true));
+        EnableScripts(true);
     }
-
+    
     private void OnEnable() {
         EventSystem<ActivatePlayerControl>.RegisterListener(EnableControl);
     }
@@ -30,16 +32,18 @@ public class PlayerControlLock : MonoBehaviour {
     }
     
     private void EnableControl(ActivatePlayerControl control) {
-        if(gameObject.activeInHierarchy)
-            StartCoroutine(EnableScripts(control?.Activate ?? true));
+        bool value = control?.Activate ?? true;
+        EnableScripts(value);
     }
     
-    private IEnumerator EnableScripts (bool value) {
-        foreach (MonoBehaviour script in scripts) {
-            script.enabled = value;
-            yield return null;
-        }
+    private void EnableScripts (bool value) {
 
+        GetComponent<PlayerController>().enabled = value;
+        GetComponent<PlayerAnimation>().enabled = value;
+        GetComponent<PhysicsComponent>().enabled = value;
+        FindObjectOfType<ThirdPersonCamera>().enabled = value;
+        
+            
         if (!value) {
             Animator animator = GetComponent<Animator>();
             animator.SetFloat("VelocityX", 0);
@@ -48,5 +52,9 @@ public class PlayerControlLock : MonoBehaviour {
             GetComponent<PhysicsComponent>().velocity = Vector3.zero;
         }
         
+    }
+
+    private void OnDestroy() {
+        EventSystem<ActivatePlayerControl>.UnregisterListener(EnableControl);
     }
 }

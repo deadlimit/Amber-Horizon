@@ -11,7 +11,7 @@ public class GateLock : InteractableObject
     protected BoxCollider interaction { get; private set; }
 
     [Header("Fuskknapp, sätt till true för att gaten ska öppna direkt (debug)")]
-    [SerializeField] private bool OpenDoorWithoutKeys;
+    [SerializeField] protected bool OpenDoorWithoutKeys;
 
     private void OnEnable() {
         EventSystem<KeyPickUpEvent>.RegisterListener(KeyPickUp);
@@ -21,10 +21,14 @@ public class GateLock : InteractableObject
     private void OnDisable() {
         EventSystem<KeyPickUpEvent>.UnregisterListener(KeyPickUp);
         EventSystem<NewLevelLoadedEvent>.UnregisterListener(ResetKeys);
-    } 
+    }
+
+    private void Awake() {
+        interaction = GetComponent<BoxCollider>();
+        
+    }
     
     private void Start() {
-        interaction = GetComponent<BoxCollider>();
         ResetKeys(null);
         if (!OpenDoorWithoutKeys) return;
         

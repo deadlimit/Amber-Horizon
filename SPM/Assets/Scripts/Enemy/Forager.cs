@@ -1,3 +1,4 @@
+using System;
 using AbilitySystem;
 using UnityEngine;
 
@@ -47,10 +48,16 @@ public class Forager : Enemy {
     }
 
     public void Fire() {
-        Transform target = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
-        transform.LookAt(target);
-        ObjectPooler.Instance.Spawn("Bullet", transform.position + transform.forward + Vector3.up, Quaternion.LookRotation(target.position - transform.position));
-        Instantiate(VFXMuzzle, MuzzleLocation.transform.position, MuzzleLocation.transform.rotation, transform);
+        try {
+            Transform target = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
+            transform.LookAt(target);
+            ObjectPooler.Instance.Spawn("Bullet", transform.position + transform.forward + Vector3.up, Quaternion.LookRotation(target.position - transform.position));
+            Instantiate(VFXMuzzle, MuzzleLocation.transform.position, MuzzleLocation.transform.rotation, transform);
+        }
+        catch (NullReferenceException e) {
+            
+        }
+
     }
 
     public override void ApplyExplosion(GameObject explosionInstance, float blastPower) {

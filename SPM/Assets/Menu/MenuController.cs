@@ -26,7 +26,7 @@ public class MenuController : MonoBehaviour {
 
         SceneManager.SetActiveScene(newActiveScene);
         EventSystem<NewLevelLoadedEvent>.FireEvent(null);
-        EventSystem<ActivatePlayerControl>.FireEvent(null);
+        EventSystem<ActivatePlayerControl>.FireEvent(new ActivatePlayerControl(true));
         yield return SceneManager.UnloadSceneAsync(currentActiveScene);
         
 

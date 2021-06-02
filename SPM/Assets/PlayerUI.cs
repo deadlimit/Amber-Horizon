@@ -29,6 +29,9 @@ public class PlayerUI : MonoBehaviour {
     }
 
     private void ChangeColor(float value) {
+        if (healthBar == null)
+            healthBar = healthBar;
+        
         
         Color trans = healthBar.color;
         trans.a = value;

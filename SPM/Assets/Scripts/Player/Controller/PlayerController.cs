@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float maxSpeed = 5f;
     [SerializeField] private float turnRate = 4f;
     [SerializeField] private float retainedSpeedWhenTurning = 0.33f;
-    
+
     [Header("GroundCheck")]
     [SerializeField] private LayerMask groundCheckMask;
     [SerializeField] private float groundCheckDistance = 0.05f;
@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Vector3 force;
 
     [SerializeField] private Transform keyLookAtTarget;
+    [SerializeField] private Vector3 levelOneStartPosition;
     
     private GameplayAbilitySystem abilitySystem;
     public PhysicsComponent physics { get; private set; }
@@ -43,8 +44,8 @@ public class PlayerController : MonoBehaviour
     private bool wasGrounded;
     private AudioSource audioSource;
     
-    void Awake() 
-    {
+    void Awake() {
+        transform.position = levelOneStartPosition;
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);       
