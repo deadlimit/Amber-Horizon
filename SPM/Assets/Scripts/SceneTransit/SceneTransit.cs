@@ -48,12 +48,10 @@ public class SceneTransit : MonoBehaviour {
         yield return SceneManager.UnloadSceneAsync("Level 1");
         yield return SceneManager.LoadSceneAsync(NewSceneName, LoadSceneMode.Additive);
         
-        EventSystem<NewLevelLoadedEvent>.FireEvent(null);
-        
         cinematic.Stop();
         FindObjectOfType<PlayerController>().enabled = true;
         FindObjectOfType<ThirdPersonCamera>().enabled = true;
-        
-        
+
+        EventSystem<NewLevelLoadedEvent>.FireEvent(null);
     }
 }

@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 6954395486808097430}
   - component: {fileID: 6281714765815991603}
   - component: {fileID: 8127261223354448377}
+  - component: {fileID: 2413911923305632366}
   m_Layer: 0
-  m_Name: Tower
+  m_Name: Tower_WithMat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 7766784618899347500}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -14.39854, y: -1.3000002, z: -130.78381}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -59,11 +60,11 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -8707945393133107649, guid: 0b2e89f8b4658e04a9cbe1d9541832c2, type: 3}
-  - {fileID: 7313206230654811903, guid: 0b2e89f8b4658e04a9cbe1d9541832c2, type: 3}
-  - {fileID: 8521872156087563217, guid: 0b2e89f8b4658e04a9cbe1d9541832c2, type: 3}
-  - {fileID: 8732691116039859125, guid: 0b2e89f8b4658e04a9cbe1d9541832c2, type: 3}
-  - {fileID: -7491054476485213255, guid: 0b2e89f8b4658e04a9cbe1d9541832c2, type: 3}
+  - {fileID: 2100000, guid: b076311398ccf784c9e62019bd2d24f7, type: 2}
+  - {fileID: 2100000, guid: b217b932e28f611429ddd6a017c5db0a, type: 2}
+  - {fileID: 2100000, guid: e157f91b67f16234fb8b22bc83d816b8, type: 2}
+  - {fileID: 2100000, guid: c38aa4a1e3ffdb549bb6f5bea0df39e6, type: 2}
+  - {fileID: 2100000, guid: 785d17f77a5b2cd479a8af92dd4cd8a5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,3 +86,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2413911923305632366
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7766784618899347500}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.9096289, y: 19.212393, z: 3.9096262}
+  m_Center: {x: -1.6500037, y: 9.599231, z: -1.6500038}

@@ -26,7 +26,7 @@ public class ExplosionInstance : PoolObject
     private void OnTriggerEnter(Collider other)
     {
         Enemy enemy = other.gameObject.GetComponent<Enemy>();
-        Debug.Assert(enemy);
+        //Debug.Assert(enemy);
         if (enemy)
         {
             enemy.ApplyExplosion(gameObject, blastPower);

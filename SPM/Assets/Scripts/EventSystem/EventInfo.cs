@@ -169,7 +169,13 @@ namespace EventCallbacks
 
 
     //Is this in use? 
-    public class ReturnPlayerControl : EventInfo {}
+    public class ActivatePlayerControl : EventInfo {
+        public readonly bool Activate;
+
+        public ActivatePlayerControl(bool activate) {
+            Activate = activate;
+        }
+    }
 
     public class NewLevelLoadedEvent : EventInfo {}
 }

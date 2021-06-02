@@ -78,12 +78,14 @@ public class PlayerAnimation : MonoBehaviour {
         physics.AddForce(-transform.forward * 10);
         animator.SetTrigger("PunchHit");
         playerController.enabled = false;
+        playerController.DeactivateAim();
 
     }
 
     private void OnPlayerDied(PlayerDiedEvent playerDiedEvent) {
         playerController.enabled = false;
         animator.SetTrigger("PlayerDeath");
+        playerController.DeactivateAim();
     }
 
     //Called by AnimationEvent "PlayerDeath"

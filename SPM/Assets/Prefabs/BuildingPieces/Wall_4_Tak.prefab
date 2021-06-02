@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2911241647869996152}
   - component: {fileID: 2290385318610871261}
   - component: {fileID: 4048140155884853015}
+  - component: {fileID: 3178473633170338797}
   m_Layer: 0
   m_Name: Wall_4_Tak
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 2534715658209162946}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 23.8558, y: 2.0529766, z: -98.70339}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -59,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: 5e1d5eabdb987f8409c714a7e032dc77, type: 3}
+  - {fileID: 2100000, guid: e8526dd0f5145ee41a7c03d650935cae, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -81,3 +82,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &3178473633170338797
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2534715658209162946}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.85745376, y: 0.671255, z: 1.5000002}
+  m_Center: {x: -0.34989837, y: 0.33562738, z: -0.750002}

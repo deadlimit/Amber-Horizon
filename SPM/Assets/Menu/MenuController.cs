@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour {
 
+    private void Awake() {
+        Cursor.ActivateCursor(true, CursorLockMode.Confined);
+    }
+
     public void StartGame() {
         StartCoroutine(LoadLevels());
     }
@@ -21,7 +25,8 @@ public class MenuController : MonoBehaviour {
         Scene newActiveScene = SceneManager.GetSceneByName("BaseScene");
 
         SceneManager.SetActiveScene(newActiveScene);
-        EventSystem<ReturnPlayerControl>.FireEvent(null);
+        EventSystem<NewLevelLoadedEvent>.FireEvent(null);
+        EventSystem<ActivatePlayerControl>.FireEvent(null);
         yield return SceneManager.UnloadSceneAsync(currentActiveScene);
         
 

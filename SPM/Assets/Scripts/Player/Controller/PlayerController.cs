@@ -36,15 +36,14 @@ public class PlayerController : MonoBehaviour
     private Vector3 input;
     private bool jump;
     private Transform cameraTransform;
-    private LineRenderer lr;
     private RaycastHit groundHitInfo;
+    private bool wasGrounded; 
     
     void Awake() 
     {
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);       
-        lr = GetComponent<LineRenderer>();
         animator = GetComponent<Animator>();
         groundCheckBox = GetComponentInChildren<BoxCollider>();
         EventSystem<CheckPointActivatedEvent>.RegisterListener(CheckpointRestoreHealth);
@@ -157,8 +156,11 @@ public class PlayerController : MonoBehaviour
     void Update() {       
         stateMachine.RunUpdate();
 
-        if (Input.GetKeyDown(KeyCode.E))
-            abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag);
+        if (Input.GetKeyDown(KeyCode.E) && wasGrounded)
+        {
+            if (abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag))
+                wasGrounded = false; 
+        }
         
         if (Input.GetMouseButton(1))
         {
@@ -167,38 +169,19 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonUp(1))
         {
-            abilitySystem.TryDeactivateAbilityByTag(GameplayTags.AimingTag);
+            DeactivateAim();
         }
         if (Input.GetMouseButton(0))
         {
             abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag);
         }
 
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            ToggleLockedState();
-
-        }
         
         if(Input.GetKeyDown(KeyCode.Escape))
             EventSystem<ResetCameraFocus>.FireEvent(null);
     }
 
-    private void ToggleLockedState()
-    {   //Could be placed inside state but i wanted to gather all the inputs, also considered calling an overridden method inside the states,
-        //but that would be bloat for all other uses of the state machine core
-        if (stateMachine.CurrentState.GetType() == typeof(GroundedState))
-        {
-            stateMachine.ChangeState<PlayerLockedState>();
-        }
-        else if (stateMachine.CurrentState.GetType() == typeof(PlayerLockedState))
-        {
-            EventSystem<ResetCameraFocus>.FireEvent(null);
-            stateMachine.ChangeState<GroundedState>();
-        }
 
-        animator.SetBool("ShowKey", !animator.GetBool("ShowKey"));
-    }
     private void FixedUpdate()
     {
         Jump();
@@ -211,8 +194,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public bool IsGrounded() {
-        
-        Physics.BoxCast(transform.position + Vector3.up, groundCheckBox.size, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask);
+        //wasGrounded used to prohibit consecutive dashes without touching ground
+
+        if (Physics.BoxCast(transform.position + Vector3.up, groundCheckBox.size, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask))
+            wasGrounded = true;
         
         //Old groundcheck, kept in case the boxcast misbehaves. 
         //Physics.Raycast(transform.position, Vector3.down, out groundHitInfo, groundCheckDistance, groundCheckMask);       
@@ -234,5 +219,9 @@ public class PlayerController : MonoBehaviour
     public float GetPlayerHealth()
     {
         return (float)abilitySystem.GetAttributeValue(typeof(HealthAttribute));
+    }
+    public void DeactivateAim()
+    {
+        abilitySystem.TryDeactivateAbilityByTag(GameplayTags.AimingTag);
     }
 }

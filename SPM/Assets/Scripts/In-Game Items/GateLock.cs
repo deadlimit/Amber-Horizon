@@ -1,30 +1,33 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using EventCallbacks;
 public class GateLock : InteractableObject
 {
-    public static readonly List<KeyFragment> KeyList = new List<KeyFragment>();
-    public static readonly List<KeyFragment> KeysAcquired = new List<KeyFragment>();
-
+    public static List<KeyFragment> KeyList = new List<KeyFragment>();
+    public static List<KeyFragment> KeysAcquired = new List<KeyFragment>();
+    
     [SerializeField] private int doorIDToOpen;
     
-    private BoxCollider interaction;
+    protected BoxCollider interaction { get; private set; }
 
     [Header("Fuskknapp, sätt till true för att gaten ska öppna direkt (debug)")]
     [SerializeField] private bool OpenDoorWithoutKeys;
-    
+
     private void OnEnable() {
         EventSystem<KeyPickUpEvent>.RegisterListener(KeyPickUp);
-        interaction = GetComponent<BoxCollider>();
+        EventSystem<NewLevelLoadedEvent>.RegisterListener(ResetKeys);
     }
-    private void OnDisable() => EventSystem<KeyPickUpEvent>.UnregisterListener(KeyPickUp);
+    
+    private void OnDisable() {
+        EventSystem<KeyPickUpEvent>.UnregisterListener(KeyPickUp);
+        EventSystem<NewLevelLoadedEvent>.UnregisterListener(ResetKeys);
+    } 
     
     private void Start() {
+        interaction = GetComponent<BoxCollider>();
+        ResetKeys(null);
         if (!OpenDoorWithoutKeys) return;
         
-        KeyList.Clear();
-        KeysAcquired.Clear();
         UnlockGateSequence();
 
     }
@@ -36,7 +39,7 @@ public class GateLock : InteractableObject
             interaction.enabled = true;
         }
     }
-
+    
     protected override void EnterTrigger(string UIMessage) {
         UIMessage = KeyList.Count == KeysAcquired.Count ? UIMessage : "Missing key fragments: " + (KeyList.Count - KeysAcquired.Count);
         EventSystem<InteractTriggerEnterEvent>.FireEvent(new InteractTriggerEnterEvent(UIMessage));
@@ -45,7 +48,7 @@ public class GateLock : InteractableObject
     protected override void InsideTrigger(GameObject player) {
         
         if (KeysAcquired.Count == KeyList.Count && Input.GetKeyDown(KeyCode.F)) {
-            UnlockGateSequence();
+            FireUnlockSequence();
         }
     }
 
@@ -60,7 +63,22 @@ public class GateLock : InteractableObject
         interaction.enabled = false;
         Destroy(this);
     }
-    
 
+    protected virtual void FireUnlockSequence() {
+        UnlockGateSequence();
+    }
+
+    private void ResetKeys(NewLevelLoadedEvent loadedEvent) {
+        
+        KeyList.Clear();
+        KeysAcquired.Clear();
+        
+        KeyFragment[] keys = FindObjectsOfType<KeyFragment>();
+        
+        foreach(KeyFragment key in keys)
+            KeyList.Add(key);
+        EventSystem<KeyPickUpEvent>.FireEvent(null);
+        Debug.Log("Keylist: " + KeyList.Count, gameObject);
+    }
 }
 
