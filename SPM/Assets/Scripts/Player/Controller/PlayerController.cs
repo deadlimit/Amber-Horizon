@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckDistance = 0.05f;
     private BoxCollider groundCheckBox;
 
+    [Header("SFX")]
+    [SerializeField] private AudioClip blackHoleLaunchSound;
+
     [Header("StateMachine")]
     [SerializeField] private State[] states;
     private StateMachine stateMachine;
@@ -37,7 +40,8 @@ public class PlayerController : MonoBehaviour
     private bool jump;
     private Transform cameraTransform;
     private RaycastHit groundHitInfo;
-    private bool wasGrounded; 
+    private bool wasGrounded;
+    private AudioSource audioSource;
     
     void Awake() 
     {
@@ -46,6 +50,7 @@ public class PlayerController : MonoBehaviour
         stateMachine = new StateMachine(this, states);       
         animator = GetComponent<Animator>();
         groundCheckBox = GetComponentInChildren<BoxCollider>();
+        audioSource = GetComponent<AudioSource>();
         EventSystem<CheckPointActivatedEvent>.RegisterListener(CheckpointRestoreHealth);
     }
 
@@ -173,7 +178,9 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetMouseButton(0))
         {
-            abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag);
+            if (abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag))
+                audioSource.PlayOneShot(blackHoleLaunchSound, 5f);
+
         }
 
         
