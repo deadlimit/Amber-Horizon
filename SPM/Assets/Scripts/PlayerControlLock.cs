@@ -30,7 +30,8 @@ public class PlayerControlLock : MonoBehaviour {
     }
     
     private void EnableControl(ActivatePlayerControl control) {
-        StartCoroutine(EnableScripts(control?.Activate ?? true));
+        if(gameObject.activeInHierarchy)
+            StartCoroutine(EnableScripts(control?.Activate ?? true));
     }
     
     private IEnumerator EnableScripts (bool value) {
