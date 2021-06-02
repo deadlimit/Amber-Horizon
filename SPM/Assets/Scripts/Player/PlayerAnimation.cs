@@ -9,7 +9,6 @@ public class PlayerAnimation : MonoBehaviour {
     private Animator animator; 
     private PhysicsComponent physics;
     private PlayerController playerController;
-    private float oldMaxSpeed;
 
     //Lista i inspektorn så man kan tilldela animationscallbacks till PlayerHitEvent-effekter.
     public List<AnimationEffectPair> effectCallbackPairs;
@@ -61,9 +60,7 @@ public class PlayerAnimation : MonoBehaviour {
     }
 
     public void OnDestructorHit(Transform culprit) {
-
-       
-
+        
         transform.LookAt(culprit);
         Vector3 rotation = transform.rotation.eulerAngles;
         rotation.x = 0;
@@ -90,10 +87,10 @@ public class PlayerAnimation : MonoBehaviour {
 
     //Called by AnimationEvent "PlayerDeath"
     private void OnDeathAnimationDone() {
-        Debug.Log("OnDeathAnimationDone Called");
         PlayerReviveEvent pre = new PlayerReviveEvent(gameObject);
         EventSystem<PlayerReviveEvent>.FireEvent(pre);
         animator.SetTrigger("PlayerRevive");
+        animator.SetBool("ShowKey",false);
         ReturnPlayerControl();
     }
 

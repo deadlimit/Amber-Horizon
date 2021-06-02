@@ -10,15 +10,8 @@ public class PlayerControlLock : MonoBehaviour {
     [SerializeField] private List<MonoBehaviour> scripts;
 
     private void Awake() {
-
-        if (!SceneManager.GetActiveScene().name.Equals("MainMenu")) {
-            Destroy(gameObject);
-            return;
-        }
-            
         
         EventSystem<ActivatePlayerControl>.RegisterListener(EnableControl);
-        StartCoroutine(EnableScripts(false));
     }
 
     private void OnEnable() {
@@ -38,6 +31,14 @@ public class PlayerControlLock : MonoBehaviour {
             script.enabled = value;
             yield return null;
         }
-            
+
+        if (!value) {
+            Animator animator = GetComponent<Animator>();
+            animator.SetFloat("VelocityX", 0);
+            animator.SetFloat("VelocityZ", 0);
+
+            GetComponent<PhysicsComponent>().velocity = Vector3.zero;
+        }
+  
     }
 }

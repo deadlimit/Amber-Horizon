@@ -177,8 +177,6 @@ public class PlayerController : MonoBehaviour
         }
 
         
-        if(Input.GetKeyDown(KeyCode.Escape))
-            EventSystem<ResetCameraFocus>.FireEvent(null);
     }
 
 

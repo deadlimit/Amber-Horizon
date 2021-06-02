@@ -85,7 +85,6 @@ public class VisualProximityCheck : BTNode
     {
         if (Physics.Linecast(bt.ownerTransform.position + offsetVector, playerTransform.position + offsetVector, out var hitInfo, bt.owner.LineOfSightMask))
         {
-            Debug.Log(bt.owner.gameObject + " linecast hit: " + hitInfo.collider);
             return false;
         }
         //Debug.Log("Linecast hit nothing");
