@@ -11,6 +11,7 @@ public class KeyRotator : MonoBehaviour {
 
     private void Awake() {
         EventSystem<KeyPickUpEvent>.RegisterListener(UpdateKeyText);
+        EventSystem<ShowKeyText>.RegisterListener(ShowKeyText);
         EventSystem<NewLevelLoadedEvent>.RegisterListener(ResetKeyText);
         text = GetComponent<TextMeshPro>();
         text.text = string.Empty;
@@ -25,6 +26,7 @@ public class KeyRotator : MonoBehaviour {
     {
         EventSystem<KeyPickUpEvent>.UnregisterListener(UpdateKeyText);
         EventSystem<NewLevelLoadedEvent>.RegisterListener(ResetKeyText);
+        EventSystem<ShowKeyText>.UnregisterListener(ShowKeyText);
     }
 
     private void UpdateKeyText(KeyPickUpEvent keyEvent) {
@@ -33,18 +35,13 @@ public class KeyRotator : MonoBehaviour {
 
     private void ResetKeyText(NewLevelLoadedEvent newLevelLoadedEvent) {
         UpdateKeyText(null);
-        print("update text");
-    }
-    
-    private void Update() {
-        
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            showing = !showing;
-            text.text = showing ? keyText : string.Empty;
-        }
-        
     }
 
+    private void ShowKeyText(ShowKeyText shouldShow) {
+        showing = shouldShow.ShowText;
+        text.text = showing ? keyText : string.Empty;
+    }
+    
+    
 
 }

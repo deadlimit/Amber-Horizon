@@ -114,7 +114,8 @@ public class AimingAbility : GameplayAbility
 
     public override void Deactivate(GameplayAbilitySystem Owner)
     {
-        lr.enabled = false;
+        if(lr)
+            lr.enabled = false;
         cursor.SetActive(false);
         Owner.RemoveTag(this.AbilityTag);
     }

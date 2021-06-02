@@ -2,6 +2,7 @@ using System;
 using Cinemachine;
 using EventCallbacks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour {
 
@@ -30,39 +31,26 @@ public class CameraController : MonoBehaviour {
     public void Update() {
         
         if (Input.GetKeyDown(KeyCode.Tab)) {
-                ToggleLockedState(canMove);
+            ToggleLockedState(canMove);
         }
     }
 
     private void ToggleLockedState(bool value) {
-        animator.SetBool(ShowKey, !animator.GetBool(ShowKey));
         
+        EventSystem<ShowKeyText>.FireEvent(new ShowKeyText(!value));
+        
+        animator.SetBool("ShowKey", !value);
         playerController.enabled = value;
         cameraController.enabled = value;
         canMove = !canMove;
     }
 
     private void OnRespawn(PlayerReviveEvent reviveEvent) {
-        ToggleLockedState(true);
+        animator.SetBool("ShowKey", false);
+        playerController.enabled = true;
+        cameraController.enabled = true;
+        EventSystem<ShowKeyText>.FireEvent(new ShowKeyText(false));
     }
     
-    
-    /*
-    private void ToggleLockedState()
-    {   //Could be placed inside state but i wanted to gather all the inputs, also considered calling an overridden method inside the states,
-        //but that would be bloat for all other uses of the state machine core
-        if (stateMachine.CurrentState.GetType() == typeof(GroundedState))
-        {
-            stateMachine.ChangeState<PlayerLockedState>();
-        }
-        else if (stateMachine.CurrentState.GetType() == typeof(PlayerLockedState))
-        {
-            EventSystem<ResetCameraFocus>.FireEvent(null);
-            stateMachine.ChangeState<GroundedState>();
-        }
-
-        animator.SetBool("ShowKey", !animator.GetBool("ShowKey"));
-    }
-    */
 
 }

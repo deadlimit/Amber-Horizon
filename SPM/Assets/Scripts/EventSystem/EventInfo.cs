@@ -178,5 +178,13 @@ namespace EventCallbacks
     }
 
     public class NewLevelLoadedEvent : EventInfo {}
+
+    public class ShowKeyText : EventInfo {
+        public readonly bool ShowText;
+        
+        public ShowKeyText(bool showKeyText) {
+            ShowText = showKeyText;
+        }
+    }
 }
 
