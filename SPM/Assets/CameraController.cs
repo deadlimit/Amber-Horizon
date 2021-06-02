@@ -1,5 +1,6 @@
-using System.Collections;
+using System;
 using Cinemachine;
+using EventCallbacks;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour {
@@ -11,6 +12,14 @@ public class CameraController : MonoBehaviour {
     [SerializeField] private CinemachineVirtualCamera playerCamera, keyLookAtCamera;
     
     private static readonly int ShowKey = Animator.StringToHash("ShowKey");
+
+    private void OnEnable() {
+        EventSystem<PlayerReviveEvent>.RegisterListener(OnRespawn);
+    }
+
+    private void OnDisable() {
+        EventSystem<PlayerReviveEvent>.UnregisterListener(OnRespawn);
+    }
 
     private void Awake() {
         canMove = false;
@@ -31,6 +40,10 @@ public class CameraController : MonoBehaviour {
         playerController.enabled = value;
         cameraController.enabled = value;
         canMove = !canMove;
+    }
+
+    private void OnRespawn(PlayerReviveEvent reviveEvent) {
+        ToggleLockedState(true);
     }
     
     

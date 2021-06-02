@@ -61,9 +61,7 @@ public class PlayerAnimation : MonoBehaviour {
     }
 
     public void OnDestructorHit(Transform culprit) {
-
-       
-
+        
         transform.LookAt(culprit);
         Vector3 rotation = transform.rotation.eulerAngles;
         rotation.x = 0;
@@ -94,6 +92,7 @@ public class PlayerAnimation : MonoBehaviour {
         PlayerReviveEvent pre = new PlayerReviveEvent(gameObject);
         EventSystem<PlayerReviveEvent>.FireEvent(pre);
         animator.SetTrigger("PlayerRevive");
+        animator.SetBool("ShowKey",false);
         ReturnPlayerControl();
     }
 

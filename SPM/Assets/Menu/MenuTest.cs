@@ -15,7 +15,7 @@ public class MenuTest : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if(!menu.activeInHierarchy)
             {

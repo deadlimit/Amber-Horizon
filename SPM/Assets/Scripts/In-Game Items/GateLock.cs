@@ -78,7 +78,7 @@ public class GateLock : InteractableObject
         foreach(KeyFragment key in keys)
             KeyList.Add(key);
         EventSystem<KeyPickUpEvent>.FireEvent(null);
-        Debug.Log("Keylist: " + KeyList.Count, gameObject);
+
     }
 }
 
