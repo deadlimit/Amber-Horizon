@@ -16,7 +16,6 @@ public class Teleport : BTNode
     {
         if (!animationStarted)
         {
-            Debug.Log("Teleport Animation Started");
             animationStarted = true;
             bt.owner.Animator.StopPlayback();
             bt.owner.Animator.SetTrigger("Teleport");
@@ -25,7 +24,6 @@ public class Teleport : BTNode
 
         if(teleportFinished)
         {
-            Debug.Log("Teleport Finished");
             bt.ownerTransform.LookAt(playerTransform);
             teleportFinished = false;
             return Status.BH_SUCCESS;
