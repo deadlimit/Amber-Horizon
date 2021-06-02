@@ -8,6 +8,10 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
     private Vector3 maxFront;
     private Vector3 startPos;
     private Transform thisTransform;
+    private Vector3 movementDirection;
+
+    public BlackHole activeBlackHole;
+    private float dotProduct;
 
     private float frontDistance;
     private float backDistance;
@@ -33,32 +37,19 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
     public void Update() {
         Debug.DrawLine(transform.position,  maxFront, Color.red);
         Debug.DrawLine(transform.position,  maxBack, Color.green);
+       
         ClampPosition();
+        physics.velocity = (movementDirection * multiplier);
+        movementDirection = Vector3.zero;
 
         CheckBelowStoppingSpeed();
     }
     
-    public void BlackHoleBehaviour(BlackHole blackhole) {
-
-        Vector3 blackHoleVector3 = (blackhole.transform.position - transform.position).normalized;
-
-        float dotProduct = Vector3.Dot(transform.forward, blackHoleVector3);
-
-        Vector3 movementDirection = Vector3.zero;
-
-        if (dotProduct > 0.1f)
-        {
-            if (Vector3.Dot(transform.forward, transform.position - startPos) < 0 || Vector3.Distance(transform.position, startPos) < frontDistance)
-                movementDirection = transform.forward * (MovementSpeed * Time.fixedDeltaTime);
-        }
-        else if (dotProduct < -0.1f)
-        {
-            if (Vector3.Dot(transform.forward, transform.position - startPos) > 0 || Vector3.Distance(transform.position, startPos) < backDistance)
-                movementDirection = -transform.forward * (MovementSpeed * Time.fixedDeltaTime);
-        }
-
-
-        physics.velocity  = (movementDirection * multiplier);
+    public void BlackHoleBehaviour(BlackHole blackhole) 
+    {
+        activeBlackHole = blackhole;
+        dotProduct = Vector3.Dot(transform.forward, (activeBlackHole.transform.position - transform.position).normalized);
+        Debug.Log("Dotproduct: " + dotProduct);
     }
 
     private void CheckBelowStoppingSpeed() {
@@ -69,7 +60,28 @@ public class MovingPlatformV2 : MonoBehaviour, IBlackHoleBehaviour {
     public Vector3 GetVelocity() { return physics.velocity; }
     private void ClampPosition()
     {
-        Mathf.Clamp(thisTransform.position.x, startPos.x + maxBack.x, startPos.x + maxFront.x);
-        Mathf.Clamp(thisTransform.position.z, startPos.z + maxBack.z, startPos.z + maxFront.z);
+        if (dotProduct > 0.1f)
+        {
+            if (AllowedToMoveForward())
+                movementDirection = transform.forward * (MovementSpeed * Time.fixedDeltaTime);
+            else
+                physics.StopVelocity();
+        }
+        else if (dotProduct < -0.1f)
+        {
+            if (AllowedToMoveBackward())
+                movementDirection = -transform.forward * (MovementSpeed * Time.fixedDeltaTime);
+            else
+                physics.StopVelocity();
+        }
     }
+
+    private bool AllowedToMoveForward()
+    {
+        return (Vector3.Dot(transform.forward, transform.position - startPos) < 0 || Vector3.Distance(transform.position, startPos) < frontDistance);
+    }
+    private bool AllowedToMoveBackward()
+    {
+        return (Vector3.Dot(transform.forward, transform.position - startPos) > 0 || Vector3.Distance(transform.position, startPos) < backDistance);
+    } 
 }
