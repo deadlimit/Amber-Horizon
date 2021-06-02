@@ -14,6 +14,7 @@ public class TransitOverviewController : MonoBehaviour {
     [SerializeField] private Canvas UI;
     [SerializeField] private Button exitButton;
 
+    public static bool TransitViewActive { get; private set; }
     
     private readonly List<GameObject> activeButtons = new List<GameObject>();
     
@@ -35,7 +36,7 @@ public class TransitOverviewController : MonoBehaviour {
     }
 
     private IEnumerator SpawnButtons(TransitCameraFocusInfo focusInfo) {
-        
+        TransitViewActive = true;
         yield return new WaitForSeconds(waitUntilButtonSpawn);
        
         //Verkar vilja instansiera transitknappar på units i level 1 när man är i level 2
@@ -74,6 +75,7 @@ public class TransitOverviewController : MonoBehaviour {
         exitButton.gameObject.SetActive(false);
         
         Cursor.ActivateCursor(false, CursorLockMode.Locked);
+        TransitViewActive = false;
     }
     
 

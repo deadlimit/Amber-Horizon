@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class InGameMenuController : MonoBehaviour {
 
     [SerializeField] private List<Button> buttons;
-
+    [SerializeField] private GameObject inGameUIPanel;
     [SerializeField] private Animator animator;
     
     private static readonly int OpenMenuHash = Animator.StringToHash("OpenMenu");
@@ -24,7 +24,9 @@ public class InGameMenuController : MonoBehaviour {
     
     //Called in animation event
     public void ActivateMenu() {
+        inGameUIPanel.SetActive(true);
         SetInteractiveButtons(true);
+        gameObject.transform.SetAsLastSibling();
         Cursor.ActivateCursor(true, CursorLockMode.Confined);
         EventSystem<ActivatePlayerControl>.FireEvent(new ActivatePlayerControl(false));
     }
@@ -32,8 +34,12 @@ public class InGameMenuController : MonoBehaviour {
     //Called in animation event
     public void DeactivateMenu() {
         SetInteractiveButtons(false);
-        Cursor.ActivateCursor(false, CursorLockMode.Locked);
+        
+        if(TransitOverviewController.TransitViewActive == false)
+            Cursor.ActivateCursor(false, CursorLockMode.Locked);
+        
         EventSystem<ActivatePlayerControl>.FireEvent(new ActivatePlayerControl(true));
+        inGameUIPanel.SetActive(false);
     }
 
     private void SetInteractiveButtons(bool value) {
