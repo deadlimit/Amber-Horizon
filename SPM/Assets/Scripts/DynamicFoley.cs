@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DynamicFoley : MonoBehaviour
 {
-    private AudioSource[] m_AudioSource;
+    private AudioSource m_AudioSource;
     private double time;
     private float filterTime;
     
@@ -15,13 +15,18 @@ public class DynamicFoley : MonoBehaviour
     public AudioClip dashSound;
     public AudioClip dieSound;
 
+    private float audioVolume1;
+    private float audioVolume2;
+
     private string colliderType;
 
     
     // Start is called before the first frame update
     void Start()
     {
-        m_AudioSource = GetComponents<AudioSource>();
+        audioVolume1 = 0.2f;
+        audioVolume2 = 1f;
+        m_AudioSource = GetComponent<AudioSource>();
         time = AudioSettings.dspTime;
         filterTime = 0.2f;
         
@@ -57,13 +62,16 @@ public class DynamicFoley : MonoBehaviour
         switch (colliderType) // Att switcha olika ljud för olika terrian
         {
             case "House":
-                m_AudioSource[0].PlayOneShot(houseSound);
+                m_AudioSource.volume = audioVolume2;
+                m_AudioSource.PlayOneShot(houseSound);
                 break;
             case "Plattform":
-                m_AudioSource[0].PlayOneShot(plattformSound);
+                m_AudioSource.volume = audioVolume2;
+                m_AudioSource.PlayOneShot(plattformSound);
                 break;
             default:
-                m_AudioSource[0].PlayOneShot(defaultSound);
+                m_AudioSource.volume = audioVolume2;
+                m_AudioSource.PlayOneShot(defaultSound);
                 break;
         }
 
@@ -72,16 +80,19 @@ public class DynamicFoley : MonoBehaviour
 
     private void PlayJumpSound()
     {
-        m_AudioSource[0].PlayOneShot(jumpSound);
+        m_AudioSource.volume = audioVolume2;
+        m_AudioSource.PlayOneShot(jumpSound);
     }
 
     private void PlayDashSound()
     {
-        m_AudioSource[1].PlayOneShot(dashSound);
+        m_AudioSource.volume = audioVolume1;
+        m_AudioSource.PlayOneShot(dashSound);
     }
 
     private void PlayDieSound()
     {
-        m_AudioSource[0].PlayOneShot(dieSound);
+        m_AudioSource.volume = audioVolume2;
+        m_AudioSource.PlayOneShot(dieSound);
     }
 }
