@@ -29,9 +29,6 @@ public class PlayerUI : MonoBehaviour {
     }
 
     private void ChangeColor(float value) {
-        if (healthBar == null)
-            healthBar = healthBar;
-        
         
         Color trans = healthBar.color;
         trans.a = value;
@@ -45,7 +42,7 @@ public class PlayerUI : MonoBehaviour {
         healthBarChipAway.color = trans2;
     }
 
-    private void OnDisable() {
+    private void OnDestroy() {
         EventSystem<AbilityUsed>.UnregisterListener(StartAbilityCooldown);
         EventSystem<InteractTriggerExitEvent>.UnregisterListener(ClearUIMessage);
         EventSystem<DisplayUIMessage>.UnregisterListener(DisplayMessageOnUI);
