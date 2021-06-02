@@ -10,8 +10,15 @@ public class PlayerControlLock : MonoBehaviour {
     [SerializeField] private List<MonoBehaviour> scripts;
 
     private void Awake() {
-        
+        StartCoroutine(EnableScripts(false));
         EventSystem<ActivatePlayerControl>.RegisterListener(EnableControl);
+    }
+
+    private IEnumerator Start() {
+        while (!SceneManager.GetSceneByName("Level 1").isLoaded)
+            yield return null;
+        
+        StartCoroutine(EnableScripts(true));
     }
 
     private void OnEnable() {

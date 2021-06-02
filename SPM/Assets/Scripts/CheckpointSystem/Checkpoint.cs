@@ -59,8 +59,7 @@ public class Checkpoint : MonoBehaviour {
 
             var mainStand = activeIndicatorStandVFX.main;
             mainStand.startColor = activeColor;
-            Debug.Log("stand color = " + mainStand.startColor);
-
+            
             //stops the particle system and then starts it, to get the emission burst at the start. nevermind
             activeIndicatorPanelVFX.Stop();
             activeIndicatorPanelVFX.Play();
