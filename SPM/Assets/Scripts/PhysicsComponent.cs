@@ -6,7 +6,7 @@ public class PhysicsComponent : MonoBehaviour
     //modifierar .y-värdet på velocity, kan alltså inte vara en property
     public Vector3 velocity;
     //går denna att göra private istället? 
-    public LayerMask collisionMask;
+    [SerializeField] private LayerMask collisionMask;
 
 
     public RaycastHit groundHitInfo { get; private set; }
@@ -25,6 +25,7 @@ public class PhysicsComponent : MonoBehaviour
     
     private Collider attachedCollider;
     private CollisionCaster collisionCaster;
+
 
 
     Vector3 bhGrav = Vector3.zero;
@@ -50,7 +51,7 @@ public class PhysicsComponent : MonoBehaviour
     }
     
     public void Update() {
-        Debug.DrawLine(transform.position, transform.position + velocity);
+        //Debug.DrawLine(transform.position, transform.position + velocity);
         bhGrav = Vector3.zero;
         AddGravity();
         CheckForCollisions(0);
@@ -141,6 +142,10 @@ public class PhysicsComponent : MonoBehaviour
 
     }
     public void BlackHoleGravity(BlackHole bh) {
+        if (gravity == 0)
+            return;
+
+        Debug.Log( gameObject + "BlackHoleGravity");
         bhGrav = bh.GetGravitationalPull() * (bh.transform.position - transform.position) / Mathf.Pow(Vector3.Distance(bh.transform.position, transform.position), 2) * Time.fixedDeltaTime;
         velocity += bhGrav;
         ApplyFriction(PhysicsFunctions.NormalForce3D(velocity, bh.transform.position - transform.position));
@@ -168,7 +173,7 @@ public class PhysicsComponent : MonoBehaviour
         velocity += gravityMovement;
         gravityModifier = 1f;
     }
-    private void ApplyFriction(Vector3 normalForce)
+    public void ApplyFriction(Vector3 normalForce)
     {
         if (velocity.magnitude < normalForce.magnitude * staticFrictionCoefficient)
             velocity = Vector3.zero;
@@ -185,9 +190,5 @@ public class PhysicsComponent : MonoBehaviour
 
     }
 
-    public void PlatformAddForce(Vector3 input)
-    {
-        velocity += input;
-    }
     
 }
