@@ -10,10 +10,10 @@ public class Checkpoint : MonoBehaviour {
     [SerializeField] private bool isStartingCheckpoint;
     [SerializeField] private AudioClip activateAudioClip;
     [SerializeField] private Color activeColor, inactiveColor;
-    [SerializeField] private ParticleSystem activeIndicatorVFX;
-    
-    
-    
+    [SerializeField] private ParticleSystem activeIndicatorPanelVFX;
+    [SerializeField] private ParticleSystem activeIndicatorStandVFX;
+
+
     public Vector3 SpawnPosition { get; private set; }
     
     private void Awake() {
@@ -48,22 +48,33 @@ public class Checkpoint : MonoBehaviour {
     public static void RespawnAtActiveCheckpoint() => player.position = activeCheckpoint.SpawnPosition;
 
     private void ChangeParticleColor(bool isActive)
-    {             
+    {
         //removes any active particles, so the color changes immediatly
-        activeIndicatorVFX.Clear();
+        activeIndicatorPanelVFX.Clear();
+        activeIndicatorStandVFX.Clear();
         if (isActive)
         {
-            var main = activeIndicatorVFX.main;
-            main.startColor = activeColor;
+            var mainPanel = activeIndicatorPanelVFX.main;
+            mainPanel.startColor = activeColor;
+
+            var mainStand = activeIndicatorStandVFX.main;
+            mainStand.startColor = activeColor;
+            Debug.Log("stand color = " + mainStand.startColor);
 
             //stops the particle system and then starts it, to get the emission burst at the start. nevermind
-            activeIndicatorVFX.Stop();
-            activeIndicatorVFX.Play();
+            activeIndicatorPanelVFX.Stop();
+            activeIndicatorPanelVFX.Play();
+
+            activeIndicatorStandVFX.Stop();
+            activeIndicatorStandVFX.Play();
         }
         else 
         {
-            var main = activeIndicatorVFX.main;
-            main.startColor = inactiveColor;
+            var mainPanel = activeIndicatorPanelVFX.main;
+            mainPanel.startColor = inactiveColor;
+
+            var mainStand = activeIndicatorStandVFX.main;
+            mainStand.startColor = inactiveColor;
         }
     }
     
