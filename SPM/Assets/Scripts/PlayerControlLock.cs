@@ -47,6 +47,6 @@ public class PlayerControlLock : MonoBehaviour {
 
             GetComponent<PhysicsComponent>().velocity = Vector3.zero;
         }
-  
+        
     }
 }
