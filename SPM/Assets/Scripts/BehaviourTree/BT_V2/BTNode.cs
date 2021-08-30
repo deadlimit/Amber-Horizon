@@ -8,15 +8,11 @@ public enum Status
 }
 public class BTNode
 { 
-    public string name { get; }
-    public BehaviourTree bt;
-    public virtual void OnInitialize() { }
-    public virtual Status Evaluate() 
-    { 
-        return Status.BH_FAILURE; 
-    }
-    public virtual void OnTerminate(Status status) { }
+    public string name { get; private set; }
+    protected BehaviourTree bt;
+    private Status m_status { get; set; }
 
+    //Constructors
     public BTNode(BehaviourTree bt) 
     {
         name = "";
@@ -29,6 +25,9 @@ public class BTNode
         this.bt = bt;
         m_status = Status.BH_INVALID;
     }
+    
+    #region BTNode methods
+    public virtual void OnInitialize() { }
     public Status Tick()
     {
         if (m_status != Status.BH_RUNNING)
@@ -36,11 +35,13 @@ public class BTNode
         m_status = Evaluate();
         if (m_status != Status.BH_RUNNING) OnTerminate(m_status);
         return m_status;
-
     }
-    public Status getStatus()
+    public virtual Status Evaluate()
     {
-        return m_status;
+        return Status.BH_FAILURE;
     }
-    private Status m_status;
+    public virtual void OnTerminate(Status status) { }
+    #endregion
+
+   
 }

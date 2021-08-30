@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Nodetype to invert returned value
 public class Inverter : Decorator
 {
-    public Inverter(BTNode child, BehaviourTree bt) : base(child, bt)
-    {
-    }
+    public Inverter(BTNode child, BehaviourTree bt) : base(child, bt){  }
 
     public override Status Evaluate()
     {

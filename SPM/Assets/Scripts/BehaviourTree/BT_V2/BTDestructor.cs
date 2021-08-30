@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//Destructor is a type of enemy, and this is the actualized behaviour tree for that type (of enemy)
+//I've tried to partition the subtrees/behaviours, but am aware it's still quite the read
 public class BTDestructor : BehaviourTree
 {
     public Destructor destructor { get; private set; }
     private DestructorAttack destructorAttackNode;
     private DestructorPoint destructorPointNode;
+
     private new void Start()
     {
         base.Start();
@@ -28,7 +32,7 @@ public class BTDestructor : BehaviourTree
             {
             new Patrol(this),
             new Wait(this, maxWaitTime)
-            }, this, "patrolSequence", new IsTargetNull(this));
+            }, this, "patrolSequence", new TargetIsNull(this));
 
 
         //Investigate------------------------------------------------------------------
@@ -48,8 +52,8 @@ public class BTDestructor : BehaviourTree
         Sequence pointAndCharge = new Sequence(new List<BTNode>
             {
             destructorPointNode,
-             new ChargeTarget(this)
-        }, this, "pointAndCharge", new DefaultCondition(this));
+            new ChargeTarget(this)
+            }, this, "pointAndCharge", new DefaultCondition(this));
 
         Selector attack = new Selector(new List<BTNode>
             {
@@ -57,11 +61,11 @@ public class BTDestructor : BehaviourTree
             }, this, "Attack Selector", new TargetInRange(this));
 
         Selector targetVisible = new Selector(new List<BTNode>
-             {
-              new SetValuesAfterVisual_Destructor(this),
-              attack,
-              pointAndCharge
-             }, this, "targetVisible", new VisualProximityCheck(this));
+            {
+            new SetValuesAfterVisual_Destructor(this),
+            attack,
+            pointAndCharge
+            }, this, "targetVisible", new VisualProximityCheck(this));
 
 
         //Destructor Death--------------------------------------------------------------
@@ -73,17 +77,17 @@ public class BTDestructor : BehaviourTree
         Sequence deathSequence = new Sequence(new List<BTNode>
             {
             causeOfDeath,
-             new DestroyOwner(this)
+            new DestroyOwner(this)
             }, this, "deathSequence", new AIDied(this));
 
         //Selector Sub-Root Node--------------------------------------------------------
         Selector RootSelector = new Selector(new List<BTNode>
-                {
-                deathSequence,
-                targetVisible,
-                investigateSelector,
-                patrolSequence
-                }, this, "RootSelector");
+            {
+            deathSequence,
+            targetVisible,
+            investigateSelector,
+            patrolSequence
+            }, this, "RootSelector");
 
         //Parallel for independent execution of timernode-----------------------------------
         timerNode = new TimerNode(this);

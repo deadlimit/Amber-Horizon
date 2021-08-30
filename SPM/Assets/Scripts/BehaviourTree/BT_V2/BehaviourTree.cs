@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class BehaviourTree : MonoBehaviour
 {
-    public class DataContainer { }
+    public class DataContainer {}
     public class DataContainer<T> : DataContainer
     {
         private T value;
@@ -23,21 +23,22 @@ public class BehaviourTree : MonoBehaviour
             value = newVal;
         }
     }
-    
-    public Vector3 startPos { get; private set; }
+
+    //References
     public Enemy owner { get; private set; }
     public NavMeshAgent ownerAgent { get; private set; }
     public Transform ownerTransform { get; private set; }
     public TimerNode timerNode { get; protected set; }
     
+    //variable values
+    public Vector3 startPos { get; private set; }
     public float maxWaitTime { get; private set; }
     public float minWaitTime { get; private set; }
 
+    
     protected BTNode m_root;
-
-
-
     public Dictionary<string, DataContainer> blackboard = new Dictionary<string, DataContainer>();
+
     public DataContainer<T> GetBlackBoardValue<T>(string blackboardKey)
     {
         return (DataContainer<T>)blackboard[blackboardKey];
@@ -49,8 +50,8 @@ public class BehaviourTree : MonoBehaviour
         ownerTransform = owner.transform;
         ownerAgent = owner.Pathfinder.agent;
         startPos = ownerTransform.position;
-
         ownerAgent.speed = owner.MovementSpeedDefault;
+
         maxWaitTime = owner.MaxWaitTimeOnPatrol;
         minWaitTime = owner.MinWaitTimeOnPatrol;
 

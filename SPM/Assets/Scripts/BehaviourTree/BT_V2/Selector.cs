@@ -22,9 +22,9 @@ public class Selector : Composite
         foreach (BTNode child in children)
         {
             Status s = child.Tick();
+
             if (s != Status.BH_FAILURE)
             {
-                //Debug.Log(name + "recieving: " + s + "child: " + child.name);
                 return s;
             }
             if (children.IndexOf(child) == children.Count -1)
@@ -33,7 +33,7 @@ public class Selector : Composite
             }
         }
 
-        return Status.BH_INVALID; //Unexpected loop exit
+        return Status.BH_INVALID; //Unexpected loop exit, something went wrong
     }
 }
 

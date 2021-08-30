@@ -4,15 +4,17 @@ using UnityEngine;
 
 
 /*
- * Filter är en sequence, med sitt condition som första barn -> 
- * alltså kommer inga barn köras om inte det första (vårt condition) returnerar true,
- * och det är så filtret fungerar. 
+ * Filter is a sequence, but also takes a condition. This condition is also a type of BTNode.
+ * If the condition fails, no other child of this node will execute.
+ * If no condition is given to the filter, the DefaultCondition : BTNode will return SUCCESS
  */
 public class Filter : Sequence
 {
+    //Constructors
     public Filter(List<BTNode> children, BehaviourTree bt) : base(children, bt) { }
     public Filter(List<BTNode> children, BehaviourTree bt, string name, BTNode condition) : base(children, bt, name, condition) { }
     public Filter(List<BTNode> children, BehaviourTree bt, string name) : base(children, bt, name, new DefaultCondition(bt)) { }
+
     public void AddCondition(BTNode condition) 
     {
         children.Insert(0, condition);

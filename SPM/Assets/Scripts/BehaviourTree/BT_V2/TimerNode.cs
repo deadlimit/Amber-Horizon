@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Just a timer
 public class TimerNode : BTNode
 {
     private float attackCooldown;

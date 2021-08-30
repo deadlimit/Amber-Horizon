@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class Repeater : Decorator
 {
-
-    public Repeater(BTNode child, BehaviourTree bt) : base(child, bt) 
-    {
-    }
+    //First node in the BT to keep things running
+    public Repeater(BTNode child, BehaviourTree bt) : base(child, bt) { }
     public override Status Evaluate()
     {
         m_child.Evaluate();

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class BTForager : BehaviourTree
 {
+    public Forager forager { get; private set; }
     private Teleport teleportNode;
     private Shoot shootNode;
-    public Forager forager { get; private set; }
 
     private new void Start()
     {
@@ -19,8 +19,7 @@ public class BTForager : BehaviourTree
 
         m_root = BehaviourTreeBuilder();
     }
-
-    void Update()
+    private void Update()
     {
         m_root.Tick();
     }
@@ -32,7 +31,7 @@ public class BTForager : BehaviourTree
             {
             new Patrol(this),
             new Wait(this, maxWaitTime)
-            }, this, "patrolSequence", new IsTargetNull(this));
+            }, this, "patrolSequence", new TargetIsNull(this));
 
 
         //Investigate------------------------------------------------------------------
@@ -58,7 +57,7 @@ public class BTForager : BehaviourTree
         teleportNode = new Teleport(this);
         Sequence fleeSequence = new Sequence(new List<BTNode>
             {
-             teleportNode
+            teleportNode
             }, this, "fleeFilter", new TargetTooClose(this));
 
         //Target visible/in range------------------------------------------------------
@@ -71,10 +70,10 @@ public class BTForager : BehaviourTree
 
         Selector targetVisible = new Selector(new List<BTNode>
              {
-              new AlertAllies(this),
-              fleeSequence,
-              targetInRange,
-              new MoveToTarget(this)
+             new AlertAllies(this),
+             fleeSequence,
+             targetInRange,
+             new MoveToTarget(this)
              }, this, "targetVisible", new VisualProximityCheck(this));
 
         //AI Death---------------------------------------------------------------------------
@@ -87,44 +86,29 @@ public class BTForager : BehaviourTree
         Sequence deathSequence = new Sequence(new List<BTNode>
             {
             causeOfDeath,
-             new DestroyOwner(this)
+            new DestroyOwner(this)
             }, this, "deathSequence", new AIDied(this));
 
         //Root Selector--------------------------------------------------------------------
-        Selector RootSelector = new Selector(new List<BTNode>
-                {
-                deathSequence,
-                targetVisible,
-                investigateSelector,
-                patrolSequence
-                }, this, "RootSelector");
+        Selector treeRoot = new Selector(new List<BTNode>
+            {
+            deathSequence,
+            targetVisible,
+            investigateSelector,
+            patrolSequence
+            }, this, "RootSelector");
 
         //Parallel node for independent timer execution-------------------------------
         timerNode = new TimerNode(this);
         Parallel rootParallel = new Parallel(new List<BTNode>
             {
             timerNode,
-            RootSelector
+            treeRoot
             }, this, "rootParallel");
-       
+
         //Repeater Root Node----------------------------------------------------------
         return new Repeater(rootParallel, this);
 
-        //TEST SEQUENCE-------------------------------------------------
-        /*Filter testFilter = new Filter(new List<BTNode>
-            {
-            new STest1(this)
-            }, this);
-        testFilter.AddCondition(new TargetNotNull(this));
-
-        Selector testSelector = new Selector(new List<BTNode>
-            {
-            testFilter,
-            new STest2(this),
-            new STest3(this)
-            }, this);
-        return new Repeater(testSelector, this);*/
-        //-------------------------------------------------------------------
     }
 
     //Called by animation event
