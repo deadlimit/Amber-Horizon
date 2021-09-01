@@ -18,8 +18,7 @@ public class DestructorPoint : BTNode
             return Status.BH_SUCCESS;
         }
 
-        //Only want the point to happen once per engagement, and to be skipped if Attack OR Point already has been executed
-        // The question is where to reset this value, a Get/Set value in a generic node would result in error from Forager BT      
+        //Only want the point to happen once per engagement, and to be skipped if Attack OR Point already has been executed 
         if (bt.GetBlackBoardValue<bool>("HasAlreadyPointed").GetValue())
             return Status.BH_FAILURE;
 

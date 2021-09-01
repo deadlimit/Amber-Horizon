@@ -11,10 +11,11 @@ public class InvestigateLastSeen : BTNode
     {
       //Preceding condition makes sure that this value is not null
       targetPos = bt.GetBlackBoardValue<Vector3>("LastSeenPosition").GetValue();
-      bt.owner.Pathfinder.agent.SetDestination(targetPos);
+
+        if(targetPos != null)
+            bt.owner.Pathfinder.agent.SetDestination(targetPos);
     }
 
-    //
     public override Status Evaluate()
     {
         if (targetPos.Equals(Vector3.zero))
@@ -26,13 +27,11 @@ public class InvestigateLastSeen : BTNode
             bt.GetBlackBoardValue<Vector3>("LastSeenPosition").SetValue(Vector3.zero);
         }
 
-
         return Status.BH_RUNNING;
     }
 
     private bool ReachedTarget()
     {
-
         if (!bt.owner.Pathfinder.agent.pathPending)
         {
             if (bt.owner.Pathfinder.agent.remainingDistance <= bt.owner.Pathfinder.agent.stoppingDistance)

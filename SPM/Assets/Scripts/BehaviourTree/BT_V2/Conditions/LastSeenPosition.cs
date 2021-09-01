@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Position the AI investigates if the player exits their "senses"
 public class LastSeenPosition : BTNode
 {
     Vector3 targetPos;

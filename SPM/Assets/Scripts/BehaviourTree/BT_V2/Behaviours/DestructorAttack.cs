@@ -7,17 +7,11 @@ public class DestructorAttack : BTNode
 {
     private bool animationStarted;
     private bool animationFinished;
-    public DestructorAttack(BehaviourTree bt) : base(bt)
-    {
-
-    }
-    //TODO; Correct evaluate method which can return failure, and possibly even running. right now the attack cannot fail
+    public DestructorAttack(BehaviourTree bt) : base(bt){}
     public override void OnInitialize()
     {
-        //Reset local bool, and tell Animator "PlayerInRange", this animator parameter controls attack animation
         animationFinished = false;
         bt.owner.Animator.SetBool("PlayerInRange", true);
-
     }
     public override Status Evaluate()
     {

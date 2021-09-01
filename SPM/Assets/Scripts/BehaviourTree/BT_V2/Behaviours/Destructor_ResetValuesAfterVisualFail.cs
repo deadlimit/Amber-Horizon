@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResetValuesAfterVisualFail_Destructor : BTNode
+public class Destructor_ResetValuesAfterVisualFail : BTNode
 {
-    public ResetValuesAfterVisualFail_Destructor(BehaviourTree bt) : base(bt) { }
+    public Destructor_ResetValuesAfterVisualFail(BehaviourTree bt) : base(bt) { }
 
     public override Status Evaluate()
     {

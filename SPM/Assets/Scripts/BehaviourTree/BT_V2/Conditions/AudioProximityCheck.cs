@@ -10,14 +10,16 @@ public class AudioProximityCheck : BTNode
     //Saving resources
     private Status cachedValue = Status.BH_FAILURE;
     private int frameCounter;
-    private int nthFrames = 10;
+    private int framesBetweenOverlapCasts = 10;
     public AudioProximityCheck(BehaviourTree bt) : base(bt) {}
 
     public override Status Evaluate()
     {
+        //No need to execute the overlap and subsequent instructions every single Update/Evaluate call,
+        //So between the calls we'll simply store the last obtained value so as to not interrupt the tree structure
         frameCounter++;
 
-        if (frameCounter % nthFrames != 0)
+        if (frameCounter % framesBetweenOverlapCasts != 0)
         {
             return cachedValue;
         }
@@ -30,14 +32,15 @@ public class AudioProximityCheck : BTNode
         {
             foreach (Collider coll in arr)
             {
-                //foreach, men vi borde bara få ut en collider
-                //DataContainer "Target" är nullad, så här måste vi isåfall skapa en ny om den inte existerar (vilket den troligtvis inte gör) 
-                //det är skit men fungerar för nu
+                //This should only ever return one collision, as there's only one player.
+                //If more player characters were introduced, the blackboard value "Target" becomes nonsensical
+                //without determining which player to target.
                 bt.GetBlackBoardValue<Vector3>("Target")?.SetValue(coll.transform.position);
                 
                 if(bt.blackboard["Target"] == null)
                     bt.blackboard["Target"] = new BehaviourTree.DataContainer<Vector3>(coll.transform.position);
             }
+            //If someone were to forget the limitations of this code as stated above, we'll log an error
             if (arr.Length > 1)
                 Debug.LogError("Arr Length > 1!!");
             

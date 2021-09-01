@@ -38,12 +38,12 @@ public class BTDestructor : BehaviourTree
         //Investigate------------------------------------------------------------------
         Sequence investigateLastSeen = new Sequence(new List<BTNode>
             {
-            new Dest_InvestigateLastSeen(this)
+            new Destructor_InvestigateLastSeen(this)
             }, this, "investigateLastSeen", new LastSeenPosition(this));
 
         Selector investigateSelector = new Selector(new List<BTNode>
             {
-            new ResetValuesAfterVisualFail_Destructor(this),
+            new Destructor_ResetValuesAfterVisualFail(this),
             investigateLastSeen,
             }, this, "investigateSelector");
 

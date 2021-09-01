@@ -4,20 +4,16 @@ using UnityEngine;
 
 public class MoveToTarget : BTNode
 {
-    Transform playerTransform;
-    int frameCounter = 0;
-   public MoveToTarget(BehaviourTree bt) : base(bt)
-    {
-
-    }
+    private Transform playerTransform;
+    private int frameCounter = 0;
+    private int framesPerDestinationUpdate = 20;
+    public MoveToTarget(BehaviourTree bt) : base(bt){}
     public override void OnInitialize()
     {
-
         bt.ownerAgent.enabled = true;
         playerTransform = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
     }
     
-
     public override Status Evaluate()
     {
         UpdateTargetPosition();
@@ -35,19 +31,10 @@ public class MoveToTarget : BTNode
             return Status.BH_RUNNING;
 
     }
-    private bool ReachedAttackRange()
-    {
-        if (bt.owner.Pathfinder.agent.remainingDistance <= bt.owner.AttackRange)
-        {
-            return true;
-        }
-        return false;
-    }
 
-    //Sätt destination var tionde frame
     private void UpdateTargetPosition()
     {
-        if (frameCounter % 10 == 0)
+        if (frameCounter % framesPerDestinationUpdate == 0)
         {
             bt.owner.Pathfinder.agent.SetDestination(playerTransform.position);
             frameCounter = 0;

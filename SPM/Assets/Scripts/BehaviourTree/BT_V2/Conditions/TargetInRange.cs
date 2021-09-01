@@ -10,6 +10,7 @@ public class TargetInRange : BTNode
     {
         float distance = Vector3.Distance(bt.ownerTransform.position, bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue().position);
         bt.ownerAgent.enabled = true;
+
         if (distance >= bt.owner.AttackRange)
         {
             bt.ownerAgent.ResetPath();        

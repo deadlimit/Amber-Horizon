@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//May seem like a simple duplication of TargetIsNull - and it basically is. Either of these could be inverted and serve both purposes,
+//But stuffing another layer of nodes (to fit the inverter) makes the tree itself even more awful to read.
 public class TargetNotNull : BTNode
 {
     public TargetNotNull(BehaviourTree bt) : base(bt)  { }

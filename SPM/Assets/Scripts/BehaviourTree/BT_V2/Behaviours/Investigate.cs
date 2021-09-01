@@ -5,20 +5,16 @@ using UnityEngine;
 public class Investigate : BTNode
 {
     private Vector3 targetPos;
-    public Investigate(BehaviourTree bt) : base(bt)
-    {
-    }
+    public Investigate(BehaviourTree bt) : base(bt){ }
 
     public override void OnInitialize()
-    {
-        
+    {        
         if (bt.GetBlackBoardValue<Vector3>("Target") != null)
             bt.owner.Pathfinder.agent.SetDestination(targetPos);
     }
 
     public override Status Evaluate()
     {
-
         if (ReachedTarget())
         {
             bt.blackboard["Target"] = null;

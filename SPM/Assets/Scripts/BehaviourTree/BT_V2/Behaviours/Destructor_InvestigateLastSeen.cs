@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dest_InvestigateLastSeen : BTNode
+public class Destructor_InvestigateLastSeen : BTNode
 {
     //Script is identical to InvestigateLastSeen but for the animator parameter that is set when succeeding
     //Not quite sure this is the way i want to do things, but im experimenting
     private Vector3 targetPos; 
-    public Dest_InvestigateLastSeen(BehaviourTree bt) : base(bt) { }
+    public Destructor_InvestigateLastSeen(BehaviourTree bt) : base(bt) { }
 
     public override void OnInitialize()
     {
@@ -16,7 +16,6 @@ public class Dest_InvestigateLastSeen : BTNode
       bt.owner.Pathfinder.agent.SetDestination(targetPos);
     }
 
-    //
     public override Status Evaluate()
     {
         if (targetPos.Equals(Vector3.zero))

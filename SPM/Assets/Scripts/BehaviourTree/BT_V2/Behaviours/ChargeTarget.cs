@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class ChargeTarget : BTNode
 {
-    Transform playerTransform;
-    int frameCounter = 0;
+    private Transform playerTransform;
+
+    private int frameCounter = 0;
+    private int framesPerDestinationUpdate = 20; 
     public ChargeTarget(BehaviourTree bt) : base(bt){ }
 
     public override void OnInitialize()
@@ -45,7 +47,7 @@ public class ChargeTarget : BTNode
     }
     private void UpdateTargetPosition()
     {
-        if (frameCounter % 20 == 0)
+        if (frameCounter % framesPerDestinationUpdate == 0)
         {
             bt.owner.Pathfinder.agent.SetDestination(playerTransform.position);
             frameCounter = 0;

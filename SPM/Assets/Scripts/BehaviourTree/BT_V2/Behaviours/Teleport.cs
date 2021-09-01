@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Teleport : BTNode
 {
-
-    Vector3 teleportPosition;
+    //Teleport parameters
+    private Vector3 teleportPosition;
     private float distanceFromPlayer = 10f;
+    private Transform playerTransform;
+
+    //checks for animations
     private bool animationStarted;
     private bool teleportFinished;
-    private Transform playerTransform;
     public Teleport(BehaviourTree bt) : base(bt) { }
 
     public override Status Evaluate()
@@ -34,14 +36,9 @@ public class Teleport : BTNode
         }
     }
 
-
-    //Somehow we would like to make sure to teleport position is not too close to the player, because this results in another teleport
-    //immediately, and that feels pretty dumb
+    //TODO; Can result in a position so close to the player that teleport is immediately called again, fix required
     private void CalculateTeleportPosition()
     {
-        //GetSamplePositionOnNavMesh would work except for the fact that we want to base the position
-        //on the players location, and that method (right now) does not take a transform argument
-        //the problem now is that y-position could end up NOT being on the navmesh
         playerTransform = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
 
         teleportPosition = playerTransform.position + new Vector3(

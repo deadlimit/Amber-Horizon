@@ -2,29 +2,34 @@ using UnityEngine;
 
 public class VisualProximityCheck : BTNode
 {
+    //Knowledge of player
     private Transform playerTransform;
     private Vector3 lastKnownPlayerPosition;
-    private Vector3 offsetVector;
+
+    //Detection parameters
+    private Vector3 heighOffset;
     private bool hasSeenPlayer;
     private float rangeRounding = 1f;
     private float visualRange;
 
     //Saving resources
     private int frameCounter;
-    private int nthFrames = 33;
+    private int framesBetweenOverlapCasts = 33;
     private Status cachedValue = Status.BH_FAILURE;
 
    public VisualProximityCheck(BehaviourTree bt ) : base(bt)
     {
         visualRange = bt.owner.VisualRange;
-        offsetVector = new Vector3(0, bt.owner.Collider.height, 0);
+        heighOffset = new Vector3(0, bt.owner.Collider.height, 0);
     }
 
     public override Status Evaluate()
     {
+        //No need to execute the overlap and subsequent instructions every single Update/Evaluate call,
+        //So between the calls we'll simply store the last obtained value so as to not interrupt the tree structure
         frameCounter++;
 
-        if (frameCounter % nthFrames != 0)
+        if (frameCounter % framesBetweenOverlapCasts != 0)
         {
             return cachedValue;
         }
@@ -70,29 +75,24 @@ public class VisualProximityCheck : BTNode
         }
         else
         {
-            //No need to constantly update blackboard value, its only done when the player leaves the AI's visual detection
+          
             SetLastSeenPosition();
-            //If visual detection has failed, reset the values of HasCalledForHelp, TargetTransform and AlerterTransform
             ResetBlackboardValues();
             cachedValue = Status.BH_FAILURE;
             return Status.BH_FAILURE;
         }
     }
-
-    //this took a really weird turn, seems like the documentation and "layers to ignore" parameter doesnt actually do what it says,
-    //at this point i might aswell use a regular raycast but meh
     private bool PlayerInLineOfSight()
     {
-        if (Physics.Linecast(bt.ownerTransform.position + offsetVector, playerTransform.position + offsetVector, out var hitInfo, bt.owner.LineOfSightMask))
+        if (Physics.Linecast(bt.ownerTransform.position + heighOffset, playerTransform.position + heighOffset, out var hitInfo, bt.owner.LineOfSightMask))
         {
             return false;
         }
-        //Debug.Log("Linecast hit nothing");
         return true;
     }
-
     private void SetLastSeenPosition()
-    {
+    {  
+        //No need to constantly update blackboard value, its only done when the player leaves the AI's visual detection
         if (hasSeenPlayer)
         {
             bt.GetBlackBoardValue<Vector3>("LastSeenPosition").SetValue(lastKnownPlayerPosition);
@@ -104,8 +104,6 @@ public class VisualProximityCheck : BTNode
     {
         bt.blackboard["Target"] = null;
     }
-
-    //TODO more forgiving angle
     private bool PlayerInAngleOfSight()
     {
         Vector3 forward = bt.ownerTransform.TransformDirection(Vector3.forward);
@@ -115,7 +113,8 @@ public class VisualProximityCheck : BTNode
         return false;
     }
     private void ResetBlackboardValues()
-    {
+    {   
+        //If visual detection has failed, reset the values of HasCalledForHelp, TargetTransform and AlerterTransform
         bt.GetBlackBoardValue<bool>("HasCalledForHelp").SetValue(false);
         bt.GetBlackBoardValue<Transform>("TargetTransform").SetValue(null);
         bt.GetBlackBoardValue<Transform>("AlerterTransform").SetValue(null);
@@ -124,7 +123,7 @@ public class VisualProximityCheck : BTNode
     private bool TargetTransformExists()
     {
         //If TargetTransform already exists we dont want to perform overlapSphere, this block also contains logic for if the AI was alerted to the player by
-        //another AI, effectively letting secondary AI threat use the Alerting AI:s position as origin for the Distance check
+        //another AI, letting secondary AI use the Alerting AI:s position as origin for the Distance check
         if (bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue() != null)
         {
             //If AlerterTransform is set, this AI has been alerted by another and uses the Alerting AI:s position as origin for detection range

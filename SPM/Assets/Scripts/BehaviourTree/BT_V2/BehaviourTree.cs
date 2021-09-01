@@ -30,13 +30,15 @@ public class BehaviourTree : MonoBehaviour
     public Transform ownerTransform { get; private set; }
     public TimerNode timerNode { get; protected set; }
     
-    //variable values
+    
+    //instance variables
     public Vector3 startPos { get; private set; }
     public float maxWaitTime { get; private set; }
     public float minWaitTime { get; private set; }
 
     
     protected BTNode m_root;
+
     public Dictionary<string, DataContainer> blackboard = new Dictionary<string, DataContainer>();
 
     public DataContainer<T> GetBlackBoardValue<T>(string blackboardKey)

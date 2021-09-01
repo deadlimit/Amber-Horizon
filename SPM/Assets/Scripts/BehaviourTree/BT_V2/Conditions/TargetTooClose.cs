@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//behaviour to determine when ranged enemies should attempt to flee (in this particular case that means teleport a small distance away) 
 public class TargetTooClose : BTNode
 {
-    private Transform playerTransform;
     public TargetTooClose(BehaviourTree bt) : base(bt) { }
 
     public override Status Evaluate()

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Patrol : BTNode
 {
-    //No target, vad gör vi då, och vad klassas som att "Lyckas"? 
-    public float speed = 5f;
+    public float patrolSpeed = 5f;
     protected Vector3 destination;
     private float patrolRadius = 5f;
+
     public Patrol(BehaviourTree bt) : base(bt)
     {
         destination = Vector3.zero;
@@ -35,7 +35,6 @@ public class Patrol : BTNode
         bt.ownerAgent.SetDestination(destination);
     }
 
-    //Den här metoden behövs i alla metoder som utvärderar om navAgent är framme
     private bool ReachedTarget()
     {
         if (!bt.owner.Pathfinder.agent.pathPending)

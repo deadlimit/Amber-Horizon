@@ -8,11 +8,9 @@ public class Shoot : BTNode
     private float shootCD;
     private bool animationFinished;
     private bool animationStarted;
-    //private Transform playerTransform;
     public Shoot(BehaviourTree bt) : base(bt) 
     {
         shootCD = bt.GetBlackBoardValue<float>("FireCooldown").GetValue();
-       // playerTransform = bt.GetBlackBoardValue<Transform>("TargetTransform").GetValue();
     }
 
     public override Status Evaluate()
@@ -49,7 +47,7 @@ public class Shoot : BTNode
 
     //I would really like a sort of interface to manage the Animation events calling to  tell the tree that the animation has
     // finished, this sort of programming will quickly get difficult to handle. I guess timers would do the trick but that
-    // seems even worse to me
+    // seems even more bloated to me
     public void ShootAnimationFinished()
     {
         animationFinished = true;
@@ -57,14 +55,14 @@ public class Shoot : BTNode
 
     private void LockAgent()
     {
-        //Seems like temporarily disabling the agent is the only thing actually needed, will leave the other 
-        //lines in for now, so it'll be easier to remember this stuff if a new problem arises
 
         //agent is enabled again in TargetInRange if the shoot animation can not finish properly - 
         //and again inside Teleport's ExecuteTeleport, in case the player triggers this behaviour, interrupting the shoot-animation
         bt.ownerAgent.ResetPath();
         bt.ownerAgent.enabled = false;
 
+        //Seems like temporarily disabling the agent is the only thing actually needed, will leave the other 
+        //lines in for now, so it'll be easier to remember this stuff if a new problem arises
         /*bt.owner.Animator.StopPlayback();
         bt.ownerTransform.LookAt(playerTransform);*/
     }

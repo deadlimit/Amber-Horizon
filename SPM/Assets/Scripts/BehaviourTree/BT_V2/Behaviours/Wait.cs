@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Wait : BTNode
 {
-    float maxWaitTime;
-    float seconds;
+    private float maxWaitTime;
+    private float seconds;
     public Wait(BehaviourTree bt, float maxWaitTime) : base(bt)
     {
         this.maxWaitTime = maxWaitTime; 

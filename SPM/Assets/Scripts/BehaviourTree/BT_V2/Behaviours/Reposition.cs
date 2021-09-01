@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Reposition : BTNode
 {
-    private float maxAngle = 22.5f; 
+
     private Transform playerTransform;
+    private float maxAngle = 0f; 
+
+    //Reference only needed to set maxAngle from the inspector
     private BTForager foragerBT;
+
     public Reposition(BehaviourTree bt) : base(bt) 
     {
         foragerBT = (BTForager)bt;
@@ -33,7 +37,6 @@ public class Reposition : BTNode
 
         else
         {
-            //Debug.Log("Reposition running");
             bt.ownerTransform.LookAt(playerTransform);
             return Status.BH_RUNNING;
         }
@@ -58,8 +61,6 @@ public class Reposition : BTNode
     {
         float angle = Random.Range(-maxAngle, maxAngle);
 
-        //To more precisely control the distance from player, the subtraction could be normalized, and then multiplied 
-        // by a "radius"  factor or similar, but i havent yet seen the need for that. 
          Vector3 direction = bt.ownerTransform.position - playerTransform.position;
          Vector3 modifiedDirection = Quaternion.AngleAxis(angle, Vector3.up) * direction;
       

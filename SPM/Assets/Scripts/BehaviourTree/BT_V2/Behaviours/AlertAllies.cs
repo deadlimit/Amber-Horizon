@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//If the player has been spotted, alert other nearby enemies
 public class AlertAllies : BTNode
 {
-    Transform playerTransform;
+    private Transform playerTransform;
     public AlertAllies(BehaviourTree bt) : base(bt) { }
 
     public override Status Evaluate()
