@@ -78,7 +78,7 @@ public class PC_V3 : MonoBehaviour
     }
     void Decelerate()
     {
-        MovingPlatformV2 mp = groundHitInfo.collider?.GetComponent<MovingPlatformV2>();
+        MovingPlatform mp = groundHitInfo.collider?.GetComponent<MovingPlatform>();
 
         if (mp)
         {

@@ -3,32 +3,27 @@ using Vector3 = UnityEngine.Vector3;
 
 public class PhysicsComponent : MonoBehaviour
 {
-    //modifierar .y-värdet på velocity, kan alltså inte vara en property
-    public Vector3 velocity;
-    //går denna att göra private istället? 
     [SerializeField] private LayerMask collisionMask;
-
-
-    public RaycastHit groundHitInfo { get; private set; }
-
+    
     [Header("Values")]
-    [SerializeField] public float maxSpeed;
-    [SerializeField] public float gravity = 10f;
-    [SerializeField] protected float skinWidth = 0.05f;
+    [SerializeField] private float maxSpeed;
+    [SerializeField] private float gravity = 10f;
+    [SerializeField] private float skinWidth = 0.05f;
     [SerializeField] private float inputThreshold = 0.1f;
     [SerializeField] private float gravityModifier = 1f;
 
-    [Header("Friktion")]
+    [Header("Friction")]
     [Range(0f, 1f)] [SerializeField] private float staticFrictionCoefficient = 0.5f;
     [Range(0f, 1f)] [SerializeField] private float kineticFrictionCoefficient = 0.35f;
     [Range(0f, 1f)] [SerializeField] private float airResistance = 0.35f;
     
+    //Collision
     private Collider attachedCollider;
     private CollisionCaster collisionCaster;
 
-
-
-    Vector3 bhGrav = Vector3.zero;
+    public Vector3 velocity;
+    public RaycastHit groundHitInfo { get; private set; }
+    private Vector3 bhGrav = Vector3.zero;
     private void OnEnable()
     {
         attachedCollider = GetComponent<Collider>();
@@ -50,8 +45,8 @@ public class PhysicsComponent : MonoBehaviour
 
     }
     
-    public void Update() {
-        //Debug.DrawLine(transform.position, transform.position + velocity);
+    public void Update()
+    {
         bhGrav = Vector3.zero;
         AddGravity();
         CheckForCollisions(0);
@@ -86,9 +81,9 @@ public class PhysicsComponent : MonoBehaviour
             velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
             velocity += normalForce;
 
-            if (hitInfo.collider.TryGetComponent<MovingPlatformV2>(out var platform))
+            if (hitInfo.collider.TryGetComponent<MovingPlatform>(out var platform))
             {
-                HandleMovingPlatform(hitInfo, normalForce);
+                HandleMovingPlatform(platform, hitInfo, normalForce);
             }
             else
             {
@@ -99,9 +94,8 @@ public class PhysicsComponent : MonoBehaviour
         }
     }
 
-    private void HandleMovingPlatform(RaycastHit hitInfo, Vector3 normalForce)
+    private void HandleMovingPlatform(MovingPlatform mp, RaycastHit hitInfo, Vector3 normalForce)
     {
-        MovingPlatformV2 mp = hitInfo.collider.GetComponent<MovingPlatformV2>();
         Vector3 platformVelocity = mp.GetVelocity();
         Vector3 relativeVelocity = velocity - platformVelocity;        
 
@@ -152,8 +146,6 @@ public class PhysicsComponent : MonoBehaviour
     }
     public void StopVelocity()
     {
-        //vill man bara att detta kallas en g�ng? 
-        //detta hindrar inte att gravitation appliceras
         velocity -= velocity * 0.02f;
 
         //gravityMod assignment m�ste just nu appliceras kontinuerligt, oavsett hur man vill g�ra med velocity

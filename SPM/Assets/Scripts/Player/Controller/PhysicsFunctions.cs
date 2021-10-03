@@ -15,13 +15,11 @@ public static class PhysicsFunctions
     {
         
         float dot = Vector3.Dot(velocity, normal);
-        //vi kan få bort slope-problemen om vi multiplicerar dot * Vector3.up istället när spelaren träffar mark. Tveksamt vad som händer utöver det dock. 
-        // bör man alltså ha separat kollision för marken? Hmm. 
         Vector3 projection = dot > 0 ? 0 * normal : dot * normal;
         return -projection;
     }
 
-    //Returnerar endast friktionen som ska appliceras
+    //Returns the friction that should be applied to the movement
     public static Vector3 CalcFriction(Vector3 normalForce, Vector3 vel, float staticFrictionCoefficient, float kineticFrictionCoefficient)
     {
         Vector3 temp = vel;
