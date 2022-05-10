@@ -6,8 +6,8 @@ public class PhysicsComponent : MonoBehaviour
     [SerializeField] private LayerMask collisionMask;
     
     [Header("Values")]
-    [SerializeField] private float maxSpeed;
-    [SerializeField] private float gravity = 10f;
+    [SerializeField] public float maxSpeed;
+    [SerializeField] public float gravity = 10f;
     [SerializeField] private float skinWidth = 0.05f;
     [SerializeField] private float inputThreshold = 0.1f;
     [SerializeField] private float gravityModifier = 1f;
