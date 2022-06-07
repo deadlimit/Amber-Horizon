@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
     
     void Awake() 
     {
-        transform.position = levelOneStartPosition;
+        //transform.position = levelOneStartPosition;
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);       
