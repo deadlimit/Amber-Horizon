@@ -4,6 +4,7 @@ using UnityEngine;
 public class Checkpoint : MonoBehaviour {
 
     private static Checkpoint activeCheckpoint;
+    [SerializeField]
     private static Transform player;
     
     private BoxCollider trigger;
