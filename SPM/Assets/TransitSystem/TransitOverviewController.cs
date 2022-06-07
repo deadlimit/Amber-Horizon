@@ -12,7 +12,7 @@ public class TransitOverviewController : MonoBehaviour {
     [SerializeField] private GameObject transitButton;
     [SerializeField] private float waitUntilButtonSpawn;
     [SerializeField] private Canvas UI;
-    [SerializeField] private Button exitButton;
+    [SerializeField] private Button exitButton, explanationButton;
 
     public static bool TransitViewActive { get; private set; }
     
@@ -23,6 +23,8 @@ public class TransitOverviewController : MonoBehaviour {
         EventSystem<ResetCameraFocus>.RegisterListener(ExitView);
         exitButton.gameObject.SetActive(false);
         exitButton.onClick.AddListener(() => EventSystem<ResetCameraFocus>.FireEvent(null));
+
+        explanationButton.gameObject.SetActive(false);
     }
 
     private void OnDisable() {
@@ -59,6 +61,7 @@ public class TransitOverviewController : MonoBehaviour {
         }
         
         exitButton.gameObject.SetActive(true);
+        explanationButton.gameObject.SetActive(true);
         Cursor.ActivateCursor(true, CursorLockMode.Confined);
     }
     
@@ -73,7 +76,8 @@ public class TransitOverviewController : MonoBehaviour {
             Destroy(button.gameObject);
 
         exitButton.gameObject.SetActive(false);
-        
+        explanationButton.gameObject.SetActive(false);
+
         Cursor.ActivateCursor(false, CursorLockMode.Locked);
         TransitViewActive = false;
     }

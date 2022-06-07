@@ -42,12 +42,18 @@ public class TransitUnit : InteractableObject {
     
     protected override void InsideTrigger(GameObject entity) {
         
-        if (Input.GetKeyDown(KeyCode.F)) {
+        if (Input.GetKeyDown(KeyCode.E)) {
 
             TransitCameraFocusInfo info = new TransitCameraFocusInfo {TransitUnits = activatedTransitUnits, ActivatedTransitUnit = this};
 
             EventSystem<EnterTransitViewEvent>.FireEvent(new EnterTransitViewEvent(info));
-            triggerCollider.enabled = false;
+            //triggerCollider.enabled = false;
+        }
+
+        //for closing the menu
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            EventSystem<ResetCameraFocus>.FireEvent(null);
         }
     }
     
