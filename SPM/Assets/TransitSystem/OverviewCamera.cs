@@ -5,7 +5,8 @@ using UnityEngine;
 public class OverviewCamera : MonoBehaviour {
 
     [SerializeField] private CinemachineVirtualCamera overviewCamera;
-    
+    [SerializeField] private GameObject level2OverviewTarget;
+
     private void OnEnable() {
         EventSystem<NewLevelLoadedEvent>.RegisterListener(MoveCameraToOverviewLocation);
         EventSystem<EnterTransitViewEvent>.RegisterListener(ActivateCamera);
@@ -25,6 +26,7 @@ public class OverviewCamera : MonoBehaviour {
     }
     
     private void MoveCameraToOverviewLocation(NewLevelLoadedEvent loadedEvent) {
-        overviewCamera.m_Follow = GameObject.FindGameObjectWithTag("TransitOverview").transform;
+        //overviewCamera.m_Follow = GameObject.FindGameObjectWithTag("TransitOverview").transform;
+        overviewCamera.m_Follow = level2OverviewTarget.transform;
     }
 }
