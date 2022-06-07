@@ -60,7 +60,7 @@ public class EventPanel : InteractableObject {
         if (activateFunction is null)
             return;
 
-        if (Input.GetKey(KeyCode.F)) {
+        if (Input.GetKey(KeyCode.E)) {
             activateFunction();
             eventRunThisFrame = true;
         }

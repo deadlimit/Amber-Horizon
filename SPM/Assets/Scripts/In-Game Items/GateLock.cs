@@ -51,7 +51,7 @@ public class GateLock : InteractableObject
 
     protected override void InsideTrigger(GameObject player) {
         
-        if (KeysAcquired.Count == KeyList.Count && Input.GetKeyDown(KeyCode.F)) {
+        if (KeysAcquired.Count == KeyList.Count && Input.GetKeyDown(KeyCode.E)) {
             FireUnlockSequence();
         }
     }

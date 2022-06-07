@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
     private void Update() {       
         stateMachine.RunUpdate();
 
-        if (Input.GetKeyDown(KeyCode.E) && wasGrounded)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && wasGrounded)
         {
             if (abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag))
                 wasGrounded = false; 
