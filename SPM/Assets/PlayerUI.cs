@@ -119,7 +119,7 @@ public class PlayerUI : MonoBehaviour {
 
         
 
-        float healthFraction = (currentHealth / 4) - 0.25f;
+        float healthFraction = currentHealth / 4;
 
         Debug.Log("in ChangeHealthUI, hFraction is " + healthFraction);
         Debug.Log("in ChangeHealthUI, currentHealth is " + currentHealth);
