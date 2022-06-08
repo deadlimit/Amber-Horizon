@@ -16,11 +16,12 @@ public class MenuController : MonoBehaviour {
     private IEnumerator LoadLevels() {
 
         Scene currentActiveScene = SceneManager.GetActiveScene();
-        
+
+        yield return SceneManager.LoadSceneAsync("Level 1", LoadSceneMode.Additive);
+
         yield return SceneManager.LoadSceneAsync("BaseScene", LoadSceneMode.Additive);
         
         yield return SceneManager.LoadSceneAsync("ProjectileScene", LoadSceneMode.Additive);
-        yield return SceneManager.LoadSceneAsync("Level 1", LoadSceneMode.Additive);
 
         Scene newActiveScene = SceneManager.GetSceneByName("BaseScene");
 

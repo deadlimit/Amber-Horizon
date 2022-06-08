@@ -45,7 +45,12 @@ public class SceneTransit : MonoBehaviour {
     }
     
     private IEnumerator LoadNewScene() {
-        yield return SceneManager.UnloadSceneAsync("Level 1");
+        if (SceneManager.GetSceneByName("Level 1").isLoaded)
+        {
+            //Debug.Log("s");
+            yield return SceneManager.UnloadSceneAsync("Level 1");
+        }
+        
         yield return SceneManager.LoadSceneAsync(NewSceneName, LoadSceneMode.Additive);
         
         cinematic.Stop();

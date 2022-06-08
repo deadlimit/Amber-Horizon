@@ -1,6 +1,7 @@
 using Cinemachine;
 using EventCallbacks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class OverviewCamera : MonoBehaviour {
 
@@ -11,6 +12,8 @@ public class OverviewCamera : MonoBehaviour {
         EventSystem<NewLevelLoadedEvent>.RegisterListener(MoveCameraToOverviewLocation);
         EventSystem<EnterTransitViewEvent>.RegisterListener(ActivateCamera);
         EventSystem<ResetCameraFocus>.RegisterListener(DeactivateCamera);
+
+        Debug.Log("OverviewCamera. OnEnable");
     }
 
     private void OnDisable() {
@@ -27,6 +30,10 @@ public class OverviewCamera : MonoBehaviour {
     
     private void MoveCameraToOverviewLocation(NewLevelLoadedEvent loadedEvent) {
         //overviewCamera.m_Follow = GameObject.FindGameObjectWithTag("TransitOverview").transform;
-        overviewCamera.m_Follow = level2OverviewTarget.transform;
+        if(SceneManager.GetSceneByName("Level 2").isLoaded)
+        {
+            Debug.Log("OverviewCamera. loading, found Level 2");
+            overviewCamera.m_Follow = level2OverviewTarget.transform;
+        }
     }
 }
