@@ -117,7 +117,12 @@ public class PlayerUI : MonoBehaviour {
             ChangeColor(255);
         }
 
-        float healthFraction = currentHealth / 4;
+        
+
+        float healthFraction = (currentHealth / 4) - 0.25f;
+
+        Debug.Log("in ChangeHealthUI, hFraction is " + healthFraction);
+        Debug.Log("in ChangeHealthUI, currentHealth is " + currentHealth);
 
         healthBar.fillAmount = healthFraction;
 
