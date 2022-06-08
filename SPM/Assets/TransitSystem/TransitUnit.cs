@@ -58,6 +58,7 @@ public class TransitUnit : InteractableObject {
     }
     
     protected override void ExitTrigger() {
+        EventSystem<ResetCameraFocus>.FireEvent(null);
         EventSystem<InteractTriggerExitEvent>.FireEvent(new InteractTriggerExitEvent());
     }
 
