@@ -12,8 +12,9 @@ public class PlayerControlLock : MonoBehaviour {
     }
 
     private void Start() {
-        
-        StartCoroutine(WaitUntilSceneLoad());
+
+        //StartCoroutine(WaitUntilSceneLoad());
+        EnableScripts(true);
     }
 
     private IEnumerator WaitUntilSceneLoad() {

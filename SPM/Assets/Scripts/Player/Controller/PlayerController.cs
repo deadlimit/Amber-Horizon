@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour
     private void Start() 
     {
         abilitySystem = gameObject.GetComponent<GameplayAbilitySystem>();
+        //EventSystem<ActivatePlayerControl>.FireEvent(new ActivatePlayerControl(true));
     }
     private void Update() {       
         stateMachine.RunUpdate();
