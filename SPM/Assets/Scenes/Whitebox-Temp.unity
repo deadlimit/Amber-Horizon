@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18287188, g: 0.22857076, b: 0.30693775, a: 1}
+  m_IndirectSpecularColor: {r: 0.18287168, g: 0.22857031, b: 0.30693677, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1960,9 +1960,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ea343441da81a4888ea3972cc98f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  states:
-  - {fileID: 11400000, guid: 3b9ff51ca2d3cfd4bb661cf08bb98c75, type: 2}
-  - {fileID: 11400000, guid: 56a9ef1cfc48c5d45a53c1a3acc61d2a, type: 2}
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 0
+  TargetOffset: {x: 0, y: 0, z: 0}
+  PlayerTarget: {fileID: 1591667298}
+  MouseSensitivity: 0
+  cameraSpeed: 0
+  minZoom: 0
+  maxZoom: 0
 --- !u!135 &702727181
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3164,7 +3170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79eac077e0d2403b8c4a5a103ba3aa5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: {x: 0, y: 0, z: 0}
   collisionMask:
     serializedVersion: 2
     m_Bits: 192
@@ -3176,6 +3181,7 @@ MonoBehaviour:
   staticFrictionCoefficient: 0.5
   kineticFrictionCoefficient: 0.35
   airResistance: 0.35
+  velocity: {x: 0, y: 0, z: 0}
 --- !u!65 &1062217226
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4905,6 +4911,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 62825ea39b9161348bf9409358bd1ec3, type: 3}
+--- !u!4 &1591667298 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5621853126853591548, guid: 0742bb5c87bbe75469bc59bca456994c, type: 3}
+  m_PrefabInstance: {fileID: 491082964}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1603592988
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5003,15 +5014,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5136033958234214883, guid: e781a85fcfdeb9445b3d0504abba2f75, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.7581029
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5136033958234214883, guid: e781a85fcfdeb9445b3d0504abba2f75, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5098166
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5136033958234214883, guid: e781a85fcfdeb9445b3d0504abba2f75, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.81799304
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5136033958234214883, guid: e781a85fcfdeb9445b3d0504abba2f75, type: 3}
       propertyPath: m_LocalPosition.x
