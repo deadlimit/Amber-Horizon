@@ -106,21 +106,12 @@ public class PlayerUI : MonoBehaviour {
 
     private void ChangeHealthUI(PlayerHitEvent playerHitEvent) {
         float currentHealth = player.GetPlayerHealth();
-        
-        //4 is the max health. and it doesnt show health bar on death
-        if (currentHealth < 1 )
-        {
-            currentHealth = 4;
-        }
-        else
-        {
-            ChangeColor(255);
-        }
+        float healthFraction;
+
+        ChangeColor(255);
+        healthFraction = currentHealth / 4 - 0.25f;
 
         
-
-        float healthFraction = currentHealth / 4;
-
         Debug.Log("in ChangeHealthUI, hFraction is " + healthFraction);
         Debug.Log("in ChangeHealthUI, currentHealth is " + currentHealth);
 
@@ -142,7 +133,14 @@ public class PlayerUI : MonoBehaviour {
     }
 
     private void RestoreHealthUI(PlayerReviveEvent playerReviveEvent) {
-        ChangeHealthUI(new PlayerHitEvent(null, null));
+
+        ChangeColor(255);
+
+        healthBar.fillAmount = 1;
+        Debug.Log("on Respawn, healthabar amount is: " + healthBar.fillAmount);
+
+        healthBackground.Invoke(() => ChangeColor(0), 2.0f);
+        //ChangeHealthUI(new PlayerHitEvent(null, null));
     }
 
 }
