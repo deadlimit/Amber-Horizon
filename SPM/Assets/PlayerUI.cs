@@ -112,8 +112,8 @@ public class PlayerUI : MonoBehaviour {
         healthFraction = currentHealth / 4 - 0.25f;
 
         
-        Debug.Log("in ChangeHealthUI, hFraction is " + healthFraction);
-        Debug.Log("in ChangeHealthUI, currentHealth is " + currentHealth);
+        //Debug.Log("in ChangeHealthUI, hFraction is " + healthFraction);
+        //Debug.Log("in ChangeHealthUI, currentHealth is " + currentHealth);
 
         healthBar.fillAmount = healthFraction;
 
@@ -137,7 +137,7 @@ public class PlayerUI : MonoBehaviour {
         ChangeColor(255);
 
         healthBar.fillAmount = 1;
-        Debug.Log("on Respawn, healthabar amount is: " + healthBar.fillAmount);
+        //Debug.Log("on Respawn, healthabar amount is: " + healthBar.fillAmount);
 
         healthBackground.Invoke(() => ChangeColor(0), 2.0f);
         //ChangeHealthUI(new PlayerHitEvent(null, null));
