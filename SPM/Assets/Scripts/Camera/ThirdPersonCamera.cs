@@ -5,6 +5,8 @@ public class ThirdPersonCamera : MonoBehaviour {
     
     [SerializeField] private LayerMask collisionMask;
     [SerializeField] private Vector3 TargetOffset;
+
+    //PlayerTarget should be "mixamorig:Neck" in the player prefab 
     [SerializeField] private Transform PlayerTarget;
     [SerializeField] private float MouseSensitivity;
     [SerializeField] private float cameraSpeed;
