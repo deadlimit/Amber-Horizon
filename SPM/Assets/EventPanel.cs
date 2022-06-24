@@ -61,6 +61,8 @@ public class EventPanel : InteractableObject {
             return;
 
         if (Input.GetKey(KeyCode.E)) {
+
+            Debug.Log("eventpanel, pressed E");
             activateFunction();
             eventRunThisFrame = true;
         }
