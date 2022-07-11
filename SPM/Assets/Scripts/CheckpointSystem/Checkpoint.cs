@@ -40,7 +40,7 @@ public class Checkpoint : MonoBehaviour {
         activeCheckpoint.trigger.enabled = false;
         
         EventSystem<CheckPointActivatedEvent>.FireEvent(new CheckPointActivatedEvent(this, activateAudioClip));
-        EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("Checkpoint activated", 2, false));
+        EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("Checkpoint activated", 1, false));
         
         ChangeParticleColor(true);
     }
