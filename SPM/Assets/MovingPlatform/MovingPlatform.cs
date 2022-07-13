@@ -98,12 +98,14 @@ public class MovingPlatform : MonoBehaviour, IBlackHoleBehaviour {
     {
         Debug.Log("In MovingPlatform. resetPos is " + resetPos);
 
+        physics.velocity = (transform.forward * (MovementSpeed * Time.fixedDeltaTime) * multiplier);
+        movementDirection = Vector3.zero;
+
         transform.localPosition = resetPos;
 
         Debug.Log("In MovingPlatform. localPos is " + transform.localPosition);
 
         //physics.StopVelocity();
         //movementDirection = Vector3.zero;
-
     }
 }
