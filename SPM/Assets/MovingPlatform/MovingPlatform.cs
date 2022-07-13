@@ -22,8 +22,6 @@ public class MovingPlatform : MonoBehaviour, IBlackHoleBehaviour {
     private Vector3 maxFront;
     private Vector3 startPos;
     private Vector3 movementDirection;
-    private Vector3 resetPos;
-
 
     private void Awake() 
     {
@@ -31,9 +29,6 @@ public class MovingPlatform : MonoBehaviour, IBlackHoleBehaviour {
         maxBack = transform.position + -transform.forward * MaxMovementLengthBack;
         maxFront = transform.position + transform.forward * MaxMovementLengthFront;
         startPos = transform.position;
-        resetPos = transform.localPosition;
-
-        Debug.Log(transform.localPosition);
 
         frontDistance = Vector3.Distance(startPos, maxFront);
         backDistance = Vector3.Distance(startPos, maxBack);
@@ -96,16 +91,12 @@ public class MovingPlatform : MonoBehaviour, IBlackHoleBehaviour {
 
     private void ResetPlatformPosition(PlayerReviveEvent playerReviveEvent) 
     {
-        Debug.Log("In MovingPlatform. resetPos is " + resetPos);
+        //Debug.Log("In MovingPlatform. resetPos is " + resetPos);
 
-        physics.velocity = (transform.forward * (MovementSpeed * Time.fixedDeltaTime) * multiplier);
-        movementDirection = Vector3.zero;
+        //transform.localPosition = resetPos;
 
-        transform.localPosition = resetPos;
+        //Debug.Log("In MovingPlatform. localPos is " + transform.localPosition);
 
-        Debug.Log("In MovingPlatform. localPos is " + transform.localPosition);
-
-        //physics.StopVelocity();
         //movementDirection = Vector3.zero;
     }
 }

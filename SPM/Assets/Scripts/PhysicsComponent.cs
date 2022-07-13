@@ -97,10 +97,15 @@ public class PhysicsComponent : MonoBehaviour
     private void HandleMovingPlatform(MovingPlatform mp, RaycastHit hitInfo, Vector3 normalForce)
     {
         Vector3 platformVelocity = mp.GetVelocity();
-        Vector3 relativeVelocity = velocity - platformVelocity;        
+        Vector3 relativeVelocity = velocity - platformVelocity;
+
+        //Debug.Log("PC. platVelo is " + platformVelocity);
+        //Debug.Log("PC. Velo is " + velocity);
+        //Debug.Log("PC. relVelo is " + relativeVelocity);
 
         if (relativeVelocity.magnitude <= normalForce.magnitude * staticFrictionCoefficient)
         {
+            
             velocity = platformVelocity;
         }
         else
