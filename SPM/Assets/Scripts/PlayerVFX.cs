@@ -16,9 +16,27 @@ public class PlayerVFX : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Pickup"))
-            return;
+        if (other.CompareTag("Pickup")) 
+        {
+            Instantiate(RingEffect, this.transform.position, this.transform.rotation, this.gameObject.transform);
+        }
+    }
+
+    public void CallsTeleportEffect()
+    {
+        //needs a delay so the effect happens after the camera move.
+        Debug.Log("In PlayerVFX. start of telportvfx");
+        StartCoroutine(PlayTeleportEffect());
+        
+        Debug.Log("In PlayerVFX. end of telportvfx");
+    }
+
+    private IEnumerator PlayTeleportEffect() 
+    {
+
+        yield return new WaitForSeconds(0.25f);
 
         Instantiate(RingEffect, this.transform.position, this.transform.rotation, this.gameObject.transform);
     }
+
 }

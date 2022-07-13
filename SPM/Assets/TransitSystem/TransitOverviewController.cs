@@ -68,6 +68,10 @@ public class TransitOverviewController : MonoBehaviour {
     private void MovePlayer(TransitUnit transitUnit) {
         FindObjectOfType<PlayerController>().transform.position = transitUnit.AttachedCheckpoint.SpawnPosition;
         EventSystem<ResetCameraFocus>.FireEvent(null);
+
+        //call playervfx here
+        FindObjectOfType<PlayerVFX>().CallsTeleportEffect();
+        //StartCoroutine(SpellOutText
     }
 
     private void ExitView(ResetCameraFocus viewEvent) {
