@@ -29,6 +29,9 @@ public class InGameMenuController : MonoBehaviour {
         gameObject.transform.SetAsLastSibling();
         Cursor.ActivateCursor(true, CursorLockMode.Confined);
         EventSystem<ActivatePlayerControl>.FireEvent(new ActivatePlayerControl(false));
+
+        //pauses the game on Menu.
+        Time.timeScale = 0.0f;
     }
     
     //Called in animation event
@@ -40,6 +43,8 @@ public class InGameMenuController : MonoBehaviour {
         
         EventSystem<ActivatePlayerControl>.FireEvent(new ActivatePlayerControl(true));
         inGameUIPanel.SetActive(false);
+
+        Time.timeScale = 1.0f;
     }
 
     private void SetInteractiveButtons(bool value) {
@@ -53,6 +58,7 @@ public class InGameMenuController : MonoBehaviour {
     }
     
     public void QuitGame() {
+        Time.timeScale = 1.0f;
         Application.Quit();
     }
     
