@@ -1,4 +1,5 @@
 using UnityEngine;
+using EventCallbacks;
 
 public class MovingPlatform : MonoBehaviour, IBlackHoleBehaviour {
 
@@ -21,6 +22,7 @@ public class MovingPlatform : MonoBehaviour, IBlackHoleBehaviour {
     private Vector3 maxFront;
     private Vector3 startPos;
     private Vector3 movementDirection;
+    private Vector3 resetPos;
 
 
     private void Awake() 
@@ -29,11 +31,14 @@ public class MovingPlatform : MonoBehaviour, IBlackHoleBehaviour {
         maxBack = transform.position + -transform.forward * MaxMovementLengthBack;
         maxFront = transform.position + transform.forward * MaxMovementLengthFront;
         startPos = transform.position;
+        resetPos = transform.localPosition;
 
         Debug.Log(transform.localPosition);
 
         frontDistance = Vector3.Distance(startPos, maxFront);
-        backDistance = Vector3.Distance(startPos, maxBack);        
+        backDistance = Vector3.Distance(startPos, maxBack);
+
+        EventSystem<PlayerReviveEvent>.RegisterListener(ResetPlatformPosition);
     }
 
     public void Update() 
@@ -87,5 +92,18 @@ public class MovingPlatform : MonoBehaviour, IBlackHoleBehaviour {
     {
         Debug.DrawLine(transform.position, maxFront, Color.red);
         Debug.DrawLine(transform.position, maxBack, Color.green);
+    }
+
+    private void ResetPlatformPosition(PlayerReviveEvent playerReviveEvent) 
+    {
+        Debug.Log("In MovingPlatform. resetPos is " + resetPos);
+
+        transform.localPosition = resetPos;
+
+        Debug.Log("In MovingPlatform. localPos is " + transform.localPosition);
+
+        //physics.StopVelocity();
+        //movementDirection = Vector3.zero;
+
     }
 }
