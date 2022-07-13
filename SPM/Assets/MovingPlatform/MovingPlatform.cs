@@ -30,6 +30,8 @@ public class MovingPlatform : MonoBehaviour, IBlackHoleBehaviour {
         maxFront = transform.position + transform.forward * MaxMovementLengthFront;
         startPos = transform.position;
 
+        Debug.Log(transform.localPosition);
+
         frontDistance = Vector3.Distance(startPos, maxFront);
         backDistance = Vector3.Distance(startPos, maxBack);        
     }
