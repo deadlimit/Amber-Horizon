@@ -117,8 +117,8 @@ public class EventPanel : InteractableObject {
 
         if (percentBar.fillAmount > .99f) {
             barFillDone();
-            activateFunction = null;
-            EventSystem<InteractTriggerExitEvent>.FireEvent(null);
+            //activateFunction = null;
+            //EventSystem<InteractTriggerExitEvent>.FireEvent(null);
         }
             
     }
@@ -137,8 +137,11 @@ public class EventPanel : InteractableObject {
     }
 
     private void EventsDone() {
-        foreach(IEventPanelInteract eventInteraction in eventInteractions)
+        foreach (IEventPanelInteract eventInteraction in eventInteractions) 
+        {
             eventInteraction.EventDone();
+        }
+
     }
     
 }
