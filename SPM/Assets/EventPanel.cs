@@ -112,8 +112,10 @@ public class EventPanel : InteractableObject {
     
     private void SetUITexts(float newPercentBarValue) {
         
+        //commenting out some lines to make the platforms return. to make it more dynamic.
         percentBar.fillAmount = newPercentBarValue;
-        UIText = percentText.text = percentBar.fillAmount < 0.99f ? GeneratePercentText(percentBar.fillAmount) : "Completed";
+        //UIText = percentText.text = percentBar.fillAmount < 0.99f ? GeneratePercentText(percentBar.fillAmount) : "Completed";
+        UIText = percentText.text = GeneratePercentText(percentBar.fillAmount);
 
         if (percentBar.fillAmount > .99f) {
             barFillDone();
