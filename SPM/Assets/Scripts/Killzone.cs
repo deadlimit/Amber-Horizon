@@ -8,7 +8,11 @@ public class Killzone : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) 
         {
-            StartCoroutine(WaitBeforeDeathEvent(other));
+            PlayerDiedEvent pde = new PlayerDiedEvent(other.gameObject);
+            EventSystem<PlayerDiedEvent>.FireEvent(pde);
+
+            //call this is you want to have a delay.
+            //StartCoroutine(WaitBeforeDeathEvent(other));
         }           
     }
 
@@ -17,8 +21,8 @@ public class Killzone : MonoBehaviour {
 
        yield return new WaitForSeconds(.15f);
 
-       PlayerDiedEvent pde = new PlayerDiedEvent(other.gameObject);
-       EventSystem<PlayerDiedEvent>.FireEvent(pde);
+        PlayerDiedEvent pde = new PlayerDiedEvent(other.gameObject);
+        EventSystem<PlayerDiedEvent>.FireEvent(pde);
     }
 
 }

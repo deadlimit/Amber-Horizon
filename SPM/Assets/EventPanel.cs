@@ -93,6 +93,8 @@ public class EventPanel : InteractableObject {
         EventSystem<InteractTriggerExitEvent>.FireEvent(null);
         percentBar.enabled = false;
         percentText.enabled = false;
+
+        eventRunThisFrame = false;
     }
 
     private void ExecuteFromList() {
