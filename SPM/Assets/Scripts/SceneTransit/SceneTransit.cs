@@ -45,11 +45,12 @@ public class SceneTransit : MonoBehaviour {
     }
     
     private IEnumerator LoadNewScene() {
-        if (SceneManager.GetSceneByName("Level 1").isLoaded)
+        if (SceneManager.GetSceneByName("Level 1 V2").isLoaded)
         {
             //Debug.Log("s");
-            yield return SceneManager.UnloadSceneAsync("Level 1");
+            yield return SceneManager.UnloadSceneAsync("LLevel 1 V2");
         }
+
         
         yield return SceneManager.LoadSceneAsync(NewSceneName, LoadSceneMode.Additive);
         
