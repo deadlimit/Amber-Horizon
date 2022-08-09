@@ -5,10 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour {
 
-    public string nameOfLevelToLoad;
+    [SerializeField]
+    private string nameOfLevelToLoad;
 
     private void Awake() {
         Cursor.ActivateCursor(true, CursorLockMode.Confined);
+    }
+
+    public void ChangeLevelToLoad(string levelToLoad) 
+    {
+        nameOfLevelToLoad = levelToLoad;
+        Debug.Log("in MC. ChangeLevelToLoad. New level to load is: " + nameOfLevelToLoad);
     }
 
     public void StartGame() {
@@ -18,6 +25,10 @@ public class MenuController : MonoBehaviour {
     private IEnumerator LoadLevels() {
 
         Scene currentActiveScene = SceneManager.GetActiveScene();
+        if (nameOfLevelToLoad == "Intro Cutscene") 
+        {
+            Debug.Log("In MC, LoadLevels. Hypothetical spot for loading intro cutscene.");
+        }
 
         //then check nameOfLevelToLoad and load the appropriate scene. 
         yield return SceneManager.LoadSceneAsync("Level 1 V2", LoadSceneMode.Additive);
