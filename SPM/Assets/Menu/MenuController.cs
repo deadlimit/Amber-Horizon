@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour {
 
+    public string nameOfLevelToLoad;
+
     private void Awake() {
         Cursor.ActivateCursor(true, CursorLockMode.Confined);
     }
@@ -17,6 +19,7 @@ public class MenuController : MonoBehaviour {
 
         Scene currentActiveScene = SceneManager.GetActiveScene();
 
+        //then check nameOfLevelToLoad and load the appropriate scene. 
         yield return SceneManager.LoadSceneAsync("Level 1 V2", LoadSceneMode.Additive);
 
         yield return SceneManager.LoadSceneAsync("BaseScene", LoadSceneMode.Additive);

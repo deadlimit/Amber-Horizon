@@ -58,6 +58,7 @@ public class SettingsController : MonoBehaviour {
     }
 
     public static void Quit() {
+        Debug.Log("In SettingsController. Pressed Quit.");
         Application.Quit();
     }
     
