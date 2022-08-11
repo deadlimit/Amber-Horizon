@@ -23,6 +23,7 @@ public class StartInOtherScene : MonoBehaviour
         if (!SceneManager.GetSceneByName("Level 1").isLoaded) 
         {
             GiveDashPower();
+            MoveTransitCamera();
         }
     }
 

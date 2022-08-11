@@ -30,7 +30,8 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     [SerializeField] private Transform keyLookAtTarget;
-    [SerializeField] private Vector3 levelOneStartPosition;
+    //have an array if this works.
+    [SerializeField] private Vector3 levelOneStartPosition, levelTwoStartPosition;
     [HideInInspector] public Vector3 force;
 
     //Component references
@@ -47,7 +48,24 @@ public class PlayerController : MonoBehaviour
     
     void Awake() 
     {
-        //transform.position = levelOneStartPosition;
+        string levelToLoad = PlayerPrefs.GetString("levelToLoad");
+        Debug.Log("in PlayerController, Awake. levelToLoad is: " + levelToLoad);
+
+        switch (levelToLoad)
+        {
+            case "Intro Cutscene":
+                
+                //do nothing as the player isn't in Intro
+                break;
+            case "Level 1 V2":
+                //yield return SceneManager.LoadSceneAsync("Level 1 V2", LoadSceneMode.Additive);             
+                transform.position = levelOneStartPosition;
+                break;
+            case "Level 2 V2":
+                transform.position = levelTwoStartPosition;
+                break;
+        }
+
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PhysicsComponent>();
         stateMachine = new StateMachine(this, states);       

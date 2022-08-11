@@ -16,6 +16,10 @@ public class MenuController : MonoBehaviour {
     {
         nameOfLevelToLoad = levelToLoad;
         Debug.Log("in MC. ChangeLevelToLoad. New level to load is: " + nameOfLevelToLoad);
+
+        PlayerPrefs.SetString("levelToLoad", levelToLoad);
+
+        Debug.Log("in MenuController, ChangeLevelToLoad. levelToLoad is: " + PlayerPrefs.GetString("levelToLoad"));
     }
 
     public void StartGame() {
@@ -26,31 +30,38 @@ public class MenuController : MonoBehaviour {
 
         //CAS should be the main menu scene.
         Scene currentActiveScene = SceneManager.GetActiveScene();
-        if (nameOfLevelToLoad == "Intro Cutscene")
+
+
+        switch (nameOfLevelToLoad) 
         {
-            
-
-            Debug.Log("In MC, LoadLevels. Hypothetical spot for loading intro cutscene.");
-            yield return SceneManager.LoadSceneAsync("Intro_Cutscene", LoadSceneMode.Additive);
-
-            yield return SceneManager.UnloadSceneAsync(currentActiveScene);
+            case "Intro Cutscene":
+                //Debug.Log("In MC, LoadLevels. Hypothetical spot for loading intro cutscene.");
+                yield return SceneManager.LoadSceneAsync("Intro_Cutscene", LoadSceneMode.Additive);
+                break;
+            case "Level 1 V2":
+                yield return SceneManager.LoadSceneAsync("Level 1 V2", LoadSceneMode.Additive);
+                break;
+            case "Level 2 V2":
+                yield return SceneManager.LoadSceneAsync("Level 2", LoadSceneMode.Additive);
+                break;
         }
-        else { 
-        //then check nameOfLevelToLoad and load the appropriate scene. 
-        yield return SceneManager.LoadSceneAsync("Level 1 V2", LoadSceneMode.Additive);
 
-        yield return SceneManager.LoadSceneAsync("BaseScene", LoadSceneMode.Additive);
-        
-        yield return SceneManager.LoadSceneAsync("ProjectileScene", LoadSceneMode.Additive);
+        if (nameOfLevelToLoad != "Intro Cutscene") 
+        {
+            yield return SceneManager.LoadSceneAsync("BaseScene", LoadSceneMode.Additive);
 
-        
-        //I think the level that is loaded should be the active scene. But who knows.
+            yield return SceneManager.LoadSceneAsync("ProjectileScene", LoadSceneMode.Additive);
+        }
+
+        //I think the level that is loaded should be the active scene. But who knows. like Lv1 or Lv2.
         Scene newActiveScene = SceneManager.GetSceneByName("BaseScene");
 
 
         SceneManager.SetActiveScene(newActiveScene);
         EventSystem<NewLevelLoadedEvent>.FireEvent(null);
         EventSystem<ActivatePlayerControl>.FireEvent(new ActivatePlayerControl(true));
+
+        //I think this has to happen last. So it doesn't unload the scene while the script is still running.
         yield return SceneManager.UnloadSceneAsync(currentActiveScene);
         }
 
@@ -59,4 +70,3 @@ public class MenuController : MonoBehaviour {
     
     
     
-}
