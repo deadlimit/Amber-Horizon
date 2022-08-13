@@ -17,7 +17,7 @@ public class UITextTrigger : MonoBehaviour
         
         if (other.gameObject.CompareTag("Player"))
         {
-            //Debug.Log("Ui text. player trigger enter");
+            Debug.Log("Ui text. player trigger enter");
 
 
             EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage(textToDisplay, displayDuration, true));
