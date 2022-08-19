@@ -95,4 +95,6 @@ public class DynamicFoley : MonoBehaviour
         m_AudioSource.volume = audioVolume2;
         m_AudioSource.PlayOneShot(dieSound);
     }
+
+    //private void PlayTeleportSound(){}
 }

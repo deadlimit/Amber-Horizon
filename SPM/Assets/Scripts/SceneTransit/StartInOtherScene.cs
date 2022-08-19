@@ -18,6 +18,7 @@ public class StartInOtherScene : MonoBehaviour
     {
         //if in a scene based on level 2. then
         //MoveTransitCamera();
+        GiveDashPower();
 
         //if the player starts in a scene that isn't level 1 they get the dash.
         if (!SceneManager.GetSceneByName("Level 1 V2").isLoaded) 
