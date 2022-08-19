@@ -9,12 +9,14 @@ public class LoadSceneFromIntro : MonoBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI textInUI;
+    [SerializeField]
     private bool firstInputMade = false;
 
     //I don't want the player loading the next level at the same time as the game starts the load.
     //Could cause delay.
     //This value is changed by a signal in the intro cutscene.
-    public bool lateInIntro = false;
+    [SerializeField]
+    private bool lateInIntro = false;
 
     private void Start()
     {
@@ -62,5 +64,10 @@ public class LoadSceneFromIntro : MonoBehaviour
     {
         textInUI.text = "Press Space\nto confirm.";
         firstInputMade = true;
+    }
+
+    public void SetLateInIntro(bool newValue) 
+    {
+        lateInIntro = newValue;
     }
 }
