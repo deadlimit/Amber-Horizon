@@ -51,18 +51,17 @@ public class PlayerController : MonoBehaviour
         string levelToLoad = PlayerPrefs.GetString("levelToLoad");
         Debug.Log("in PlayerController, Awake. levelToLoad is: " + levelToLoad);
 
+        //Debug. The cases are commented out for testing.
         switch (levelToLoad)
         {
-            case "Intro Cutscene":
-                
+            case "Intro Cutscene":  
                 //do nothing as the player isn't in Intro
                 break;
-            case "Level 1 V2":
-                //yield return SceneManager.LoadSceneAsync("Level 1 V2", LoadSceneMode.Additive);             
-                transform.position = levelOneStartPosition;
+            case "Level 1 V2":          
+                //transform.position = levelOneStartPosition;
                 break;
             case "Level 2 V2":
-                transform.position = levelTwoStartPosition;
+                //transform.position = levelTwoStartPosition;
                 break;
         }
 
@@ -101,7 +100,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             if (abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag))
-                audioSource.PlayOneShot(blackHoleLaunchSound, 5f);
+                audioSource.PlayOneShot(blackHoleLaunchSound, 2.5f);
 
         }        
     }

@@ -34,7 +34,7 @@ public class PlayerVFX : MonoBehaviour
     private IEnumerator PlayTeleportEffect() 
     {
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.4f);
 
         Instantiate(RingEffect, this.transform.position, this.transform.rotation, this.gameObject.transform);
     }

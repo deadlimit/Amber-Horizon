@@ -72,6 +72,7 @@ public class TransitOverviewController : MonoBehaviour {
         //call playervfx here
         FindObjectOfType<PlayerVFX>().CallsTeleportEffect();
         //call DynamicFoley here
+        FindObjectOfType<DynamicFoley>().PlayTeleportSound();
     }
 
     private void ExitView(ResetCameraFocus viewEvent) {

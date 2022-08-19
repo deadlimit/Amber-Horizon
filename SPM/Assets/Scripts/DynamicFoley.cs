@@ -14,6 +14,7 @@ public class DynamicFoley : MonoBehaviour
     public AudioClip jumpSound;
     public AudioClip dashSound;
     public AudioClip dieSound;
+    public AudioClip teleportSound;
 
     private float audioVolume1;
     private float audioVolume2;
@@ -96,5 +97,10 @@ public class DynamicFoley : MonoBehaviour
         m_AudioSource.PlayOneShot(dieSound);
     }
 
-    //private void PlayTeleportSound(){}
+    public void PlayTeleportSound() 
+    {
+        Debug.Log("play teleport sound.");
+        m_AudioSource.volume = audioVolume2;
+        m_AudioSource.PlayOneShot(teleportSound);
+    }
 }
