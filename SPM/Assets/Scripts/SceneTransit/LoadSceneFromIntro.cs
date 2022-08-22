@@ -47,6 +47,8 @@ public class LoadSceneFromIntro : MonoBehaviour
 
     private IEnumerator LoadLevel1()
     {
+        PlayerPrefs.SetString("levelToLoad", "Level 1 V2");
+        
         yield return SceneManager.LoadSceneAsync("Level 1 V2", LoadSceneMode.Additive);
 
         yield return SceneManager.LoadSceneAsync("BaseScene", LoadSceneMode.Additive);
@@ -70,4 +72,6 @@ public class LoadSceneFromIntro : MonoBehaviour
     {
         lateInIntro = newValue;
     }
+
+    //maybe have the ztd cutscene call a method that just quits the game.
 }
