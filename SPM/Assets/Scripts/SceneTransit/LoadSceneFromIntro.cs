@@ -73,5 +73,9 @@ public class LoadSceneFromIntro : MonoBehaviour
         lateInIntro = newValue;
     }
 
-    //maybe have the ztd cutscene call a method that just quits the game.
+    public void QuitGameFromCutscene()
+    {
+        Application.Quit();
+        Debug.Log("End of ztd cutscene.");
+    }
 }
