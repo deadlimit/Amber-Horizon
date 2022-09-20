@@ -36,18 +36,12 @@ public class MenuController : MonoBehaviour {
         {
             SceneManager.LoadScene("IntroCutscene");
 
-            //this somehow makes the lighting work???
-            Scene newActiveScene = SceneManager.GetSceneByName("IntroCutscene");
-            SceneManager.SetActiveScene(newActiveScene);
         }
         //if ZTD, load ZTD
         else if (nameOfLevelToLoad.Equals("ZTDCutscene"))
         {
             SceneManager.LoadScene("ZTDCutscene");
 
-            //this somehow makes the lighting work???
-            Scene newActiveScene = SceneManager.GetSceneByName("ZTDCutscene");
-            SceneManager.SetActiveScene(newActiveScene);
         }
 
 
