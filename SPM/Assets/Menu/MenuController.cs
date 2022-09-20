@@ -31,13 +31,22 @@ public class MenuController : MonoBehaviour {
         //CAS should be the main menu scene.
         Scene currentActiveScene = SceneManager.GetActiveScene();
 
+        //if intro, load intro. 
+        if (nameOfLevelToLoad.Equals("IntroCutscene"))
+        {
+            SceneManager.LoadScene("IntroCutscene");
+        }
+        //if ZTD, load ZTD
+        else if (nameOfLevelToLoad.Equals("ZTDCutscene"))
+        {
+            SceneManager.LoadScene("ZTDCutscene");
+        }
 
+
+        //else load level async.
+        else { 
         switch (nameOfLevelToLoad) 
         {
-            case "Intro Cutscene":
-                //Debug.Log("In MC, LoadLevels. Hypothetical spot for loading intro cutscene.");
-                yield return SceneManager.LoadSceneAsync("Intro_Cutscene", LoadSceneMode.Additive);
-                break;
             case "Level 1 V2":
                 yield return SceneManager.LoadSceneAsync("Level 1 V2", LoadSceneMode.Additive);
                 break;
@@ -46,21 +55,18 @@ public class MenuController : MonoBehaviour {
                 break;
         }
 
-        if (nameOfLevelToLoad != "Intro Cutscene") 
-        {
-            yield return SceneManager.LoadSceneAsync("BaseScene", LoadSceneMode.Additive);
+        //and load the basescene and projectilescene
+         yield return SceneManager.LoadSceneAsync("BaseScene", LoadSceneMode.Additive);
+         yield return SceneManager.LoadSceneAsync("ProjectileScene", LoadSceneMode.Additive);
 
-            yield return SceneManager.LoadSceneAsync("ProjectileScene", LoadSceneMode.Additive);
-        }
 
         //I think the level that is loaded should be the active scene. But who knows. like Lv1 or Lv2.
         Scene newActiveScene = SceneManager.GetSceneByName("BaseScene");
 
-
         SceneManager.SetActiveScene(newActiveScene);
         EventSystem<NewLevelLoadedEvent>.FireEvent(null);
         EventSystem<ActivatePlayerControl>.FireEvent(new ActivatePlayerControl(true));
-
+        }
         //I think this has to happen last. So it doesn't unload the scene while the script is still running.
         yield return SceneManager.UnloadSceneAsync(currentActiveScene);
         }
