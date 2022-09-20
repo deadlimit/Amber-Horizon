@@ -35,11 +35,19 @@ public class MenuController : MonoBehaviour {
         if (nameOfLevelToLoad.Equals("IntroCutscene"))
         {
             SceneManager.LoadScene("IntroCutscene");
+
+            //this somehow makes the lighting work???
+            Scene newActiveScene = SceneManager.GetSceneByName("IntroCutscene");
+            SceneManager.SetActiveScene(newActiveScene);
         }
         //if ZTD, load ZTD
         else if (nameOfLevelToLoad.Equals("ZTDCutscene"))
         {
             SceneManager.LoadScene("ZTDCutscene");
+
+            //this somehow makes the lighting work???
+            Scene newActiveScene = SceneManager.GetSceneByName("ZTDCutscene");
+            SceneManager.SetActiveScene(newActiveScene);
         }
 
 
@@ -67,6 +75,8 @@ public class MenuController : MonoBehaviour {
         EventSystem<NewLevelLoadedEvent>.FireEvent(null);
         EventSystem<ActivatePlayerControl>.FireEvent(new ActivatePlayerControl(true));
         }
+
+
         //I think this has to happen last. So it doesn't unload the scene while the script is still running.
         yield return SceneManager.UnloadSceneAsync(currentActiveScene);
         }
