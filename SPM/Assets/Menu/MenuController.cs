@@ -10,6 +10,7 @@ public class MenuController : MonoBehaviour {
 
     private void Awake() {
         Cursor.ActivateCursor(true, CursorLockMode.Confined);
+        Time.timeScale = 1.0f;
     }
 
     public void ChangeLevelToLoad(string levelToLoad) 

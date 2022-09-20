@@ -81,7 +81,7 @@ public class DynamicFoley : MonoBehaviour
 
     private void PlayJumpSound()
     {
-        m_AudioSource.volume = audioVolume2;
+        m_AudioSource.volume = audioVolume1;
         m_AudioSource.PlayOneShot(jumpSound);
     }
 
@@ -93,14 +93,14 @@ public class DynamicFoley : MonoBehaviour
 
     private void PlayDieSound()
     {
-        m_AudioSource.volume = audioVolume2;
+        m_AudioSource.volume = audioVolume1;
         m_AudioSource.PlayOneShot(dieSound);
     }
 
     public void PlayTeleportSound() 
     {
         Debug.Log("play teleport sound.");
-        m_AudioSource.volume = audioVolume2;
+        m_AudioSource.volume = audioVolume1;
         m_AudioSource.PlayOneShot(teleportSound);
     }
 }

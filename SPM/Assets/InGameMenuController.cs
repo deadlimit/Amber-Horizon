@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using EventCallbacks;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class InGameMenuController : MonoBehaviour {
 
@@ -55,6 +56,12 @@ public class InGameMenuController : MonoBehaviour {
     public void Resume() {
         animator.SetTrigger(CloseMenu);
         menuActive = !menuActive;
+    }
+
+    public void GoToMainMenu() 
+    {
+        Time.timeScale = 1.0f;
+        SceneManager.LoadScene("MainMenu");
     }
     
     public void QuitGame() {
