@@ -1,5 +1,6 @@
 using AbilitySystem;
 using Cinemachine;
+using EventCallbacks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,33 +15,61 @@ public class StartInOtherScene : MonoBehaviour
     [SerializeField] private GameplayAbility abilityName;
     [SerializeField] private GameObject player;
 
+    //[SerializeField] private Vector3 levelOneStartPosition, levelTwoStartPosition;
+
+    [SerializeField] private GameObject levelOneStartPosition, levelTwoStartPosition;
+
     void Start()
     {
-        //if in a scene based on level 2. then
-        //MoveTransitCamera();
+        MoveTransitCamera();
 
-        //debug so I start with dash even in L1V2
-        GiveDashPower();
+        MoveToStartPosition();
 
         //if the player starts in a scene that isn't level 1 they get the dash.
         if (!SceneManager.GetSceneByName("Level 1 V2").isLoaded) 
-        {
-            
+        {           
             GiveDashPower();
-            MoveTransitCamera();
         }
+
+        //Debug. So I get the dash even in level 1. For testing purposes.
+        GiveDashPower();
     }
 
     private void GiveDashPower() 
     {
         //other.GetComponent<GameplayAbilitySystem>().GrantAbility(ability);
         player.GetComponent<GameplayAbilitySystem>().GrantAbility(abilityName);
-        //EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("New ability: Dash", 2, true));
+        EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("New ability: Dash", 4, false));
     }
 
     private void MoveTransitCamera() 
     {
-        Debug.Log("StartInOtherScene, MoveTransitCamera");
-        overviewCamera.m_Follow = level2OverviewTarget.transform;
+        //switch case for levels based on level 2.
+        if(SceneManager.GetSceneByName("Level 2 V2").isLoaded)
+        {
+            Debug.Log("StartInOtherScene, MoveTransitCamera");
+            overviewCamera.m_Follow = level2OverviewTarget.transform;
+        }
+
+    }
+
+    private void MoveToStartPosition() 
+    {
+        string levelToLoad = PlayerPrefs.GetString("levelToLoad");
+        Debug.Log("in StartInOtherScene, Awake. levelToLoad is: " + levelToLoad);
+
+        //Debug. The cases are commented out for testing.
+        switch (levelToLoad)
+        {
+            case "IntroCutscene":
+                //do nothing as the player isn't in Intro
+                break;
+            case "Level 1 V2":
+                player.transform.position = levelOneStartPosition.transform.position;
+                break;
+            case "Level 2 V2":
+                player.transform.position = levelTwoStartPosition.transform.position;
+                break;
+        }
     }
 }
