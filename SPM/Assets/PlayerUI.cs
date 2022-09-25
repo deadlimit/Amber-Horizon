@@ -14,7 +14,9 @@ public class PlayerUI : MonoBehaviour {
     [SerializeField] private AudioClip UIMessageSFX;
     
     private PlayerController player;
-    
+    private float dashCooldownBonus;
+
+
     private void Start() {
         EventSystem<AbilityUsed>.RegisterListener(StartAbilityCooldown);
         EventSystem<InteractTriggerEnterEvent>.RegisterListener(DisplayInteractText);
@@ -22,6 +24,7 @@ public class PlayerUI : MonoBehaviour {
         EventSystem<PlayerHitEvent>.RegisterListener(ChangeHealthUI);
         EventSystem<PlayerReviveEvent>.RegisterListener(RestoreHealthUI);
         EventSystem<DisplayUIMessage>.RegisterListener(DisplayMessageOnUI);
+        EventSystem<PieceAbsorbed>.RegisterListener(ChangeCooldownBonus);
 
         player = FindObjectOfType<PlayerController>();
 
@@ -50,20 +53,33 @@ public class PlayerUI : MonoBehaviour {
 
     private void StartAbilityCooldown(AbilityUsed abilityUsed) {
         if (abilityUsed.ability is DashAbility)
-            StartCoroutine(StartAnimation(dashCooldownImage, abilityUsed.ability.Cooldown.Duration));
+            StartCoroutine(StartAnimation(dashCooldownImage, abilityUsed.ability.Cooldown.Duration, true));
         if (abilityUsed.ability is BlackHoleAbility)
-            StartCoroutine(StartAnimation(blackholeCooldownImage, abilityUsed.ability.Cooldown.Duration));
+            StartCoroutine(StartAnimation(blackholeCooldownImage, abilityUsed.ability.Cooldown.Duration, false));
     }
 
-    private IEnumerator StartAnimation(Image image, float time) {
+    private IEnumerator StartAnimation(Image image, float time, bool useCooldownBonus) {
 
         float end = Time.time + time;
-        
-        while (Time.time < end) {
-            image.fillAmount += Time.deltaTime / time;
-            yield return null;
+
+        //god this is a bad way to check. but it does work. and it matches GameplayAbilitySystem.
+        if (useCooldownBonus)
+        {
+            while (Time.time + dashCooldownBonus < end)
+            {
+                image.fillAmount += dashCooldownBonus + Time.deltaTime / time;
+                yield return null;
+            }
+            ResetCooldownBouns();
         }
-        
+
+        else { 
+            while (Time.time < end) {
+                image.fillAmount += Time.deltaTime / time;
+                yield return null;
+            }
+        }
+
         image.fillAmount = 0;
     }
 
@@ -141,6 +157,17 @@ public class PlayerUI : MonoBehaviour {
 
         healthBackground.Invoke(() => ChangeColor(0), 2.0f);
         //ChangeHealthUI(new PlayerHitEvent(null, null));
+    }
+
+
+    private void ChangeCooldownBonus(PieceAbsorbed pieceAbsorbed)
+    {
+        dashCooldownBonus += pieceAbsorbed.pieceValue;
+    }
+
+    private void ResetCooldownBouns()
+    {
+        dashCooldownBonus = 0f;
     }
 
 }

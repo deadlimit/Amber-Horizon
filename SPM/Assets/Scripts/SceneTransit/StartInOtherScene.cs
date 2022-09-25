@@ -17,13 +17,18 @@ public class StartInOtherScene : MonoBehaviour
 
     //[SerializeField] private Vector3 levelOneStartPosition, levelTwoStartPosition;
 
+    [SerializeField] private bool useStartLocation;
     [SerializeField] private GameObject levelOneStartPosition, levelTwoStartPosition;
 
     void Start()
     {
         MoveTransitCamera();
 
-        MoveToStartPosition();
+        if (useStartLocation) 
+        {
+            MoveToStartPosition();
+        }
+
 
         //if the player starts in a scene that isn't level 1 they get the dash.
         if (!SceneManager.GetSceneByName("Level 1 V2").isLoaded) 

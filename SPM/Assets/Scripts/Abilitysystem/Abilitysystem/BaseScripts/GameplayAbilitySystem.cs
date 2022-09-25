@@ -25,8 +25,7 @@ namespace AbilitySystem
         {
             entity = GetComponent<AbilityEntity>();
 
-            //register ChangeCooldownBonus
-            //EventSystem<DisplayUIMessage>.RegisterListener(DisplayMessageOnUI);
+            //register ChangeCooldownBonus to PieceAbosorbed event.
             EventSystem<PieceAbsorbed>.RegisterListener(ChangeCooldownBonus);
         }
         public void RegisterAttributeSet(List<GameplayAttributeSetEntry> Set)
@@ -245,7 +244,7 @@ namespace AbilitySystem
             }
 
             //else, its is not dash.
-            //the same but without the bonus in the while case
+            //the same but without the bonus in the while case. and don't reset the bonus value.
             else 
             {
                 while (Time.time + dashCooldownBonus < end)
