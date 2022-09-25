@@ -18,6 +18,8 @@ namespace AbilitySystem
         private HashSet<GameplayTag> ActiveTags = new HashSet<GameplayTag>();
         private HashSet<GameplayAbility> AbilitiesOnCooldown = new HashSet<GameplayAbility>();
 
+        private float dashCooldownBonus = 0;
+
         AbilityEntity entity;
         private void Awake()
         {
@@ -221,10 +223,37 @@ namespace AbilitySystem
         }
 
         public IEnumerator RemoveAfterTime(GameplayAbility ability) {
-            yield return new WaitForSeconds(ability.Cooldown.Duration);
+
+            //yield return new WaitForSeconds(ability.Cooldown.Duration);
+
+            float end = Time.time + ability.Cooldown.Duration;
+
+            //if dash
+            if (ability.name == "Dash")
+            {
+                while (Time.time + dashCooldownBonus < end)
+                {
+                    //do nothing
+                    yield return null;
+                }
+
+            }
+
+            //else, its is not dash.
+            //the same but without the bonus in the while case
+            else 
+            {
+                while (Time.time + dashCooldownBonus < end)
+                {
+                    //do nothing
+                    yield return null;
+                }
+            }
 
             Debug.Log("In GAS. RemoveAfterTime() for " + ability.name);
+
             AbilitiesOnCooldown.Remove(ability);
+            ResetCooldownBouns();
         }
 
         public GameplayAbility GetAbilityByTag(Type AbilityTag)
@@ -235,6 +264,18 @@ namespace AbilitySystem
             }
 
             return null;
+        }
+
+        //this should have a listener.
+        public void ChangeCooldownBonus(float changeValue) 
+        {
+            //
+            dashCooldownBonus += changeValue;
+        }
+
+        private void ResetCooldownBouns() 
+        {
+            dashCooldownBonus = 0f;
         }
 
     }

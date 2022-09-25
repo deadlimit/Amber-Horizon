@@ -30,6 +30,7 @@ public class WallPiece : MonoBehaviour, IBlackHoleBehaviour  {
         transform.position = Vector3.Lerp(transform.position, blackhole.transform.position, Time.deltaTime * 10);
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, Time.deltaTime * 10);
         
+        //call absorb event.
         Destroy(gameObject, 2);
     }
 }
