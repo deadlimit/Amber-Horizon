@@ -223,6 +223,7 @@ namespace AbilitySystem
         public IEnumerator RemoveAfterTime(GameplayAbility ability) {
             yield return new WaitForSeconds(ability.Cooldown.Duration);
 
+            Debug.Log("In GAS. RemoveAfterTime() for " + ability.name);
             AbilitiesOnCooldown.Remove(ability);
         }
 
