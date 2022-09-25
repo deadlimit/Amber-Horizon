@@ -186,5 +186,14 @@ namespace EventCallbacks
             ShowText = showKeyText;
         }
     }
+
+    public class PieceAbsorbed : EventInfo
+    {
+        public readonly float pieceValue;
+        public PieceAbsorbed(float pieceValue)
+        {
+            this.pieceValue = pieceValue;
+        }
+    }
 }
 

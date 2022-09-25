@@ -24,6 +24,10 @@ namespace AbilitySystem
         private void Awake()
         {
             entity = GetComponent<AbilityEntity>();
+
+            //register ChangeCooldownBonus
+            //EventSystem<DisplayUIMessage>.RegisterListener(DisplayMessageOnUI);
+            EventSystem<PieceAbsorbed>.RegisterListener(ChangeCooldownBonus);
         }
         public void RegisterAttributeSet(List<GameplayAttributeSetEntry> Set)
         {
@@ -237,6 +241,7 @@ namespace AbilitySystem
                     yield return null;
                 }
 
+                ResetCooldownBouns();
             }
 
             //else, its is not dash.
@@ -253,7 +258,7 @@ namespace AbilitySystem
             Debug.Log("In GAS. RemoveAfterTime() for " + ability.name);
 
             AbilitiesOnCooldown.Remove(ability);
-            ResetCooldownBouns();
+
         }
 
         public GameplayAbility GetAbilityByTag(Type AbilityTag)
@@ -266,11 +271,11 @@ namespace AbilitySystem
             return null;
         }
 
-        //this should have a listener.
-        public void ChangeCooldownBonus(float changeValue) 
+
+        private void ChangeCooldownBonus(PieceAbsorbed pieceAbsorbed) 
         {
-            //
-            dashCooldownBonus += changeValue;
+            dashCooldownBonus += pieceAbsorbed.pieceValue;
+            Debug.Log("in change. bonus is now" + dashCooldownBonus);
         }
 
         private void ResetCooldownBouns() 

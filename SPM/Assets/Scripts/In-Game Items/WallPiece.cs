@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using EventCallbacks;
 public class WallPiece : MonoBehaviour, IBlackHoleBehaviour  {
 
     private bool insideBlackHole;
@@ -7,6 +7,9 @@ public class WallPiece : MonoBehaviour, IBlackHoleBehaviour  {
     public LayerMask collisionMask;
 
     private MeshCollider activeCollider;
+
+    [SerializeField]
+    private float absorbValue;
 
     private void Awake() {
         activeCollider = GetComponent<MeshCollider>();
@@ -22,6 +25,9 @@ public class WallPiece : MonoBehaviour, IBlackHoleBehaviour  {
 
         physics.gravity = 0;
         activeCollider.enabled = false;
+
+        //call piece absorbed event.
+        EventSystem<PieceAbsorbed>.FireEvent(new PieceAbsorbed(absorbValue));
     }
 
     private void Update() {
@@ -29,8 +35,8 @@ public class WallPiece : MonoBehaviour, IBlackHoleBehaviour  {
         
         transform.position = Vector3.Lerp(transform.position, blackhole.transform.position, Time.deltaTime * 10);
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, Time.deltaTime * 10);
-        
-        //call absorb event.
+
+
         Destroy(gameObject, 2);
     }
 }
