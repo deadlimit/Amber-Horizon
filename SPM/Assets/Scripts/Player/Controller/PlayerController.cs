@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using AbilitySystem;
 using EventCallbacks;
 using UnityEngine;
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
     private Transform cameraTransform;
     private RaycastHit groundHitInfo;
     private bool wasGrounded;
+    private bool recentlyDashed;
     
     void Awake() 
     {
@@ -67,10 +69,15 @@ public class PlayerController : MonoBehaviour
     private void Update() {       
         stateMachine.RunUpdate();
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && wasGrounded)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && wasGrounded && !recentlyDashed)
         {
-            if (abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag))
-                wasGrounded = false; 
+            if (abilitySystem.TryActivateAbilityByTag(GameplayTags.MovementAbilityTag)) 
+            {
+                wasGrounded = false;
+                recentlyDashed = false;
+                StartCoroutine(RestoreDash());
+            }
+                
         }
         
         if (Input.GetMouseButton(1))
@@ -224,8 +231,17 @@ public class PlayerController : MonoBehaviour
         abilitySystem.TryDeactivateAbilityByTag(GameplayTags.AimingTag);
     }
 
-    //Gets & Sets
-    public float GetMaxSpeed()
+    public IEnumerator RestoreDash()
+    {
+        //The dash takes 0.4 seconds to complete.
+        //And starting a new dash before the old one is a bad idea.
+        yield return new WaitForSeconds(.5f);
+
+    }
+
+
+        //Gets & Sets
+        public float GetMaxSpeed()
     {
         return maxSpeed;
     }
