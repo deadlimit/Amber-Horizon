@@ -67,7 +67,8 @@ public class PlayerUI : MonoBehaviour {
         {
             while (Time.time + dashCooldownBonus < end)
             {
-                image.fillAmount += dashCooldownBonus + Time.deltaTime / time;
+                //was +=
+                image.fillAmount += (dashCooldownBonus + Time.deltaTime) / time;
                 yield return null;
             }
             ResetCooldownBouns();
@@ -80,6 +81,7 @@ public class PlayerUI : MonoBehaviour {
             }
         }
 
+        //Debug.Log("in PlayerUI. end of StartAnimation.");
         image.fillAmount = 0;
     }
 

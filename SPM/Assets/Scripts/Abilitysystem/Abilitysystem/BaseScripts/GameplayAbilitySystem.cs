@@ -254,7 +254,7 @@ namespace AbilitySystem
                 }
             }
 
-            Debug.Log("In GAS. RemoveAfterTime() for " + ability.name);
+            //Debug.Log("In GAS. RemoveAfterTime() for " + ability.name);
 
             AbilitiesOnCooldown.Remove(ability);
 
@@ -274,7 +274,7 @@ namespace AbilitySystem
         private void ChangeCooldownBonus(PieceAbsorbed pieceAbsorbed) 
         {
             dashCooldownBonus += pieceAbsorbed.pieceValue;
-            Debug.Log("in change. bonus is now" + dashCooldownBonus);
+            //Debug.Log("in change. bonus is now" + dashCooldownBonus);
         }
 
         private void ResetCooldownBouns() 
