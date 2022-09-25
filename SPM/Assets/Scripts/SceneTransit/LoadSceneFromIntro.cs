@@ -12,6 +12,9 @@ public class LoadSceneFromIntro : MonoBehaviour
     [SerializeField]
     private bool firstInputMade = false;
 
+    [SerializeField]
+    private GameObject canvasCover;
+
     //I don't want the player loading the next level at the same time as the game starts the load.
     //Could cause delay.
     //This value is changed by a signal in the intro cutscene.
@@ -47,6 +50,8 @@ public class LoadSceneFromIntro : MonoBehaviour
 
     private IEnumerator LoadLevel1()
     {
+        canvasCover.SetActive(true);
+
         PlayerPrefs.SetString("levelToLoad", "Level 1 V2");
         
         yield return SceneManager.LoadSceneAsync("Level 1 V2", LoadSceneMode.Additive);
