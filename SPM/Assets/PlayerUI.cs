@@ -131,9 +131,11 @@ public class PlayerUI : MonoBehaviour {
         float healthFraction;
 
         ChangeColor(255);
-        healthFraction = currentHealth / 4 - 0.25f;
+        healthFraction = currentHealth / 4 ;
+        //ok so in the built game this works fine.
+        //but in editor it looks like it has 1/4 too much health.
+        //- 0.25f
 
-        
         //Debug.Log("in ChangeHealthUI, hFraction is " + healthFraction);
         //Debug.Log("in ChangeHealthUI, currentHealth is " + currentHealth);
 
