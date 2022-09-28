@@ -184,7 +184,8 @@ public class PlayerController : MonoBehaviour
     {
         if (jump) 
         { 
-            force.y += jumpHeight / Time.fixedDeltaTime; jump = false; 
+            force.y += jumpHeight / Time.fixedDeltaTime;
+            jump = false; 
         } 
     }
     private void RotateTowardsCameraDirection() 
