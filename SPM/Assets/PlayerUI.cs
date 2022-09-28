@@ -65,13 +65,17 @@ public class PlayerUI : MonoBehaviour {
         //god this is a bad way to check. but it does work. and it matches GameplayAbilitySystem.
         if (useCooldownBonus)
         {
+            //This is if only want to lowerthe cooldown when the dash is on cooldown.
+            //So the player can't save a cooldownbonus for later.
+            //NOTE: this has an equivalent in GameplayAbilitySystem.
+            ResetUICooldownBouns();
             while (Time.time + dashCooldownBonus < end)
             {
                 //was +=
                 image.fillAmount += (dashCooldownBonus + Time.deltaTime) / time;
                 yield return null;
             }
-            ResetCooldownBouns();
+            ResetUICooldownBouns();
         }
 
         else { 
@@ -167,7 +171,7 @@ public class PlayerUI : MonoBehaviour {
         dashCooldownBonus += pieceAbsorbed.pieceValue;
     }
 
-    private void ResetCooldownBouns()
+    private void ResetUICooldownBouns()
     {
         dashCooldownBonus = 0f;
     }

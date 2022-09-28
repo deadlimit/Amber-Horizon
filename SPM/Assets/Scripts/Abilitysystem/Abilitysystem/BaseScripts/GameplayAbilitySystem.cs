@@ -234,12 +234,17 @@ namespace AbilitySystem
             //if dash
             if (ability.name == "Dash")
             {
+
+                //This is if only want to lowerthe cooldown when the dash is on cooldown.
+                //So the player can't save a cooldownbonus for later.
+                //NOTE: this has an equivalent in PlayerUI
+                ResetCooldownBouns();
                 while (Time.time + dashCooldownBonus < end)
                 {
                     //do nothing
                     yield return null;
                 }
-
+                
                 ResetCooldownBouns();
             }
 
