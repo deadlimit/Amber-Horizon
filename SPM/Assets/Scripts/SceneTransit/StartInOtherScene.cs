@@ -44,7 +44,7 @@ public class StartInOtherScene : MonoBehaviour
     {
         //other.GetComponent<GameplayAbilitySystem>().GrantAbility(ability);
         player.GetComponent<GameplayAbilitySystem>().GrantAbility(abilityName);
-        EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("New ability: Dash", 4, false));
+        //EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("New ability: Dash", 4, false));
     }
 
     private void MoveTransitCamera() 

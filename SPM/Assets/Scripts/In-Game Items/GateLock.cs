@@ -29,7 +29,11 @@ public class GateLock : InteractableObject
     }
     
     private void Start() {
+
+
         ResetKeys(null);
+
+
         if (!OpenDoorWithoutKeys) return;
         
         UnlockGateSequence();
@@ -45,7 +49,13 @@ public class GateLock : InteractableObject
     }
     
     protected override void EnterTrigger(string UIMessage) {
-        UIMessage = KeyList.Count == KeysAcquired.Count ? UIMessage : "Missing key fragments: " + (KeyList.Count - KeysAcquired.Count);
+
+        if (KeyList.Count != KeysAcquired.Count) 
+        {
+            UIMessage = "Missing key fragments: " + (KeyList.Count - KeysAcquired.Count);
+        }
+        //else keep the UIMessage as is.
+        //UIMessage = KeyList.Count == KeysAcquired.Count ? UIMessage : "Missing key fragments: " + (KeyList.Count - KeysAcquired.Count);
         EventSystem<InteractTriggerEnterEvent>.FireEvent(new InteractTriggerEnterEvent(UIMessage));
     }
 
