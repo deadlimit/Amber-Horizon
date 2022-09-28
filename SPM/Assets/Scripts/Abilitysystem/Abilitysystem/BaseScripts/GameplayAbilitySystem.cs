@@ -247,14 +247,14 @@ namespace AbilitySystem
             //the same but without the bonus in the while case. and don't reset the bonus value.
             else 
             {
-                while (Time.time + dashCooldownBonus < end)
+                while (Time.time < end)
                 {
                     //do nothing
                     yield return null;
                 }
             }
 
-            //Debug.Log("In GAS. RemoveAfterTime() for " + ability.name);
+            Debug.Log("In GAS. RemoveAfterTime() for " + ability.name);
 
             AbilitiesOnCooldown.Remove(ability);
 
