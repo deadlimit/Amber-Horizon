@@ -30,7 +30,8 @@ public class KeyRotator : MonoBehaviour {
     }
 
     private void UpdateKeyText(KeyPickUpEvent keyEvent) {
-        keyText = GateLock.KeysAcquired.Count + "/" + GateLock.KeyList.Count + "\n" + "key fragments" + "\n" + "acquired";
+        string countMinusOne = (GateLock.KeyList.Count - 1).ToString();
+        keyText = GateLock.KeysAcquired.Count + "/" + countMinusOne + "\n" + "key fragments" + "\n" + "acquired";
     }
 
     private void ResetKeyText(NewLevelLoadedEvent newLevelLoadedEvent) {

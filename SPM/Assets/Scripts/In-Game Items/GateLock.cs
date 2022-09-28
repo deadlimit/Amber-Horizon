@@ -30,9 +30,7 @@ public class GateLock : InteractableObject
     
     private void Start() {
 
-
         ResetKeys(null);
-
 
         if (!OpenDoorWithoutKeys) return;
         
@@ -42,26 +40,33 @@ public class GateLock : InteractableObject
     
     private void KeyPickUp(KeyPickUpEvent kpue)
     {
-        if (KeyList.Count == KeysAcquired.Count)
+        Debug.Log("in GateLock, KeyPickUp. KeyList is: " + KeyList.Count + ". KeysAcquired is: " + KeysAcquired.Count);
+        if (KeyList.Count == KeysAcquired.Count || KeyList.Count - 1 == KeysAcquired.Count)
         {
+            Debug.Log("in GateLock. interaction enabled.");
             interaction.enabled = true;
         }
     }
     
     protected override void EnterTrigger(string UIMessage) {
 
-        if (KeyList.Count != KeysAcquired.Count) 
+        if (KeyList.Count == KeysAcquired.Count || KeyList.Count - 1 == KeysAcquired.Count)
         {
-            UIMessage = "Missing key fragments: " + (KeyList.Count - KeysAcquired.Count);
+            EventSystem<InteractTriggerEnterEvent>.FireEvent(new InteractTriggerEnterEvent(UIMessage));
+
         }
         //else keep the UIMessage as is.
         //UIMessage = KeyList.Count == KeysAcquired.Count ? UIMessage : "Missing key fragments: " + (KeyList.Count - KeysAcquired.Count);
-        EventSystem<InteractTriggerEnterEvent>.FireEvent(new InteractTriggerEnterEvent(UIMessage));
+        else 
+        {
+            UIMessage = "Missing key fragments: " + (KeyList.Count - 1 - KeysAcquired.Count);
+            EventSystem<InteractTriggerEnterEvent>.FireEvent(new InteractTriggerEnterEvent(UIMessage));
+        }
     }
 
     protected override void InsideTrigger(GameObject player) {
         
-        if (KeysAcquired.Count == KeyList.Count && Input.GetKeyDown(KeyCode.E)) {
+        if ((KeyList.Count == KeysAcquired.Count || KeyList.Count - 1 == KeysAcquired.Count) && Input.GetKeyDown(KeyCode.E)) {
             FireUnlockSequence();
         }
     }
@@ -80,6 +85,7 @@ public class GateLock : InteractableObject
 
     protected virtual void FireUnlockSequence() {
         UnlockGateSequence();
+        Debug.Log("in GateLock. in FireUnlockSequence.");
     }
 
     private void ResetKeys(NewLevelLoadedEvent loadedEvent) {
