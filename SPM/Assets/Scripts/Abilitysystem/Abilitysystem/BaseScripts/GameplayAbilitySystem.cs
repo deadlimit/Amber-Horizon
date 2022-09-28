@@ -254,7 +254,7 @@ namespace AbilitySystem
                 }
             }
 
-            Debug.Log("In GAS. RemoveAfterTime() for " + ability.name);
+            //Debug.Log("In GAS. RemoveAfterTime() for " + ability.name);
 
             AbilitiesOnCooldown.Remove(ability);
 
