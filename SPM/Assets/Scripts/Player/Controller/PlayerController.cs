@@ -85,15 +85,22 @@ public class PlayerController : MonoBehaviour
             abilitySystem.TryActivateAbilityByTag(GameplayTags.AimingTag);
         }
 
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonUp(1) || Input.GetKeyDown(KeyCode.Escape))
         {
             DeactivateAim();
         }
         if (Input.GetMouseButton(0))
         {
-            if (abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag))
+            if (abilitySystem.TryActivateAbilityByTag(GameplayTags.BlackHoleAbilityTag)) 
+            {
+                //should probably add just a slight pitch variation.
+                //and move this and the other sounds to the sound controller.
+                //some of them are triggered via animations. I'll have to look our the whole thing.
+                audioSource.volume = 0.2f;
                 audioSource.PlayOneShot(blackHoleLaunchSound, 2.5f);
-            //should probably add just a slight pitch variation.
+            }
+                
+            
 
         }        
     }
@@ -236,7 +243,7 @@ public class PlayerController : MonoBehaviour
     {
         //The dash takes 0.4 seconds to complete.
         //And starting a new dash before the old one is a bad idea.
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.42f);
 
     }
 

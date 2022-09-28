@@ -63,15 +63,15 @@ public class DynamicFoley : MonoBehaviour
         switch (colliderType) // Att switcha olika ljud för olika terrian
         {
             case "House":
-                m_AudioSource.volume = audioVolume2;
+                m_AudioSource.volume = audioVolume1;
                 m_AudioSource.PlayOneShot(houseSound);
                 break;
             case "Plattform":
-                m_AudioSource.volume = audioVolume2;
+                m_AudioSource.volume = audioVolume1;
                 m_AudioSource.PlayOneShot(plattformSound);
                 break;
             default:
-                m_AudioSource.volume = audioVolume2;
+                m_AudioSource.volume = audioVolume1;
                 m_AudioSource.PlayOneShot(defaultSound);
                 break;
         }

@@ -11,7 +11,7 @@ public class AbilityPickup : MonoBehaviour {
         if (!other.CompareTag("Player")) return;
         
         other.GetComponent<GameplayAbilitySystem>().GrantAbility(ability);
-        EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("New ability: Dash.\n Press shift to use.", 5, true));
+        EventSystem<DisplayUIMessage>.FireEvent(new DisplayUIMessage("New ability: Dash.\nPress shift to use.", 5, true));
         Destroy(gameObject);
     }
 }

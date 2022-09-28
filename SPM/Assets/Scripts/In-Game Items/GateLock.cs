@@ -40,10 +40,10 @@ public class GateLock : InteractableObject
     
     private void KeyPickUp(KeyPickUpEvent kpue)
     {
-        Debug.Log("in GateLock, KeyPickUp. KeyList is: " + KeyList.Count + ". KeysAcquired is: " + KeysAcquired.Count);
+        //Debug.Log("in GateLock, KeyPickUp. KeyList is: " + KeyList.Count + ". KeysAcquired is: " + KeysAcquired.Count);
         if (KeyList.Count == KeysAcquired.Count || KeyList.Count - 1 == KeysAcquired.Count)
         {
-            Debug.Log("in GateLock. interaction enabled.");
+            //Debug.Log("in GateLock. interaction enabled.");
             interaction.enabled = true;
         }
     }
@@ -85,7 +85,7 @@ public class GateLock : InteractableObject
 
     protected virtual void FireUnlockSequence() {
         UnlockGateSequence();
-        Debug.Log("in GateLock. in FireUnlockSequence.");
+        //Debug.Log("in GateLock. in FireUnlockSequence.");
     }
 
     private void ResetKeys(NewLevelLoadedEvent loadedEvent) {
